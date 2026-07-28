@@ -5,14 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useState } from 'react';
-import { IconButton, ListItemIcon, ListItemText, Menu, Tooltip } from '@mui/material';
+import { IconButton, ListItemIcon, ListItemText, Menu } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { useSnackMessage } from '../../../hooks';
 import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
-import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
-import { CustomMenuItem } from '../../../components';
-import { ReferenceModificationInfos } from '../utils';
+import { ComposedModificationMetadata, ReferenceModificationInfos, snackWithFallback } from '../../../utils';
+import { CustomMenuItem, CustomTooltip } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
 export interface ReferenceLinkCellProps {
@@ -70,13 +69,13 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
 
     return (
         <>
-            <Tooltip title={<FormattedMessage id="importComposites.shared" />} arrow enterDelay={250}>
+            <CustomTooltip title={<FormattedMessage id="importComposites.shared" />}>
                 <span>
                     <IconButton disabled={disabled || isLoading} onClick={handleOpen}>
                         <DatasetLinkedIcon />
                     </IconButton>
                 </span>
-            </Tooltip>
+            </CustomTooltip>
             <Menu
                 anchorEl={anchorEl}
                 open={open}

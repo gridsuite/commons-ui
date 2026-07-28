@@ -20,6 +20,7 @@ import {
     findModificationInTree,
     isCompositeModification,
     isSharedModification,
+    isTargetChildOfReference,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -81,13 +82,6 @@ function getContainerShadow(forbidden: boolean, isMovingDown: boolean) {
         return isMovingDown ? DROP_FORBIDDEN_INDICATOR_BOTTOM : DROP_FORBIDDEN_INDICATOR_TOP;
     }
     return isMovingDown ? DROP_INDICATOR_BOTTOM : DROP_INDICATOR_TOP;
-}
-
-function isTargetChildOfReference(targetRow: Row<ComposedModificationMetadata>): boolean {
-    if (targetRow.original.childFromShared === true) {
-        return true;
-    }
-    return false;
 }
 
 export const useModificationsDragAndDrop = ({

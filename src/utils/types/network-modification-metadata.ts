@@ -25,3 +25,13 @@ export interface ComposedModificationMetadata extends NetworkModificationMetadat
     name?: string;
     childFromShared?: boolean;
 }
+
+export interface ReferencedCompositeModifications extends NetworkModificationMetadata {
+    modificationsInfos?: NetworkModificationMetadata[];
+}
+
+export interface ReferenceModificationInfos extends NetworkModificationMetadata {
+    referenceId?: UUID;
+    referenceType?: string;
+    referenceInfos?: ComposedModificationMetadata;
+}

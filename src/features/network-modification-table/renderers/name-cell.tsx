@@ -238,7 +238,6 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                     </Box>
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
-                    {/* Edit mode — composite only */}
                     {isEditing ? (
                         <Box
                             sx={mergeSx(networkModificationTableStyles.modificationLabel, {

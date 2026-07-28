@@ -7,20 +7,17 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
+import { Row } from '@tanstack/react-table';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
-import { ComposedModificationMetadata, MODIFICATION_TYPES, NetworkModificationMetadata } from '../../utils';
+import {
+    ComposedModificationMetadata,
+    MODIFICATION_TYPES,
+    NetworkModificationMetadata,
+    ReferencedCompositeModifications,
+    ReferenceModificationInfos,
+} from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
-
-interface ReferencedCompositeModifications extends NetworkModificationMetadata {
-    modificationsInfos?: NetworkModificationMetadata[];
-}
-
-export interface ReferenceModificationInfos extends NetworkModificationMetadata {
-    referenceId?: UUID;
-    referenceType?: string;
-    referenceInfos?: ComposedModificationMetadata;
-}
 
 export const formatToComposedModification = (
     modifications: NetworkModificationMetadata[]
@@ -42,6 +39,13 @@ function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkMod
         messageType: child.messageType ?? child.type,
         messageValues: child.messageValues ?? '{}',
     };
+}
+
+export function isTargetChildOfReference(targetRow: Row<ComposedModificationMetadata>): boolean {
+    if (targetRow.original.childFromShared === true) {
+        return true;
+    }
+    return false;
 }
 
 function extractReferenceChildren(detail: ReferenceModificationInfos): NetworkModificationMetadata[] {
@@ -269,38 +273,38 @@ export function moveSubModificationInTree(
     return result;
 }
 
-export function fetchSubModificationsForExpandedRows(
+export async function fetchSubModificationsForExpandedRows(
     expandedIds: string[],
     mods: ComposedModificationMetadata[],
     setMods: Dispatch<SetStateAction<ComposedModificationMetadata[]>>,
     force = false
-): void {
+): Promise<void> {
     const compositeUuidsToFetch = expandedIds.filter((id) => {
         const mod = findModificationInTree(id, mods);
         return isCompositeModification(mod) && (force || mod?.subModifications.length === 0);
     });
 
     if (compositeUuidsToFetch.length > 0) {
-        getNetworkModificationsFromComposite(compositeUuidsToFetch).then((subModsByUuid) => {
-            setMods((prev) =>
-                Object.entries(subModsByUuid).reduce((tree, [uuid, subMods]) => {
-                    const existingMod = findModificationInTree(uuid, tree);
-                    // A composite nested inside a reference is itself flagged childFromShared;
-                    // propagate the flag to its children so they stay non-clickable as well.
-                    const inheritsReference = existingMod?.childFromShared === true;
-                    const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map(
-                        (m) => (inheritsReference ? { ...m, childFromShared: true } : m)
-                    );
-                    // Preserve already-loaded children of any nested composites within the new sub-list
+        const subModsByUuid = await getNetworkModificationsFromComposite(compositeUuidsToFetch);
 
-                    const mergedSubs = mergeSubModificationsIntoTree(
-                        liveModifications,
-                        existingMod?.subModifications ?? []
-                    );
-                    return updateSubModificationsOfACompositeInTree(uuid, mergedSubs, tree);
-                }, prev)
-            );
-        });
+        setMods((prev) =>
+            Object.entries(subModsByUuid).reduce((tree, [uuid, subMods]) => {
+                const existingMod = findModificationInTree(uuid, tree);
+                // A composite nested inside a reference is itself flagged childFromShared;
+                // propagate the flag to its children so they stay non-clickable as well.
+                const inheritsReference = existingMod?.childFromShared === true;
+                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map((m) =>
+                    inheritsReference ? { ...m, childFromShared: true } : m
+                );
+
+                // Preserve already-loaded children of any nested composites within the new sub-list.
+                const mergedSubs = mergeSubModificationsIntoTree(
+                    liveModifications,
+                    existingMod?.subModifications ?? []
+                );
+                return updateSubModificationsOfACompositeInTree(uuid, mergedSubs, tree);
+            }, prev)
+        );
     }
 
     const referenceUuidsToFetch = expandedIds.filter((id) => {
@@ -308,19 +312,22 @@ export function fetchSubModificationsForExpandedRows(
         return isSharedModification(mod) && (force || mod?.subModifications.length === 0);
     });
 
-    referenceUuidsToFetch.forEach((id) => {
-        fetchNetworkModification(id as UUID)
-            .then((res) => res.json())
-            .then((detail: ReferenceModificationInfos) => {
+    await Promise.all(
+        referenceUuidsToFetch.map(async (id) => {
+            try {
+                const res = await fetchNetworkModification(id as UUID);
+                const detail: ReferenceModificationInfos = await res.json();
+
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
                     childFromShared: true,
                 }));
-                setMods((prev) => {
-                    return updateSubModificationsOfACompositeInTree(id, liveModifications, prev);
-                });
-            })
-            .catch((error) => console.error(`Failed to load reference children for ${id}`, error));
-    });
+
+                setMods((prev) => updateSubModificationsOfACompositeInTree(id, liveModifications, prev));
+            } catch (error) {
+                console.error(`Failed to load reference children for ${id}`, error);
+            }
+        })
+    );
 }
