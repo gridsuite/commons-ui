@@ -16,13 +16,6 @@ import {
 } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../../components/ui';
 
-const stickyFirstColBodySx = {
-    position: 'sticky',
-    left: 0,
-    zIndex: 1,
-    backgroundColor: 'background.paper',
-};
-
 export function LimitReductionTableCell({
     rowIndex,
     column,
@@ -46,12 +39,12 @@ export function LimitReductionTableCell({
                 />
             }
         >
-            <TableCell sx={{ fontWeight: 'bold', ...stickyFirstColBodySx }}>
+            <TableCell sx={{ fontWeight: 'bold' }}>
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             </TableCell>
         </CustomTooltip>
     ) : (
-        <TableCell sx={{ fontWeight: 'bold', p: 0.75, ...(isVoltageCol ? stickyFirstColBodySx : {}) }}>
+        <TableCell sx={{ fontWeight: 'bold', p: 0.75 }}>
             {isVoltageCol ? (
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             ) : (
