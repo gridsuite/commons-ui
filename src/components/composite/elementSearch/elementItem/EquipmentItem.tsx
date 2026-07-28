@@ -6,7 +6,6 @@
  */
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
-import clsx from 'clsx';
 import { FormattedMessage } from 'react-intl';
 import { Box } from '@mui/material';
 import { ALL_EQUIPMENTS, EquipmentInfos } from '../../../../utils/types/equipmentType';
@@ -54,7 +53,7 @@ export function EquipmentItem({
                 {!showsJustText && (
                     <Box
                         component="span"
-                        className={clsx(props.classes?.equipmentTag, props.classes?.equipmentTypeTag)}
+                        className={[props.classes?.equipmentTag, props.classes?.equipmentTypeTag].filter(Boolean).join(' ')}
                         sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentTypeTag)}
                     >
                         <FormattedMessage id={ALL_EQUIPMENTS[element.type]?.tagLabel} />

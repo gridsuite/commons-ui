@@ -53,7 +53,7 @@ export function LogoText({ appName, appColor, style, onClick, dense = false }: R
     return (
         <Typography sx={mergeSx(style, onClick && styles.clickable)} onClick={onClick}>
             <span style={{ fontWeight: 'bold' }}>Grid</span>
-            <span style={{ color: appColor }}>{appName}</span>
+            <span style={{ color: appColor }}>{appName} </span>
         </Typography>
     );
 }

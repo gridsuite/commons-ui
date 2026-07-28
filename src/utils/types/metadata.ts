@@ -14,6 +14,8 @@ export type Metadata = {
     name: string;
     url: string | URL;
     appColor: string;
+    envName: string;
+    envColor: string;
     hiddenInAppsMenu: boolean;
     hiddenUserInformation: boolean;
     resources?: MetaDataRessources[];

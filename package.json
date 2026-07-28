@@ -53,8 +53,9 @@
         "@material-symbols/svg-400": "^0.31.9",
         "@react-querybuilder/dnd": "^8.11.0",
         "@react-querybuilder/material": "^8.11.0",
+        "@tanstack/react-table": "^8.21.3",
+        "@tanstack/react-virtual": "^3.13.18",
         "autosuggest-highlight": "^3.3.4",
-        "clsx": "^2.1.1",
         "jwt-decode": "^4.0.0",
         "localized-countries": "^2.0.0",
         "mathjs": "^14.7.0",
@@ -68,8 +69,6 @@
         "react-window": "^2.2.1",
         "reconnecting-websocket": "^4.4.0",
         "type-fest": "^4.41.0",
-        "@tanstack/react-table": "^8.21.3",
-        "@tanstack/react-virtual": "^3.13.18",
         "uuid": "^13.0.0"
     },
     "peerDependencies": {

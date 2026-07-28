@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import clsx from 'clsx';
 import { OverflowableText } from '../../../ui/overflowableText';
 import { EquipmentInfos, EquipmentType } from '../../../../utils/types/equipmentType';
 import { mergeSx, type SxStyle } from '../../../../utils/styles';
@@ -26,7 +25,7 @@ export function TagRenderer({ element, ...props }: TagRendererProps) {
         return (
             <OverflowableText
                 text={element.voltageLevelLabel}
-                className={clsx(props.classes?.equipmentTag, props.classes?.equipmentVlTag)}
+                className={[props.classes?.equipmentTag, props.classes?.equipmentVlTag].filter(Boolean).join(' ')}
                 sx={mergeSx(props.styles?.equipmentTag, props.styles?.equipmentVlTag)}
             />
         );

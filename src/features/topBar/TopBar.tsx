@@ -52,6 +52,7 @@ import { type Metadata } from '../../utils/types/metadata';
 import { DARK_THEME, type GsTheme, LIGHT_THEME, type MuiStyles } from '../../utils/styles';
 import { type GsLang, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../../utils/langs';
 import { DevModeBanner } from './DevModeBanner';
+import { AppEnvironment } from './AppEnvironment';
 
 const getStyles = (dense: boolean = false) => {
     return {
@@ -279,6 +280,17 @@ export function TopBar({
         return false;
     };
 
+    const getEnvParams = () => {
+        if (appsAndUrls) {
+            const app = appsAndUrls.find((item) => item.name === appName);
+            if (!app) {
+                return undefined;
+            }
+            return { envName: app.envName, envColor: app.envColor };
+        }
+        return undefined;
+    };
+
     const onUserInformationDialogClicked = () => {
         setAnchorElSettingsMenu(null);
         openUserInformationDialog();
@@ -294,11 +306,14 @@ export function TopBar({
         [onLogoClick, appLogo, appName, appColor, dense]
     );
 
+    const envParams = getEnvParams();
+
     return (
         <AppBar position="static" color="default">
             {userProfile && developerMode && <DevModeBanner />}
             <Toolbar variant={dense ? 'dense' : 'regular'} sx={styles.toolbar}>
                 {logoClickable}
+                {envParams && <AppEnvironment envName={envParams.envName} envColor={envParams.envColor} />}
                 <Box sx={styles.grow}>{children}</Box>
                 {userProfile && !dense && (
                     <Box>
