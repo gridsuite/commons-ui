@@ -12,6 +12,7 @@ import { NetworkVisualizationParametersForm } from './network-visualizations-for
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function NetworkVisualizationsParametersEditionDialog({
     id,
@@ -33,9 +34,8 @@ export function NetworkVisualizationsParametersEditionDialog({
     });
 
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = networkVisuMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
@@ -50,7 +50,7 @@ export function NetworkVisualizationsParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
             slotProps={{
                 paper: {
                     sx: {
