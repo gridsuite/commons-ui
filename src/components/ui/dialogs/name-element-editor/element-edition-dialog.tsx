@@ -40,7 +40,7 @@ export function ElementEditionDialog<TFieldValues extends FieldValues>({
         formState: { errors },
     } = formMethods;
 
-    const disabledSave = isDisabledValidationButton(errors);
+    const disabledSave = isLoading || isDisabledValidationButton(errors);
 
     return (
         <CustomMuiDialog

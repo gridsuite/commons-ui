@@ -7,7 +7,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { DefaultValues, Resolver, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { FieldConstants } from '../../utils';
+import { FieldConstants, snackWithFallback } from '../../utils';
 import { ProcessType } from './common';
 import {
     NamedProcessConfigFormData,
@@ -19,6 +19,7 @@ import {
     getNamedProcessConfigFormData,
     getProcessConfigFormDataFromNamedFormData,
 } from './process-config-edition.utils';
+import { useSnackMessage } from '../../hooks';
 
 export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
     methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
@@ -48,6 +49,7 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
     onClose: () => void
 ): UseProcessConfigEditionReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
+    const { snackError } = useSnackMessage();
 
     const methods = useForm<NamedProcessConfigFormData<TProcessType>>({
         defaultValues: emptyFormData,
@@ -67,8 +69,14 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
 
     useEffect(() => {
         setIsLoading(true);
-        fetchFormData().finally(() => setIsLoading(false));
-    }, [fetchFormData]);
+        fetchFormData()
+            .finally(() => setIsLoading(false))
+            .catch((error) => {
+                snackWithFallback(snackError, error, {
+                    headerId: `processConfig/fetchProcessConfigError`,
+                });
+            });
+    }, [fetchFormData, snackError]);
 
     const handleUpdateProcessConfig = useCallback(
         (namedFormData: NamedProcessConfigFormData<TProcessType>) => {
@@ -78,9 +86,13 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
                 namedFormData[FieldConstants.NAME],
                 namedFormData[FieldConstants.DESCRIPTION] ?? '',
                 getProcessConfigBackendFromFormData(processConfigData)
-            ).then(() => onClose());
+            )
+                .then(() => onClose())
+                .catch((error) => {
+                    snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
+                });
         },
-        [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose]
+        [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose, snackError]
     );
 
     return { methods, handleUpdateProcessConfig, isLoading };

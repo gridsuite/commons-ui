@@ -12,4 +12,8 @@ export const processConfigFr = {
     'process_config/providersParameters': 'Paramètres des simulateurs',
     'process_config/loadflow': 'Calcul de répartition',
     'process_config/securityAnalysis': 'Analyse de sécurité',
+    'processConfig/fetchProcessConfigError':
+        'Une erreur est survenue lors de la récupération de la configuration de chaîne',
+    'processConfig/updateProcessConfigError':
+        'Une erreur est survenue lors de la mise à jour de la configuration de chaîne',
 };
