@@ -8,7 +8,6 @@
 import { Grid2 as Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { LineSeparator } from '../common';
 import {
     CENTER_LABEL,
     COMPONENT_LIBRARY,
@@ -94,13 +93,9 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
             justifyContent="space-between"
         >
             {labelPosition(PARAM_DIAGONAL_LABEL, DIAGONAL_LABEL)}
-            <LineSeparator />
             {labelPosition(PARAM_CENTER_LABEL, CENTER_LABEL)}
-            <LineSeparator />
             {substationLineDropDown}
-            <LineSeparator />
             {componentLineDropDown}
-            <LineSeparator />
             {labelPosition(PARAM_STATE_ESTIMATION, CUSTOM_REAL_TIME_STATE_ESTIMATION)}
         </Grid>
     );

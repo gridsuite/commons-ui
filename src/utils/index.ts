@@ -8,6 +8,7 @@ export * from './algos';
 export * from './constants';
 export * from './conversionUtils';
 export * from './error';
+export * from './form-utils';
 export * from './functions';
 export * from './labelUtils';
 export * from './langs';
