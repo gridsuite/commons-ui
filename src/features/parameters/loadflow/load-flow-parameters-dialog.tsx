@@ -21,6 +21,7 @@ import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
 import { NameElementEditorForm } from '../common/name-element-editor';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function LoadFlowParametersEditionDialog({
     id,
@@ -51,9 +52,8 @@ export function LoadFlowParametersEditionDialog({
     const loadflowMethods = useLoadFlowParametersForm(parametersBackend, isDeveloperMode, id, name, description);
 
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = loadflowMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
@@ -68,7 +68,7 @@ export function LoadFlowParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
         >
             <LoadFlowProvider>
                 <Grid container sx={{ width: '100%' }}>
