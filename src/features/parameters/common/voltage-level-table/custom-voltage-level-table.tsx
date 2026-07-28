@@ -23,12 +23,10 @@ interface LimitReductionsTableProps {
     limits?: ILimitReductionsByVoltageLevel[];
 }
 
-const stickyFirstColSx = {
+const stickyFirstColumnSx = {
     position: 'sticky',
     left: 0,
-    zIndex: 3,
     backgroundColor: 'background.paper',
-    textAlign: 'center',
 };
 
 export function CustomVoltageLevelTable({
@@ -54,16 +52,25 @@ export function CustomVoltageLevelTable({
             <Table
                 stickyHeader
                 size="small"
-                sx={{ tableLayout: 'fixed', ...(tableMinWidth ? { minWidth: tableMinWidth } : {}) }}
+                sx={{
+                    tableLayout: 'fixed',
+                    ...(tableMinWidth ? { minWidth: tableMinWidth } : {}),
+                    '& th:first-of-type': {
+                        ...stickyFirstColumnSx,
+                        zIndex: 3,
+                        textAlign: 'center',
+                    },
+                    '& td:first-of-type': {
+                        ...stickyFirstColumnSx,
+                        zIndex: 1,
+                    },
+                }}
             >
                 <TableHead>
                     <TableRow>
-                        {columnsDefinition.map((column, index) => (
+                        {columnsDefinition.map((column) => (
                             <CustomTooltip title={column.tooltip}>
-                                <TableCell
-                                    key={column.dataKey}
-                                    sx={index === 0 ? stickyFirstColSx : { textAlign: 'center' }}
-                                >
+                                <TableCell key={column.dataKey} sx={{ textAlign: 'center' }}>
                                     {column.label}
                                 </TableCell>
                             </CustomTooltip>
