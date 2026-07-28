@@ -9,7 +9,7 @@ import type { UUID } from 'node:crypto';
 import { Grid2 as Grid, Stack } from '@mui/material';
 import { DescriptionField, UniqueNameInput } from '../../reactHookForm';
 import { ElementType, FieldConstants } from '../../../../utils';
-import { elementEditionDialogStyles } from './element-edition-dialog';
+import { elementEditionDialogStyles } from './name-element-editor-utils';
 
 export interface NameElementEditorFormProps {
     initialElementName: string;

@@ -6,6 +6,18 @@
  */
 import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../reactHookForm';
+import type { MuiStyles } from '../../../../utils';
+
+export const elementEditionDialogStyles = {
+    textField: {
+        minWidth: '250px',
+        width: '33%',
+    },
+    description: {
+        minWidth: '250px',
+        width: '50%',
+    },
+} as const satisfies MuiStyles;
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,

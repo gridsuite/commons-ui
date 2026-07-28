@@ -9,20 +9,9 @@ import { UUID } from 'node:crypto';
 import type { ReactNode } from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { ObjectSchema } from 'yup';
-import { ElementType, isDisabledValidationButton, type MuiStyles } from '../../../../utils';
+import { ElementType, isDisabledValidationButton } from '../../../../utils';
 import { CustomMuiDialog, CustomMuiDialogProps } from '../customMuiDialog/CustomMuiDialog';
 import { NameElementEditorForm } from './name-element-editor-form';
-
-export const elementEditionDialogStyles = {
-    textField: {
-        minWidth: '250px',
-        width: '33%',
-    },
-    description: {
-        minWidth: '250px',
-        width: '50%',
-    },
-} as const satisfies MuiStyles;
 
 type ElementEditionDialogProps<TFieldValues extends FieldValues> = Omit<
     CustomMuiDialogProps<TFieldValues>,
