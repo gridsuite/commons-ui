@@ -27,10 +27,9 @@ import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { InputWithPopupConfirmation } from '../../../ui/reactHookForm/selectInputs/InputWithPopupConfirmation';
 import { SelectInput } from '../../../ui/reactHookForm/selectInputs/SelectInput';
 import { CustomReactQueryBuilder } from '../../reactQueryBuilder/CustomReactQueryBuilder';
-import { unscrollableDialogStyles } from '../../../ui/dialogs';
+import { elementEditionDialogStyles, unscrollableDialogStyles } from '../../../ui/dialogs';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../../hooks/useFormatLabelWithUnit';
-import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../../utils';
 import { useCustomFormContext } from '../../../ui';
 
@@ -118,7 +117,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
                     onValueChange={resetOnTypeChange}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
-                    sx={filterStyles.textField}
+                    sx={elementEditionDialogStyles.textField}
                     data-testid="EquipmentTypeSelector"
                 />
             </Box>

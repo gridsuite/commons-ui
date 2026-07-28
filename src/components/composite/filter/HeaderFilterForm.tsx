@@ -9,19 +9,7 @@ import { Grid2 as Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../utils';
-import { DescriptionField, UniqueNameInput } from '../../ui';
-import type { MuiStyles } from '../../../utils/styles';
-
-export const filterStyles = {
-    textField: {
-        minWidth: '250px',
-        width: '33%',
-    },
-    description: {
-        minWidth: '250px',
-        width: '50%',
-    },
-} as const satisfies MuiStyles;
+import { DescriptionField, elementEditionDialogStyles, UniqueNameInput } from '../../ui';
 
 export const HeaderFilterSchema = {
     [FieldConstants.NAME]: yup.string().trim().required('nameEmpty'),
@@ -48,12 +36,12 @@ export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderF
                     elementType={ElementType.FILTER}
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
-                    sx={filterStyles.textField}
+                    sx={elementEditionDialogStyles.textField}
                     fullWidth={false}
                 />
             </Grid>
             <Grid size={12}>
-                <DescriptionField expandingTextSx={filterStyles.description} />
+                <DescriptionField expandingTextSx={elementEditionDialogStyles.description} />
             </Grid>
         </Grid>
     );

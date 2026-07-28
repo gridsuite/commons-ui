@@ -18,5 +18,3 @@ export function getNamedProcessConfigFormData<TProcessType extends ProcessType>(
         ...processConfig,
     } as NamedProcessConfigFormData<TProcessType>;
 }
-
-// function get modifications ?

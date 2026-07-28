@@ -10,12 +10,6 @@ import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } fro
 import type { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
-    ComputingType,
-    ContingencyListsInfosEnriched,
-    ElementType,
-    UseParametersBackendReturnProps,
-} from '../../../utils';
-import {
     CONTINGENCY_LISTS,
     CONTINGENCY_LISTS_INFOS,
     ILimitReductionsByVoltageLevel,
@@ -26,11 +20,18 @@ import {
     toFormValuesLimitReductions,
     useTabs,
 } from '../common';
-import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { getNameElementEditorEmptyFormData } from '../../../components';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { snackWithFallback } from '../../../utils/error';
-import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
+import {
+    ComputingType,
+    ContingencyListsInfosEnriched,
+    ElementType,
+    mapSecurityAnalysisParameters,
+    SAParametersEnriched,
+    snackWithFallback,
+    UseParametersBackendReturnProps,
+} from '../../../utils';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
 import { ACTIVATED, DESCRIPTION, ID, NAME } from '../common/parameter-table-field';
 import { TAB_FIELDS } from './security-analysis-parameters-utils';

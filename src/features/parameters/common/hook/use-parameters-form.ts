@@ -8,7 +8,7 @@ import { useEffect, useMemo } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { ObjectSchema } from 'yup';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../name-element-editor';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../../../../components';
 import { UseComputationParametersFormReturn } from '../utils';
 
 export type UseParametersFormProps<TParams> = {

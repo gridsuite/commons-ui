@@ -15,9 +15,8 @@ import {
     updateSecurityAnalysisParameters,
 } from '../../../services/security-analysis';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { CustomMuiDialog, NameElementEditorForm } from '../../../components';
 import { ComputingType, ElementType } from '../../../utils';
-import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function SecurityAnalysisParametersDialog({

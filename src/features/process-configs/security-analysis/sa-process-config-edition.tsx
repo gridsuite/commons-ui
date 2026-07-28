@@ -5,26 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Box } from '@mui/material';
-import { UUID } from 'node:crypto';
 import { FormattedMessage } from 'react-intl';
 import { ProcessConfigModificationsEdition } from '../common';
 import { FieldConstants, ElementType } from '../../../utils';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
-import { NameElementEditorForm } from '../../parameters/common/name-element-editor';
 
-interface SAProcessConfigEditionProps {
-    directory: UUID;
-    processConfigName: string;
-}
-
-export function SAProcessConfigEdition({ directory, processConfigName }: Readonly<SAProcessConfigEditionProps>) {
+export function SAProcessConfigEdition() {
     return (
         <>
-            <NameElementEditorForm
-                activeDirectory={directory}
-                elementType={ElementType.PROCESS_CONFIG}
-                initialElementName={processConfigName}
-            />
             <Box component="h3">
                 <FormattedMessage id="process_config/modifications" />
             </Box>

@@ -6,9 +6,8 @@
  */
 
 import { Grid2 as Grid, LinearProgress } from '@mui/material';
-import { CustomMuiDialog } from '../../../components/ui/dialogs';
+import { CustomMuiDialog, NameElementEditorForm } from '../../../components';
 import { ComputingType, ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
 import { useShortCircuitParametersForm } from './use-short-circuit-parameters-form';
 import { ShortCircuitParametersForm } from './short-circuit-parameters-form';
 import { ParametersEditionDialogProps } from '../common';

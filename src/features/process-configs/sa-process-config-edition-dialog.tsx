@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import { LinearProgress } from '@mui/material';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
     getSAProcessConfigBackendFromFormData,
@@ -14,10 +13,11 @@ import {
     namedSAProcessConfigFormSchema,
     SAProcessConfigEdition,
 } from './security-analysis';
-import { CustomMuiDialog } from '../../components';
+import { ElementEditionDialog } from '../../components';
 import { ProcessType } from './common';
-import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { NamedProcessConfigFormData, PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
 import { useProcessConfigEdition } from './use-process-config-edition';
+import { ElementType } from '../../utils';
 
 interface SAProcessConfigEditionDialogProps {
     open: boolean;
@@ -57,7 +57,7 @@ export function SAProcessConfigEditionDialog({
 
     const resolver = yupResolver<NamedSAProcessConfigFormData>(namedSAProcessConfigFormSchema);
 
-    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigEdition(
+    const { methods, handleUpdateProcessConfig, isLoading } = useProcessConfigEdition(
         name,
         description,
         processConfigId,
@@ -71,20 +71,19 @@ export function SAProcessConfigEditionDialog({
     );
 
     return (
-        <CustomMuiDialog
+        <ElementEditionDialog<NamedProcessConfigFormData<ProcessType.SECURITY_ANALYSIS>>
             titleId="process_config/editSAProcessConfigTitle"
-            formContext={{
-                ...methods,
-                validationSchema: namedSAProcessConfigFormSchema,
-                removeOptional: true,
-            }}
+            formMethods={methods}
+            formSchema={namedSAProcessConfigFormSchema}
             open={open}
             onClose={onClose}
             onSave={handleUpdateProcessConfig}
-            disabledSave={disabledSave}
+            directory={directory}
+            elementName={name}
+            elementType={ElementType.PROCESS_CONFIG}
+            isLoading={isLoading}
         >
-            {!isLoading && <SAProcessConfigEdition directory={directory} processConfigName={name} />}
-            {isLoading && <LinearProgress />}
-        </CustomMuiDialog>
+            <SAProcessConfigEdition />
+        </ElementEditionDialog>
     );
 }

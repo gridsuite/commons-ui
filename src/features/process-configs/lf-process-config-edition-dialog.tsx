@@ -6,8 +6,6 @@
  */
 import { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { LinearProgress } from '@mui/material';
-import { CustomMuiDialog } from '../../components';
 import {
     getLFProcessConfigBackendFromFormData,
     getLFProcessConfigFormData,
@@ -16,8 +14,10 @@ import {
     LFProcessConfigEdition,
 } from './loadflow';
 import { ProcessType } from './common';
-import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { NamedProcessConfigFormData, PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
 import { useProcessConfigEdition } from './use-process-config-edition';
+import { ElementEditionDialog } from '../../components';
+import { ElementType } from '../../utils';
 
 interface UpdateLFProcessConfigDialogProps {
     open: boolean;
@@ -50,11 +50,11 @@ export function LFProcessConfigEditionDialog({
         description: description ?? '',
         modifications: [],
         loadflowParameters: [],
-    }; // moyen d'avoir un truc par défaut défini dans le columnDefinition ou équivalent ?
+    };
 
     const resolver = yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema);
 
-    const { methods, handleUpdateProcessConfig, disabledSave, isLoading } = useProcessConfigEdition(
+    const { methods, handleUpdateProcessConfig, isLoading } = useProcessConfigEdition(
         name,
         description,
         processConfigId,
@@ -68,20 +68,19 @@ export function LFProcessConfigEditionDialog({
     );
 
     return (
-        <CustomMuiDialog
+        <ElementEditionDialog<NamedProcessConfigFormData<ProcessType.LOADFLOW>>
             titleId="process_config/editLFProcessConfigTitle"
-            formContext={{
-                ...methods,
-                validationSchema: namedLFProcessConfigFormSchema,
-                removeOptional: true,
-            }}
+            formMethods={methods}
+            formSchema={namedLFProcessConfigFormSchema}
             open={open}
             onClose={onClose}
             onSave={handleUpdateProcessConfig}
-            disabledSave={disabledSave}
+            directory={directory}
+            elementName={name}
+            elementType={ElementType.PROCESS_CONFIG}
+            isLoading={isLoading}
         >
-            {!isLoading && <LFProcessConfigEdition directory={directory} processConfigName={name} />}
-            {isLoading && <LinearProgress />}
-        </CustomMuiDialog>
+            <LFProcessConfigEdition />
+        </ElementEditionDialog>
     );
 }

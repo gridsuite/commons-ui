@@ -25,11 +25,9 @@ import {
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
 } from './constants';
-import { DistributionType, SensitivityType, YUP_REQUIRED } from '../../../utils';
+import { DistributionType, ID, SensitivityType, YUP_REQUIRED } from '../../../utils';
 import { CONTINGENCIES, PROVIDER } from '../common';
-import { getNameElementEditorSchema } from '../common/name-element-editor';
-import { NAME } from '../../../components/ui';
-import { ID } from '../../../utils/constants/filterConstant';
+import { getNameElementEditorSchema, NAME } from '../../../components';
 import { ACTIVATED } from '../common/parameter-table-field';
 
 const getMonitoredBranchesSchema = () => {

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { DESCRIPTION, NAME } from '../../../../components/ui';
+import { DESCRIPTION, NAME } from '../../reactHookForm';
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,

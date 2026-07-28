@@ -5,5 +5,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
+export * from './element-edition-dialog';
 export * from './name-element-editor-form';
 export * from './name-element-editor-utils';

@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
-import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     InitialVoltage,
     PredefinedParameters,
@@ -26,8 +25,14 @@ import {
 } from './constants';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    ComputingType,
+    ElementType,
+    snackWithFallback,
+    SpecificParameterInfos,
+    UseParametersBackendReturnProps,
+} from '../../../utils';
+import { DESCRIPTION, getNameElementEditorEmptyFormData, getNameElementEditorSchema, NAME } from '../../../components';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, useTabs, VERSION_PARAMETER } from '../common';
 import {
@@ -39,7 +44,6 @@ import {
     ShortCircuitParametersTabValues,
     TAB_FIELDS,
 } from './short-circuit-parameters-utils';
-import { snackWithFallback } from '../../../utils/error';
 
 export interface UseShortCircuitParametersFormReturn {
     formMethods: UseFormReturn;

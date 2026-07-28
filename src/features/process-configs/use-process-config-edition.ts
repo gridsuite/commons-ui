@@ -20,7 +20,6 @@ import { getNamedProcessConfigFormData } from './process-config-edition.utils';
 export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
     methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
     handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormData<TProcessType>>;
-    disabledSave: boolean;
     isLoading: boolean;
 }
 
@@ -52,10 +51,7 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
         resolver,
     });
 
-    const {
-        reset,
-        formState: { errors },
-    } = methods;
+    const { reset } = methods;
 
     const fetchFormData = useCallback(async () => {
         const persitedProcessConfig = await fetchProcessConfig(processConfigUuid);
@@ -83,7 +79,5 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
         [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose]
     );
 
-    const disabledSave = Boolean(errors.name || errors.root?.isValidating);
-
-    return { methods, handleUpdateProcessConfig, disabledSave, isLoading };
+    return { methods, handleUpdateProcessConfig, isLoading };
 };

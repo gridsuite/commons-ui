@@ -6,13 +6,14 @@
  */
 import * as yup from 'yup';
 import {
+    getContingencyListsInfosFormSchema,
     getLimitReductionsFormSchema,
     ILimitReductionsByVoltageLevel,
     PROVIDER,
+    toFormValuesContingencyListsInfos,
     toFormValuesLimitReductions,
 } from '../common';
-import { getNameElementEditorSchema } from '../common/name-element-editor';
-import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
+import { getNameElementEditorSchema } from '../../../components';
 import { SAParametersEnriched } from '../../../utils';
 import {
     FLOW_PROPORTIONAL_THRESHOLD,

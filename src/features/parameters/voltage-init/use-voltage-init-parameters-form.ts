@@ -10,7 +10,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
-import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     DEFAULT_GENERAL_APPLY_MODIFICATIONS,
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
@@ -35,7 +34,7 @@ import {
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType, isBlankOrEmpty, YUP_REQUIRED } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { DESCRIPTION, getNameElementEditorEmptyFormData, getNameElementEditorSchema, NAME } from '../../../components';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     fromStudyVoltageInitParamsDataToFormValues,
