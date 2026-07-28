@@ -18,6 +18,7 @@ import { SecurityAnalysisParametersForm } from './security-analysis-parameters-f
 import { NameElementEditorForm } from '../common/name-element-editor';
 import { ComputingType, ElementType } from '../../../utils';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function SecurityAnalysisParametersDialog({
     id,
@@ -45,9 +46,9 @@ export function SecurityAnalysisParametersDialog({
 
     const securityAnalysisMethods = useSecurityAnalysisParametersForm(parametersBackend, id, name, description);
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = securityAnalysisMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
+
     return (
         <CustomMuiDialog
             open={open}
@@ -61,7 +62,7 @@ export function SecurityAnalysisParametersDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
             PaperProps={{
                 sx: {
                     height: '90vh', // we want the dialog height to be fixed even when switching tabs
