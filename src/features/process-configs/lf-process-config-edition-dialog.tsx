@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
     getLFProcessConfigBackendFromFormData,
     getLFProcessConfigFormData,
-    NamedLFProcessConfigFormData,
     namedLFProcessConfigFormSchema,
     LFProcessConfigEdition,
 } from './loadflow';
@@ -45,14 +44,14 @@ export function LFProcessConfigEditionDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<UpdateLFProcessConfigDialogProps>) {
-    const emptyFormData: NamedLFProcessConfigFormData = {
+    const emptyFormData: NamedProcessConfigFormData<ProcessType.LOADFLOW> = {
         name,
         description: description ?? '',
         modifications: [],
         loadflowParameters: [],
     };
 
-    const resolver = yupResolver<NamedLFProcessConfigFormData>(namedLFProcessConfigFormSchema);
+    const resolver = yupResolver<NamedProcessConfigFormData<ProcessType.LOADFLOW>>(namedLFProcessConfigFormSchema);
 
     const { methods, handleUpdateProcessConfig, isLoading } = useProcessConfigEdition(
         name,

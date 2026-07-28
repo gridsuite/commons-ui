@@ -6,6 +6,7 @@
  */
 import { ProcessType } from './common';
 import { NamedProcessConfigFormData, ProcessConfigFormData } from './process-config.type';
+import { FieldConstants } from '../../utils';
 
 export function getNamedProcessConfigFormData<TProcessType extends ProcessType>(
     processConfig: ProcessConfigFormData<TProcessType>,
@@ -17,4 +18,15 @@ export function getNamedProcessConfigFormData<TProcessType extends ProcessType>(
         description: description ?? undefined,
         ...processConfig,
     } as NamedProcessConfigFormData<TProcessType>;
+}
+
+export function getProcessConfigFormDataFromNamedFormData<TProcessType extends ProcessType>(
+    namedFormData: NamedProcessConfigFormData<TProcessType>
+): ProcessConfigFormData<TProcessType> {
+    const {
+        [FieldConstants.NAME]: name,
+        [FieldConstants.DESCRIPTION]: description,
+        ...processConfigFormData
+    } = namedFormData;
+    return processConfigFormData as unknown as ProcessConfigFormData<TProcessType>;
 }

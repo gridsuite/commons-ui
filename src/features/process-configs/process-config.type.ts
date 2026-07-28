@@ -5,13 +5,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import {
-    NamedSAProcessConfigFormData,
-    SecurityAnalysisProcessConfigBackend,
-    SAProcessConfigFormData,
-} from './security-analysis';
-import { LFProcessConfigFormData, LoadflowProcessConfigBackend, NamedLFProcessConfigFormData } from './loadflow';
-import { ProcessType } from './common';
+import { SecurityAnalysisProcessConfigBackend, SAProcessConfigFormData } from './security-analysis';
+import { LFProcessConfigFormData, LoadflowProcessConfigBackend } from './loadflow';
+import { NamedFormData, ProcessType } from './common';
 
 // Backend types
 type ProcessConfigBackendByProcessType = {
@@ -30,10 +26,5 @@ type ProcessConfigFormDataByProcessType = {
     [ProcessType.LOADFLOW]: LFProcessConfigFormData;
 };
 export type ProcessConfigFormData<TProcessType extends ProcessType> = ProcessConfigFormDataByProcessType[TProcessType];
-
-type NamedProcessConfigFormDataByProcessType = {
-    [ProcessType.SECURITY_ANALYSIS]: NamedSAProcessConfigFormData;
-    [ProcessType.LOADFLOW]: NamedLFProcessConfigFormData;
-};
-export type NamedProcessConfigFormData<TProcessType extends ProcessType> =
-    NamedProcessConfigFormDataByProcessType[TProcessType];
+export type NamedProcessConfigFormData<TProcessType extends ProcessType> = NamedFormData &
+    ProcessConfigFormData<TProcessType>;

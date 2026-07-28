@@ -12,6 +12,10 @@ export const namedFormShape = {
     [FieldConstants.DESCRIPTION]: yup.string(),
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const namedFormData = yup.object().shape({ ...namedFormShape });
+export type NamedFormData = yup.InferType<typeof namedFormData>;
+
 export const processConfigModificationsFormShape = {
     [FieldConstants.MODIFICATIONS]: yup
         .array()

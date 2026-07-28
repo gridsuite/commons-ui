@@ -35,7 +35,6 @@ export const namedSAProcessConfigFormSchema = yup.object().shape({
     ...namedFormShape,
     ...saProcessConfigSpecificFormShape,
 });
-export type NamedSAProcessConfigFormData = yup.InferType<typeof namedSAProcessConfigFormSchema>;
 
 export async function getSAProcessConfigFormData(
     processConfig: SecurityAnalysisProcessConfigBackend

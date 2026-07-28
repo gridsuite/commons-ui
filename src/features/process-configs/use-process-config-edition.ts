@@ -15,7 +15,10 @@ import {
     ProcessConfigBackend,
     ProcessConfigFormData,
 } from './process-config.type';
-import { getNamedProcessConfigFormData } from './process-config-edition.utils';
+import {
+    getNamedProcessConfigFormData,
+    getProcessConfigFormDataFromNamedFormData,
+} from './process-config-edition.utils';
 
 export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
     methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
@@ -34,7 +37,7 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
         processConfig: ProcessConfigBackend<TProcessType>
     ) => Promise<ProcessConfigFormData<TProcessType>>,
     getProcessConfigBackendFromFormData: (
-        formData: NamedProcessConfigFormData<TProcessType>
+        formData: ProcessConfigFormData<TProcessType>
     ) => ProcessConfigBackend<TProcessType>,
     updateProcessConfig: (
         processConfigUuid: UUID,
@@ -68,12 +71,13 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
     }, [fetchFormData]);
 
     const handleUpdateProcessConfig = useCallback(
-        (formData: NamedProcessConfigFormData<TProcessType>) => {
+        (namedFormData: NamedProcessConfigFormData<TProcessType>) => {
+            const processConfigData = getProcessConfigFormDataFromNamedFormData(namedFormData);
             updateProcessConfig(
                 processConfigUuid,
-                formData[FieldConstants.NAME],
-                formData[FieldConstants.DESCRIPTION] ?? '',
-                getProcessConfigBackendFromFormData(formData)
+                namedFormData[FieldConstants.NAME],
+                namedFormData[FieldConstants.DESCRIPTION] ?? '',
+                getProcessConfigBackendFromFormData(processConfigData)
             ).then(() => onClose());
         },
         [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose]

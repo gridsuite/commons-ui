@@ -9,7 +9,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import {
     getSAProcessConfigBackendFromFormData,
     getSAProcessConfigFormData,
-    NamedSAProcessConfigFormData,
     namedSAProcessConfigFormSchema,
     SAProcessConfigEdition,
 } from './security-analysis';
@@ -47,7 +46,7 @@ export function SAProcessConfigEditionDialog({
     fetchProcessConfig,
     updateProcessConfig,
 }: Readonly<SAProcessConfigEditionDialogProps>) {
-    const emptyFormData: NamedSAProcessConfigFormData = {
+    const emptyFormData: NamedProcessConfigFormData<ProcessType.SECURITY_ANALYSIS> = {
         name,
         description: description ?? '',
         modifications: [],
@@ -55,7 +54,8 @@ export function SAProcessConfigEditionDialog({
         securityAnalysisParameters: [],
     };
 
-    const resolver = yupResolver<NamedSAProcessConfigFormData>(namedSAProcessConfigFormSchema);
+    const resolver =
+        yupResolver<NamedProcessConfigFormData<ProcessType.SECURITY_ANALYSIS>>(namedSAProcessConfigFormSchema);
 
     const { methods, handleUpdateProcessConfig, isLoading } = useProcessConfigEdition(
         name,

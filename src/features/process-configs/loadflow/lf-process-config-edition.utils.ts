@@ -29,7 +29,6 @@ export const namedLFProcessConfigFormSchema = yup.object().shape({
     ...namedFormShape,
     ...lfProcessConfigFormShape,
 });
-export type NamedLFProcessConfigFormData = yup.InferType<typeof namedLFProcessConfigFormSchema>;
 
 export async function getLFProcessConfigFormData(
     processConfig: LoadflowProcessConfigBackend
