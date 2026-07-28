@@ -63,7 +63,7 @@ export function ModificationRow({
                     <TableRow
                         ref={provided.innerRef}
                         {...draggablePropsWithoutStyle}
-                        data-row-id={row.original.uuid}
+                        data-row-id={row.id}
                         sx={mergeSx(
                             networkModificationTableStyles.tableRow,
                             createRowSx(

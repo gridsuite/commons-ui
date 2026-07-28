@@ -273,9 +273,44 @@ export function moveSubModificationInTree(
     return result;
 }
 
-function resolveUuidFromRowId(rowId: string): string {
+// Table row ids are now position-dependent (`${parent.id}.${uuid}`, see getRowId in
+// NetworkModificationsTable) so that duplicate uuids coming from two different unfolded
+// shared references don't collide. This extracts the real uuid back out of a row id.
+export function resolveUuidFromRowId(rowId: string): string {
     const segments = rowId.split('.');
     return segments[segments.length - 1];
+}
+
+/**
+ * Table row ids are position-dependent for nested rows (`${parentRowId}.${uuid}`, see getRowId
+ * in NetworkModificationsTable). When a modification is moved to a different parent composite,
+ * its row id (and its already-loaded descendants' row ids) changes, even though the underlying
+ * uuid doesn't. Without remapping, TanStack treats the moved row as brand new and any per-row
+ * UI state keyed by the old id (expanded, rowSelection) is silently lost.
+ *
+ * This renames every key equal to `oldRowIdPrefix`, or nested under it (`oldRowIdPrefix.*`), to
+ * the equivalent key under `newRowIdPrefix`, preserving the associated value. Keys unrelated to
+ * the moved subtree are left untouched. Returns the same reference when nothing changed.
+ */
+export function remapRowIdPrefix<T>(
+    record: Record<string, T>,
+    oldRowIdPrefix: string,
+    newRowIdPrefix: string
+): Record<string, T> {
+    if (oldRowIdPrefix === newRowIdPrefix) {
+        return record;
+    }
+    let changed = false;
+    const next: Record<string, T> = {};
+    Object.entries(record).forEach(([key, value]) => {
+        if (key === oldRowIdPrefix || key.startsWith(`${oldRowIdPrefix}.`)) {
+            next[newRowIdPrefix + key.slice(oldRowIdPrefix.length)] = value;
+            changed = true;
+        } else {
+            next[key] = value;
+        }
+    });
+    return changed ? next : record;
 }
 
 export async function fetchSubModificationsForExpandedRows(

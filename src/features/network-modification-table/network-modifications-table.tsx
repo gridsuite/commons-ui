@@ -44,6 +44,7 @@ import {
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
     removeUuidsFromTree,
+    resolveUuidFromRowId,
 } from './utils';
 import { ModificationRow } from './row';
 
@@ -296,13 +297,18 @@ export function NetworkModificationsTable({
         };
         collectDescendants(composedModificationsRef.current);
 
-        // unexpand all uuidsToReset
+        // unexpand all uuidsToReset — row ids are now path-based (parent.parent.uuid),
+        // so match on the last segment of each expanded key instead of the raw uuid.
         setExpanded((prev) => {
             if (prev === true) {
                 return prev;
             }
             const next = { ...prev };
-            uuidsToReset.forEach((uuid) => delete next[uuid]);
+            Object.keys(next).forEach((rowId) => {
+                if (uuidsToReset.has(resolveUuidFromRowId(rowId))) {
+                    delete next[rowId];
+                }
+            });
             return next;
         });
     }, [modificationUuidsToReset, table]);

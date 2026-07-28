@@ -23,6 +23,7 @@ import {
     isTargetChildOfReference,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
+    remapRowIdPrefix,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
 import { ModificationContainerType, moveModification } from '../../services';
@@ -117,6 +118,9 @@ export const useModificationsDragAndDrop = ({
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
             // Nothing can ever be dropped into a referenced (shared) composite, regardless
             // of what is being dragged. This check comes first and short-circuits the rest.
+            if (isTargetChildOfReference(targetRow)) {
+                return true;
+            }
 
             if (isCompositeModification(sourceRow.original)) {
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
@@ -128,9 +132,7 @@ export const useModificationsDragAndDrop = ({
                     )
                 );
             }
-            if (isTargetChildOfReference(targetRow)) {
-                return true;
-            }
+
             // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
             if (isSharedModification(sourceRow.original)) return true;
 
@@ -150,7 +152,7 @@ export const useModificationsDragAndDrop = ({
 
             const sourceRow = rows[source.index];
             const targetRow = rows[destination.index];
-            const el = containerRef.current?.querySelector<HTMLElement>(`[data-row-id="${targetRow?.original.uuid}"]`);
+            const el = containerRef.current?.querySelector<HTMLElement>(`[data-row-id="${targetRow?.id}"]`);
 
             if (!el) {
                 return;
@@ -213,6 +215,25 @@ export const useModificationsDragAndDrop = ({
                 setComposedModifications((prev) =>
                     moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
                 );
+
+                // The moved row's id is `${parentRowId}.${uuid}` (or just the uuid at root level),
+                // so changing parent changes its id even though its uuid is unchanged. Remap any
+                // expanded/selected state from the old id to the new one — for the moved row itself
+                // and every already-loaded descendant nested under it — so the UI keeps the same
+                // deployed/selected look across the move, as it did before ids became path-based.
+                // eslint-disable-next-line no-nested-ternary
+                const targetParentRowId: string | null = droppingIntoExpandedComposite
+                    ? targetRow.id
+                    : targetRow.depth > 0
+                      ? (targetRow.getParentRow()?.id ?? null)
+                      : null;
+                const newRowId = targetParentRowId ? `${targetParentRowId}.${movingUuid}` : movingUuid;
+                const oldRowId = sourceRow.id;
+
+                if (oldRowId !== newRowId) {
+                    table.setExpanded((prev) => (prev === true ? prev : remapRowIdPrefix(prev, oldRowId, newRowId)));
+                    table.setRowSelection((prev) => remapRowIdPrefix(prev, oldRowId, newRowId));
+                }
             } else {
                 const oldPosition = composedModifications.findIndex((m) => m.uuid === sourceRow.original.uuid);
                 const newPosition = composedModifications.findIndex((m) => m.uuid === targetRow.original.uuid);
@@ -257,6 +278,7 @@ export const useModificationsDragAndDrop = ({
             setComposedModifications,
             studyUuid,
             snackError,
+            table,
         ]
     );
 
