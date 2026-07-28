@@ -45,8 +45,7 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
         name: string,
         description: string,
         processConfig: ProcessConfigBackend<TProcessType>
-    ) => Promise<void>,
-    onClose: () => void
+    ) => Promise<Response>
 ): UseProcessConfigEditionReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
@@ -86,13 +85,12 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
                 namedFormData[FieldConstants.NAME],
                 namedFormData[FieldConstants.DESCRIPTION] ?? '',
                 getProcessConfigBackendFromFormData(processConfigData)
-            )
-                .then(() => onClose())
-                .catch((error) => {
-                    snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
-                });
+            ).catch((error) => {
+                console.error(error);
+                snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
+            });
         },
-        [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, onClose, snackError]
+        [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, snackError]
     );
 
     return { methods, handleUpdateProcessConfig, isLoading };

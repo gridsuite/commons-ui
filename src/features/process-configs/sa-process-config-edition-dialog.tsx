@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
     getSAProcessConfigBackendFromFormData,
@@ -14,27 +13,10 @@ import {
 } from './security-analysis';
 import { ElementEditionDialog } from '../../components';
 import { ProcessType } from './common';
-import { NamedProcessConfigFormData, PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { NamedProcessConfigFormData } from './process-config.type';
 import { useProcessConfigEdition } from './use-process-config-edition';
 import { ElementType } from '../../utils';
-
-interface SAProcessConfigEditionDialogProps {
-    open: boolean;
-    onClose: () => void;
-    processConfigId: UUID;
-    name: string;
-    description: string | null;
-    directory: UUID;
-    fetchProcessConfig: (
-        processConfigUuid: UUID
-    ) => Promise<PersistedProcessConfigBackend<ProcessType.SECURITY_ANALYSIS>>;
-    updateProcessConfig: (
-        processConfigUuid: UUID,
-        name: string,
-        description: string,
-        processConfig: ProcessConfigBackend<ProcessType.SECURITY_ANALYSIS>
-    ) => Promise<void>;
-}
+import { ProcessConfigEditionDialogProps } from './process-config-edition.utils';
 
 export function SAProcessConfigEditionDialog({
     onClose,
@@ -45,7 +27,7 @@ export function SAProcessConfigEditionDialog({
     directory,
     fetchProcessConfig,
     updateProcessConfig,
-}: Readonly<SAProcessConfigEditionDialogProps>) {
+}: Readonly<ProcessConfigEditionDialogProps<ProcessType.SECURITY_ANALYSIS>>) {
     const emptyFormData: NamedProcessConfigFormData<ProcessType.SECURITY_ANALYSIS> = {
         name,
         description: description ?? '',
@@ -66,8 +48,7 @@ export function SAProcessConfigEditionDialog({
         fetchProcessConfig,
         getSAProcessConfigFormData,
         getSAProcessConfigBackendFromFormData,
-        updateProcessConfig,
-        onClose
+        updateProcessConfig
     );
 
     return (

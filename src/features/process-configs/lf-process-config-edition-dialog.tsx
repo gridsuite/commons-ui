@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { UUID } from 'node:crypto';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
     getLFProcessConfigBackendFromFormData,
@@ -13,26 +12,11 @@ import {
     LFProcessConfigEdition,
 } from './loadflow';
 import { ProcessType } from './common';
-import { NamedProcessConfigFormData, PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
+import { NamedProcessConfigFormData } from './process-config.type';
 import { useProcessConfigEdition } from './use-process-config-edition';
 import { ElementEditionDialog } from '../../components';
 import { ElementType } from '../../utils';
-
-interface UpdateLFProcessConfigDialogProps {
-    open: boolean;
-    onClose: () => void;
-    processConfigId: UUID;
-    name: string;
-    description: string | null;
-    directory: UUID;
-    fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<ProcessType.LOADFLOW>>;
-    updateProcessConfig: (
-        processConfigUuid: UUID,
-        name: string,
-        description: string,
-        processConfig: ProcessConfigBackend<ProcessType.LOADFLOW>
-    ) => Promise<void>;
-}
+import { ProcessConfigEditionDialogProps } from './process-config-edition.utils';
 
 export function LFProcessConfigEditionDialog({
     onClose,
@@ -43,7 +27,7 @@ export function LFProcessConfigEditionDialog({
     directory,
     fetchProcessConfig,
     updateProcessConfig,
-}: Readonly<UpdateLFProcessConfigDialogProps>) {
+}: Readonly<ProcessConfigEditionDialogProps<ProcessType.LOADFLOW>>) {
     const emptyFormData: NamedProcessConfigFormData<ProcessType.LOADFLOW> = {
         name,
         description: description ?? '',
@@ -62,8 +46,7 @@ export function LFProcessConfigEditionDialog({
         fetchProcessConfig,
         getLFProcessConfigFormData,
         getLFProcessConfigBackendFromFormData,
-        updateProcessConfig,
-        onClose
+        updateProcessConfig
     );
 
     return (
