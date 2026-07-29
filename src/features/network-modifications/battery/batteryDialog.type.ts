@@ -21,10 +21,16 @@ export interface BatteryFormInfos {
     minP: number;
     targetP: number;
     targetQ: number;
+    targetV: number;
+    voltageRegulatorOn: boolean;
     connectablePosition: ConnectablePositionFormInfos;
     minMaxReactiveLimits: MinMaxReactiveLimitsFormInfos;
     activePowerControl: ActivePowerControlInfos;
     batteryShortCircuit: ShortCircuitInfos;
+    regulatingTerminalId: string;
+    regulatingTerminalVlId: string;
+    regulatingTerminalConnectableId: string;
+    regulatingTerminalConnectableType: string;
     reactiveCapabilityCurvePoints: ReactiveCapabilityCurvePoints[];
     voltageLevelId: string;
     busOrBusbarSectionId: string;
