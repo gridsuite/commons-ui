@@ -19,11 +19,6 @@ function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, st
     return tuple[1] !== undefined;
 }
 
-function appendTokenToUrl(url: string, token: string): string {
-    const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}access_token=${encodeURIComponent(token)}`;
-}
-
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
     const {
@@ -54,9 +49,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
             .map(([urlKey, url]) => {
-                // URL lambda: called by ReconnectingWebSocket on each (re)connect, so reconnections always uses the
-                // current token without putting the token in the effect deps (which would recreate the WS on every silent renew).
-                const rws = new ReconnectingWebSocket(() => appendTokenToUrl(url, getUserToken() ?? ''), [], {
+                const rws = new ReconnectingWebSocket(url, [], {
                     // this option set the minimum duration being connected before reset the retry count to 0
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });
@@ -71,6 +64,11 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                 };
 
                 rws.onopen = () => {
+                    // The gateway does not accept a token in the URL/query params for this connection: instead, it expects
+                    // the very first message sent by the client to be the authentication token. We send it here, on every
+                    // (re)connect, so that reconnections always use the current token without putting the token in the
+                    // effect deps (which would recreate the WS on every silent renew).
+                    rws.send(getUserToken() ?? '');
                     console.info(`${urlKey} Notification Websocket connected`);
                     broadcastOnReopen(urlKey)();
                 };
