@@ -23,6 +23,7 @@ import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 import { snackWithFallback } from '../../../../utils/error';
+import { isDisabledValidationButton } from '../../../../utils/form-utils';
 
 const formSchema = yup
     .object()
@@ -59,9 +60,6 @@ export function ExpertFilterEditionDialog({
         reset,
         formState: { errors },
     } = formMethods;
-
-    const nameError = errors[FieldConstants.NAME];
-    const isValidating = errors.root?.isValidating;
 
     // Fetch the filter data from back-end if necessary and fill the form with it
     useEffect(() => {
@@ -122,7 +120,7 @@ export function ExpertFilterEditionDialog({
                 isDeveloperMode,
             }}
             titleId={titleId}
-            disabledSave={!!nameError || !!isValidating}
+            disabledSave={isDisabledValidationButton(errors)}
             isDataFetching={dataFetchStatus === FetchStatus.FETCHING}
             unscrollableFullHeight
         >

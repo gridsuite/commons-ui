@@ -26,6 +26,7 @@ import { EXPERT_FILTER_QUERY } from './expert/expertFilterConstants';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './explicitNaming/ExplicitNamingFilterConstants';
 import { DESCRIPTION_LIMIT_ERROR, GsLang, NAME_EMPTY } from '../../../utils';
 import { snackWithFallback } from '../../../utils/error';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 const emptyFormData = {
     [FieldConstants.NAME]: '',
@@ -83,9 +84,6 @@ export function FilterCreationDialog({
         formState: { errors },
     } = formMethods;
 
-    const nameError = errors[FieldConstants.NAME];
-    const isValidating = errors.root?.isValidating;
-
     const onSubmit = useCallback(
         (filterForm: FieldValues) => {
             if (filterType?.id === FilterType.EXPLICIT_NAMING.id) {
@@ -142,7 +140,7 @@ export function FilterCreationDialog({
                 isDeveloperMode,
             }}
             titleId={titleId}
-            disabledSave={!!nameError || !!isValidating}
+            disabledSave={isDisabledValidationButton(errors)}
             unscrollableFullHeight
         >
             <FilterForm
