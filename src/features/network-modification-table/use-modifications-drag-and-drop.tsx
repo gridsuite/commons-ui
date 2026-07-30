@@ -19,7 +19,7 @@ import {
 import {
     findModificationInTree,
     isCompositeModification,
-    isSharedModification,
+    isReferenceModification,
     isTargetChildOfReference,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
@@ -134,7 +134,7 @@ export const useModificationsDragAndDrop = ({
             }
 
             // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
-            if (isSharedModification(sourceRow.original)) return true;
+            if (isReferenceModification(sourceRow.original)) return true;
 
             return false;
         },

@@ -84,7 +84,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const { snackError } = useSnackMessage();
     const modificationUuid = data.uuid;
 
-    const isSharedModification = data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
+    const isReferenceModificationOrInsideOne =
+        data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
 
     const isModificationActivated = useMemo(() => {
         if (rootNetwork.isCreating) {
@@ -151,7 +152,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
             isActivated={isModificationActivated}
-            isDisabled={isLoading || isDisabled || isSharedModification}
+            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne}
             onClick={handleModificationActivationByRootNetwork}
         />
     );

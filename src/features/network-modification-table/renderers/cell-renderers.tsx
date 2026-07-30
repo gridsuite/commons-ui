@@ -19,7 +19,7 @@ import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
 import { ComposedModificationMetadata } from '../../../utils';
-import { isSharedModification } from '../utils';
+import { isReferenceModification } from '../utils';
 import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
@@ -80,7 +80,7 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
     // A reference to a shared-modification row shows a "copy link" action
-    if (isSharedModification(row.original)) {
+    if (isReferenceModification(row.original)) {
         return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
     }
     return null;

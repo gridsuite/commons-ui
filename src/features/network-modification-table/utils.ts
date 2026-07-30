@@ -29,7 +29,7 @@ export function isCompositeModification(modification: ComposedModificationMetada
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
-export function isSharedModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
@@ -350,7 +350,7 @@ export async function fetchSubModificationsForExpandedRows(
 
     const referenceUuidsToFetch = uuidsToCheck.filter((uuid) => {
         const mod = findModificationInTree(uuid, mods);
-        return isSharedModification(mod) && (force || mod?.subModifications.length === 0);
+        return isReferenceModification(mod) && (force || mod?.subModifications.length === 0);
     });
 
     await Promise.all(
