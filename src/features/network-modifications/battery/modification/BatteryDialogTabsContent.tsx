@@ -6,7 +6,7 @@
  */
 
 import { Box, Grid2 as Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
@@ -21,7 +21,7 @@ import {
     ShortCircuitForm,
     VoltageRegulationForm,
 } from '../../common';
-import { FloatInput, SwitchInput } from '../../../../components';
+import { CheckboxNullableInput, FloatInput, SwitchInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ActivePowerAdornment, EquipmentType, Identifiable, ReactivePowerAdornment } from '../../../../utils';
 
@@ -41,9 +41,24 @@ export function BatteryDialogTabsContent({
     fetchBusesOrBusbarSections,
     fetchVoltageLevelEquipments,
 }: Readonly<BatteryDialogTabsContentProps>) {
+    const intl = useIntl();
+    const previousRegulation = () => {
+        if (batteryToModify?.voltageRegulatorOn) {
+            return intl.formatMessage({ id: 'On' });
+        }
+        if (batteryToModify?.voltageRegulatorOn === false) {
+            return intl.formatMessage({ id: 'Off' });
+        }
+        return null;
+    };
+
     const voltageRegulationField = (
         <Box>
-            <SwitchInput name={FieldConstants.VOLTAGE_REGULATION} label="VoltageRegulationText" />
+            <CheckboxNullableInput
+                name={FieldConstants.VOLTAGE_REGULATION}
+                label="VoltageRegulationText"
+                previousValue={previousRegulation() ?? undefined}
+            />
         </Box>
     );
 
