@@ -21,7 +21,7 @@ import {
     ShortCircuitForm,
     VoltageRegulationForm,
 } from '../../common';
-import { CheckboxNullableInput, FloatInput, SwitchInput } from '../../../../components';
+import { CheckboxNullableInput, FloatInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { ActivePowerAdornment, EquipmentType, Identifiable, ReactivePowerAdornment } from '../../../../utils';
 
