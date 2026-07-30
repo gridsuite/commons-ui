@@ -4,37 +4,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ModificationType } from '../../../../utils';
-import { Property } from '../../common/properties/properties.type';
-import { OperationalLimitsGroupFormSchema } from '../../common/currentLimits/operationalLimitsGroups/operationalLimitsGroups.types';
-import { LineSegmentInfos } from '../common/line.types';
 
-export interface LineCreationDto {
-    type: ModificationType;
-    uuid?: string | null;
-    equipmentId: string;
-    equipmentName: string | null;
-    r: number | null;
-    x: number | null;
+import { LineSegmentInfos } from '../common/line.types';
+import { BranchCreationDto } from '../../common/branch/branchCreation.types';
+
+// cf LineCreationInfos back DTO class
+export interface LineCreationDto extends BranchCreationDto {
     g1: number | null;
     b1: number | null;
     g2: number | null;
     b2: number | null;
-    operationalLimitsGroups: OperationalLimitsGroupFormSchema[];
-    selectedOperationalLimitsGroupId1?: string | null;
-    selectedOperationalLimitsGroupId2?: string | null;
-    voltageLevelId1: string | null;
-    busOrBusbarSectionId1: string | null;
-    connectionName1: string | null;
-    connectionDirection1?: string | null;
-    connectionPosition1?: number | null;
-    connected1?: boolean | null;
-    voltageLevelId2: string | null;
-    busOrBusbarSectionId2: string | null;
-    connectionName2: string | null;
-    connectionDirection2?: string | null;
-    connectionPosition2?: number | null;
-    connected2?: boolean | null;
-    properties: Property[] | null;
     lineSegments?: LineSegmentInfos[];
 }
