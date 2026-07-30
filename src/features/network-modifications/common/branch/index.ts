@@ -6,3 +6,4 @@
  */
 
 export * from './branchCreation.types';
+export * from './branchModification.types';
