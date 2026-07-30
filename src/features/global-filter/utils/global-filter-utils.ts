@@ -56,5 +56,4 @@ export const getOptionLabel = (
         default:
             return '';
     }
-    return '';
 };
