@@ -6,21 +6,15 @@
  */
 
 import { Box } from '@mui/material';
-import { QueryBuilderDnD } from '@react-querybuilder/dnd';
+import { createReactDnDAdapter, QueryBuilderDnD } from '@react-querybuilder/dnd';
 import * as ReactDnD from 'react-dnd';
 import * as ReactDndHtml5Backend from 'react-dnd-html5-backend';
 import { QueryBuilderMaterial } from '@react-querybuilder/material';
-import {
-    ActionWithRulesAndAddersProps,
-    defaultTranslations,
-    Field,
-    QueryBuilder,
-    RuleGroupTypeAny,
-} from 'react-querybuilder';
+import { ActionProps, defaultTranslations, Field, QueryBuilder, RuleGroupTypeAny } from 'react-querybuilder';
 import { formatQuery } from 'react-querybuilder/formatQuery';
 import { useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { CombinatorSelector } from './CombinatorSelector';
 import { AddButton } from './AddButton';
 import { ValueEditor } from './ValueEditor';
@@ -39,11 +33,11 @@ export interface CustomReactQueryBuilderProps {
     fields: Field[];
 }
 
-function RuleAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function RuleAddButton(props: Readonly<ActionProps>) {
     return <AddButton {...props} label="rule" />;
 }
 
-function GroupAddButton(props: Readonly<ActionWithRulesAndAddersProps>) {
+function GroupAddButton(props: Readonly<ActionProps>) {
     return <AddButton {...props} label="subGroup" />;
 }
 
@@ -61,7 +55,6 @@ const customTranslations = {
     combinators: { title: '' },
 };
 
-const dnd = { ...ReactDnD, ...ReactDndHtml5Backend };
 const controlElements = {
     addRuleAction: RuleAddButton,
     addGroupAction: GroupAddButton,
@@ -109,17 +102,22 @@ export function CustomReactQueryBuilder(props: Readonly<CustomReactQueryBuilderP
         [getValues, setValue, isSubmitted, name]
     );
 
+    // ugly way to reset Drag N Drop
+    const [dnd, setDnd] = useState(() => createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend }));
+    const resetDnd = useCallback(() => {
+        setDnd(createReactDnDAdapter({ ...ReactDnD, ...ReactDndHtml5Backend }));
+    }, [setDnd]);
+
     const combinators = useMemo(() => {
         return Object.values(COMBINATOR_OPTIONS).map((c: any) => ({
             name: c.name,
             label: intl.formatMessage({ id: c.label }),
         }));
     }, [intl]);
-
     return (
         <>
             <QueryBuilderMaterial>
-                <QueryBuilderDnD dnd={dnd}>
+                <QueryBuilderDnD dnd={dnd} onRuleDrop={resetDnd}>
                     <QueryBuilder
                         fields={fields}
                         query={query}
