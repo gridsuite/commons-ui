@@ -10,6 +10,11 @@ import { ElementType } from './elementType';
 
 export type Input = string | number;
 
+export enum ElementStatus {
+    CREATED = 'CREATED',
+    DELETING = 'DELETING',
+}
+
 export type ElementAttributes = {
     elementUuid: UUID;
     elementName: string;
@@ -25,6 +30,7 @@ export type ElementAttributes = {
     lastModificationDate: string;
     lastModifiedBy: string; // id
     lastModifiedByLabel?: string; // enrich with user identity server
+    status?: ElementStatus;
     children: ElementAttributes[];
     parentUuid: null | UUID;
     specificMetadata: {
