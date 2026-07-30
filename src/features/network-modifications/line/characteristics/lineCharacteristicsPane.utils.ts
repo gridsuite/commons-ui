@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { object, number } from 'yup';
+import { InferType, object, number } from 'yup';
 import { FieldConstants } from '../../../../utils';
-import { LineCharacteristics } from './lineCharacteristicsPane.types';
 
 export const getLineCharacteristicsValidationSchemaProps = (isEquipmentModification = false) =>
     object().shape({
@@ -21,22 +20,7 @@ export const getLineCharacteristicsValidationSchemaProps = (isEquipmentModificat
         [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
     });
 
-const characteristicsValidationSchema = (id: string, modification: boolean) => ({
-    [id]: object().shape({
-        [FieldConstants.R]: modification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
-        [FieldConstants.X]: modification ? number().nullable() : number().nullable().required(),
-        [FieldConstants.B1]: number().nullable(),
-        [FieldConstants.G1]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
-        [FieldConstants.B2]: number().nullable(),
-        [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
-    }),
-});
-
-export const getCharacteristicsValidationSchema = (id: string, modification: boolean = false) => {
-    return characteristicsValidationSchema(id, modification);
-};
+type LineCharacteristicsFormData = InferType<ReturnType<typeof getLineCharacteristicsValidationSchemaProps>>;
 
 export const getLineCharacteristicsEmptyFormData = () => {
     return {
@@ -50,7 +34,7 @@ export const getLineCharacteristicsEmptyFormData = () => {
 };
 
 export const getLineCharacteristicsFormData = (
-    { r = null, x = null, g1 = null, b1 = null, g2 = null, b2 = null }: LineCharacteristics,
+    { r = null, x = null, g1 = null, b1 = null, g2 = null, b2 = null }: LineCharacteristicsFormData,
     id = FieldConstants.CHARACTERISTICS
 ) => ({
     [id]: {
