@@ -6,7 +6,7 @@
  */
 
 import { Box, Grid2 as Grid } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
+import { FormattedMessage, useIntl } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
@@ -19,14 +19,16 @@ import {
     PropertiesForm,
     ReactiveLimitsForm,
     ShortCircuitForm,
+    VoltageRegulationForm,
 } from '../../common';
-import { FloatInput } from '../../../../components';
+import { CheckboxNullableInput, FloatInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
-import { ActivePowerAdornment, ReactivePowerAdornment } from '../../../../utils';
+import { ActivePowerAdornment, EquipmentType, Identifiable, ReactivePowerAdornment } from '../../../../utils';
 
 export interface BatteryDialogTabsContentProps extends ConnectivityNetworkProps {
     batteryToModify?: BatteryFormInfos | null;
     updatePreviousReactiveCapabilityCurveTable: (action: string, index: number) => void;
+    fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     tabIndex: number;
 }
 
@@ -37,7 +39,44 @@ export function BatteryDialogTabsContent({
     voltageLevelOptions = [],
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
+    fetchVoltageLevelEquipments,
 }: Readonly<BatteryDialogTabsContentProps>) {
+    const intl = useIntl();
+    const previousRegulation = () => {
+        if (batteryToModify?.voltageRegulatorOn) {
+            return intl.formatMessage({ id: 'On' });
+        }
+        if (batteryToModify?.voltageRegulatorOn === false) {
+            return intl.formatMessage({ id: 'Off' });
+        }
+        return null;
+    };
+
+    const voltageRegulationField = (
+        <Box>
+            <CheckboxNullableInput
+                name={FieldConstants.VOLTAGE_REGULATION}
+                label="VoltageRegulationText"
+                previousValue={previousRegulation() ?? undefined}
+            />
+        </Box>
+    );
+
+    const voltageRegulationForm = (
+        <VoltageRegulationForm
+            voltageLevelOptions={voltageLevelOptions}
+            fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+            previousValues={{
+                regulatingTerminalConnectableId: batteryToModify?.regulatingTerminalConnectableId,
+                regulatingTerminalVlId: batteryToModify?.regulatingTerminalVlId,
+                regulatingTerminalConnectableType: batteryToModify?.regulatingTerminalConnectableType,
+                voltageSetPoint: batteryToModify?.targetV,
+            }}
+            isEquipmentModification
+            isGenerator={false}
+        />
+    );
+
     return (
         <>
             <Box hidden={tabIndex !== BatteryDialogTab.CONNECTIVITY_TAB}>
@@ -79,6 +118,8 @@ export function BatteryDialogTabsContent({
                     </GridItem>
                 </Grid>
                 <Grid container spacing={2} paddingTop={2}>
+                    <GridItem size={4}>{voltageRegulationField}</GridItem>
+                    {voltageRegulationForm}
                     <ActivePowerControlForm
                         isEquipmentModification
                         previousValues={batteryToModify?.activePowerControl}

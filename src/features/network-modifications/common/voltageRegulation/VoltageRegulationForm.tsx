@@ -94,9 +94,9 @@ export function VoltageRegulationForm({
             </GridItem>
             {isDistantRegulation && (
                 <Grid container size={12} spacing={2}>
-                    <Grid size={4} justifySelf="end">
+                    <GridItem size={4} sx={{ alignSelf: 'center', justifyContent: 'end' }}>
                         <FormattedMessage id="RegulatingTerminalGenerator" />
-                    </Grid>
+                    </GridItem>
                     <GridItem size={8}>
                         <RegulatingTerminalForm
                             id=""

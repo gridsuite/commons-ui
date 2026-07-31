@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
-export * from './deletion';
-export * from './assignment';
-export * from './formula';
+export * from './modification-by-formula-form';
+export * from './formula/formula-utils';
+export * from './modificationByFormula.utils';
+export * from './formula/formula-constants';
+export * from './formula/formula.type';
