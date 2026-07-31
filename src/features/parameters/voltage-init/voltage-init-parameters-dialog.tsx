@@ -6,11 +6,13 @@
  */
 
 import { Grid2 as Grid, LinearProgress } from '@mui/material';
-import { ElementType, isDisabledValidationButton } from '../../../utils';
-import { CustomMuiDialog, NameElementEditorForm } from '../../../components';
+import { CustomMuiDialog } from '../../../components/ui/dialogs';
+import { ElementType } from '../../../utils';
+import { NameElementEditorForm } from '../common/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function VoltageInitParametersEditionDialog({
     id,

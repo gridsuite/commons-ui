@@ -7,9 +7,10 @@
 
 import type { UUID } from 'node:crypto';
 import { Grid2 as Grid, Stack } from '@mui/material';
-import { DescriptionField, UniqueNameInput } from '../../reactHookForm';
+import { DescriptionField } from '../../../../components/ui/reactHookForm/text/DescriptionField';
+import { UniqueNameInput } from '../../../../components/ui/reactHookForm/text/UniqueNameInput';
 import { ElementType, FieldConstants } from '../../../../utils';
-import { elementEditionDialogStyles } from './name-element-editor-utils';
+import { filterStyles } from '../../../../components/composite/filter/HeaderFilterForm';
 
 export interface NameElementEditorFormProps {
     initialElementName: string;
@@ -32,12 +33,12 @@ export function NameElementEditorForm({
                         label="nameProperty"
                         elementType={elementType}
                         activeDirectory={activeDirectory}
-                        sx={elementEditionDialogStyles.textField}
+                        sx={filterStyles.textField}
                         fullWidth={false}
                     />
                 </Grid>
                 <Grid>
-                    <DescriptionField expandingTextSx={elementEditionDialogStyles.description} />
+                    <DescriptionField expandingTextSx={filterStyles.description} />
                 </Grid>
             </Stack>
         </Grid>

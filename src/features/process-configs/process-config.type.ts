@@ -12,7 +12,7 @@ import {
 } from './security-analysis';
 import { LFProcessConfigFormSchema, lfProcessConfigFormShape, LoadflowProcessConfigBackend } from './loadflow';
 import { ProcessType } from './common';
-import { NameElementEditorSchema } from '../../components';
+import { NameElementEditorSchema } from '../parameters/common/name-element-editor';
 
 // Backend types
 type ProcessConfigBackendByProcessType = {

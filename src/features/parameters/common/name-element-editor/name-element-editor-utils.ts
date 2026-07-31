@@ -6,19 +6,7 @@
  */
 import * as yup from 'yup';
 import { DefaultValues } from 'react-hook-form';
-import { DESCRIPTION, NAME } from '../../reactHookForm';
-import type { MuiStyles } from '../../../../utils';
-
-export const elementEditionDialogStyles = {
-    textField: {
-        minWidth: '250px',
-        width: '33%',
-    },
-    description: {
-        minWidth: '250px',
-        width: '50%',
-    },
-} as const satisfies MuiStyles;
+import { DESCRIPTION, NAME } from '../../../../components/ui';
 
 export function getNameElementEditorShape(initialElementName: string | null) {
     return {

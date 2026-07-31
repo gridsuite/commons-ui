@@ -5,16 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
+import { LinearProgress } from '@mui/material';
 import { ProcessType } from './common';
-import {
-    NamedProcessConfigFormSchema,
-    PersistedProcessConfigBackend,
-    ProcessConfigBackend,
-} from './process-config.type';
+import { PersistedProcessConfigBackend, ProcessConfigBackend } from './process-config.type';
 import { useProcessConfigEdition } from './use-process-config-edition';
-import { ElementEditionDialog } from '../../components';
-import { ElementType } from '../../utils';
+import { CustomMuiDialog } from '../../components';
+import { ElementType, isDisabledValidationButton } from '../../utils';
 import { processConfigEditionDialogHelpers, ProcessConfigEditionDialogHelpers } from './process-config-edition.utils';
+import { NameElementEditorForm } from '../parameters/common/name-element-editor';
 
 export interface ProcessConfigEditionDialogProps<TProcessType extends ProcessType> {
     processType: TProcessType;
@@ -65,20 +63,30 @@ export function ProcessConfigEditionDialog<TProcessType extends ProcessType>({
         updateProcessConfig,
     });
 
+    const {
+        formState: { errors },
+    } = formMethods;
+    const disabledSave = isLoading || isDisabledValidationButton(errors);
+
     return (
-        <ElementEditionDialog<NamedProcessConfigFormSchema<TProcessType>>
+        <CustomMuiDialog
             titleId={dialogTitleId}
-            formMethods={formMethods}
-            formSchema={formSchema}
+            formContext={{
+                ...formMethods,
+                validationSchema: formSchema,
+                removeOptional: true,
+            }}
             open={open}
             onClose={onClose}
             onSave={handleUpdateProcessConfig}
-            directory={directory}
-            elementName={name}
-            elementType={ElementType.PROCESS_CONFIG}
-            isLoading={isLoading}
+            disabledSave={disabledSave}
         >
-            <EditionComponent />
-        </ElementEditionDialog>
+            <NameElementEditorForm
+                activeDirectory={directory}
+                elementType={ElementType.PROCESS_CONFIG}
+                initialElementName={name}
+            />
+            {isLoading ? <LinearProgress /> : <EditionComponent />}
+        </CustomMuiDialog>
     );
 }

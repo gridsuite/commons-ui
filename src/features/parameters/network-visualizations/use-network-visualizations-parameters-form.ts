@@ -10,7 +10,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
-import { DESCRIPTION, getNameElementEditorEmptyFormData, getNameElementEditorSchema, NAME } from '../../../components';
+import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
@@ -31,8 +31,10 @@ import {
     updateParameter,
 } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ElementType, snackWithFallback } from '../../../utils';
+import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { snackWithFallback } from '../../../utils/error';
 import { useTabs } from '../common';
 
 export interface UseNetworkVisualizationParametersFormReturn {

@@ -17,11 +17,12 @@ import {
     fromStudyPccMinParamsDataToFormValues,
 } from './pcc-min-form-utils';
 import { useSnackMessage } from '../../../hooks';
+import { DESCRIPTION, NAME } from '../../../components/ui';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';
 import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
-import { DESCRIPTION, getNameElementEditorEmptyFormData, getNameElementEditorSchema, NAME } from '../../../components';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;

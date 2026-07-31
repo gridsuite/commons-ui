@@ -13,7 +13,7 @@ import { ProcessType } from './common';
 import { NamedProcessConfigFormSchema } from './process-config.type';
 import { getNamedProcessConfigFormData, UseProcessConfigEditionProps } from './process-config-edition.utils';
 import { useSnackMessage } from '../../hooks';
-import { getNameElementEditorEmptyFormData, getNameElementEditorShape } from '../../components';
+import { getNameElementEditorEmptyFormData, getNameElementEditorShape } from '../parameters/common/name-element-editor';
 
 export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
     formMethods: UseFormReturn<NamedProcessConfigFormSchema<TProcessType>>;

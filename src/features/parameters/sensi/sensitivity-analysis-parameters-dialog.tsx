@@ -12,7 +12,8 @@ import {
     fetchSensitivityAnalysisProviders,
     updateSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { CustomMuiDialog, NameElementEditorForm } from '../../../components';
+import { CustomMuiDialog } from '../../../components/ui/dialogs';
+import { NameElementEditorForm } from '../common/name-element-editor';
 import { ComputingType, ElementType } from '../../../utils';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';

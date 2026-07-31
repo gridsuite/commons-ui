@@ -6,7 +6,7 @@
  */
 
 import { Grid2 as Grid, LinearProgress } from '@mui/material';
-import { CustomMuiDialog, NameElementEditorForm } from '../../../components';
+import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
@@ -16,10 +16,12 @@ import {
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
-import { ComputingType, ElementType, isDisabledValidationButton, LANG_ENGLISH } from '../../../utils';
+import { ComputingType, ElementType, LANG_ENGLISH } from '../../../utils';
 import { LoadFlowProvider } from './load-flow-parameters-provider';
 import { useLoadFlowParametersForm } from './use-load-flow-parameters-form';
 import { LoadFlowParametersForm } from './load-flow-parameters-form';
+import { NameElementEditorForm } from '../common/name-element-editor';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function LoadFlowParametersEditionDialog({
     id,

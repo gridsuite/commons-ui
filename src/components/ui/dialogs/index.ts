@@ -10,4 +10,3 @@ export * from './elementSaveDialog';
 export * from './modifyElementSelection';
 export * from './popupConfirmationDialog';
 export * from './multipleSelectionDialog';
-export * from './name-element-editor';
