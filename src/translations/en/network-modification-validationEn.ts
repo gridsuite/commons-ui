@@ -13,6 +13,9 @@ import {
     SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
     SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
+    VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
+    VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    WRONG_REF_OR_VALUE_ERROR,
 } from '../../utils';
 
 export const networkModificationValidationEn = {
@@ -34,6 +37,10 @@ export const networkModificationValidationEn = {
         'Minimum active power value must be less than or equal to maximum active power value',
     [ACTIVE_LIMITS_MIN_MAX_INVALID]: 'Maximum active power must be greater than minimum active power',
     [REACTIVE_LIMITS_MIN_MAX_INVALID]: 'Maximum reactive power must be greater than minimum reactive power',
+    [WRONG_REF_OR_VALUE_ERROR]:
+        'Please enter a valid numeric value or a valid field reference. Use # to select a field',
+    [VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR]: 'When using %, this field must be a valid positive numeric value',
+    [VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR]: 'When using %, this field must be a valid field reference',
     TemporaryLimitNameUnicityError: 'Temporary limit names must be unique in the table',
     TemporaryLimitDurationUnicityError: 'Temporary limit acceptable durations must be unique in the table',
     LimitSetApplicabilityError: '2 limit sets with the same name must have different application sides.',

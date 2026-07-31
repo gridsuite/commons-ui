@@ -34,3 +34,7 @@ export const MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER =
 
 export const NAME_ALREADY_USED = 'nameAlreadyUsed';
 export const NUMERIC_VALUE_OR_EMPTY_FIELD = 'NumericValueOrEmptyField';
+
+export const WRONG_REF_OR_VALUE_ERROR = 'WrongRefOrValueError';
+export const VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR = 'ValueMustBeNumericWhenPercentageError';
+export const VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR = 'ValueMustBeRefWhenPercentageError';

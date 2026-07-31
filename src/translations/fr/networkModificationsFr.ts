@@ -304,11 +304,6 @@ export const networkModificationsFr = {
     Operator: 'Opérateur',
     UseDashToSelectField: 'Utiliser # pour sélectionner un champ',
     filter: 'Filtre',
-    ValueMustBeNumericWhenPercentageError:
-        "Lors de l'utilisation de %, ce champ doit être une valeur numérique positive valide",
-    ValueMustBeRefWhenPercentageError: "Lors de l'utilisation de %, ce champ doit être une référence de champ valide",
-    WrongRefOrValueError:
-        'Veuillez saisir une valeur numérique valide ou une référence de champ valide. Utiliser # pour sélectionner un champ',
     G: 'Conductance magnétisante',
     B: 'Susceptance magnétisante',
 

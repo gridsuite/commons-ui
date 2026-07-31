@@ -13,6 +13,9 @@ import {
     SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
     SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
+    VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
+    VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    WRONG_REF_OR_VALUE_ERROR,
 } from '../../utils';
 
 export const networkModificationValidationFr = {
@@ -35,6 +38,12 @@ export const networkModificationValidationFr = {
     [ACTIVE_LIMITS_MIN_MAX_INVALID]: 'La puissance active maximale doit être supérieure à la puissance active minimale',
     [REACTIVE_LIMITS_MIN_MAX_INVALID]:
         'La puissance réactive maximale doit être supérieure à la puissance réactive minimale',
+    [WRONG_REF_OR_VALUE_ERROR]:
+        'Veuillez saisir une valeur numérique valide ou une référence de champ valide. Utiliser # pour sélectionner un champ',
+    [VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR]:
+        "Lors de l'utilisation de %, ce champ doit être une valeur numérique positive valide",
+    [VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR]:
+        "Lors de l'utilisation de %, ce champ doit être une référence de champ valide",
     TemporaryLimitNameUnicityError: 'Les noms des limites temporaires doivent être uniques dans la table',
     TemporaryLimitDurationUnicityError: 'Les tempos des limites temporaires doivent être uniques dans la table',
     LimitSetApplicabilityError: "2 jeux de limites de même nom doivent s'appliquer sur des côtés différents.",

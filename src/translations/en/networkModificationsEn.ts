@@ -298,9 +298,6 @@ export const networkModificationsEn = {
     Operator: 'Operator',
     UseDashToSelectField: 'Use # to select a field',
     filter: 'Filter',
-    ValueMustBeNumericWhenPercentageError: 'When using %, this field must be a valid positive numeric value',
-    ValueMustBeRefWhenPercentageError: 'When using %, this field must be a valid field reference',
-    WrongRefOrValueError: 'Please enter a valid numeric value or a valid field reference. Use # to select a field',
     G: 'Magnetizing conductance',
     B: 'Magnetizing susceptance',
 
