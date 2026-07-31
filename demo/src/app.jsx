@@ -110,6 +110,7 @@ import {
     useSnackMessage,
     LeftPanelOpenIcon,
     EditNoteIcon,
+    ExpertFilterEditionDialog,
 } from '../../src';
 
 import { demoInputsEn, demoInputsFr } from './components/translation';
@@ -350,6 +351,8 @@ function AppContent({ language, onLanguageClick }) {
 
     const [openTreeViewFinderDialog, setOpenTreeViewFinderDialog] = useState(false);
     const [openTreeViewFinderDialogCustomDialog, setOpenTreeViewFinderDialogCustomDialog] = useState(false);
+
+    const [openExpertFilterEditionDialog, setOpenExpertFilterEditionDialog] = useState(false);
 
     const [developerMode, setDeveloperMode] = useState(false);
 
@@ -751,6 +754,46 @@ function AppContent({ language, onLanguageClick }) {
                 >
                     Open TreeViewFinder ...
                 </Button>
+                <Button
+                    variant="contained"
+                    style={{
+                        float: 'left',
+                        margin: '5px',
+                    }}
+                    onClick={() => setOpenExpertFilterEditionDialog(true)}
+                >
+                    Open Expert Filter Edition Dialog
+                </Button>
+                <ExpertFilterEditionDialog
+                    id="expert-filter-id"
+                    name="Expert Filter Demo"
+                    titleId="selectFilterDialogTitle"
+                    open={openExpertFilterEditionDialog}
+                    onClose={() => setOpenExpertFilterEditionDialog(false)}
+                    broadcastChannel={new BroadcastChannel('demo-channel')}
+                    itemSelectionForCopy={{ sourceItemUuid: '' }}
+                    setItemSelectionForCopy={() => {}}
+                    getFilterById={async () => ({
+                        id: 'ab1745d5-22b5-4688-a625-d5b008c13762',
+                        modificationDate: '2026-07-20T15:08:10.970+00:00',
+                        equipmentType: 'VOLTAGE_LEVEL',
+                        rules: {
+                            combinator: 'AND',
+                            rules: [
+                                { field: 'ID', operator: 'CONTAINS', value: 'frfrfr', dataType: 'STRING' },
+                                { field: 'ID', operator: 'CONTAINS', value: 'jujip', dataType: 'STRING' },
+                                { field: 'ID', operator: 'CONTAINS', value: 'gtgtgtgtgtgtgtgtgrt', dataType: 'STRING' },
+                                { field: 'NAME', operator: 'IS', value: 'hyhyhygtggtgtgtgfrfr', dataType: 'STRING' },
+                                { field: 'ID', operator: 'CONTAINS', value: 'plopi', dataType: 'STRING' },
+                            ],
+                            dataType: 'COMBINATOR',
+                        },
+                        topologyKind: null,
+                        type: 'EXPERT',
+                    })}
+                    isDeveloperMode={developerMode}
+                    language={language}
+                />
                 <Button
                     variant="contained"
                     style={{
