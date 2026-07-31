@@ -4,67 +4,59 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-import { useCallback, useEffect, useState } from 'react';
-import { DefaultValues, Resolver, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
-import { UUID } from 'node:crypto';
+import * as yup from 'yup';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import { FieldConstants, snackWithFallback } from '../../utils';
 import { ProcessType } from './common';
-import {
-    NamedProcessConfigFormData,
-    PersistedProcessConfigBackend,
-    ProcessConfigBackend,
-    ProcessConfigFormData,
-} from './process-config.type';
-import {
-    getNamedProcessConfigFormData,
-    getProcessConfigFormDataFromNamedFormData,
-} from './process-config-edition.utils';
+import { NamedProcessConfigFormSchema } from './process-config.type';
+import { getNamedProcessConfigFormData, UseProcessConfigEditionProps } from './process-config-edition.utils';
 import { useSnackMessage } from '../../hooks';
+import { getNameElementEditorEmptyFormData, getNameElementEditorShape } from '../../components';
 
 export interface UseProcessConfigEditionReturn<TProcessType extends ProcessType> {
-    methods: UseFormReturn<NamedProcessConfigFormData<TProcessType>>;
-    handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormData<TProcessType>>;
+    formMethods: UseFormReturn<NamedProcessConfigFormSchema<TProcessType>>;
+    formSchema: yup.ObjectSchema<NamedProcessConfigFormSchema<TProcessType>>;
+    handleUpdateProcessConfig: SubmitHandler<NamedProcessConfigFormSchema<TProcessType>>;
     isLoading: boolean;
 }
 
-export const useProcessConfigEdition = <TProcessType extends ProcessType>(
-    name: string,
-    description: string | null,
-    processConfigUuid: UUID,
-    emptyFormData: DefaultValues<NamedProcessConfigFormData<TProcessType>>,
-    resolver: Resolver<NamedProcessConfigFormData<TProcessType>>,
-    fetchProcessConfig: (processConfigUuid: UUID) => Promise<PersistedProcessConfigBackend<TProcessType>>,
-    getProcessConfigFormData: (
-        processConfig: ProcessConfigBackend<TProcessType>
-    ) => Promise<ProcessConfigFormData<TProcessType>>,
-    getProcessConfigBackendFromFormData: (
-        formData: ProcessConfigFormData<TProcessType>
-    ) => ProcessConfigBackend<TProcessType>,
-    updateProcessConfig: (
-        processConfigUuid: UUID,
-        name: string,
-        description: string,
-        processConfig: ProcessConfigBackend<TProcessType>
-    ) => Promise<Response>
-): UseProcessConfigEditionReturn<TProcessType> => {
+export const useProcessConfigEdition = <TProcessType extends ProcessType>({
+    name,
+    description,
+    processConfigUuid,
+    formShape,
+    emptyFormData,
+    fetchProcessConfig,
+    getFormData,
+    getProcessConfigBackendFromFormData,
+    updateProcessConfig,
+}: Readonly<UseProcessConfigEditionProps<TProcessType>>): UseProcessConfigEditionReturn<TProcessType> => {
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
-    const methods = useForm<NamedProcessConfigFormData<TProcessType>>({
-        defaultValues: emptyFormData,
-        resolver,
+    const formSchema = useMemo(() => {
+        return yup.object().shape({ ...formShape, ...getNameElementEditorShape(name) }) as yup.ObjectSchema<
+            NamedProcessConfigFormSchema<TProcessType>
+        >;
+    }, [name, formShape]);
+
+    const formMethods = useForm<NamedProcessConfigFormSchema<TProcessType>>({
+        defaultValues: { ...getNameElementEditorEmptyFormData(name, description), ...emptyFormData },
+        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
 
-    const { reset } = methods;
+    const { reset } = formMethods;
 
     const fetchFormData = useCallback(async () => {
         const persitedProcessConfig = await fetchProcessConfig(processConfigUuid);
         if (persitedProcessConfig) {
-            const formData = await getProcessConfigFormData(persitedProcessConfig.processConfig);
+            const formData = await getFormData(persitedProcessConfig.processConfig);
             const namedFormData = getNamedProcessConfigFormData<TProcessType>(formData, name, description);
             reset({ ...namedFormData });
         }
-    }, [description, fetchProcessConfig, name, processConfigUuid, reset, getProcessConfigFormData]);
+    }, [description, fetchProcessConfig, name, processConfigUuid, reset, getFormData]);
 
     useEffect(() => {
         setIsLoading(true);
@@ -78,13 +70,12 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
     }, [fetchFormData, snackError]);
 
     const handleUpdateProcessConfig = useCallback(
-        (namedFormData: NamedProcessConfigFormData<TProcessType>) => {
-            const processConfigData = getProcessConfigFormDataFromNamedFormData(namedFormData);
+        (formData: NamedProcessConfigFormSchema<TProcessType>) => {
             updateProcessConfig(
                 processConfigUuid,
-                namedFormData[FieldConstants.NAME],
-                namedFormData[FieldConstants.DESCRIPTION] ?? '',
-                getProcessConfigBackendFromFormData(processConfigData)
+                formData[FieldConstants.NAME] ?? '',
+                formData[FieldConstants.DESCRIPTION] ?? '',
+                getProcessConfigBackendFromFormData(formData)
             ).catch((error) => {
                 console.error(error);
                 snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
@@ -93,5 +84,5 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>(
         [updateProcessConfig, processConfigUuid, getProcessConfigBackendFromFormData, snackError]
     );
 
-    return { methods, handleUpdateProcessConfig, isLoading };
+    return { formMethods, formSchema, handleUpdateProcessConfig, isLoading };
 };

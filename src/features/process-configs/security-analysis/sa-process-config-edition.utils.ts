@@ -9,10 +9,10 @@ import { UUID } from 'node:crypto';
 
 import { fetchElementNames } from '../../../services';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
-import { namedFormShape, processConfigModificationsFormShape, ProcessType } from '../common';
+import { processConfigModificationsFormShape, ProcessType } from '../common';
 import { SecurityAnalysisProcessConfigBackend } from './sa-process-config.type';
 
-export const saProcessConfigSpecificFormShape = {
+export const saProcessConfigFormShape = {
     ...processConfigModificationsFormShape,
     [FieldConstants.LOADFLOW_PARAMETERS]: yup
         .array()
@@ -27,18 +27,19 @@ export const saProcessConfigSpecificFormShape = {
 };
 
 export const saProcessConfigFormSchema = yup.object().shape({
-    ...saProcessConfigSpecificFormShape,
+    ...saProcessConfigFormShape,
 });
-export type SAProcessConfigFormData = yup.InferType<typeof saProcessConfigFormSchema>;
+export type SAProcessConfigFormSchema = yup.InferType<typeof saProcessConfigFormSchema>;
 
-export const namedSAProcessConfigFormSchema = yup.object().shape({
-    ...namedFormShape,
-    ...saProcessConfigSpecificFormShape,
-});
+export const emptySAProcessConfigFormData: SAProcessConfigFormSchema = {
+    [FieldConstants.MODIFICATIONS]: [],
+    [FieldConstants.LOADFLOW_PARAMETERS]: [],
+    [FieldConstants.SECURITY_ANALYSIS_PARAMETERS]: [],
+};
 
 export async function getSAProcessConfigFormData(
     processConfig: SecurityAnalysisProcessConfigBackend
-): Promise<SAProcessConfigFormData> {
+): Promise<SAProcessConfigFormSchema> {
     const allUuids = new Set<string>([
         ...processConfig.modifications.map((modification) => modification.modificationUuid),
         processConfig.securityAnalysisParametersUuid,
@@ -48,7 +49,7 @@ export async function getSAProcessConfigFormData(
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
     return {
-        modifications: processConfig.modifications.map((modification) => ({
+        [FieldConstants.MODIFICATIONS]: processConfig.modifications.map((modification) => ({
             modification: [
                 {
                     id: modification.modificationUuid,
@@ -58,32 +59,32 @@ export async function getSAProcessConfigFormData(
             active: modification.active,
             description: modification.description ?? undefined,
         })),
-        securityAnalysisParameters: [
+        [FieldConstants.SECURITY_ANALYSIS_PARAMETERS]: [
             {
                 id: processConfig.securityAnalysisParametersUuid,
                 name: elementNamesByUuid[processConfig.securityAnalysisParametersUuid],
             },
         ],
-        loadflowParameters: [
+        [FieldConstants.LOADFLOW_PARAMETERS]: [
             {
                 id: processConfig.loadflowParametersUuid,
                 name: elementNamesByUuid[processConfig.loadflowParametersUuid],
             },
         ],
-    } satisfies SAProcessConfigFormData;
+    } satisfies SAProcessConfigFormSchema;
 }
 
 export function getSAProcessConfigBackendFromFormData(
-    formData: SAProcessConfigFormData
+    formData: SAProcessConfigFormSchema
 ): SecurityAnalysisProcessConfigBackend {
     return {
         processType: ProcessType.SECURITY_ANALYSIS,
-        modifications: formData.modifications.map((row) => ({
+        modifications: formData[FieldConstants.MODIFICATIONS].map((row) => ({
             modificationUuid: row.modification[0].id as UUID,
             description: row.description ?? null,
             active: row.active,
         })),
-        securityAnalysisParametersUuid: formData.securityAnalysisParameters[0].id as UUID,
-        loadflowParametersUuid: formData.loadflowParameters[0].id as UUID,
+        securityAnalysisParametersUuid: formData[FieldConstants.SECURITY_ANALYSIS_PARAMETERS][0].id as UUID,
+        loadflowParametersUuid: formData[FieldConstants.LOADFLOW_PARAMETERS][0].id as UUID,
     };
 }

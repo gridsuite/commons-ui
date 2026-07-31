@@ -7,15 +7,6 @@
 import * as yup from 'yup';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 
-export const namedFormShape = {
-    [FieldConstants.NAME]: yup.string().required(),
-    [FieldConstants.DESCRIPTION]: yup.string(),
-};
-
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const namedFormData = yup.object().shape({ ...namedFormShape });
-export type NamedFormData = yup.InferType<typeof namedFormData>;
-
 export const processConfigModificationsFormShape = {
     [FieldConstants.MODIFICATIONS]: yup
         .array()
