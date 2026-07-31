@@ -15,4 +15,6 @@ export * from './node';
 export * from './network-modification-table';
 export * from './announcement';
 export * from './results/securityanalysis';
+export * from './results/loadflow';
+export * from './results/utils';
 export * from './process-configs';
