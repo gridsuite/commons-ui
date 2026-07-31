@@ -111,13 +111,13 @@ import {
     LeftPanelOpenIcon,
     EditNoteIcon,
     ExpertFilterEditionDialog,
+    genericValidationEn,
+    genericValidationFr,
     networkModificationValidationEn,
     networkModificationValidationFr,
 } from '../../src';
 
 import { demoInputsEn, demoInputsFr } from './components/translation';
-import { genericValidationEn } from '../../src/translations/en/generic-validationEn.ts';
-import { genericValidationFr } from '../../src/translations/fr/generic-validationFr.ts';
 
 const messages = {
     en: {
