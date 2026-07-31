@@ -44,7 +44,7 @@ export const useProcessConfigEdition = <TProcessType extends ProcessType>({
 
     const formMethods = useForm<NamedProcessConfigFormSchema<TProcessType>>({
         defaultValues: { ...getNameElementEditorEmptyFormData(name, description), ...emptyFormData },
-        resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
+        resolver: yupResolver(formSchema as yup.ObjectSchema<any>),
     });
 
     const { reset } = formMethods;
