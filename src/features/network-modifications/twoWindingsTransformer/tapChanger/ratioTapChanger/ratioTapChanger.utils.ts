@@ -220,7 +220,7 @@ export const getRatioTapChangerFormData = (
         equipmentId,
         equipmentType,
     }: RatioTapChangerFormParams,
-    id = FieldConstants.RATIO_TAP_CHANGER
+    id: typeof FieldConstants.RATIO_TAP_CHANGER = FieldConstants.RATIO_TAP_CHANGER
 ) => ({
     [id]: {
         [FieldConstants.ENABLED]: enabled,

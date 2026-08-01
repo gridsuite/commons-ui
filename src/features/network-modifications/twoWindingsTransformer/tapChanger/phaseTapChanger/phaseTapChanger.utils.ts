@@ -188,7 +188,7 @@ export const getPhaseTapChangerFormData = (
         equipmentID,
         equipmentType,
     }: PhaseTapChangerFormDataInput,
-    id = FieldConstants.PHASE_TAP_CHANGER
+    id: typeof FieldConstants.PHASE_TAP_CHANGER = FieldConstants.PHASE_TAP_CHANGER
 ) => ({
     [id]: {
         [FieldConstants.ENABLED]: enabled,
