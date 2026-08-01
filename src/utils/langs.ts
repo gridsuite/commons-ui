@@ -14,3 +14,12 @@ export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 export function getCsvDelimiter(language: string | undefined): ';' | ',' {
     return language === LANG_FRENCH ? ';' : ',';
 }
+
+export const transformIfFrenchNumber = (value: string, language: GsLang): string => {
+    value = value.trim();
+    // Only transform if we're in French mode and the value is a number that has a comma
+    if (language === LANG_FRENCH && value.includes(',') && !Number.isNaN(Number(value.replace(',', '.')))) {
+        return value.replace(',', '.');
+    }
+    return value;
+};

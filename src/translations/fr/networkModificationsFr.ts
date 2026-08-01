@@ -349,4 +349,6 @@ export const networkModificationsFr = {
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
+    TwoWindingsTransformerRatioTapChangerTab: 'Régleur',
+    TwoWindingsTransformerPhaseTapChangerTab: 'Déphaseur',
 };

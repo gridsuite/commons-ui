@@ -5,5 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './lineCharacteristicsPane.utils';
-export * from './LineCharacteristicsPane';
+export * from './twoWindingsTransformerCharacteristicsPane.utils'
+export * from './TwoWindingsTransformerCharacteristicsPane'

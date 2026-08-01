@@ -5,5 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './lineCharacteristicsPane.utils';
-export * from './LineCharacteristicsPane';
+export * from './tapChanger.utils';
+export * from './regulationRule';
+export * from './phaseTapChanger';
+export * from './ratioTapChanger';
+export * from './RegulatedTerminalSection';
+export * from './TapChangerSteps';
