@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 export const parametersFr = {
     descLfVoltageInitMode: "Mode d'initialisation du plan de tension",
     descLfUseReactiveLimits: 'Prise en compte des limites de réactif des groupes',
@@ -26,7 +25,6 @@ export const parametersFr = {
     showSelectParameterDialog: 'Choisir paramètres',
     createParameterLabel: 'Créer des nouveaux paramètres',
     updateParameterLabel: 'Remplacer des paramètres existants',
-    nameAlreadyUsed: 'Ce nom est déjà utilisé',
     tagAlreadyUsed: 'Cette balise est déjà utilisée',
     studyDirectoryFetchingError: "Une erreur est survenue lors de la lecture du dossier de l'étude",
     AddDescription: 'Ajouter une description (optionnel)',
@@ -54,7 +52,6 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays réglant',
     inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
-    RealPercentage: 'Cette valeur doit être comprise entre 0 et 1',
 
     General: 'Général',
     LimitReductions: 'Abattements',

@@ -7,7 +7,7 @@
 
 import { bool, number, object, string } from 'yup';
 import { VoltageLevelFormInfos } from '../../voltageLevel/voltage-level.type';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
 const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
     isEquipmentModification: boolean,
@@ -26,7 +26,7 @@ const getVoltageLevelAndBusOrBusBarSectionFieldsSchema = (
                 then: (schema) => schema.nullable(),
             }),
         })
-        .test('YupRequired', 'YupRequired', (value, context) => {
+        .test('YupRequired', YUP_REQUIRED, (value, context) => {
             const isEmpty =
                 value?.[FieldConstants.ID] === null ||
                 value?.[FieldConstants.ID] === undefined ||
