@@ -25,7 +25,9 @@ export function LimitReductionTableCell({
     column: LimitReductionIColumnsDef;
     limits: ILimitReductionsByVoltageLevel[];
 }>) {
-    return column.dataKey === VOLTAGE_LEVELS_FORM && limits[rowIndex] ? (
+    const isVoltageLevelColumn = column.dataKey === VOLTAGE_LEVELS_FORM;
+
+    return isVoltageLevelColumn && limits[rowIndex] ? (
         <CustomTooltip
             title={
                 <FormattedMessage
@@ -42,11 +44,23 @@ export function LimitReductionTableCell({
             </TableCell>
         </CustomTooltip>
     ) : (
-        <TableCell sx={{ fontWeight: 'bold' }}>
-            {column.dataKey === VOLTAGE_LEVELS_FORM ? (
+        <TableCell sx={{ fontWeight: 'bold', p: 0.75 }}>
+            {isVoltageLevelColumn ? (
                 <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
             ) : (
-                <FloatInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+                <FloatInput
+                    formProps={{
+                        sx: {
+                            '& .MuiInputBase-root': {
+                                padding: 0,
+                            },
+                            '& .MuiInputBase-input': {
+                                textAlign: 'right',
+                            },
+                        },
+                    }}
+                    name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`}
+                />
             )}
         </TableCell>
     );
