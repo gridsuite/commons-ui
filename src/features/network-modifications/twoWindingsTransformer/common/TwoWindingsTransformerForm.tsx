@@ -6,6 +6,7 @@
  */
 
 import { Box, Stack } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 import {
     TwoWindingsTransformerDialogHeader,
     TwoWindingsTransformerDialogHeaderProps,
@@ -35,6 +36,7 @@ export function TwoWindingsTransformerForm({
         TWT_TAB_FIELDS,
         TwoWindingsTransformerDialogTab.CONNECTIVITY_TAB
     );
+    const { errors } = useFormState();
 
     return (
         <Stack spacing={2} height="100%">
@@ -56,6 +58,28 @@ export function TwoWindingsTransformerForm({
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
             </Box>
+            {/* TODO remove debug block: dumps every react-hook-form error for this form */}
+            {Object.keys(errors).length > 0 && (
+                <Box
+                    component="pre"
+                    sx={{
+                        maxHeight: 200,
+                        overflow: 'auto',
+                        fontSize: 12,
+                        color: 'error.main',
+                        border: '1px dashed',
+                        borderColor: 'error.main',
+                        p: 1,
+                        m: 0,
+                    }}
+                >
+                    {JSON.stringify(
+                        errors,
+                        (key, value) => (key === 'ref' ? undefined : value),
+                        2
+                    )}
+                </Box>
+            )}
         </Stack>
     );
 }
