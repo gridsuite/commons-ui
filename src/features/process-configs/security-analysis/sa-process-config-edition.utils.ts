@@ -13,16 +13,15 @@ import {
     emptyProcessConfigModificationsFormData,
     getProcessConfigModificationsBackendFromFormData,
     getProcessConfigModificationsFormData,
-    processConfigModificationsFormShape,
+    processConfigModificationsShape,
     ProcessType,
 } from '../common';
 import { SecurityAnalysisProcessConfigBackend } from './sa-process-config.type';
-import { getNameElementEditorEmptyFormData, getNameElementEditorShape } from '../../../components';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../../../components';
 
 export function getNamedSAProcessConfigFormSchema(initialName: string | null) {
-    return yup.object().shape({
-        ...getNameElementEditorShape(initialName),
-        ...processConfigModificationsFormShape,
+    const formSchema = yup.object().shape({
+        ...processConfigModificationsShape,
         [FieldConstants.LOADFLOW_PARAMETERS]: yup
             .array()
             .required()
@@ -34,6 +33,7 @@ export function getNamedSAProcessConfigFormSchema(initialName: string | null) {
             .of(yup.object().shape({ id: yup.string().required(), name: yup.string().required() }))
             .length(1, YUP_REQUIRED),
     });
+    return formSchema.concat(getNameElementEditorSchema(initialName));
 }
 export type NamedSAProcessConfigFormSchema = yup.InferType<ReturnType<typeof getNamedSAProcessConfigFormSchema>>;
 

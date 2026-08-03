@@ -12,22 +12,22 @@ import {
     emptyProcessConfigModificationsFormData,
     getProcessConfigModificationsBackendFromFormData,
     getProcessConfigModificationsFormData,
-    processConfigModificationsFormShape,
+    processConfigModificationsShape,
     ProcessType,
 } from '../common';
 import { LoadflowProcessConfigBackend } from './lf-process-config.type';
-import { getNameElementEditorEmptyFormData, getNameElementEditorShape } from '../../../components';
+import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../../../components';
 
 export function getNamedLFProcessConfigFormSchema(initialName: string | null) {
-    return yup.object().shape({
-        ...getNameElementEditorShape(initialName),
-        ...processConfigModificationsFormShape,
+    const formSchema = yup.object().shape({
+        ...processConfigModificationsShape,
         [FieldConstants.LOADFLOW_PARAMETERS]: yup
             .array()
             .required()
             .of(yup.object().shape({ id: yup.string().required(), name: yup.string() }))
             .length(1, YUP_REQUIRED),
     });
+    return formSchema.concat(getNameElementEditorSchema(initialName));
 }
 export type NamedLFProcessConfigFormSchema = yup.InferType<ReturnType<typeof getNamedLFProcessConfigFormSchema>>;
 

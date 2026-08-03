@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { DefaultValues } from 'react-hook-form';
 import { DESCRIPTION, NAME } from '../../reactHookForm';
 import type { MuiStyles } from '../../../../utils';
 
@@ -20,8 +19,8 @@ export const elementEditionStyles = {
     },
 } as const satisfies MuiStyles;
 
-export function getNameElementEditorShape(initialElementName: string | null) {
-    return {
+export function getNameElementEditorSchema(initialElementName: string | null) {
+    return yup.object().shape({
         [NAME]: yup
             .string()
             .nullable()
@@ -31,18 +30,13 @@ export function getNameElementEditorShape(initialElementName: string | null) {
                 otherwise: () => yup.string(),
             }),
         [DESCRIPTION]: yup.string().nullable(),
-    };
+    });
 }
-
-export function getNameElementEditorSchema(initialElementName: string | null) {
-    return yup.object().shape(getNameElementEditorShape(initialElementName));
-}
-export type NameElementEditorSchema = yup.InferType<ReturnType<typeof getNameElementEditorSchema>>;
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,
     initialElementDescription: string | null
-): DefaultValues<NameElementEditorSchema> {
+) {
     return {
         [NAME]: initialElementName,
         [DESCRIPTION]: initialElementDescription,

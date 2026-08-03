@@ -9,29 +9,27 @@ import { UUID } from 'node:crypto';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 import { ModificationInfo } from './process-config.type';
 
-export const processConfigModificationsFormShape = {
-    [FieldConstants.MODIFICATIONS]: yup
+const processConfigModificationShape = yup.object().shape({
+    modification: yup
         .array()
         .required()
         .of(
-            yup.object().shape({
-                modification: yup
-                    .array()
-                    .required()
-                    .of(
-                        yup
-                            .object()
-                            .shape({
-                                id: yup.string().required(),
-                                name: yup.string(),
-                            })
-                            .required()
-                    )
-                    .length(1, YUP_REQUIRED),
-                description: yup.string().nullable(),
-                active: yup.boolean().required(),
-            })
-        ),
+            yup
+                .object()
+                .shape({
+                    id: yup.string().required(),
+                    name: yup.string(),
+                })
+                .required()
+        )
+        .length(1, YUP_REQUIRED),
+    description: yup.string().nullable(),
+    active: yup.boolean().required(),
+});
+export type ProcessConfigModification = yup.InferType<typeof processConfigModificationShape>;
+
+export const processConfigModificationsShape = {
+    [FieldConstants.MODIFICATIONS]: yup.array().required().of(processConfigModificationShape),
 };
 
 export const emptyProcessConfigModificationsFormData = { [FieldConstants.MODIFICATIONS]: [] };
@@ -55,7 +53,7 @@ export function getProcessConfigModificationsFormData(
 }
 
 export function getProcessConfigModificationsBackendFromFormData(
-    formProcessConfigModifications: Record<string, any>[]
+    formProcessConfigModifications: ProcessConfigModification[]
 ) {
     return {
         modifications: formProcessConfigModifications.map((row) => ({
