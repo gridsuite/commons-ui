@@ -5,14 +5,9 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import {
-    SecurityAnalysisProcessConfigBackend,
-    SAProcessConfigFormSchema,
-    saProcessConfigFormShape,
-} from './security-analysis';
-import { LFProcessConfigFormSchema, lfProcessConfigFormShape, LoadflowProcessConfigBackend } from './loadflow';
+import { SecurityAnalysisProcessConfigBackend } from './security-analysis';
+import { LoadflowProcessConfigBackend } from './loadflow';
 import { ProcessType } from './common';
-import { NameElementEditorSchema } from '../parameters/common/name-element-editor';
 
 // Backend types
 type ProcessConfigBackendByProcessType = {
@@ -24,20 +19,3 @@ export type PersistedProcessConfigBackend<TProcessType extends ProcessType> = {
     id: UUID;
     processConfig: ProcessConfigBackend<TProcessType>;
 };
-
-// Form types
-type ProcessConfigFormShapeByProcessType = {
-    [ProcessType.SECURITY_ANALYSIS]: typeof saProcessConfigFormShape;
-    [ProcessType.LOADFLOW]: typeof lfProcessConfigFormShape;
-};
-export type ProcessConfigFormShape<TProcessType extends ProcessType> =
-    ProcessConfigFormShapeByProcessType[TProcessType];
-
-type ProcessConfigFormSchemaByProcessType = {
-    [ProcessType.SECURITY_ANALYSIS]: SAProcessConfigFormSchema;
-    [ProcessType.LOADFLOW]: LFProcessConfigFormSchema;
-};
-export type ProcessConfigFormSchema<TProcessType extends ProcessType> =
-    ProcessConfigFormSchemaByProcessType[TProcessType];
-export type NamedProcessConfigFormSchema<TProcessType extends ProcessType> = NameElementEditorSchema &
-    ProcessConfigFormSchema<TProcessType>;

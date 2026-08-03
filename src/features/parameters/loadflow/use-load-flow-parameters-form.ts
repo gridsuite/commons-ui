@@ -38,7 +38,10 @@ import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants'
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { useSnackMessage } from '../../../hooks';
 import {
     formatSpecificParameters,

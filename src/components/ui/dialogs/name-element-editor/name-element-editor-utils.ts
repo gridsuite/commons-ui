@@ -6,7 +6,19 @@
  */
 import * as yup from 'yup';
 import { DefaultValues } from 'react-hook-form';
-import { DESCRIPTION, NAME } from '../../../../components/ui';
+import { DESCRIPTION, NAME } from '../../reactHookForm';
+import type { MuiStyles } from '../../../../utils';
+
+export const elementEditionStyles = {
+    textField: {
+        minWidth: '250px',
+        width: '33%',
+    },
+    description: {
+        minWidth: '250px',
+        width: '50%',
+    },
+} as const satisfies MuiStyles;
 
 export function getNameElementEditorShape(initialElementName: string | null) {
     return {
@@ -29,10 +41,10 @@ export type NameElementEditorSchema = yup.InferType<ReturnType<typeof getNameEle
 
 export function getNameElementEditorEmptyFormData(
     initialElementName: string | null,
-    initialElementdescripton: string | null
+    initialElementDescription: string | null
 ): DefaultValues<NameElementEditorSchema> {
     return {
         [NAME]: initialElementName,
-        [DESCRIPTION]: initialElementdescripton,
+        [DESCRIPTION]: initialElementDescription,
     };
 }

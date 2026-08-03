@@ -35,7 +35,10 @@ import {
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ElementType, isBlankOrEmpty, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, YUP_REQUIRED } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     fromStudyVoltageInitParamsDataToFormValues,

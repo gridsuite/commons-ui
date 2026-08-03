@@ -7,3 +7,4 @@
 
 export * from './name-element-editor-form';
 export * from './name-element-editor-utils';
+export * from './named-element-edition-dialog';
