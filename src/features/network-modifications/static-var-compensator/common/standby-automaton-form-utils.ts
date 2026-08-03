@@ -9,7 +9,7 @@ import * as yup from 'yup';
 import { NumberSchema, Schema } from 'yup';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { VOLTAGE_REGULATION_MODES } from './constants';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 
 export const getStandbyAutomatonEmptyFormData = (id = FieldConstants.AUTOMATON) => ({
     [id]: {
@@ -69,16 +69,16 @@ export const getStandbyAutomatonFormValidationSchema = () =>
                 then: (schema) => schema.required(),
             }),
         [FieldConstants.LOW_VOLTAGE_SET_POINT]: requiredIfAddStandbyAutomaton(
-            yup.number().min(0, 'mustBeGreaterOrEqualToZero')
+            yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         ),
         [FieldConstants.HIGH_VOLTAGE_SET_POINT]: requiredIfAddStandbyAutomaton(
-            yup.number().min(0, 'mustBeGreaterOrEqualToZero')
+            yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         ),
         [FieldConstants.LOW_VOLTAGE_THRESHOLD]: requiredIfAddStandbyAutomaton(
-            yup.number().min(0, 'mustBeGreaterOrEqualToZero')
+            yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         ),
         [FieldConstants.HIGH_VOLTAGE_THRESHOLD]: requiredIfAddStandbyAutomaton(
-            yup.number().min(0, 'mustBeGreaterOrEqualToZero')
+            yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         ),
         [FieldConstants.B0]: requiredWhenSusceptanceChoice(yup.number().nullable()),
         [FieldConstants.Q0]: requiredWhenQatNominalVChoice(yup.number().nullable()),

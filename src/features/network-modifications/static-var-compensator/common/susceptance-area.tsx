@@ -38,8 +38,10 @@ export function SusceptanceArea() {
             label={<FormattedMessage id="minSusceptance" />}
             disabled
             size="small"
-            InputProps={{
-                endAdornment: <InputAdornment position="start">S</InputAdornment>,
+            slotProps={{
+                input: {
+                    endAdornment: <InputAdornment position="start">S</InputAdornment>,
+                },
             }}
         />
     );
@@ -50,8 +52,10 @@ export function SusceptanceArea() {
             label={<FormattedMessage id="maximumSusceptance" />}
             disabled
             size="small"
-            InputProps={{
-                endAdornment: <InputAdornment position="start">S</InputAdornment>,
+            slotProps={{
+                input: {
+                    endAdornment: <InputAdornment position="start">S</InputAdornment>,
+                },
             }}
         />
     );
@@ -62,8 +66,10 @@ export function SusceptanceArea() {
             label={<FormattedMessage id="minQAtNominalV" />}
             disabled
             size="small"
-            InputProps={{
-                endAdornment: <InputAdornment position="start">Mvar</InputAdornment>,
+            slotProps={{
+                input: {
+                    endAdornment: <InputAdornment position="start">Mvar</InputAdornment>,
+                },
             }}
         />
     );
@@ -74,8 +80,10 @@ export function SusceptanceArea() {
             label={<FormattedMessage id="maxQAtVnominal" />}
             disabled
             size="small"
-            InputProps={{
-                endAdornment: <InputAdornment position="start">Mvar</InputAdornment>,
+            slotProps={{
+                input: {
+                    endAdornment: <InputAdornment position="start">Mvar</InputAdornment>,
+                },
             }}
         />
     );

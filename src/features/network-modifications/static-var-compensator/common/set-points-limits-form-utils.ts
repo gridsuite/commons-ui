@@ -7,7 +7,7 @@
 
 import * as yup from 'yup';
 import { NumberSchema } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { REGULATION_TYPES } from '../../common';
 import { VOLTAGE_REGULATION_MODES } from './constants';
@@ -59,7 +59,7 @@ export const getReactiveFormValidationSchema = () =>
         [FieldConstants.VOLTAGE_SET_POINT]: yup
             .number()
             .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero')
+            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .when([FieldConstants.VOLTAGE_REGULATION_MODE], {
                 is: (voltageRegulationMode: string) => voltageRegulationMode === VOLTAGE_REGULATION_MODES.VOLTAGE.id,
                 then: (s) => s.required(),
