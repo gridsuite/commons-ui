@@ -9,9 +9,8 @@ import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { TapChangerSteps } from '../TapChangerSteps';
 import { TapChangerMapInfos } from '../../common/twoWindingsTransformer.types';
-import { DndColumn } from '../../../../../components';
+import { DndColumn, DndColumnType } from '../../../../../components';
 import { TwoWindingsTransformerModificationDto } from '../../modification/twoWindingsTransformerModification.types';
-import { DndColumnType } from '../../../../../../dist/components/composite/dnd-table';
 import { FieldConstants } from '../../../../../utils/constants/fieldConstants';
 import { parseIntData } from '../../../../../utils';
 
