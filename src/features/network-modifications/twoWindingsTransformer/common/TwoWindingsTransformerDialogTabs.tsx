@@ -64,11 +64,13 @@ export function TwoWindingsTransformerDialogTabs({
                 />
             )}
             <Tab
+                value={TwoWindingsTransformerDialogTab.RATIO_TAP_TAB}
                 label={<FormattedMessage id="TwoWindingsTransformerRatioTapChangerTab" />}
                 sx={getTabStyle(tabIndexesWithError, TwoWindingsTransformerDialogTab.RATIO_TAP_TAB)}
                 disabled={!ratioTapChangerEnabledWatch}
             />
             <Tab
+                value={TwoWindingsTransformerDialogTab.PHASE_TAP_TAB}
                 label={<FormattedMessage id="TwoWindingsTransformerPhaseTapChangerTab" />}
                 sx={getTabStyle(tabIndexesWithError, TwoWindingsTransformerDialogTab.PHASE_TAP_TAB)}
                 disabled={!phaseTapChangerEnabledWatch}
