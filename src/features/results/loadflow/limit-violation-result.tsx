@@ -13,11 +13,10 @@ import { AgGridReact } from 'ag-grid-react';
 import { LimitViolationResultProps } from './load-flow-result.type';
 import { RunningStatus } from '../../../utils/running-status';
 import { useOpenLoaderShortWait, useIntlResultStatusMessages } from '../../../hooks';
-import { getNoRowsMessage } from '../securityanalysis';
 import { getRows } from '../../../utils';
 import { RESULTS_LOADING_DELAY } from '../constants';
 import { DefaultCellRenderer } from '../../../components';
-import { RenderTableAndExportCsv } from '../utils/renderTable-ExportCsv';
+import { RenderTableAndExportCsv, getNoRowsMessage } from '../utils';
 
 export function LimitViolationResult({
     result,

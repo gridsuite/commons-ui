@@ -6,3 +6,4 @@
  */
 
 export * from './renderTable-ExportCsv';
+export * from './no-rows-message';
