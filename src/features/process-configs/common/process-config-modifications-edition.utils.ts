@@ -9,7 +9,7 @@ import { UUID } from 'node:crypto';
 import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 import { ModificationInfo } from './process-config.type';
 
-const processConfigModificationShape = yup.object().shape({
+const processConfigModificationSchema = yup.object().shape({
     modification: yup
         .array()
         .required()
@@ -26,10 +26,10 @@ const processConfigModificationShape = yup.object().shape({
     description: yup.string().nullable(),
     active: yup.boolean().required(),
 });
-export type ProcessConfigModification = yup.InferType<typeof processConfigModificationShape>;
+export type ProcessConfigModification = yup.InferType<typeof processConfigModificationSchema>;
 
 export const processConfigModificationsShape = {
-    [FieldConstants.MODIFICATIONS]: yup.array().required().of(processConfigModificationShape),
+    [FieldConstants.MODIFICATIONS]: yup.array().required().of(processConfigModificationSchema),
 };
 
 export const emptyProcessConfigModificationsFormData = { [FieldConstants.MODIFICATIONS]: [] };
