@@ -19,7 +19,7 @@ export const useOpenLoaderShortWait = ({ isLoading, delay }: { isLoading: boolea
     const [shouldOpen, setShouldOpen] = useState(false);
 
     useEffect(() => {
-        let timeout: ReturnType<typeof setTimeout>;
+        let timeout: NodeJS.Timeout;
         if (!isLoading) {
             setShouldOpen(false);
         } else {
