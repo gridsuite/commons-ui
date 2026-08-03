@@ -14,11 +14,10 @@ import { useIntl } from 'react-intl';
 import { CreateRuleDialog } from './regulationRule/CreateRuleDialog';
 import { ImportRuleDialog } from './regulationRule/ImportRuleDialog';
 import { TapChangerMapInfos, TapChangerStep } from '../common/twoWindingsTransformer.types';
-import { toTapChangerStepList } from '../common/twoWindingsTransformer.utils';
 import { DndColumn, DndTable, IntegerInput, useCustomFormContext } from '../../../../components';
 import { roundToDefaultPrecision } from '../../../../utils/rounding';
 import { FieldConstants } from '../../../../utils';
-import { compareStepsWithPreviousValues, computeHighTapPosition } from './tapChanger.utils';
+import { compareStepsWithPreviousValues, computeHighTapPosition, toTapChangerStepList } from './tapChanger.utils';
 
 export interface TapChangerStepsProps {
     tapChanger: FieldConstants.PHASE_TAP_CHANGER | FieldConstants.RATIO_TAP_CHANGER;

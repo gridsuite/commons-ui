@@ -87,6 +87,7 @@ export const getRatioTapChangerValidationSchemaProps = (isModification = false) 
                 }
             ),
         [FieldConstants.TARGET_V]: mixed()
+            .nullable()
             .when([FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES], {
                 is: true,
                 then: () => number().nullable().positive('TargetVoltageMustBeGreaterThanZero'),
@@ -99,7 +100,6 @@ export const getRatioTapChangerValidationSchemaProps = (isModification = false) 
                     );
                 },
                 then: (schema) => schema.required(),
-                otherwise: (schema) => schema.nullable(),
             }),
         [FieldConstants.TARGET_DEADBAND]: mixed()
             .nullable()

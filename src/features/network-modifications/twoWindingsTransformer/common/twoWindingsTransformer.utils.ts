@@ -26,22 +26,3 @@ export const TWT_TAB_FIELDS: Readonly<Partial<Record<TwoWindingsTransformerDialo
     [TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB]: [FieldConstants.STATE_ESTIMATION],
     // TODO DBR tap
 };
-
-export function toTapChangerStepList(
-    stepsRecord: Record<number, TapChangerStepMapInfos> | undefined
-): TapChangerStep[] | undefined {
-    if (stepsRecord) {
-        return Object.keys(stepsRecord)
-            .map((key) => {
-                const index = Number(key);
-                return {
-                    ...stepsRecord[index],
-                    [FieldConstants.STEPS_TAP]: index,
-                };
-            })
-            .sort((a, b) => {
-                return a[FieldConstants.STEPS_TAP] - b[FieldConstants.STEPS_TAP];
-            });
-    }
-    return undefined;
-}

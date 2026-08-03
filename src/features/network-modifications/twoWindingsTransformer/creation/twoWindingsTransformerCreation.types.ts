@@ -19,13 +19,13 @@ export interface TapChangerStepCreationDto {
 export interface TapChangerCreationDto {
     lowTapPosition: number;
     tapPosition: number;
-    isRegulating: boolean; // TODO DBR check vs regulating
+    isRegulating: boolean;
     targetDeadband: number | null;
     terminalRefConnectableId: string | null;
     terminalRefConnectableType: string | null;
     terminalRefConnectableVlId: string | null;
     steps: TapChangerStepCreationDto[];
-    hasLoadTapChangingCapabilities: boolean; // TODO DBR vs loadTapChangingCapabilities
+    hasLoadTapChangingCapabilities: boolean;
 }
 
 export interface RatioTapChangerCreationDto extends TapChangerCreationDto {

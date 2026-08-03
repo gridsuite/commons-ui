@@ -6,7 +6,7 @@
  */
 import { REGULATION_TYPES } from '@gridsuite/commons-ui';
 import { IntlShape } from 'react-intl';
-import { REGULATION_SIDES } from '../../../../utils';
+import { FieldConstants, REGULATION_SIDES } from '../../../../utils';
 import { TapChangerStep, TapChangerStepMapInfos } from '../common/twoWindingsTransformer.types';
 
 export const getRegulationTypeLabel = (twt: any, tap: any, intl: IntlShape) => {
@@ -67,3 +67,22 @@ export const getTapChangerEquipmentSectionTypeValue = (tapChanger: TapChangerInf
         return tapChanger?.regulatingTerminalConnectableType + ' : ' + tapChanger?.regulatingTerminalConnectableId;
     }
 };
+
+export function toTapChangerStepList(
+    stepsRecord: Record<number, TapChangerStepMapInfos> | undefined
+): TapChangerStep[] | undefined {
+    if (stepsRecord) {
+        return Object.keys(stepsRecord)
+            .map((key) => {
+                const index = Number(key);
+                return {
+                    ...stepsRecord[index],
+                    [FieldConstants.STEPS_TAP]: index,
+                };
+            })
+            .sort((a, b) => {
+                return a[FieldConstants.STEPS_TAP] - b[FieldConstants.STEPS_TAP];
+            });
+    }
+    return undefined;
+}
