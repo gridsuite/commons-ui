@@ -9,6 +9,8 @@ import * as yup from 'yup';
 import { AnyObject, TestContext, TestFunction } from 'yup';
 import {
     EquipmentType,
+    FieldConstants,
+    FILTERS,
     KILO_AMPERE,
     KILO_VOLT,
     MEGA_VAR,
@@ -19,8 +21,6 @@ import {
     PERCENTAGE,
     SIEMENS,
     YUP_REQUIRED,
-    FieldConstants,
-    FILTERS,
 } from '../../../../../utils';
 import { OPERATOR, REFERENCE_FIELD_OR_VALUE_1, REFERENCE_FIELD_OR_VALUE_2 } from './formula-constants';
 
