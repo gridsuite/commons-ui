@@ -22,7 +22,7 @@ import { ShortcircuitColumnFilter } from './shortcircuit-analysis-result-table';
 import { ShortcircuitFilterConfig } from './shortcircuit-analysis-result-content';
 import { RunningStatus } from '../../../utils';
 import { PaginationConfig, SortConfig } from '../../../components';
-import { GlobalFilters } from "../../global-filter";
+import { GlobalFilters } from '../../global-filter';
 
 export interface ShortCircuitAnalysisAllBusesResultProps {
     analysisStatus: RunningStatus;

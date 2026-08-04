@@ -32,7 +32,7 @@ import { useOpenLoaderShortWait, useSnackMessage } from '../../../hooks';
 import { ComputingType, RunningStatus, snackWithFallback } from '../../../utils';
 import { CustomTablePagination, PaginationConfig, SortConfig } from '../../../components';
 import { PAGE_OPTIONS } from '../common/utils';
-import { GlobalFilters } from "../../global-filter";
+import { GlobalFilters } from '../../global-filter';
 
 export type FetchPagedResultsParams = {
     studyUuid: UUID | null;
