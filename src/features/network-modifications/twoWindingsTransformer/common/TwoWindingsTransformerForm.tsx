@@ -73,11 +73,7 @@ export function TwoWindingsTransformerForm({
                         m: 0,
                     }}
                 >
-                    {JSON.stringify(
-                        errors,
-                        (key, value) => (key === 'ref' ? undefined : value),
-                        2
-                    )}
+                    {JSON.stringify(errors, (key, value) => (key === 'ref' ? undefined : value), 2)}
                 </Box>
             )}
         </Stack>

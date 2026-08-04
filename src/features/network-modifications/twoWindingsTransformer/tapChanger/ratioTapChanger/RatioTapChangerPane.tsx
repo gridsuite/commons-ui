@@ -61,11 +61,10 @@ export function RatioTapChangerPane({
             return intl.formatMessage({
                 id: RATIO_REGULATION_MODES.VOLTAGE_REGULATION.label,
             });
-        } else {
-            return intl.formatMessage({
-                id: RATIO_REGULATION_MODES.FIXED_RATIO.label,
-            });
         }
+        return intl.formatMessage({
+            id: RATIO_REGULATION_MODES.FIXED_RATIO.label,
+        });
     };
 
     const ratioTapChangerEnabledWatcher = useWatch({
@@ -213,7 +212,7 @@ export function RatioTapChangerPane({
     const regulationModeField = (
         <SelectInput
             name={`${id}.${FieldConstants.REGULATION_MODE}`}
-            label={'RegulationMode'}
+            label="RegulationMode"
             options={Object.values(RATIO_REGULATION_MODES)}
             size="small"
             disabled={isRatioTapLoadTapChangingCapabilitiesOff}
@@ -249,7 +248,7 @@ export function RatioTapChangerPane({
         <>
             <Grid container spacing={2}>
                 <GridItem>{ratioTapLoadTapChangingCapabilitiesField}</GridItem>
-                <GridItem size={'auto'}></GridItem>
+                <GridItem size="auto" />
             </Grid>
             <GridSection title="RegulationSection" heading={4} />
             <Grid container spacing={1}>

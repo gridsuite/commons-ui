@@ -8,10 +8,10 @@
 import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 import { TwoWindingsTransformerDialogTab } from './twoWindingsTransformer.utils';
 import { FieldConstants } from '../../../../utils';
-import { useWatch } from 'react-hook-form';
 
 interface TwoWindingsTransformerDialogProps {
     tabIndex: number;

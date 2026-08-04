@@ -106,7 +106,7 @@ export function TwoWindingsTransformerCharacteristicsPane({
 
     return (
         <>
-            <GridSection title={'Characteristics'} />
+            <GridSection title="Characteristics" />
             <Grid container spacing={2} size={width}>
                 <GridItem>{seriesResistanceField}</GridItem>
                 <GridItem>{seriesReactanceField}</GridItem>
@@ -130,7 +130,7 @@ export function TwoWindingsTransformerCharacteristicsPane({
                 <GridItem>{ratedVoltage1Field}</GridItem>
                 <GridItem>{ratedVoltage2Field}</GridItem>
             </Grid>
-            <PropertiesForm networkElementType={'twt'} isModification={isModification} />
+            <PropertiesForm networkElementType="twt" isModification={isModification} />
         </>
     );
 }

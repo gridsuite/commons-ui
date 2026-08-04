@@ -14,7 +14,8 @@ import {
 import { getRegulatingTerminalEmptyFormData, getRegulatingTerminalFormData, REGULATION_TYPES } from '../../../common';
 import {
     areArrayElementsUnique,
-    areNumbersOrdered, DeepNullable,
+    areNumbersOrdered,
+    DeepNullable,
     FieldConstants,
     PHASE_REGULATION_MODES,
     REGULATION_SIDES,
@@ -100,7 +101,10 @@ export const getPhaseTapChangerValidationSchemaProps = (isModification = false) 
                     schema
                         .required()
                         .min(ref(FieldConstants.LOW_TAP_POSITION), 'TapPositionMustBeBetweenLowAndHighTapPositionValue')
-                        .max(ref(FieldConstants.HIGH_TAP_POSITION), 'TapPositionMustBeBetweenLowAndHighTapPositionValue'),
+                        .max(
+                            ref(FieldConstants.HIGH_TAP_POSITION),
+                            'TapPositionMustBeBetweenLowAndHighTapPositionValue'
+                        ),
             }),
         [FieldConstants.STEPS]: array()
             .of(

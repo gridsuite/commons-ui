@@ -28,7 +28,7 @@ export function TwoWindingsTransformerDialogHeader({
         <TextField
             size="small"
             fullWidth
-            label={'ID'}
+            label="ID"
             value={equipmentId}
             slotProps={{
                 input: {

@@ -24,13 +24,13 @@ export interface ImportRuleDialogProps {
     handleImportTapRule: (results: Papa.ParseResult<Record<string, string>>) => void;
 }
 
-export const ImportRuleDialog = ({
+export function ImportRuleDialog({
     tapChanger,
     openImportRuleDialog,
     setOpenImportRuleDialog,
     csvColumns,
     handleImportTapRule,
-}: ImportRuleDialogProps) => {
+}: ImportRuleDialogProps) {
     const { locale } = useIntl();
     const { CSVDownloader } = useCSVDownloader();
 
@@ -67,7 +67,7 @@ export const ImportRuleDialog = ({
     }, [parsedResults, fileErrorMessage]);
 
     return (
-        <Dialog open={openImportRuleDialog} fullWidth={true}>
+        <Dialog open={openImportRuleDialog} fullWidth>
             <DialogTitle>
                 <FormattedMessage
                     id={
@@ -124,4 +124,4 @@ export const ImportRuleDialog = ({
             </DialogActions>
         </Dialog>
     );
-};
+}

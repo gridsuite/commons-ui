@@ -123,12 +123,11 @@ export function TapChangerSteps({
     const areStepsModified = useMemo(() => {
         if (editData?.[FieldConstants.STEPS] && isNodeBuilt) {
             return true;
-        } else {
-            return !compareStepsWithPreviousValues(
-                tapStepsWatcher,
-                toTapChangerStepList(previousValues?.[FieldConstants.STEPS])
-            );
         }
+        return !compareStepsWithPreviousValues(
+            tapStepsWatcher,
+            toTapChangerStepList(previousValues?.[FieldConstants.STEPS])
+        );
     }, [editData, previousValues, tapStepsWatcher]);
 
     const resetTapNumbers = useCallback(
@@ -179,7 +178,7 @@ export function TapChangerSteps({
         const currentTapRows = getValues(`${tapChanger}.${FieldConstants.STEPS}`);
 
         if (currentTapRows.length > 1) {
-            let interval = (highTap - lowTap) / (currentTapRows.length - 1);
+            const interval = (highTap - lowTap) / (currentTapRows.length - 1);
             let current = lowTap;
 
             currentTapRows.forEach((_row: TapChangerStep, index: number) => {
@@ -213,7 +212,7 @@ export function TapChangerSteps({
             name={`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`}
             label="LowTapPosition"
             formProps={{
-                disabled: disabled,
+                disabled,
             }}
             previousValue={previousValues?.[FieldConstants.LOW_TAP_POSITION]}
         />
@@ -235,7 +234,7 @@ export function TapChangerSteps({
             name={`${tapChanger}.${FieldConstants.TAP_POSITION}`}
             label="TapPosition"
             formProps={{
-                disabled: disabled,
+                disabled,
             }}
             previousValue={previousValues?.[FieldConstants.TAP_POSITION]}
         />

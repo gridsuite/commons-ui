@@ -7,25 +7,25 @@
 
 import { Dialog, DialogActions } from '@mui/material';
 import { Resolver, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useCallback } from 'react';
 import { CreateRuleForm } from './CreateRuleForm';
 import { getCreateRuleValidationSchema, getCreateRuleEmptyFormData } from './regulationRule.utils';
-import { yupResolver } from '@hookform/resolvers/yup';
 import { CreateRuleDialogSubmitButton } from './CreateRuleDialogSubmitButton';
 import { CreateRuleDialogProps, CreateRuleFormInput } from './regulationRule.types';
-import { useCallback } from 'react';
 import { FieldConstants } from '../../../../../utils';
 import { CancelButton, CustomFormProvider } from '../../../../../components';
 
 const EMPTY_FORM_DATA = getCreateRuleEmptyFormData();
 const FORM_SCHEMA = getCreateRuleValidationSchema();
 
-export const CreateRuleDialog = ({
+export function CreateRuleDialog({
     tapChanger,
     openCreateRuleDialog,
     setOpenCreateRuleDialog,
     handleCreateTapRule,
     allowNegativeValues,
-}: CreateRuleDialogProps) => {
+}: CreateRuleDialogProps) {
     const formMethods = useForm<CreateRuleFormInput>({
         defaultValues: EMPTY_FORM_DATA,
         resolver: yupResolver(FORM_SCHEMA) as Resolver<CreateRuleFormInput>,
@@ -49,7 +49,7 @@ export const CreateRuleDialog = ({
     );
 
     return (
-        <Dialog open={openCreateRuleDialog} fullWidth={true}>
+        <Dialog open={openCreateRuleDialog} fullWidth>
             <CustomFormProvider validationSchema={FORM_SCHEMA} {...formMethods}>
                 <CreateRuleForm tapChanger={tapChanger} />
                 <DialogActions>
@@ -59,4 +59,4 @@ export const CreateRuleDialog = ({
             </CustomFormProvider>
         </Dialog>
     );
-};
+}

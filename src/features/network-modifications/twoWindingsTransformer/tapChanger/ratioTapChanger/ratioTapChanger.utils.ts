@@ -10,7 +10,8 @@ import { FieldConstants } from '../../../../../utils/constants/fieldConstants';
 import { REGULATION_TYPES } from '../../../common/voltageRegulation/voltageRegulation.utils';
 import {
     areArrayElementsUnique,
-    areNumbersOrdered, DeepNullable,
+    areNumbersOrdered,
+    DeepNullable,
     RATIO_REGULATION_MODES,
     REGULATION_SIDES,
 } from '../../../../../utils';
@@ -251,9 +252,8 @@ export const getComputedRegulationType = (twt: TwoWindingsTransformerMapInfos) =
     }
     if (twt?.[FieldConstants.RATIO_TAP_CHANGER]?.regulatingTerminalConnectableId !== twt?.[FieldConstants.ID]) {
         return REGULATION_TYPES.DISTANT;
-    } else {
-        return REGULATION_TYPES.LOCAL;
     }
+    return REGULATION_TYPES.LOCAL;
 };
 
 export const getComputedRegulationTypeId = (twt: TwoWindingsTransformerMapInfos) => {
@@ -268,9 +268,8 @@ export const getComputedRegulationMode = (twt: TwoWindingsTransformerMapInfos) =
     }
     if (ratioTapChangerValues[FieldConstants.REGULATING]) {
         return RATIO_REGULATION_MODES.VOLTAGE_REGULATION;
-    } else {
-        return RATIO_REGULATION_MODES.FIXED_RATIO;
     }
+    return RATIO_REGULATION_MODES.FIXED_RATIO;
 };
 
 export const getInitialTwtRatioRegulationModeId = (twt: TwoWindingsTransformerMapInfos) => {
@@ -278,7 +277,7 @@ export const getInitialTwtRatioRegulationModeId = (twt: TwoWindingsTransformerMa
     if (!twt?.ratioTapChanger?.hasLoadTapChangingCapabilities) {
         return null;
     }
-    //otherwise, we compute it
+    // otherwise, we compute it
     const computedRegulationMode = getComputedRegulationMode(twt);
     return computedRegulationMode?.id || null;
 };
@@ -301,9 +300,8 @@ export const getComputedTapSide = (twt: TwoWindingsTransformerMapInfos) => {
         return ratioTapChangerValues?.regulatingTerminalVlId === twt?.voltageLevelId1
             ? REGULATION_SIDES.SIDE1
             : REGULATION_SIDES.SIDE2;
-    } else {
-        return null;
     }
+    return null;
 };
 
 export const getComputedTapSideId = (twt: TwoWindingsTransformerMapInfos) => {

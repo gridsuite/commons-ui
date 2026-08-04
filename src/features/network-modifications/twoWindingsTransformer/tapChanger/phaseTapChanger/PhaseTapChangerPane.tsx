@@ -8,12 +8,12 @@
 import { Grid2 as Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
+import { useMemo } from 'react';
 import { PhaseTapChangerPaneSteps } from './PhaseTapChangerPaneSteps';
 import {
     getComputedPhaseTapChangerRegulationMode,
     getComputedPreviousPhaseRegulationType,
 } from './phaseTapChanger.utils';
-import { useMemo } from 'react';
 import { TapChangerMapInfos, TapChangerPaneProps } from '../../common/twoWindingsTransformer.types';
 import { ActivePowerAdornment, AmpereAdornment, FieldConstants, PHASE_REGULATION_MODES } from '../../../../../utils';
 import { FloatInput, GridItem, GridSection, SelectInput } from '../../../../../components';
@@ -58,9 +58,8 @@ export function PhaseTapChangerPane({
                 field === FieldConstants.CURRENT_LIMITER_REGULATING_VALUE)
         ) {
             return tap?.regulationValue;
-        } else {
-            return undefined;
         }
+        return undefined;
     };
 
     const regulationType = useMemo(() => {
@@ -74,7 +73,7 @@ export function PhaseTapChangerPane({
     const regulationModeField = (
         <SelectInput
             name={`${id}.${FieldConstants.REGULATION_MODE}`}
-            label={'RegulationMode'}
+            label="RegulationMode"
             options={Object.values(PHASE_REGULATION_MODES)}
             disabled={!phaseTapChangerEnabledWatch}
             size="small"

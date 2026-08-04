@@ -167,7 +167,7 @@ export function PhaseTapChangerPaneSteps({
             columnsDefinition={COLUMNS_DEFINITIONS}
             csvColumns={csvColumns}
             createRuleMessageId="CreateDephasingRule"
-            createRuleAllowNegativeValues={true}
+            createRuleAllowNegativeValues
             importRuleMessageId="ImportDephasingRule"
             resetButtonMessageId="ResetRegulationRule"
             handleImportRow={handleImportRow}

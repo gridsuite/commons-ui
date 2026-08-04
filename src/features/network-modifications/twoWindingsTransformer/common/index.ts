@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './twoWindingsTransformer.types'
-export * from './twoWindingsTransformer.utils'
-export * from './TwoWindingsTransformerDialogHeader'
-export * from './TwoWindingsTransformerDialogTabs'
-export * from './TwoWindingsTransformerDialogTabsContent'
-export * from './TwoWindingsTransformerForm'
+export * from './twoWindingsTransformer.types';
+export * from './twoWindingsTransformer.utils';
+export * from './TwoWindingsTransformerDialogHeader';
+export * from './TwoWindingsTransformerDialogTabs';
+export * from './TwoWindingsTransformerDialogTabsContent';
+export * from './TwoWindingsTransformerForm';

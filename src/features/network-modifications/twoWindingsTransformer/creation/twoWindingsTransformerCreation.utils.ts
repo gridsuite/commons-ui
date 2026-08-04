@@ -75,9 +75,8 @@ export const computeRatioTapChangerRegulationMode = (
 ) => {
     if (ratioTapChangerFormValues?.isRegulating) {
         return RATIO_REGULATION_MODES.VOLTAGE_REGULATION.id;
-    } else {
-        return RATIO_REGULATION_MODES.FIXED_RATIO.id;
     }
+    return RATIO_REGULATION_MODES.FIXED_RATIO.id;
 };
 
 export const getTapSideForEdit = (
@@ -87,7 +86,9 @@ export const getTapSideForEdit = (
     if (tap?.terminalRefConnectableId !== twt.equipmentId) {
         return null;
     }
-    return tap?.terminalRefConnectableVlId === twt?.voltageLevelId1 ? REGULATION_SIDES.SIDE1.id : REGULATION_SIDES.SIDE2.id;
+    return tap?.terminalRefConnectableVlId === twt?.voltageLevelId1
+        ? REGULATION_SIDES.SIDE1.id
+        : REGULATION_SIDES.SIDE2.id;
 };
 
 const computeRatioTapChangerRegulating = (ratioTapChangerFormValues: RatioTapChangerFormSchema) => {
@@ -100,9 +101,8 @@ const computeRegulatingTerminalId = (
 ) => {
     if (tapChangerValue?.regulationType === REGULATION_TYPES.LOCAL.id) {
         return currentTwtId;
-    } else {
-        return tapChangerValue?.equipment?.id ?? null;
     }
+    return tapChangerValue?.equipment?.id ?? null;
 };
 
 const computeRegulatingTerminalType = (tapChangerValue: RatioTapChangerFormSchema | PhaseTapChangerFormSchema) => {
@@ -117,17 +117,15 @@ const computeRegulatingTerminalType = (tapChangerValue: RatioTapChangerFormSchem
 
 const computeTapTerminalVlId = (
     tapChangerValue: RatioTapChangerFormSchema | PhaseTapChangerFormSchema,
-    connectivity: BranchConnectivityFormData,
+    connectivity: BranchConnectivityFormData
 ) => {
     if (tapChangerValue?.regulationType === REGULATION_TYPES.LOCAL.id) {
         if (tapChangerValue?.regulationSide === REGULATION_SIDES.SIDE1.id) {
             return connectivity.connectivity1.voltageLevel?.id ?? null;
-        } else {
-            return connectivity.connectivity2.voltageLevel?.id ?? null;
         }
-    } else {
-        return tapChangerValue?.voltageLevel?.id ?? null;
+        return connectivity.connectivity2.voltageLevel?.id ?? null;
     }
+    return tapChangerValue?.voltageLevel?.id ?? null;
 };
 
 const computePhaseTapChangerRegulating = (phaseTapChangerFormValues: PhaseTapChangerFormSchema) => {
@@ -157,18 +155,18 @@ const computeRegulationModeValue = (phaseTapChangerFormValues: PhaseTapChangerFo
 };
 
 export const twoWindingsTransformerCreationFormSchema = object()
-        .shape({
-            [FieldConstants.EQUIPMENT_ID]: string().required(),
-            [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-            [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, true),
-            [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(false),
-            [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
-            [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(), // TODO DBR + toBeEstim ?
-            [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(false),
-            [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerValidationSchemaProps(false),
-        })
-        .concat(creationPropertiesSchema)
-        .required();
+    .shape({
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
+        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, true),
+        [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(false),
+        [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
+        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(), // TODO DBR + toBeEstim ?
+        [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(false),
+        [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerValidationSchemaProps(false),
+    })
+    .concat(creationPropertiesSchema)
+    .required();
 
 export type TwoWindingsTransformerCreationFormData = InferType<typeof twoWindingsTransformerCreationFormSchema>;
 
@@ -285,7 +283,9 @@ export const twoWindingsTransformerCreationFormToDto = (
         ratioTap = {
             ...ratioForm,
             isRegulating: computeRatioTapChangerRegulating(ratioForm),
-            terminalRefConnectableId: hasLoadTapCapabilities ? computeRegulatingTerminalId(ratioForm, twtForm.equipmentID) : null,
+            terminalRefConnectableId: hasLoadTapCapabilities
+                ? computeRegulatingTerminalId(ratioForm, twtForm.equipmentID)
+                : null,
             terminalRefConnectableType: hasLoadTapCapabilities ? computeRegulatingTerminalType(ratioForm) : null,
             terminalRefConnectableVlId: hasLoadTapCapabilities
                 ? computeTapTerminalVlId(ratioForm, twtForm.connectivity)
@@ -341,4 +341,4 @@ export const twoWindingsTransformerCreationFormToDto = (
         ratioTapChanger: (ratioTap as RatioTapChangerCreationDto) ?? null,
         phaseTapChanger: (phaseTap as PhaseTapChangerCreationDto) ?? null,
     };
-}
+};

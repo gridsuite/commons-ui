@@ -5,13 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    getRegulationTypeLabel,
-    getTapChangerEquipmentSectionTypeValue,
-    getTapSideLabel,
-} from './tapChanger.utils';
 import { useIntl } from 'react-intl';
 import { Grid2 as Grid } from '@mui/material';
+import { getRegulationTypeLabel, getTapChangerEquipmentSectionTypeValue, getTapSideLabel } from './tapChanger.utils';
 import { RegulatingTerminalForm, REGULATION_TYPES } from '../../common';
 import { EquipmentType, FieldConstants, Identifiable, REGULATION_SIDES } from '../../../../utils';
 import { GridItem, GridSection, SelectInput } from '../../../../components';
@@ -21,7 +17,7 @@ export interface RegulatedTerminalSectionProps {
     voltageLevelOptions: Identifiable[];
     previousValues: any;
     tapChangerDisabled: boolean;
-    regulationType?: typeof REGULATION_TYPES[keyof typeof REGULATION_TYPES]['id'];
+    regulationType?: (typeof REGULATION_TYPES)[keyof typeof REGULATION_TYPES]['id'];
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
 }
 
@@ -44,7 +40,7 @@ export function RegulatedTerminalSection({
     const regulationTypeField = (
         <SelectInput
             name={`${id}.${FieldConstants.REGULATION_TYPE}`}
-            label={'RegulationTypeText'}
+            label="RegulationTypeText"
             options={Object.values(REGULATION_TYPES)}
             disabled={tapChangerDisabled}
             size="small"
@@ -55,7 +51,7 @@ export function RegulatedTerminalSection({
     const sideField = (
         <SelectInput
             name={`${id}.${FieldConstants.REGULATION_SIDE}`}
-            label={'RegulatedSide'}
+            label="RegulatedSide"
             options={Object.values(REGULATION_SIDES)}
             disabled={tapChangerDisabled}
             size="small"

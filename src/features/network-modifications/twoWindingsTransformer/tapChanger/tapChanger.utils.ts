@@ -14,9 +14,8 @@ export const getRegulationTypeLabel = (twt: any, tap: any, intl: IntlShape) => {
         return tap?.regulatingTerminalConnectableId === twt?.id
             ? intl.formatMessage({ id: REGULATION_TYPES.LOCAL.label })
             : intl.formatMessage({ id: REGULATION_TYPES.DISTANT.label });
-    } else {
-        return null;
     }
+    return null;
 };
 
 export const getTapSideLabel = (twt: any, tap: any, intl: IntlShape) => {
@@ -27,9 +26,8 @@ export const getTapSideLabel = (twt: any, tap: any, intl: IntlShape) => {
         return tap?.regulatingTerminalVlId === twt?.voltageLevelId1
             ? intl.formatMessage({ id: REGULATION_SIDES.SIDE1.label })
             : intl.formatMessage({ id: REGULATION_SIDES.SIDE2.label });
-    } else {
-        return null;
     }
+    return null;
 };
 
 export const compareStepsWithPreviousValues = (tapSteps: TapChangerStep[], previousValues?: TapChangerStep[]) => {
@@ -44,7 +42,7 @@ export const compareStepsWithPreviousValues = (tapSteps: TapChangerStep[], previ
         /* TODO DBR fix error with stringify
         return (Object.keys(previousStep) as (keyof TapChangerStep)[]).every((key) => {
             return step[key] === previousStep[key];
-        });*/
+        }); */
         return JSON.stringify(step) === JSON.stringify(previousStep);
     });
 };
@@ -63,9 +61,8 @@ interface TapChangerInfos {
 export const getTapChangerEquipmentSectionTypeValue = (tapChanger: TapChangerInfos) => {
     if (!tapChanger?.regulatingTerminalConnectableType) {
         return null;
-    } else {
-        return tapChanger?.regulatingTerminalConnectableType + ' : ' + tapChanger?.regulatingTerminalConnectableId;
     }
+    return `${tapChanger?.regulatingTerminalConnectableType} : ${tapChanger?.regulatingTerminalConnectableId}`;
 };
 
 export function toTapChangerStepList(
