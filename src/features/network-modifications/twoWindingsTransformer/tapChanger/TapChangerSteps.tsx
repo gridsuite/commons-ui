@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { Grid2 as Grid, IconButton, Tooltip } from '@mui/material';
-import AddchartIcon from '@mui/icons-material/Addchart';
+import { Addchart as AddchartIcon } from '@mui/icons-material';
 import type Papa from 'papaparse';
 import { useIntl } from 'react-intl';
 import { CreateRuleDialog } from './regulationRule/CreateRuleDialog';
@@ -77,44 +77,47 @@ export function TapChangerSteps({
         );
     }, [isModification, lowTapPosition, previousValues]);
 
-    function allowedToAddTapRows() {
+    const allowedToAddTapRows = useCallback(() => {
         // triggering validation on low tap position before generating rows (the field is required)
         // if the trigger returns false, it means the field validation didn't pass -> we don't generate rows
         // the user will see the low tap field in red
         return trigger(`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`);
-    }
+    }, [trigger, tapChanger]);
 
-    function createTapRows(numberOfRows: number) {
-        const currentLowTapPosition = getValues(`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`);
-        const currentTapRows = getValues(`${tapChanger}.${FieldConstants.STEPS}`);
+    const createTapRows = useCallback(
+        (numberOfRows: number) => {
+            const currentLowTapPosition = getValues(`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`);
+            const currentTapRows = getValues(`${tapChanger}.${FieldConstants.STEPS}`);
 
-        let nextHighestTap;
-        if (currentTapRows.length === 0) {
-            nextHighestTap = currentLowTapPosition;
-        } else {
-            nextHighestTap = currentTapRows[currentTapRows.length - 1][FieldConstants.STEPS_TAP] + 1;
-        }
-
-        const tapRowsToAdd = [];
-        for (let i = 0; i < numberOfRows; i++) {
-            // we remove STEPS_TAP from the columns with slice
-            const newRow = columnsDefinition.slice(1).reduce(
-                (accumulator, currentValue) => ({
-                    ...accumulator,
-                    [currentValue.dataKey]: currentValue.initialValue,
-                }),
-                { [FieldConstants.STEPS_TAP]: nextHighestTap }
-            );
-            tapRowsToAdd.push(newRow);
-            if (i !== numberOfRows - 1) {
-                nextHighestTap++;
+            let nextHighestTap;
+            if (currentTapRows.length === 0) {
+                nextHighestTap = currentLowTapPosition;
+            } else {
+                nextHighestTap = currentTapRows[currentTapRows.length - 1][FieldConstants.STEPS_TAP] + 1;
             }
-        }
 
-        setValue(`${tapChanger}.${FieldConstants.HIGH_TAP_POSITION}`, nextHighestTap);
+            const tapRowsToAdd = [];
+            for (let i = 0; i < numberOfRows; i++) {
+                // we remove STEPS_TAP from the columns with slice
+                const newRow = columnsDefinition.slice(1).reduce(
+                    (accumulator, currentValue) => ({
+                        ...accumulator,
+                        [currentValue.dataKey]: currentValue.initialValue,
+                    }),
+                    { [FieldConstants.STEPS_TAP]: nextHighestTap }
+                );
+                tapRowsToAdd.push(newRow);
+                if (i !== numberOfRows - 1) {
+                    nextHighestTap += 1;
+                }
+            }
 
-        return tapRowsToAdd;
-    }
+            setValue(`${tapChanger}.${FieldConstants.HIGH_TAP_POSITION}`, nextHighestTap);
+
+            return tapRowsToAdd;
+        },
+        [columnsDefinition, getValues, setValue, tapChanger]
+    );
 
     const tapStepsWatcher = useWatch({
         name: `${tapChanger}.${FieldConstants.STEPS}`,
@@ -128,11 +131,12 @@ export function TapChangerSteps({
             tapStepsWatcher,
             toTapChangerStepList(previousValues?.[FieldConstants.STEPS])
         );
-    }, [editData, previousValues, tapStepsWatcher]);
+    }, [editData, isNodeBuilt, previousValues, tapStepsWatcher]);
 
     const resetTapNumbers = useCallback(
-        (tapSteps: TapChangerStep[] | null, isModification: boolean): void => {
-            const currentTapRows: TapChangerStep[] = tapSteps ?? getValues(`${tapChanger}.${FieldConstants.STEPS}`);
+        (stepsOverride: TapChangerStep[] | null): void => {
+            const currentTapRows: TapChangerStep[] =
+                stepsOverride ?? getValues(`${tapChanger}.${FieldConstants.STEPS}`);
 
             const currentLowTapPosition: number | null | undefined =
                 isModification && lowTapPosition === null
@@ -151,22 +155,22 @@ export function TapChangerSteps({
                 currentTapRows.length !== 0 ? (currentLowTapPosition ?? 0) + currentTapRows.length - 1 : null;
             setValue(`${tapChanger}.${FieldConstants.HIGH_TAP_POSITION}`, newHighTapPosition);
         },
-        [getValues, tapChanger, lowTapPosition, previousValues, setValue]
+        [getValues, tapChanger, lowTapPosition, previousValues, setValue, isModification]
     );
 
     // Adjust high tap position when low tap position change + remove red if value fixed
     useEffect(() => {
         trigger(`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`).then((result) => {
             if (result) {
-                resetTapNumbers(null, isModification);
+                resetTapNumbers(null);
             }
         });
-    }, [trigger, tapChanger, lowTapPosition, resetTapNumbers, isModification]);
+    }, [trigger, tapChanger, lowTapPosition, resetTapNumbers]);
 
     // when we detect a change in tapSteps (so when the size or the order of the list of rows change), we reset the tap fields
     useEffect(() => {
-        resetTapNumbers(tapSteps as unknown as TapChangerStep[], isModification);
-    }, [tapSteps, resetTapNumbers, isModification]);
+        resetTapNumbers(tapSteps as unknown as TapChangerStep[]);
+    }, [tapSteps, resetTapNumbers]);
 
     const handleResetButton = useCallback(() => {
         replace(previousValues?.[FieldConstants.STEPS] ?? []);
@@ -189,13 +193,13 @@ export function TapChangerSteps({
         }
     };
 
-    function handleImportTapRuleButton() {
+    const handleImportTapRuleButton = useCallback(() => {
         trigger(`${tapChanger}.${FieldConstants.LOW_TAP_POSITION}`).then((result) => {
             if (result) {
                 setOpenImportRuleDialog(true);
             }
         });
-    }
+    }, [trigger, tapChanger]);
 
     const handleImportTapRule = (results: Papa.ParseResult<Record<string, string>>): void => {
         const rows = results.data.map((val) => ({
@@ -266,9 +270,11 @@ export function TapChangerSteps({
             rowIndex: number,
             column: DndColumn,
             arrayFormName: string,
-            tapSteps: TapChangerStep[] | undefined
+            previousTapSteps: TapChangerStep[] | undefined
         ): number | undefined => {
-            const step = tapSteps?.find((e: TapChangerStep) => e.index === getValues(arrayFormName)[rowIndex]?.index);
+            const step = previousTapSteps?.find(
+                (e: TapChangerStep) => e.index === getValues(arrayFormName)[rowIndex]?.index
+            );
             if (step === undefined) {
                 return undefined;
             }

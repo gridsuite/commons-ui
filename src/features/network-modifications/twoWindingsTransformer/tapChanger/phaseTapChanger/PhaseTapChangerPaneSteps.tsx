@@ -8,7 +8,7 @@
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
 import { DndColumn, DndColumnType, parseIntData } from '@gridsuite/commons-ui';
-import { TapChangerMapInfos, TapChangerPaneProps } from '../../common/twoWindingsTransformer.types';
+import { TapChangerMapInfos } from '../../common/twoWindingsTransformer.types';
 import { FieldConstants } from '../../../../../utils';
 import { TapChangerSteps } from '../TapChangerSteps';
 import { TwoWindingsTransformerModificationDto } from '../../modification/twoWindingsTransformerModification.types';
@@ -137,11 +137,11 @@ export function PhaseTapChangerPaneSteps({
                 ],
                 0
             ),
-            [FieldConstants.STEPS_RATIO]: isNaN(parseFloat(val[intl.formatMessage({ id: 'Ratio' })]))
+            [FieldConstants.STEPS_RATIO]: Number.isNaN(Number.parseFloat(val[intl.formatMessage({ id: 'Ratio' })]))
                 ? 1
-                : parseFloat(val[intl.formatMessage({ id: 'Ratio' })]),
-            [FieldConstants.STEPS_ALPHA]: isNaN(
-                parseFloat(
+                : Number.parseFloat(val[intl.formatMessage({ id: 'Ratio' })]),
+            [FieldConstants.STEPS_ALPHA]: Number.isNaN(
+                Number.parseFloat(
                     val[
                         intl.formatMessage({
                             id: 'ImportFileAlpha',
@@ -150,7 +150,7 @@ export function PhaseTapChangerPaneSteps({
                 )
             )
                 ? 1
-                : parseFloat(
+                : Number.parseFloat(
                       val[
                           intl.formatMessage({
                               id: 'ImportFileAlpha',

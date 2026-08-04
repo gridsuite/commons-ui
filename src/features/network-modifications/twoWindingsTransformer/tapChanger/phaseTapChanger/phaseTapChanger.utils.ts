@@ -122,8 +122,8 @@ export const getPhaseTapChangerValidationSchemaProps = (isModification = false) 
                 is: (enabled: boolean) => enabled && !isModification,
                 then: (schema) => schema.min(1, 'GeneratePhaseTapRowsError'),
             })
-            .test('distinctOrderedAlpha', 'PhaseShiftValuesError', (array) => {
-                const alphaArray = (array ?? []).map((step) => step[FieldConstants.STEPS_ALPHA]);
+            .test('distinctOrderedAlpha', 'PhaseShiftValuesError', (stepsArray) => {
+                const alphaArray = (stepsArray ?? []).map((step) => step[FieldConstants.STEPS_ALPHA]);
                 return areNumbersOrdered(alphaArray) && areArrayElementsUnique(alphaArray);
             }),
         ...getRegulatingTerminalPhaseTapChangerValidationSchema(),

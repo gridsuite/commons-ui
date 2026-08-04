@@ -30,12 +30,12 @@ export function RegulatedTerminalSection({
     fetchVoltageLevelEquipments,
 }: Readonly<RegulatedTerminalSectionProps>) {
     const intl = useIntl();
-    const tapChangerPreviousValues =
-        id === FieldConstants.PHASE_TAP_CHANGER
-            ? previousValues?.ratioTapChanger
-            : id === FieldConstants.PHASE_TAP_CHANGER
-              ? previousValues?.phaseTapChanger
-              : undefined;
+    let tapChangerPreviousValues;
+    if (id === FieldConstants.RATIO_TAP_CHANGER) {
+        tapChangerPreviousValues = previousValues?.ratioTapChanger;
+    } else if (id === FieldConstants.PHASE_TAP_CHANGER) {
+        tapChangerPreviousValues = previousValues?.phaseTapChanger;
+    }
 
     const regulationTypeField = (
         <SelectInput

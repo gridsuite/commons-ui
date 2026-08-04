@@ -48,6 +48,7 @@ export function PhaseTapChangerPane({
                 id: computedRegulationMode?.label,
             });
         }
+        return undefined;
     };
 
     const getRegulatingPreviousValue = (field: string, tap?: TapChangerMapInfos) => {

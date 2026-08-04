@@ -99,16 +99,15 @@ export const areNumbersOrdered = (array?: unknown) => {
         if (Number.isNaN(nextOne)) {
             return false;
         }
-        if (current === nextOne) {
-            continue;
+        if (current !== nextOne) {
+            if (order === null) {
+                order = current < nextOne ? 'asc' : 'desc';
+            }
+            if ((order === 'asc' && current > nextOne) || (order === 'desc' && current < nextOne)) {
+                return false;
+            }
+            current = nextOne;
         }
-        if (order === null) {
-            order = current < nextOne ? 'asc' : 'desc';
-        }
-        if ((order === 'asc' && current > nextOne) || (order === 'desc' && current < nextOne)) {
-            return false;
-        }
-        current = nextOne;
     }
     return true;
 };

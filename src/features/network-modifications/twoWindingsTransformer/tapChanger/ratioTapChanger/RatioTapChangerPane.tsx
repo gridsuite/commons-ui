@@ -17,12 +17,8 @@ import {
     getComputedTapSideId,
 } from './ratioTapChanger.utils';
 import { RegulatedTerminalSection } from '../RegulatedTerminalSection';
-import {
-    TapChangerMapInfos,
-    TapChangerPaneProps,
-    TwoWindingsTransformerMapInfos,
-} from '../../common/twoWindingsTransformer.types';
-import { FieldConstants, Identifiable, RATIO_REGULATION_MODES, VoltageAdornment } from '../../../../../utils';
+import { TapChangerMapInfos, TapChangerPaneProps } from '../../common/twoWindingsTransformer.types';
+import { FieldConstants, RATIO_REGULATION_MODES, VoltageAdornment } from '../../../../../utils';
 import {
     CheckboxNullableInput,
     FloatInput,
@@ -92,40 +88,34 @@ export function RatioTapChangerPane({
         );
     }, [previousValues, regulationTypeWatch]);
 
-    const findAndSetVoltageLevelFromPrevious = useCallback(
-        (previousValues: TwoWindingsTransformerMapInfos | undefined, voltageLevelOptions: Identifiable[]) => {
-            const prevVl = voltageLevelOptions.find(
-                (vl) => vl.id === previousValues?.ratioTapChanger?.regulatingTerminalVlId
-            );
-            if (prevVl) {
-                const newVlValue = {
-                    id: prevVl.id,
-                    label: prevVl.name ?? '',
-                };
-                setValue(`${id}.${FieldConstants.VOLTAGE_LEVEL}`, newVlValue);
-            } else {
-                // not supposed to happen, but if it does, we want to log it and keep the form as it is
-                console.error('Voltage level not found:', prevVl);
-            }
-        },
-        [setValue, id]
-    );
+    const findAndSetVoltageLevelFromPrevious = useCallback(() => {
+        const prevVl = voltageLevelOptions.find(
+            (vl) => vl.id === previousValues?.ratioTapChanger?.regulatingTerminalVlId
+        );
+        if (prevVl) {
+            const newVlValue = {
+                id: prevVl.id,
+                label: prevVl.name ?? '',
+            };
+            setValue(`${id}.${FieldConstants.VOLTAGE_LEVEL}`, newVlValue);
+        } else {
+            // not supposed to happen, but if it does, we want to log it and keep the form as it is
+            console.error('Voltage level not found:', prevVl);
+        }
+    }, [setValue, id, voltageLevelOptions, previousValues]);
 
-    const setEquipmentFromPrevious = useCallback(
-        (previousValues: TwoWindingsTransformerMapInfos | undefined) => {
-            const prevEquipmentId = previousValues?.ratioTapChanger?.regulatingTerminalConnectableId;
-            if (prevEquipmentId) {
-                const prevEquipmentType = previousValues?.ratioTapChanger?.regulatingTerminalConnectableType;
-                const newEquipment = {
-                    id: prevEquipmentId,
-                    label: prevEquipmentType,
-                    type: prevEquipmentType,
-                };
-                setValue(`${id}.${FieldConstants.EQUIPMENT}`, newEquipment);
-            }
-        },
-        [setValue, id]
-    );
+    const setEquipmentFromPrevious = useCallback(() => {
+        const prevEquipmentId = previousValues?.ratioTapChanger?.regulatingTerminalConnectableId;
+        if (prevEquipmentId) {
+            const prevEquipmentType = previousValues?.ratioTapChanger?.regulatingTerminalConnectableType;
+            const newEquipment = {
+                id: prevEquipmentId,
+                label: prevEquipmentType,
+                type: prevEquipmentType,
+            };
+            setValue(`${id}.${FieldConstants.EQUIPMENT}`, newEquipment);
+        }
+    }, [setValue, id, previousValues]);
 
     const setValueIfNull = useCallback(
         (curRatioTapChanger: Record<string, unknown>, field: string, value: unknown) => {
@@ -163,21 +153,13 @@ export function RatioTapChangerPane({
             setValueIfNull(curRatioTapChanger, FieldConstants.REGULATION_SIDE, getComputedTapSideId(previousValues));
 
             if (curRatioTapChanger[FieldConstants.VOLTAGE_LEVEL] === null) {
-                findAndSetVoltageLevelFromPrevious(previousValues, voltageLevelOptions);
+                findAndSetVoltageLevelFromPrevious();
             }
             if (curRatioTapChanger[FieldConstants.EQUIPMENT] === null) {
-                setEquipmentFromPrevious(previousValues);
+                setEquipmentFromPrevious();
             }
         },
-        [
-            id,
-            voltageLevelOptions,
-            previousValues,
-            getValues,
-            setValueIfNull,
-            findAndSetVoltageLevelFromPrevious,
-            setEquipmentFromPrevious,
-        ]
+        [id, previousValues, getValues, setValueIfNull, findAndSetVoltageLevelFromPrevious, setEquipmentFromPrevious]
     );
 
     // we want to update the validation of these fields when they become optionals to remove the red alert

@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { TapChangerStep, TapChangerStepMapInfos } from './twoWindingsTransformer.types';
+
 import { FieldConstants } from '../../../../utils';
 
 export const enum TwoWindingsTransformerDialogTab {
@@ -12,8 +12,8 @@ export const enum TwoWindingsTransformerDialogTab {
     CHARACTERISTICS_TAB = 1,
     LIMITS_TAB = 2,
     STATE_ESTIMATION_TAB = 3,
-    RATIO_TAP_TAB,
-    PHASE_TAP_TAB,
+    RATIO_TAP_TAB = 4,
+    PHASE_TAP_TAB = 5,
 }
 
 export const TWT_TAB_FIELDS: Readonly<Partial<Record<TwoWindingsTransformerDialogTab, FieldConstants[]>>> = {
@@ -24,5 +24,6 @@ export const TWT_TAB_FIELDS: Readonly<Partial<Record<TwoWindingsTransformerDialo
     ],
     [TwoWindingsTransformerDialogTab.LIMITS_TAB]: [FieldConstants.LIMITS],
     [TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB]: [FieldConstants.STATE_ESTIMATION],
-    // TODO DBR tap
+    [TwoWindingsTransformerDialogTab.RATIO_TAP_TAB]: [FieldConstants.RATIO_TAP_CHANGER],
+    [TwoWindingsTransformerDialogTab.PHASE_TAP_TAB]: [FieldConstants.PHASE_TAP_CHANGER],
 };

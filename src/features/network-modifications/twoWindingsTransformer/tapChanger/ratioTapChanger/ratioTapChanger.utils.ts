@@ -148,8 +148,8 @@ export const getRatioTapChangerValidationSchemaProps = (isModification = false) 
                 is: true,
                 then: (schema) => schema.min(1, 'GenerateRatioTapRowsError'),
             })
-            .test('distinctOrderedRatio', 'RatioValuesError', (array) => {
-                const ratioArray = (array ?? []).map((step) => step[FieldConstants.STEPS_RATIO]);
+            .test('distinctOrderedRatio', 'RatioValuesError', (stepsArray) => {
+                const ratioArray = (stepsArray ?? []).map((step) => step[FieldConstants.STEPS_RATIO]);
                 return areNumbersOrdered(ratioArray) && areArrayElementsUnique(ratioArray);
             }),
         ...getRegulatingTerminalRatioTapChangerValidationSchema(),
