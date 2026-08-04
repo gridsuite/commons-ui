@@ -18,3 +18,4 @@ export * from './results/securityanalysis';
 export * from './results/loadflow';
 export * from './results/utils';
 export * from './process-configs';
+export * from './global-filter';

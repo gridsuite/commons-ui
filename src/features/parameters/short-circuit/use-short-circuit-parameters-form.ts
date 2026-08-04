@@ -27,7 +27,10 @@ import {
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
 import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, useTabs, VERSION_PARAMETER } from '../common';
 import {

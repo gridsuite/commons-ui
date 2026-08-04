@@ -10,18 +10,7 @@ import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { DESCRIPTION_LIMIT_ERROR, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION, NAME_EMPTY } from '../../../utils';
 import { DescriptionField, UniqueNameInput } from '../../ui';
-import type { MuiStyles } from '../../../utils/styles';
-
-export const filterStyles = {
-    textField: {
-        minWidth: '250px',
-        width: '33%',
-    },
-    description: {
-        minWidth: '250px',
-        width: '50%',
-    },
-} as const satisfies MuiStyles;
+import { elementEditionStyles } from '../../ui/dialogs/name-element-editor';
 
 export const HeaderFilterSchema = {
     [FieldConstants.NAME]: yup.string().trim().required(NAME_EMPTY),
@@ -48,12 +37,12 @@ export function HeaderFilterForm({ creation, activeDirectory }: Readonly<HeaderF
                     elementType={ElementType.FILTER}
                     autoFocus={creation}
                     activeDirectory={activeDirectory}
-                    sx={filterStyles.textField}
+                    sx={elementEditionStyles.textField}
                     fullWidth={false}
                 />
             </Grid>
             <Grid size={12}>
-                <DescriptionField expandingTextSx={filterStyles.description} />
+                <DescriptionField expandingTextSx={elementEditionStyles.description} />
             </Grid>
         </Grid>
     );
