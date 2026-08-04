@@ -32,8 +32,6 @@ export function TwoWindingsTransformerCharacteristicsPane({
     twtToModify,
     isModification = false,
 }: Readonly<TwoWindingsTransformerCharacteristicsPaneProps>) {
-    const width = isModification ? 12 : 8; // TODO DBR remove ?
-
     const seriesResistanceField = (
         <FloatInput
             name={`${id}.${FieldConstants.R}`}
@@ -107,14 +105,14 @@ export function TwoWindingsTransformerCharacteristicsPane({
     return (
         <>
             <GridSection title="Characteristics" />
-            <Grid container spacing={2} size={width}>
+            <Grid container spacing={2}>
                 <GridItem>{seriesResistanceField}</GridItem>
                 <GridItem>{seriesReactanceField}</GridItem>
                 <GridItem>{magnetizingConductanceField}</GridItem>
                 <GridItem>{magnetizingSusceptanceField}</GridItem>
                 <GridItem>{ratedSField}</GridItem>
             </Grid>
-            <Grid container spacing={2} size={width}>
+            <Grid container spacing={2}>
                 <Grid size={6}>
                     <h4>
                         <FormattedMessage id="Side1" />
@@ -126,7 +124,7 @@ export function TwoWindingsTransformerCharacteristicsPane({
                     </h4>
                 </Grid>
             </Grid>
-            <Grid container spacing={2} size={width}>
+            <Grid container spacing={2}>
                 <GridItem>{ratedVoltage1Field}</GridItem>
                 <GridItem>{ratedVoltage2Field}</GridItem>
             </Grid>

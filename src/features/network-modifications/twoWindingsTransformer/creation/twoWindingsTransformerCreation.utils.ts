@@ -39,7 +39,7 @@ import {
     TwoWindingsTransformerCreationDto,
 } from './twoWindingsTransformerCreation.types';
 import {
-    getAllLimitsFormDataProperties,
+    getAllLimitsFormData,
     getLimitsEmptyFormDataProps,
     getLimitsValidationSchemaProps,
     sanitizeLimitsGroups,
@@ -60,7 +60,7 @@ import {
     PhaseTapChangerFormSchema,
     RatioTapChangerFormSchema,
 } from '../tapChanger';
-import { REGULATION_TYPES } from '../../common';
+import { OperationalLimitsGroupFormSchema, REGULATION_TYPES } from '../../common';
 import { TapChangerMapInfos } from '../common/twoWindingsTransformer.types';
 
 export const getRegulationTypeForEdit = (twt: TwoWindingsTransformerCreationDto, tap: TapChangerCreationDto | null) => {
@@ -154,6 +154,34 @@ const computeRegulationModeValue = (phaseTapChangerFormValues: PhaseTapChangerFo
     return phaseTapChangerFormValues?.regulationMode;
 };
 
+/**
+ * Transforms operational limits groups from dto info form format
+ */
+const transformOperationalLimitsGroupsForForm = (
+    operationalLimitsGroups: OperationalLimitsGroupFormSchema[] | null
+) => {
+    return operationalLimitsGroups
+        ?.filter(
+            (group): group is OperationalLimitsGroupFormSchema & { id: string; applicability: string } =>
+                group.id != null && group.applicability != null
+        )
+        .map(({ id, currentLimits, applicability, limitsProperties }) => ({
+            id: id + applicability,
+            name: id,
+            applicability,
+            limitsProperties: limitsProperties ?? undefined,
+            currentLimits: {
+                permanentLimit: (currentLimits?.permanentLimit ?? '') as unknown as number,
+                temporaryLimits:
+                    currentLimits?.temporaryLimits?.map((tl) => ({
+                        name: tl.name ?? '',
+                        value: (tl.value ?? '') as unknown as number,
+                        acceptableDuration: (tl.acceptableDuration ?? '') as unknown as number,
+                    })) ?? [],
+            },
+        }));
+};
+
 export const twoWindingsTransformerCreationFormSchema = object()
     .shape({
         [FieldConstants.EQUIPMENT_ID]: string().required(),
@@ -161,7 +189,7 @@ export const twoWindingsTransformerCreationFormSchema = object()
         [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, true),
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(false),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
-        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(), // TODO DBR + toBeEstim ?
+        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(), // TODO need toBeEstim wth Modification case
         [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(false),
         [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerValidationSchemaProps(false),
     })
@@ -176,7 +204,7 @@ export const twoWindingsTransformerCreationEmptyFormData: DeepNullable<TwoWindin
     [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionEmptyFormDataProps(),
     [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsEmptyFormData(),
     [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(false),
-    [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(), // TODO DBR + toBeEstim ?
+    [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(), // TODO need toBeEstim wth Modification case
     [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerEmptyFormData(false),
     [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerEmptyFormData(false),
     AdditionalProperties: [],
@@ -218,13 +246,8 @@ export const twoWindingsTransformerCreationDtoToForm = (
             ratedS: twtDto.ratedS,
         },
         AdditionalProperties: getFilledPropertiesFromModification(twtDto.properties),
-        limits: getAllLimitsFormDataProperties(
-            // TODO DBR twt code DIFF from limits code !! FIXME from limtis below to transformOperationalLimitsGroupsForForm ?
-            twtDto?.operationalLimitsGroups?.map(({ id, ...baseData }) => ({
-                ...baseData,
-                name: id,
-                id: id + baseData.applicability,
-            })),
+        ...getAllLimitsFormData(
+            transformOperationalLimitsGroupsForForm(twtDto?.operationalLimitsGroups),
             twtDto?.selectedOperationalLimitsGroupId1 ?? null,
             twtDto?.selectedOperationalLimitsGroupId2 ?? null
         ),

@@ -39,10 +39,6 @@ export const compareStepsWithPreviousValues = (tapSteps: TapChangerStep[], previ
     }
     return tapSteps.every((step, index) => {
         const previousStep = previousValues[index];
-        /* TODO DBR fix error with stringify
-        return (Object.keys(previousStep) as (keyof TapChangerStep)[]).every((key) => {
-            return step[key] === previousStep[key];
-        }); */
         return JSON.stringify(step) === JSON.stringify(previousStep);
     });
 };
