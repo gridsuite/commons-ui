@@ -13,7 +13,7 @@ import {
 } from '../common';
 import { getNameElementEditorSchema } from '../common/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
-import { SAParametersEnriched } from '../../../utils';
+import { NORMALIZED_PERCENTAGE, SAParametersEnriched } from '../../../utils';
 import {
     FLOW_PROPORTIONAL_THRESHOLD,
     HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
@@ -36,19 +36,19 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
     const thresholdsSchema = yup.object().shape({
         [FLOW_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
         [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: yup
             .number()
-            .min(0, 'NormalizedPercentage')
-            .max(100, 'NormalizedPercentage')
+            .min(0, NORMALIZED_PERCENTAGE)
+            .max(100, NORMALIZED_PERCENTAGE)
             .required(),
         [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: yup.number().required(),
     });
