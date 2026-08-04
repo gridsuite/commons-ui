@@ -24,9 +24,9 @@ import {
     flattenNmKResultsContingencies,
     handlePostSortRows,
     mapNmKResultsCutOffPower,
-    PAGE_OPTIONS,
 } from './utils';
 import { getNoRowsMessage } from '../utils';
+import { PAGE_OPTIONS } from '../common/utils';
 
 const styles = {
     container: {

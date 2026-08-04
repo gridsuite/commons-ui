@@ -5,6 +5,4 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './renderTable-ExportCsv';
-export * from './no-rows-message';
-export * from './page-and-sort';
+export const PAGE_OPTIONS = [25, 100, 500, 1000];
