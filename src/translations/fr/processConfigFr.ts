@@ -6,9 +6,14 @@
  */
 
 export const processConfigFr = {
-    'process_config/editSAProcessConfigTitle': "Édition d'une configuration d'analyse de sécurité sous aléas",
+    'process_config/editLFProcessConfigTitle': 'Éditer une configuration de chaîne de calcul de répartition',
+    'process_config/editSAProcessConfigTitle': "Éditer une configuration d'analyse de sécurité sous aléas",
     'process_config/modifications': 'Modifications',
     'process_config/providersParameters': 'Paramètres des simulateurs',
     'process_config/loadflow': 'Calcul de répartition',
     'process_config/securityAnalysis': 'Analyse de sécurité',
+    'processConfig/fetchProcessConfigError':
+        'Une erreur est survenue lors de la récupération de la configuration de chaîne',
+    'processConfig/updateProcessConfigError':
+        'Une erreur est survenue lors de la mise à jour de la configuration de chaîne',
 };

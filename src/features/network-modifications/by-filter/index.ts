@@ -7,3 +7,4 @@
 
 export * from './deletion';
 export * from './assignment';
+export * from './formula';

@@ -12,7 +12,13 @@ import {
     getPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
-import { FieldConstants, sanitizeString } from '../../../../utils';
+import {
+    CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
+    FieldConstants,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    sanitizeString,
+    SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+} from '../../../../utils';
 import { MAX_SECTIONS_COUNT } from './voltageLevel.constants';
 import { convertInputValue, convertOutputValue } from '../../../../utils/conversionUtils';
 import { FieldType } from '../../../../utils/types/fieldType';
@@ -64,7 +70,7 @@ export const voltageLevelCreationFormSchema = object()
                 then: (schema) =>
                     schema.notOneOf(
                         [ref(FieldConstants.SUBSTATION_ID), null],
-                        'CreateSubstationInVoltageLevelIdenticalId'
+                        CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID
                     ),
             })
             .when([FieldConstants.ADD_SUBSTATION_CREATION], {
@@ -72,7 +78,7 @@ export const voltageLevelCreationFormSchema = object()
                 then: (schema) =>
                     schema.notOneOf(
                         [ref(FieldConstants.SUBSTATION_CREATION_ID), null],
-                        'CreateSubstationInVoltageLevelIdenticalId'
+                        CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID
                     ),
             }),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
@@ -86,7 +92,7 @@ export const voltageLevelCreationFormSchema = object()
                         .required()
                         .notOneOf(
                             [ref(FieldConstants.EQUIPMENT_ID), null],
-                            'CreateSubstationInVoltageLevelIdenticalId'
+                            CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID
                         ),
             }),
         [FieldConstants.SUBSTATION_CREATION_ID]: string()
@@ -98,7 +104,7 @@ export const voltageLevelCreationFormSchema = object()
                         .required()
                         .notOneOf(
                             [ref(FieldConstants.EQUIPMENT_ID), null],
-                            'CreateSubstationInVoltageLevelIdenticalId'
+                            CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID
                         ),
             }),
         [FieldConstants.SUBSTATION_NAME]: string().nullable(),
@@ -112,20 +118,20 @@ export const voltageLevelCreationFormSchema = object()
             .nullable()
             .when([FieldConstants.HIDE_NOMINAL_VOLTAGE], {
                 is: (hideNominalVoltage: boolean) => !hideNominalVoltage,
-                then: (schema) => schema.min(0, 'mustBeGreaterOrEqualToZero').required(),
+                then: (schema) => schema.min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
             }),
         [FieldConstants.LOW_VOLTAGE_LIMIT]: number()
             .nullable()
-            .min(0, 'mustBeGreaterOrEqualToZero')
+            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .max(ref(FieldConstants.HIGH_VOLTAGE_LIMIT), 'voltageLevelNominalVoltageMaxValueError'),
-        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.HIGH_VOLTAGE_LIMIT]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
             .nullable()
-            .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
+            .min(0, SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .max(ref(FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT), 'ShortCircuitCurrentLimitMinMaxError'),
         [FieldConstants.HIGH_SHORT_CIRCUIT_CURRENT_LIMIT]: number()
             .nullable()
-            .min(0, 'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero')
+            .min(0, SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .when([FieldConstants.LOW_SHORT_CIRCUIT_CURRENT_LIMIT], {
                 is: (lowShortCircuitCurrentLimit: number | null) => lowShortCircuitCurrentLimit != null,
                 then: (schema) => schema.required(),

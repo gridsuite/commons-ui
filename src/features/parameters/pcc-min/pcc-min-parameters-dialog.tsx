@@ -8,10 +8,11 @@
 import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function PccMinParametersEditionDialog({
     id,
@@ -32,9 +33,8 @@ export function PccMinParametersEditionDialog({
     });
 
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = pccMinMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
@@ -48,7 +48,7 @@ export function PccMinParametersEditionDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
             PaperProps={{
                 sx: {
                     height: '90vh', // we want the dialog height to be fixed even when switching tabs

@@ -13,10 +13,11 @@ import {
     updateSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ComputingType, ElementType } from '../../../utils';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function SensitivityAnalysisParametersDialog({
     id,
@@ -56,9 +57,8 @@ export function SensitivityAnalysisParametersDialog({
         isRootNode,
     });
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = sensitivityAnalysisMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
@@ -72,7 +72,7 @@ export function SensitivityAnalysisParametersDialog({
                 language,
             }}
             titleId={titleId}
-            disabledSave={disableSave}
+            disabledSave={isDisabledValidationButton(errors)}
         >
             <Grid container sx={{ width: '100%' }}>
                 <NameElementEditorForm

@@ -10,7 +10,12 @@ import '@mui/material'; // dunno why we need to import like that for module augm
 // used to customize mui theme
 // https://mui.com/material-ui/customization/theming/#typescript
 declare module '@mui/material/styles' {
-    interface Theme {
+    interface PaletteExtension {
+        tabBackground: string;
+    }
+    export interface Palette extends MuiPalette, Required<PaletteExtension> {}
+    export interface PaletteOptions extends MuiPaletteOptions, Partial<PaletteExtension> {}
+    interface ThemeExtension {
         aggrid: {
             theme: string;
             highlightColor: string;
@@ -30,4 +35,9 @@ declare module '@mui/material/styles' {
             disabledColor: string;
         };
     }
+
+    export interface Theme extends MuiTheme, Required<ThemeExtension> {}
+
+    // allow configuration using `createTheme`
+    export interface ThemeOptions extends MuiThemeOptions, Partial<ThemeExtension> {}
 }

@@ -56,7 +56,7 @@ import {
 } from '../../../services/sensitivity-analysis';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { BuildStatus } from '../../node';
 import { CONTINGENCIES, PROVIDER } from '../common/constants';
 import { ACTIVATED } from '../common/parameter-table-field';
