@@ -30,6 +30,7 @@ import {
     TableType,
     FilterTextComparators,
     FilterNumberComparators,
+    ColumnContext,
 } from '../../../components';
 import { mappingTabs } from './shortcircuit-analysis-result-content';
 import { getRows, MuiStyles, RunningStatus, unitToKiloUnit } from '../../../utils';
@@ -40,14 +41,6 @@ import { AGGRID_LOCALES } from '../../../translations/not-intl/aggrid-locales';
 export const SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE = 'shortcircuitAnalysisResult';
 
 export type FilterEnumsType = Record<string, string[] | null>;
-
-export interface ColumnContext {
-    numeric?: boolean;
-    fractionDigits?: number;
-    sortParams?: SortParams;
-    filterComponent?: any;
-    filterComponentParams?: any;
-}
 
 export const textFilterParams = {
     dataType: FilterDataTypes.TEXT,
