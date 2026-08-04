@@ -106,7 +106,6 @@ export const resultsGlobalFilterStyles = {
     }),
     chip: {
         '&.MuiChip-root': {
-            borderRadius: '100px solid',
             margin: '1px 2px 1px 2px',
             padding: '0',
             color: 'white',

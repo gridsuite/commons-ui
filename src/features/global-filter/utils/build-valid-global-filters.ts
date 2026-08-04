@@ -46,7 +46,6 @@ export function buildValidGlobalFilters(filters: GlobalFilter[]): GlobalFilters 
                 }
                 break;
             default:
-                //
                 break;
         }
     });

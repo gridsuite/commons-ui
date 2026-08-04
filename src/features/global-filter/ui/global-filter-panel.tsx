@@ -101,7 +101,7 @@ function RenderOption(props: RenderOptionProps) {
     const intl = useIntl();
     const { removeGlobalFilterOption } = useGlobalFilterContext();
 
-    const label = getOptionLabel(option, translateCountryCode, intl) ?? '';
+    const label = getOptionLabel(option, translateCountryCode, intl);
 
     let content: React.ReactNode;
     switch (option.filterType) {
