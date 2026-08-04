@@ -20,6 +20,9 @@ import {
     OHM,
     PERCENTAGE,
     SIEMENS,
+    VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
+    VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    WRONG_REF_OR_VALUE_ERROR,
     YUP_REQUIRED,
 } from '../../../../../utils';
 import { OPERATOR, REFERENCE_FIELD_OR_VALUE_1, REFERENCE_FIELD_OR_VALUE_2 } from './formula-constants';
@@ -188,26 +191,26 @@ export function getFormulaSchema() {
             [REFERENCE_FIELD_OR_VALUE_1]: yup
                 .mixed()
                 .required()
-                .test('checkRefOrValue', 'WrongRefOrValueError', checkValueInEquipmentFieldsOrNumeric)
+                .test('checkRefOrValue', WRONG_REF_OR_VALUE_ERROR, checkValueInEquipmentFieldsOrNumeric)
                 .when([OPERATOR], {
                     is: 'PERCENTAGE',
                     then: (schema) =>
                         schema.test(
                             'checkValueIsReference',
-                            'ValueMustBeNumericWhenPercentageError',
+                            VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
                             (value: any) => !Number.isNaN(Number.parseFloat(value)) && Number.parseFloat(value) >= 0
                         ),
                 }),
             [REFERENCE_FIELD_OR_VALUE_2]: yup
                 .mixed()
                 .required()
-                .test('checkRefOrValue', 'WrongRefOrValueError', checkValueInEquipmentFieldsOrNumeric)
+                .test('checkRefOrValue', WRONG_REF_OR_VALUE_ERROR, checkValueInEquipmentFieldsOrNumeric)
                 .when([OPERATOR], {
                     is: 'PERCENTAGE',
                     then: (schema) =>
                         schema.test(
                             'checkValueIsReference',
-                            'ValueMustBeRefWhenPercentageError',
+                            VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
                             checkValueInEquipmentFields
                         ),
                 }),

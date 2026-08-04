@@ -26,7 +26,7 @@ import {
     toFormValuesLimitReductions,
     useTabs,
 } from '../common';
-import { getNameElementEditorEmptyFormData } from '../common/name-element-editor';
+import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
