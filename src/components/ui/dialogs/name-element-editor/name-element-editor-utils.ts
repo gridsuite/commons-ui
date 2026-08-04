@@ -5,17 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { DESCRIPTION, NAME } from '../../../../components/ui';
+import { DESCRIPTION, NAME } from '../../reactHookForm';
+import type { MuiStyles } from '../../../../utils';
 
-export function getNameElementEditorEmptyFormData(
-    initialElementName: string | null,
-    initialElementdescripton: string | null
-) {
-    return {
-        [NAME]: initialElementName,
-        [DESCRIPTION]: initialElementdescripton,
-    };
-}
+export const elementEditionStyles = {
+    textField: {
+        minWidth: '250px',
+        width: '33%',
+    },
+    description: {
+        minWidth: '250px',
+        width: '50%',
+    },
+} as const satisfies MuiStyles;
 
 export function getNameElementEditorSchema(initialElementName: string | null) {
     return yup.object().shape({
@@ -29,4 +31,14 @@ export function getNameElementEditorSchema(initialElementName: string | null) {
             }),
         [DESCRIPTION]: yup.string().nullable(),
     });
+}
+
+export function getNameElementEditorEmptyFormData(
+    initialElementName: string | null,
+    initialElementDescription: string | null
+) {
+    return {
+        [NAME]: initialElementName,
+        [DESCRIPTION]: initialElementDescription,
+    };
 }

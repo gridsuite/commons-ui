@@ -11,7 +11,7 @@ import {
     PROVIDER,
     toFormValuesLimitReductions,
 } from '../common';
-import { getNameElementEditorSchema } from '../common/name-element-editor';
+import { getNameElementEditorSchema } from '../../../components/ui/dialogs/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
 import { NORMALIZED_PERCENTAGE, SAParametersEnriched } from '../../../utils';
 import {

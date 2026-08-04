@@ -4,8 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export * from './common';
-export * from './process-config.type';
-export * from './process-config.utils';
-export * from './lf-process-config-edition-dialog';
-export * from './sa-process-config-edition-dialog';
+import { UUID } from 'node:crypto';
+import { ProcessConfigBaseBackend, ProcessType } from '../common';
+
+export interface LoadflowProcessConfigBackend extends ProcessConfigBaseBackend {
+    processType: ProcessType.LOADFLOW;
+    loadflowParametersUuid: UUID;
+}
