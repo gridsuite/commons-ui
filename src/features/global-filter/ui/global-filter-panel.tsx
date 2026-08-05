@@ -11,7 +11,6 @@ import {
     AutocompleteChangeDetails,
     AutocompleteChangeReason,
     AutocompleteCloseReason,
-    AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams,
     Box,
     Checkbox,
@@ -306,14 +305,14 @@ export function GlobalFilterPanel({
     );
 
     const inputFieldChip = useCallback(
-        (element: GlobalFilter, index: number, getTagsProps: AutocompleteRenderGetTagProps, filtersNumber: number) => {
+        (element: GlobalFilter, index: number, getItemProps: any, filtersNumber: number) => {
             const label = getOptionLabel(element, translateCountryCode, intl);
             const key: string = `inputFieldChip_${element.label}`;
             if (index < TAG_LIMIT_NUMBER) {
                 return (
                     <OverflowableChip
                         label={label}
-                        {...getTagsProps({ index })}
+                        {...getItemProps({ index })}
                         key={key}
                         sx={getResultsGlobalFiltersChipStyle(element)}
                     />
@@ -404,7 +403,7 @@ export function GlobalFilterPanel({
                     options={options}
                     onChange={handleOnChange}
                     renderInput={RenderInput}
-                    renderTags={(filters: GlobalFilter[], getTagsProps: AutocompleteRenderGetTagProps) => {
+                    renderValue={(filters: GlobalFilter[], getItemProps) => {
                         return (
                             <Box
                                 sx={{
@@ -416,7 +415,7 @@ export function GlobalFilterPanel({
                                 }}
                             >
                                 {filters.map((element, index) => {
-                                    return inputFieldChip(element, index, getTagsProps, filters.length);
+                                    return inputFieldChip(element, index, getItemProps, filters.length);
                                 })}
                             </Box>
                         );
