@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, IconButton, lighten } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
@@ -28,7 +28,7 @@ const limitsStyles = {
         backgroundColor:
             theme.palette.mode === 'light'
                 ? theme.palette.background.paper
-                : lighten(theme.palette.background.paper, 0.2),
+                : theme.lighten(theme.palette.background.paper, 0.2),
         height: '100%',
         position: 'relative',
         padding: 0,

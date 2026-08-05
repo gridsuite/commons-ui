@@ -59,11 +59,13 @@ export function InlineSearch() {
                     label={intl.formatMessage({
                         id: 'element_search/label',
                     })}
-                    InputProps={{
-                        ...params.InputProps,
-                        startAdornment: <Search color="disabled" />,
-                    }}
                     value={displayedValue}
+                    slotProps={{
+                        input: {
+                            ...params.InputProps,
+                            startAdornment: <Search color="disabled" />,
+                        },
+                    }}
                 />
             )}
         />

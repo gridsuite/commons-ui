@@ -6,11 +6,11 @@
  */
 
 import React, { forwardRef, Ref, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
-import { alpha, Checkbox, styled, SxProps, Theme } from '@mui/material';
+import { Checkbox, styled, SxProps, Theme } from '@mui/material';
 import { SimpleTreeView, TreeItem, treeItemClasses } from '@mui/x-tree-view';
 
 const BorderedTreeItem = styled(TreeItem)<{ root: boolean }>(({ theme, root }: { theme: Theme; root: boolean }) => {
-    const border = `1px dashed ${alpha(theme.palette.text.primary, 0.4)}`;
+    const border = `1px dashed ${theme.alpha(theme.palette.text.primary, 0.4)}`;
     return {
         position: 'relative',
         '&:before': {

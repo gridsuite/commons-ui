@@ -7,7 +7,7 @@
 import { useMemo } from 'react';
 
 import { useWatch } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FieldConstants, PredefinedProperties } from '../../../../utils';
 import { AutocompleteInput, TextInput } from '../../../../components/ui';
 import { italicFontTextField } from '../form.utils';

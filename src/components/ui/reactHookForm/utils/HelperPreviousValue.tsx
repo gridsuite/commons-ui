@@ -42,15 +42,17 @@ export function HelperPreviousValue({
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                     <CustomTooltip
                         title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                        PopperProps={{
-                            modifiers: [
-                                {
-                                    name: 'offset',
-                                    options: {
-                                        offset: [0, -10],
+                        slotProps={{
+                            popper: {
+                                modifiers: [
+                                    {
+                                        name: 'offset',
+                                        options: {
+                                            offset: [0, -10],
+                                        },
                                     },
-                                },
-                            ],
+                                ],
+                            },
                         }}
                     >
                         {isNodeBuilt ? (

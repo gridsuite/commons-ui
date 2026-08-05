@@ -6,7 +6,7 @@
  */
 
 import { useState } from 'react';
-import { Box, Grid2 as Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
+import { Box, Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
@@ -48,8 +48,10 @@ export function VoltageLevelModificationForm({
                             fullWidth
                             label="ID"
                             value={equipmentId ?? ''}
-                            InputProps={{
-                                readOnly: true,
+                            slotProps={{
+                                input: {
+                                    readOnly: true,
+                                },
                             }}
                             disabled
                             {...filledTextField}
@@ -90,8 +92,10 @@ export function VoltageLevelModificationForm({
                     value={tabIndex}
                     variant="scrollable"
                     onChange={(_event, newValue: number) => setTabIndex(newValue)}
-                    TabIndicatorProps={{
-                        sx: getTabIndicatorStyle([], tabIndex),
+                    slotProps={{
+                        indicator: {
+                            sx: getTabIndicatorStyle([], tabIndex),
+                        },
                     }}
                 >
                     <Tab

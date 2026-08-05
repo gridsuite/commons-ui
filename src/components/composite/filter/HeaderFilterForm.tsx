@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { DESCRIPTION_LIMIT_ERROR, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION, NAME_EMPTY } from '../../../utils';
