@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Alert, CircularProgress } from '@mui/material';
+import { Alert, Box, CircularProgress, Collapse, IconButton } from '@mui/material';
 import { ForwardedRef, forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext } from 'react-hook-form';
 import { UUID } from 'node:crypto';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
 import { ACTIVATED, ID, ParameterTableField } from '../parameter-table-field';
 import { COLUMNS_DEFINITIONS_CONTINGENCY_LISTS_INFOS, isValidContingencyRow } from './columns-definitions';
 import { ContingencyCount } from './types';
@@ -18,6 +19,7 @@ import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../../services';
 import { MuiStyles, snackWithFallback, ContingencyListsInfosEnriched } from '../../../../utils';
 import { DndColumn } from '../../../../components';
 import { mapSimulatedContingencyList, SimulatedContingencyCountType } from './utils';
+import NotFoundElementsTable from './not-found-elements-table';
 
 const styles = {
     alert: { color: 'text.primary', paddingTop: 0, paddingBottom: 0 },
@@ -50,6 +52,8 @@ function ContingencyTableWithApiRef(
         null
     );
     const [contingencyCountRefreshTrigger, setContingencyCountRefreshTrigger] = useState(0);
+
+    const [expanded, setExpanded] = useState(false);
 
     // expose an API to trigger a refresh of the contingency count from outside the component
     useImperativeHandle(
@@ -104,7 +108,7 @@ function ContingencyTableWithApiRef(
         fetchContingencyCount?.(
             contingencyListsInfos
                 .filter((lists) => lists[ACTIVATED])
-                .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID])),
+                .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID])), // save names of the lists
             abortSignal
         )
             .then((contingencyCount) => {
@@ -159,15 +163,31 @@ function ContingencyTableWithApiRef(
         }
 
         return simulatedContingencyCount.success ? (
-            <Alert variant="standard" icon={false} severity="info" sx={styles.alert}>
-                <FormattedMessage
-                    id="xContingenciesWillBeSimulatedAndYNotFound"
-                    values={{
-                        x: simulatedContingencyCount?.nbContingencies ?? '...',
-                        y: simulatedContingencyCount?.notFoundElements ?? '...',
-                    }}
-                />
-            </Alert>
+            <Box>
+                <Alert
+                    variant="standard"
+                    severity="info"
+                    sx={styles.alert}
+                    action={
+                        simulatedContingencyCount?.notFoundElements > 0 && (
+                            <IconButton aria-label="expand" size="small" onClick={() => setExpanded(!expanded)}>
+                                {expanded ? <ExpandLess /> : <ExpandMore />}
+                            </IconButton>
+                        )
+                    }
+                >
+                    <FormattedMessage
+                        id="xContingenciesWillBeSimulatedAndYNotFound"
+                        values={{
+                            x: simulatedContingencyCount?.nbContingencies ?? '...',
+                            y: simulatedContingencyCount?.notFoundElements ?? '...',
+                        }}
+                    />
+                </Alert>
+                <Collapse in={expanded} sx={{ padding: 1 }}>
+                    <NotFoundElementsTable data={simulatedContingencyCount?.NotFoundElementsData} />
+                </Collapse>
+            </Box>
         ) : (
             <Alert variant="standard" severity="error" sx={styles.error}>
                 <FormattedMessage

@@ -232,6 +232,7 @@ export const parametersFr = {
 
     ContingencyListsSelection: "Sélection des listes d'aléas",
     contingencyLists: "Listes d'aléas",
+    contingencyList: "Liste d'aléas",
     Execute: 'Exécuter',
     AddContingencyList: 'Ajouter',
     DeleteContingencyList: 'Supprimer',

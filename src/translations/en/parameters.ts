@@ -225,6 +225,7 @@ export const parametersEn = {
 
     ContingencyListsSelection: 'Contingency lists selection',
     contingencyLists: 'Contingency lists',
+    contingencyList: 'Contingencies list',
     Execute: 'Execute',
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',
