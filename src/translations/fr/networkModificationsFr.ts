@@ -396,7 +396,7 @@ export const networkModificationsFr = {
     CurrentLimiter: 'Limitation de courant',
     PhaseActivePowerControl: 'Suivi de transit',
     RatedNominalPowerMustBeGreaterThanZero: 'La valeur de la puissance nominale doit être supérieure à 0',
-    PhaseShiftValuesError: 'Les valeurs de déphasage doivent être ordonnés et sans duplication',
+    PhaseShiftValuesError: 'Les valeurs de déphasage doivent être ordonnées et sans duplication',
     GeneratePhaseTapRowsError: 'Veuillez générer les prises du déphaseur',
     GenerateRatioTapRowsError: 'Veuillez générer les prises du régleur',
     RatioValuesError: 'Les rapports de transformation doivent être ordonnés et sans duplication',
