@@ -11,6 +11,7 @@ import { ElementType } from './elementType';
 export type Input = string | number;
 
 export enum ElementStatus {
+    CREATING = 'CREATING',
     CREATED = 'CREATED',
     DELETING = 'DELETING',
 }
