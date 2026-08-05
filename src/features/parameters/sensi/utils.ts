@@ -27,7 +27,7 @@ import {
 } from './constants';
 import { DistributionType, SensitivityType, YUP_REQUIRED } from '../../../utils';
 import { CONTINGENCIES, PROVIDER } from '../common';
-import { getNameElementEditorSchema } from '../common/name-element-editor';
+import { getNameElementEditorSchema } from '../../../components/ui/dialogs/name-element-editor';
 import { NAME } from '../../../components/ui';
 import { ID } from '../../../utils/constants/filterConstant';
 import { ACTIVATED } from '../common/parameter-table-field';

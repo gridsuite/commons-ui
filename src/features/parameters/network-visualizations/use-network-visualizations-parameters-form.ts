@@ -33,7 +33,10 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
 import { useTabs } from '../common';
 

@@ -8,7 +8,7 @@
 import { Grid2 as Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
