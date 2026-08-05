@@ -4,6 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+
+import { UUID } from 'node:crypto';
 import { BranchModificationDto } from '../../common/branch/branchModification.types';
 import { AttributeModification } from '../../../../utils';
 import { TapChangerStepCreationDto } from '../creation/twoWindingsTransformerCreation.types';
@@ -44,3 +46,5 @@ export interface TwoWindingsTransformerModificationDto extends BranchModificatio
     ratioTapChangerToBeEstimated?: boolean | null;
     phaseTapChangerToBeEstimated?: boolean | null;
 }
+
+export type TwoWindingsTransformerModificationDtoWithId = TwoWindingsTransformerModificationDto & { uuid?: UUID };

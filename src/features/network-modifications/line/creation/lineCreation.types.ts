@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'node:crypto';
 import { LineSegmentInfos } from '../common/line.types';
 import { BranchCreationDto } from '../../common/branch/branchCreation.types';
 
@@ -16,3 +17,5 @@ export interface LineCreationDto extends BranchCreationDto {
     b2: number | null;
     lineSegments?: LineSegmentInfos[];
 }
+
+export type LineCreationDtoWithId = LineCreationDto & { uuid?: UUID };

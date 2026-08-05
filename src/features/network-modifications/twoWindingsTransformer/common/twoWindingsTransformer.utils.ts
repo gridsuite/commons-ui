@@ -7,7 +7,7 @@
 
 import { FieldConstants } from '../../../../utils';
 
-export const enum TwoWindingsTransformerDialogTab {
+export enum TwoWindingsTransformerDialogTab {
     CONNECTIVITY_TAB = 0,
     CHARACTERISTICS_TAB = 1,
     LIMITS_TAB = 2,
