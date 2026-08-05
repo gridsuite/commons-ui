@@ -40,9 +40,9 @@ export function CountriesInput({ name, label, dataTestId }: Readonly<CountryInpu
             getOptionLabel={translateOption}
             fullWidth
             multiple
-            renderTags={(val: any[], getTagsProps: any) =>
+            renderValue={(val: any, getItemProps: any) =>
                 val.map((code: string, index: number) => {
-                    const { key, ...tagProps } = getTagsProps({ index });
+                    const { key, ...tagProps } = getItemProps({ index });
                     return (
                         <Chip
                             key={key ?? code}

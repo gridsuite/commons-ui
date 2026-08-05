@@ -6,7 +6,7 @@
  */
 
 import { ExpandCircleDown, ExpandMore, Settings as SettingsIcon } from '@mui/icons-material';
-import { Accordion, AccordionDetails, AccordionSummary, Grid2 as Grid, Typography } from '@mui/material';
+import { Accordion, AccordionDetails, AccordionSummary, Grid, Typography } from '@mui/material';
 import { PropsWithChildren, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { parametersStyles } from '../../parameters-style';

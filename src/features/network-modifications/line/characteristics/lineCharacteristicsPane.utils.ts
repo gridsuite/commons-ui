@@ -6,31 +6,31 @@
  */
 
 import { object, number } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 import { LineCharacteristics } from './lineCharacteristicsPane.types';
 
 export const getLineCharacteristicsValidationSchemaProps = (isEquipmentModification = false) =>
     object().shape({
         [FieldConstants.R]: isEquipmentModification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
         [FieldConstants.X]: isEquipmentModification ? number().nullable() : number().nullable().required(),
         [FieldConstants.B1]: number().nullable(),
-        [FieldConstants.G1]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.G1]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.B2]: number().nullable(),
-        [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.G2]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
     });
 
 const characteristicsValidationSchema = (id: string, modification: boolean) => ({
     [id]: object().shape({
         [FieldConstants.R]: modification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
         [FieldConstants.X]: modification ? number().nullable() : number().nullable().required(),
         [FieldConstants.B1]: number().nullable(),
-        [FieldConstants.G1]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.G1]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.B2]: number().nullable(),
-        [FieldConstants.G2]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.G2]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
     }),
 });
 

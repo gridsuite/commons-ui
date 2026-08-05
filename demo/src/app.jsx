@@ -15,7 +15,7 @@ import {
     CssBaseline,
     FormControlLabel,
     FormGroup,
-    Grid2 as Grid,
+    Grid,
     IconButton,
     styled,
     StyledEngineProvider,
@@ -111,6 +111,10 @@ import {
     LeftPanelOpenIcon,
     EditNoteIcon,
     ExpertFilterEditionDialog,
+    genericValidationEn,
+    genericValidationFr,
+    networkModificationValidationEn,
+    networkModificationValidationFr,
 } from '../../src';
 
 import { demoInputsEn, demoInputsFr } from './components/translation';
@@ -138,6 +142,8 @@ const messages = {
         ...processConfigEn,
         ...demoInputsEn,
         ...translations.en,
+        ...networkModificationValidationEn,
+        ...genericValidationEn,
     },
     fr: {
         ...reportViewerFr,
@@ -161,6 +167,8 @@ const messages = {
         ...processConfigFr,
         ...demoInputsFr,
         ...translations.fr,
+        ...networkModificationValidationFr,
+        ...genericValidationFr,
     },
 };
 

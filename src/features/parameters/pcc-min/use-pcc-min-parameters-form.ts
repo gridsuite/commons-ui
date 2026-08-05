@@ -22,7 +22,10 @@ import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
 import { updateParameter } from '../../../services';
 import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 
 export interface UsePccMinParametersFormReturn {
     formMethods: UseFormReturn;

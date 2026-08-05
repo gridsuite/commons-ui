@@ -9,6 +9,8 @@ import * as yup from 'yup';
 import { AnyObject, TestContext, TestFunction } from 'yup';
 import {
     EquipmentType,
+    FieldConstants,
+    FILTERS,
     KILO_AMPERE,
     KILO_VOLT,
     MEGA_VAR,
@@ -18,9 +20,10 @@ import {
     OHM,
     PERCENTAGE,
     SIEMENS,
+    VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
+    VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    WRONG_REF_OR_VALUE_ERROR,
     YUP_REQUIRED,
-    FieldConstants,
-    FILTERS,
 } from '../../../../../utils';
 import { OPERATOR, REFERENCE_FIELD_OR_VALUE_1, REFERENCE_FIELD_OR_VALUE_2 } from './formula-constants';
 
@@ -48,7 +51,7 @@ export const EQUIPMENTS_FIELDS: EquipmentFields = {
         { id: 'MAXIMUM_ACTIVE_POWER', label: 'MaximumActivePowerText', unit: MEGA_WATT },
         { id: 'ACTIVE_POWER_SET_POINT', label: 'ActivePowerSetPointText', unit: MEGA_WATT },
         { id: 'REACTIVE_POWER_SET_POINT', label: 'ReactivePowerSetPointText', unit: MEGA_VAR },
-        { id: 'VOLTAGE_SET_POINT', label: 'GeneratorTargetV', unit: KILO_VOLT },
+        { id: 'VOLTAGE_SET_POINT', label: 'TargetV', unit: KILO_VOLT },
         {
             id: 'PLANNED_ACTIVE_POWER_SET_POINT',
             label: 'PlannedActivePowerSetPointForm',
@@ -71,6 +74,7 @@ export const EQUIPMENTS_FIELDS: EquipmentFields = {
         { id: 'MAXIMUM_ACTIVE_POWER', label: 'MaximumActivePowerText', unit: MEGA_WATT },
         { id: 'ACTIVE_POWER_SET_POINT', label: 'ActivePowerSetPointText', unit: MEGA_WATT },
         { id: 'REACTIVE_POWER_SET_POINT', label: 'ReactivePowerSetPointText', unit: MEGA_VAR },
+        { id: 'VOLTAGE_SET_POINT', label: 'TargetV', unit: KILO_VOLT },
         { id: 'DROOP', label: 'Droop', unit: PERCENTAGE },
         { id: 'TRANSIENT_REACTANCE', label: 'TransientReactanceForm', unit: OHM },
         {
@@ -187,26 +191,26 @@ export function getFormulaSchema() {
             [REFERENCE_FIELD_OR_VALUE_1]: yup
                 .mixed()
                 .required()
-                .test('checkRefOrValue', 'WrongRefOrValueError', checkValueInEquipmentFieldsOrNumeric)
+                .test('checkRefOrValue', WRONG_REF_OR_VALUE_ERROR, checkValueInEquipmentFieldsOrNumeric)
                 .when([OPERATOR], {
                     is: 'PERCENTAGE',
                     then: (schema) =>
                         schema.test(
                             'checkValueIsReference',
-                            'ValueMustBeNumericWhenPercentageError',
+                            VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
                             (value: any) => !Number.isNaN(Number.parseFloat(value)) && Number.parseFloat(value) >= 0
                         ),
                 }),
             [REFERENCE_FIELD_OR_VALUE_2]: yup
                 .mixed()
                 .required()
-                .test('checkRefOrValue', 'WrongRefOrValueError', checkValueInEquipmentFieldsOrNumeric)
+                .test('checkRefOrValue', WRONG_REF_OR_VALUE_ERROR, checkValueInEquipmentFieldsOrNumeric)
                 .when([OPERATOR], {
                     is: 'PERCENTAGE',
                     then: (schema) =>
                         schema.test(
                             'checkValueIsReference',
-                            'ValueMustBeRefWhenPercentageError',
+                            VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
                             checkValueInEquipmentFields
                         ),
                 }),
