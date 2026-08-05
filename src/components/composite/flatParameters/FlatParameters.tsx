@@ -274,7 +274,6 @@ export function FlatParameters({
                     <TextField
                         size="small"
                         sx={{ width: '50%' }}
-                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -286,6 +285,9 @@ export function FlatParameters({
                         }}
                         error={err}
                         variant={variant}
+                        slotProps={{
+                            htmlInput: { style: { textAlign: 'right' } },
+                        }}
                     />
                 );
             }
@@ -294,7 +296,6 @@ export function FlatParameters({
                     <TextField
                         size="small"
                         sx={{ width: '50%' }}
-                        inputProps={{ style: { textAlign: 'right' } }}
                         value={fieldValue}
                         onFocus={() => onUncommitted(param, true)}
                         onBlur={() => onUncommitted(param, false)}
@@ -305,6 +306,9 @@ export function FlatParameters({
                             }
                         }}
                         variant={variant}
+                        slotProps={{
+                            htmlInput: { style: { textAlign: 'right' } },
+                        }}
                     />
                 );
             case 'STRING_LIST':
@@ -319,13 +323,15 @@ export function FlatParameters({
                                     value={getStringListValue(allOptions, fieldValue)}
                                     size="small"
                                     variant={variant}
-                                    InputProps={{
-                                        readOnly: true,
-                                        endAdornment: (
-                                            <IconButton onClick={() => setOpenSelector(true)}>
-                                                <TuneIcon />
-                                            </IconButton>
-                                        ),
+                                    slotProps={{
+                                        input: {
+                                            readOnly: true,
+                                            endAdornment: (
+                                                <IconButton onClick={() => setOpenSelector(true)}>
+                                                    <TuneIcon />
+                                                </IconButton>
+                                            ),
+                                        },
                                     }}
                                 />
                                 <MultipleSelectionDialog
@@ -354,11 +360,11 @@ export function FlatParameters({
                             getOptionLabel={(option) => getTranslatedValue(param.name, option)}
                             onChange={(e, value) => onFieldChange(value, param)}
                             value={fieldValue}
-                            renderTags={(values, getTagProps) => {
+                            renderValue={(values, getItemProps) => {
                                 return values.map((value, index) => (
                                     <Chip
                                         label={getTranslatedValue(param.name, value)}
-                                        {...getTagProps({ index })}
+                                        {...getItemProps({ index })}
                                         key={`chip_${value}`}
                                     />
                                 ));
@@ -378,13 +384,13 @@ export function FlatParameters({
                         size="small"
                         onChange={(e, value) => onFieldChange(value, param)}
                         value={fieldValue}
-                        renderTags={(values, getTagProps) => {
+                        renderValue={(values, getItemProps) => {
                             return values.map((value, index) => (
                                 <Chip
                                     id={`chip_${value}`}
                                     size="small"
                                     label={value}
-                                    {...getTagProps({ index })}
+                                    {...getItemProps({ index })}
                                     key={`chip_${value}`}
                                 />
                             ));

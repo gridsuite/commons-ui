@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';

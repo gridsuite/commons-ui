@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { DescriptionField } from '../../reactHookForm/text/DescriptionField';
 import { UniqueNameInput } from '../../reactHookForm/text/UniqueNameInput';
 import { ElementType, FieldConstants } from '../../../../utils';

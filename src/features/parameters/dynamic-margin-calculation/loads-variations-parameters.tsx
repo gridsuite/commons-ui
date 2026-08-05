@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid2 as Grid, SxProps } from '@mui/material';
+import { Grid, SxProps } from '@mui/material';
 import * as yup from 'yup';
 import { ACCURACY, CALCULATION_TYPE, LOAD_FILTERS, LOAD_MODELS_RULE, LOADS_VARIATIONS, VARIATION } from './constants';
 import {

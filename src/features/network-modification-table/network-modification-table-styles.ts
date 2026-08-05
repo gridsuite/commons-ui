@@ -6,7 +6,7 @@
  */
 
 import { VirtualItem } from '@tanstack/react-virtual';
-import { SxProps, Theme, alpha, darken, lighten } from '@mui/material';
+import { SxProps, Theme } from '@mui/material';
 import { CSSProperties } from 'react';
 import { MuiStyles } from '../../utils';
 
@@ -21,8 +21,8 @@ export const DEPTH_CELL_WIDTH: number = 32;
 
 export const createCellBorderColor = (theme: Theme): string =>
     theme.palette.mode === 'light'
-        ? lighten(alpha(theme.palette.divider, 1), 0.88)
-        : darken(alpha(theme.palette.divider, 1), 0.68);
+        ? theme.lighten(theme.alpha(theme.palette.divider, 1), 0.88)
+        : theme.darken(theme.alpha(theme.palette.divider, 1), 0.68);
 
 // Static styles
 export const networkModificationTableStyles = {
@@ -215,8 +215,8 @@ function getRowBackgroundColor(isHighlighted: boolean, isComposite: boolean, the
         return 'transparent';
     }
     return theme.palette.mode === 'light'
-        ? darken(theme.palette.background.paper, 0.04)
-        : lighten(theme.palette.background.paper, 0.08);
+        ? theme.darken(theme.palette.background.paper, 0.04)
+        : theme.lighten(theme.palette.background.paper, 0.08);
 }
 
 export const createRowSx = (

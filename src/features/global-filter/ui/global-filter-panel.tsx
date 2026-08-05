@@ -11,7 +11,6 @@ import {
     AutocompleteChangeDetails,
     AutocompleteChangeReason,
     AutocompleteCloseReason,
-    AutocompleteRenderGetTagProps,
     AutocompleteRenderInputParams,
     Box,
     Checkbox,
@@ -62,22 +61,23 @@ function RenderInput({
             id={id}
             size={size}
             fullWidth={fullWidth}
-            inputProps={inputProps}
             disabled={disabled}
             label={intl.formatMessage({
                 id: 'results.globalFilter.fillerText',
             })}
-            /* eslint-disable-next-line react/jsx-no-duplicate-props */
-            InputProps={{
-                ...otherInputProps,
-                startAdornment: (
-                    <>
-                        <InputAdornment position="start">
-                            <FilterAlt />
-                        </InputAdornment>
-                        {startAdornment}
-                    </>
-                ),
+            slotProps={{
+                htmlInput: inputProps,
+                input: {
+                    ...otherInputProps,
+                    startAdornment: (
+                        <>
+                            <InputAdornment position="start">
+                                <FilterAlt />
+                            </InputAdornment>
+                            {startAdornment}
+                        </>
+                    ),
+                },
             }}
         />
     );
@@ -156,15 +156,17 @@ function WarningTooltip({ warningEquipmentTypeMessage }: Readonly<WarningTooltip
             title={warningEquipmentTypeMessage}
             placement="right"
             arrow
-            PopperProps={{
-                modifiers: [
-                    {
-                        name: 'offset',
-                        options: {
-                            offset: [0, -15],
+            slotProps={{
+                popper: {
+                    modifiers: [
+                        {
+                            name: 'offset',
+                            options: {
+                                offset: [0, -15],
+                            },
                         },
-                    },
-                ],
+                    ],
+                },
             }}
         >
             <IconButton size="small" sx={{ cursor: 'default' }}>
@@ -303,14 +305,14 @@ export function GlobalFilterPanel({
     );
 
     const inputFieldChip = useCallback(
-        (element: GlobalFilter, index: number, getTagsProps: AutocompleteRenderGetTagProps, filtersNumber: number) => {
+        (element: GlobalFilter, index: number, getItemProps: any, filtersNumber: number) => {
             const label = getOptionLabel(element, translateCountryCode, intl);
             const key: string = `inputFieldChip_${element.label}`;
             if (index < TAG_LIMIT_NUMBER) {
                 return (
                     <OverflowableChip
                         label={label}
-                        {...getTagsProps({ index })}
+                        {...getItemProps({ index })}
                         key={key}
                         sx={getResultsGlobalFiltersChipStyle(element)}
                     />
@@ -401,7 +403,7 @@ export function GlobalFilterPanel({
                     options={options}
                     onChange={handleOnChange}
                     renderInput={RenderInput}
-                    renderTags={(filters: GlobalFilter[], getTagsProps: AutocompleteRenderGetTagProps) => {
+                    renderValue={(filters: GlobalFilter[], getItemProps) => {
                         return (
                             <Box
                                 sx={{
@@ -413,7 +415,7 @@ export function GlobalFilterPanel({
                                 }}
                             >
                                 {filters.map((element, index) => {
-                                    return inputFieldChip(element, index, getTagsProps, filters.length);
+                                    return inputFieldChip(element, index, getItemProps, filters.length);
                                 })}
                             </Box>
                         );
@@ -437,16 +439,18 @@ export function GlobalFilterPanel({
                         filterOptions(autocompleteOptions, state)
                     }
                     // dropdown paper
-                    PaperComponent={PaperComponentMemo}
-                    ListboxProps={{
-                        sx: {
-                            '& .MuiAutocomplete-option': {
-                                paddingLeft: 0,
-                                paddingRight: 0,
+                    slots={{ paper: PaperComponentMemo }}
+                    slotProps={{
+                        listbox: {
+                            sx: {
+                                '& .MuiAutocomplete-option': {
+                                    paddingLeft: 0,
+                                    paddingRight: 0,
+                                },
+                                height: '100%',
+                                maxHeight: '100%',
+                                overflowY: 'auto',
                             },
-                            height: '100%',
-                            maxHeight: '100%',
-                            overflowY: 'auto',
                         },
                     }}
                     noOptionsText=""

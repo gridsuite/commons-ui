@@ -6,7 +6,7 @@
  */
 
 import { useWatch } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ReactiveCapabilityCurveTableForm } from './reactiveCapabilityCurve/ReactiveCapabilityCurveTableForm';
 import { MinMaxReactiveLimitsFormInfos, ReactiveCapabilityCurvePoints } from './reactiveLimits.type';
 import { FieldConstants, ReactivePowerAdornment } from '../../../../utils';

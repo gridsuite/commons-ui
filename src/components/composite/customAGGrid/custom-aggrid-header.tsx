@@ -7,7 +7,7 @@
 
 import React, { ComponentType, useCallback, useState } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Grid2 as Grid, Tooltip } from '@mui/material';
+import { Grid, Tooltip } from '@mui/material';
 import { WarningAmber } from '@mui/icons-material';
 import { CustomHeaderProps } from 'ag-grid-react';
 import { CustomAggridSort } from './custom-aggrid-sort';
