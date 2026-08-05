@@ -262,11 +262,9 @@ export function TapChangerSteps({
         </Tooltip>
     );
 
-    const completedColumnsDefinition = columnsDefinition;
-    completedColumnsDefinition[completedColumnsDefinition.length - 1] = {
-        ...completedColumnsDefinition[completedColumnsDefinition.length - 1],
-        extra: createRuleButton,
-    };
+    const completedColumnsDefinition = columnsDefinition.map((column, index) =>
+        index === columnsDefinition.length - 1 ? { ...column, extra: createRuleButton } : column
+    );
 
     const getTapPreviousValue = useCallback(
         (
