@@ -6,6 +6,8 @@
  */
 
 import { Box, Grid2 as Grid } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import {
     ActivePowerControlForm,
     ConnectivityForm,
@@ -78,6 +80,10 @@ export function BatteryCreationForm({
         />
     );
 
+    const watchVoltageRegulation = useWatch({
+        name: FieldConstants.VOLTAGE_REGULATION,
+    });
+
     return (
         <>
             <Grid container spacing={2}>
@@ -107,7 +113,12 @@ export function BatteryCreationForm({
 
             {/* Active power control part */}
             <Grid container spacing={2} paddingTop={2}>
-                <GridItem size={4}>{voltageRegulationField}</GridItem>
+                <GridItem
+                    size={4}
+                    tooltip={watchVoltageRegulation !== null ? '' : <FormattedMessage id="NoModification" />}
+                >
+                    {voltageRegulationField}
+                </GridItem>
                 {voltageRegulationForm}
                 <ActivePowerControlForm />
             </Grid>
