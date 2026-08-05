@@ -36,4 +36,10 @@ export interface BatteryModificationDto {
     properties: Property[] | null;
     directTransX: AttributeModification<number> | null;
     stepUpTransformerX: AttributeModification<number> | null;
+    voltageRegulationOn: AttributeModification<boolean> | null;
+    targetV: AttributeModification<number> | null;
+    voltageRegulationType?: AttributeModification<string> | null;
+    regulatingTerminalId: AttributeModification<string> | null;
+    regulatingTerminalType: AttributeModification<string> | null;
+    regulatingTerminalVlId: AttributeModification<string> | null;
 }

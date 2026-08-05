@@ -190,6 +190,7 @@ export enum FieldConstants {
     SEGMENT_SUSCEPTANCE = 'segmentSusceptance',
     SEGMENT_CURRENT_LIMITS = 'segmentCurrentLimits',
     SELECTED = 'selected',
+    SPECIFIC_METADATA = 'specificMetadata',
     TAP_POSITION = 'tapPosition',
     TOTAL_RESISTANCE = 'totalResistance',
     TOTAL_REACTANCE = 'totalReactance',

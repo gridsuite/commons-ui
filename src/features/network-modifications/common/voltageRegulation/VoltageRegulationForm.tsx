@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
@@ -29,6 +29,7 @@ export interface VoltageRegulationFormProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     previousValues?: VoltageRegulationFormPreviousValues;
     isEquipmentModification?: boolean;
+    isGenerator?: boolean;
 }
 
 export function VoltageRegulationForm({
@@ -36,6 +37,7 @@ export function VoltageRegulationForm({
     fetchVoltageLevelEquipments,
     previousValues,
     isEquipmentModification,
+    isGenerator = true,
 }: Readonly<VoltageRegulationFormProps>) {
     const intl = useIntl();
 
@@ -92,9 +94,9 @@ export function VoltageRegulationForm({
             </GridItem>
             {isDistantRegulation && (
                 <Grid container size={12} spacing={2}>
-                    <Grid size={4} justifySelf="end">
+                    <GridItem size={4} sx={{ alignSelf: 'center', justifyContent: 'end' }}>
                         <FormattedMessage id="RegulatingTerminalGenerator" />
-                    </Grid>
+                    </GridItem>
                     <GridItem size={8}>
                         <RegulatingTerminalForm
                             id=""
@@ -105,15 +107,17 @@ export function VoltageRegulationForm({
                             equipmentSectionType={previousEquipmentSectionType}
                         />
                     </GridItem>
-                    <GridItem size={4} offset={4}>
-                        <FloatInput
-                            name={FieldConstants.Q_PERCENT}
-                            label="QPercentText"
-                            adornment={PercentageAdornment}
-                            previousValue={previousQPercent}
-                            clearable
-                        />
-                    </GridItem>
+                    {isGenerator && (
+                        <GridItem size={4} offset={4}>
+                            <FloatInput
+                                name={FieldConstants.Q_PERCENT}
+                                label="QPercentText"
+                                adornment={PercentageAdornment}
+                                previousValue={previousQPercent}
+                                clearable
+                            />
+                        </GridItem>
+                    )}
                 </Grid>
             )}
         </>

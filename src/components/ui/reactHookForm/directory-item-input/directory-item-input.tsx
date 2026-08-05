@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Button, FormHelperText, Grid2 as Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { Box, Button, FormHelperText, Grid, Stack, Tooltip, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useController } from 'react-hook-form';

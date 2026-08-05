@@ -5,10 +5,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
@@ -50,9 +50,11 @@ export function VoltageInitParametersEditionDialog({
                 language,
             }}
             disabledSave={isDisabledValidationButton(errors)}
-            PaperProps={{
-                sx: {
-                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

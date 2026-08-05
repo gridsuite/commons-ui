@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { ParametersEditionDialogProps } from '../common';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
@@ -13,7 +13,7 @@ import {
     updateSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ComputingType, ElementType } from '../../../utils';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';

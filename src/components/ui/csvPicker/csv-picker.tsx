@@ -7,7 +7,7 @@
 
 import { useCallback, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { Button, Grid2 as Grid, Tooltip, Typography } from '@mui/material';
+import { Button, Grid, Tooltip, Typography } from '@mui/material';
 import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { getCsvDelimiter, hasNonEmptyRows } from '../../../utils';

@@ -12,3 +12,29 @@ export const YUP_POSITIVE = 'YupPositive';
 export const YUP_NOT_TYPE_NUMBER = 'YupNotTypeNumber';
 export const YUP_NOT_TYPE_DEFAULT = 'YupNotTypeDefault';
 export const DUPLICATED_PROPS_ERROR = 'DuplicatedPropsError';
+
+export const REAL_PERCENTAGE = 'RealPercentage';
+export const MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'mustBeGreaterOrEqualToZero';
+export const NORMALIZED_PERCENTAGE = 'NormalizedPercentage';
+export const DESCRIPTION_LIMIT_ERROR = 'descriptionLimitError';
+export const SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO =
+    'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero';
+export const NAME_EMPTY = 'nameEmpty';
+
+export const ACTIVE_LIMITS_MIN_MAX_INVALID = 'ActiveLimitsMinMaxInvalid';
+export const REACTIVE_LIMITS_MIN_MAX_INVALID = 'ReactiveLimitsMinMaxInvalid';
+export const SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO =
+    'ShuntCompensatorErrorQAtNominalVoltageLessThanZero';
+export const MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE = 'MaximumSectionCountMustBeGreaterOrEqualToOne';
+export const SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT =
+    'SectionCountMustBeBetweenZeroAndMaximumSectionCount';
+export const CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID = 'CreateSubstationInVoltageLevelIdenticalId';
+export const MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER =
+    'MinActivePowerMustBeLessOrEqualToMaxActivePower';
+
+export const NAME_ALREADY_USED = 'nameAlreadyUsed';
+export const NUMERIC_VALUE_OR_EMPTY_FIELD = 'NumericValueOrEmptyField';
+
+export const WRONG_REF_OR_VALUE_ERROR = 'WrongRefOrValueError';
+export const VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR = 'ValueMustBeNumericWhenPercentageError';
+export const VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR = 'ValueMustBeRefWhenPercentageError';

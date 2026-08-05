@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import { useSecurityAnalysisParametersForm } from './use-security-analysis-parameters-form';
 import { ParametersEditionDialogProps } from '../common';
@@ -15,7 +15,7 @@ import {
     updateSecurityAnalysisParameters,
 } from '../../../services/security-analysis';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ComputingType, ElementType } from '../../../utils';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { isDisabledValidationButton } from '../../../utils/form-utils';
@@ -63,9 +63,11 @@ export function SecurityAnalysisParametersDialog({
             }}
             titleId={titleId}
             disabledSave={isDisabledValidationButton(errors)}
-            PaperProps={{
-                sx: {
-                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

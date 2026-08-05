@@ -17,6 +17,7 @@ import {
     areArrayElementsUnique,
     AttributeModification,
     FieldConstants,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     OperationType,
     sanitizeString,
     toModificationOperation,
@@ -76,7 +77,7 @@ const temporaryLimitsValidationSchema = () => {
         {
             [FieldConstants.TEMPORARY_LIMIT_DURATION]: number()
                 .nullable()
-                .min(0, 'mustBeGreaterOrEqualToZero')
+                .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
                 .when([FieldConstants.TEMPORARY_LIMIT_VALUE, FieldConstants.TEMPORARY_LIMIT_NAME], {
                     is: (value: number | null, name: string | null) => value != null || !!name,
                     then: (schema) => schema.required(),

@@ -6,7 +6,7 @@
  */
 
 import { forwardRef, useEffect, useMemo, useState } from 'react';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { TabPanelProps } from '@mui/lab';
 import { green, red } from '@mui/material/colors';
 import { Lens } from '@mui/icons-material';
