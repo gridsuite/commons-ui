@@ -52,12 +52,9 @@ const getRegulatingTerminalRatioTapChangerValidationSchema = () => ({
 export const getRatioTapChangerValidationSchemaProps = (isModification = false) =>
     object().shape({
         [FieldConstants.ENABLED]: bool().required(),
-        [FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES]: bool()
-            .nullable()
-            .when({
-                is: !isModification,
-                then: (schema) => schema.required(),
-            }),
+        [FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES]: isModification
+            ? bool().nullable()
+            : bool().nullable().required(),
         [FieldConstants.REGULATION_MODE]: string()
             .nullable()
             .when([FieldConstants.ENABLED, FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES], {

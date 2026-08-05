@@ -143,7 +143,9 @@ export function TapChangerSteps({
                 isModification && lowTapPosition === null
                     ? previousValues?.[FieldConstants.LOW_TAP_POSITION]
                     : lowTapPosition;
-
+            if (currentLowTapPosition == null) {
+                return;
+            }
             for (
                 let tapPosition: number | null | undefined = currentLowTapPosition, index = 0;
                 index < currentTapRows.length;
