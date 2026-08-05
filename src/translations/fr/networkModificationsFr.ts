@@ -180,7 +180,7 @@ export const networkModificationsFr = {
     ReactivePowerSetPointText: 'Consigne de puissance réactive',
     ReactivePowerMeasurementValue: 'Valeur TM puissance réactive',
     ReactivePowerMeasurementValidity: 'Validité TM puissance réactive',
-    GeneratorTargetV: 'Consigne tension',
+    TargetV: 'Consigne tension',
     PlannedActivePowerSetPointForm: 'Puissance imposée',
     MarginalCost: 'Coût de démarrage',
     plannedOutageRate: 'Indisponibilité programmée',
