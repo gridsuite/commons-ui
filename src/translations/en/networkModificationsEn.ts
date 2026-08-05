@@ -175,7 +175,7 @@ export const networkModificationsEn = {
     ReactivePowerSetPointText: 'Reactive power setpoint',
     ReactivePowerMeasurementValue: 'Reactive power measurement value',
     ReactivePowerMeasurementValidity: 'Reactive power measurement validity',
-    GeneratorTargetV: 'Target V',
+    TargetV: 'Target V',
     PlannedActivePowerSetPointForm: 'Planning active power set point',
     MarginalCost: 'Generation dispatch cost',
     plannedOutageRate: 'Planning outage rate',
