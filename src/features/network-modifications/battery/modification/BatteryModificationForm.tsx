@@ -11,11 +11,13 @@ import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHe
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
 import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
-import { FieldConstants } from '../../../../utils';
+import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { useTabsWithError } from '../../hooks';
 
 interface BatteryModificationFormProps
-    extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {}
+    extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {
+    fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+}
 
 export function BatteryModificationForm({
     batteryToModify,
@@ -23,6 +25,7 @@ export function BatteryModificationForm({
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
+    fetchVoltageLevelEquipments,
 }: Readonly<BatteryModificationFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<BatteryDialogTab>(
         BATTERY_TAB_FIELDS,
@@ -50,6 +53,7 @@ export function BatteryModificationForm({
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     PositionDiagramPane={PositionDiagramPane}
                     updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTable}
+                    fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
             </Grid>
         </Stack>

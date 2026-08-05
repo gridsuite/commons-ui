@@ -8,7 +8,7 @@
 import { Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';

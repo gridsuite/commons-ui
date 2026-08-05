@@ -10,7 +10,7 @@ import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { isDisabledValidationButton } from '../../../utils/form-utils';
 

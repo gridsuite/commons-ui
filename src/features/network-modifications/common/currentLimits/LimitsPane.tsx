@@ -38,13 +38,13 @@ const limitsStyles = {
 export interface LimitsPaneProps {
     id?: string;
     equipmentToModify?: BranchInfos | null;
-    clearableFields?: boolean;
+    isModification?: boolean;
 }
 
 export function LimitsPane({
     id = FieldConstants.LIMITS,
     equipmentToModify,
-    clearableFields,
+    isModification,
 }: Readonly<LimitsPaneProps>) {
     const [indexSelectedLimitSet, setIndexSelectedLimitSet] = useState<number | null>(null);
     const { getValues, reset } = useFormContext();
@@ -211,7 +211,7 @@ export function LimitsPane({
                                     <LimitsEditor
                                         key={operationalLimitsGroup.id}
                                         name={`${id}.${FieldConstants.OPERATIONAL_LIMITS_GROUPS}[${index}]`}
-                                        clearableFields={clearableFields}
+                                        clearableFields={isModification}
                                         permanentCurrentLimitPreviousValue={
                                             getCurrentLimits(equipmentToModify, operationalLimitsGroup.id)
                                                 ?.permanentLimit ??

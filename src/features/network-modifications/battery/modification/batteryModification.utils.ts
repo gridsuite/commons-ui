@@ -9,6 +9,7 @@ import { InferType, number, object, ref, string } from 'yup';
 import {
     DeepNullable,
     FieldConstants,
+    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
     ModificationType,
     sanitizeString,
     toModificationOperation,
@@ -26,11 +27,15 @@ import {
     getReactiveLimitsEmptyFormDataProps,
     getReactiveLimitsFormDataProps,
     getReactiveLimitsValidationSchema,
+    getRegulatingTerminalEquipmentData,
+    getRegulatingTerminalVoltageLevelData,
     getSetPointsEmptyFormData,
     getSetPointsSchema,
     getShortCircuitEmptyFormData,
     getShortCircuitFormData,
     getShortCircuitFormSchema,
+    getVoltageRegulationEmptyFormData,
+    getVoltageRegulationSchema,
     modificationPropertiesSchema,
     toModificationProperties,
 } from '../../common';
@@ -48,13 +53,14 @@ export const batteryModificationFormSchema = object()
                 then: (schema) =>
                     schema.max(
                         ref(FieldConstants.MAXIMUM_ACTIVE_POWER),
-                        'MinActivePowerMustBeLessOrEqualToMaxActivePower'
+                        MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER
                     ),
             }),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(true),
         [FieldConstants.STATE_ESTIMATION]: getInjectionActiveReactivePowerValidationSchemaProperties(),
         ...getSetPointsSchema(true),
+        ...getVoltageRegulationSchema(true),
         ...getActivePowerControlSchema(true),
         ...getShortCircuitFormSchema(true),
     })
@@ -72,6 +78,7 @@ export const batteryModificationEmptyFormData: DeepNullable<BatteryModificationF
     reactiveLimits: getReactiveLimitsEmptyFormDataProps(),
     ...getSetPointsEmptyFormData(true),
     ...getActivePowerControlEmptyFormData(true),
+    ...getVoltageRegulationEmptyFormData(true),
     AdditionalProperties: [],
     ...getShortCircuitEmptyFormData(),
     stateEstimation: getInjectionActiveReactivePowerEmptyFormDataProperties(),
@@ -110,6 +117,16 @@ export const batteryModificationDtoToForm = (
             directTransX: dto?.directTransX?.value ?? null,
             stepUpTransformerX: dto?.stepUpTransformerX?.value ?? null,
         }),
+        voltageRegulationType: dto?.voltageRegulationType?.value ?? null,
+        voltageRegulation: dto?.voltageRegulationOn?.value ?? null,
+        voltageSetpoint: dto?.targetV?.value ?? null,
+        voltageLevel: getRegulatingTerminalVoltageLevelData({
+            voltageLevelId: dto.regulatingTerminalVlId?.value,
+        }),
+        equipment: getRegulatingTerminalEquipmentData({
+            equipmentId: dto.regulatingTerminalId?.value,
+            equipmentType: dto.regulatingTerminalType?.value,
+        }),
         ...getPropertiesFromModification(dto?.properties, includePreviousValues),
     };
 };
@@ -145,5 +162,11 @@ export const batteryModificationFormToDto = (form: BatteryModificationFormData):
         properties: toModificationProperties(form) ?? null,
         directTransX: toModificationOperation(form.directTransX),
         stepUpTransformerX: toModificationOperation(form.transformerReactance),
+        voltageRegulationType: toModificationOperation(form.voltageRegulationType),
+        regulatingTerminalId: toModificationOperation(form.equipment?.id),
+        regulatingTerminalType: toModificationOperation(form.equipment?.type),
+        regulatingTerminalVlId: toModificationOperation(form.voltageLevel?.id),
+        voltageRegulationOn: toModificationOperation(form.voltageRegulation),
+        targetV: toModificationOperation(form.voltageSetpoint),
     };
 };

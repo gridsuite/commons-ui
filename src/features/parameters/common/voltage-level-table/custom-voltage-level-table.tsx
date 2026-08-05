@@ -17,15 +17,23 @@ import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
 interface LimitReductionsTableProps {
     columnsDefinition: LimitReductionIColumnsDef[];
-    tableHeight: number;
+    tableHeight?: number;
+    tableMinWidth?: number;
     formName: string;
     limits?: ILimitReductionsByVoltageLevel[];
 }
+
+const stickyFirstColumnSx = {
+    position: 'sticky',
+    left: 0,
+    backgroundColor: 'background.paper',
+};
 
 export function CustomVoltageLevelTable({
     formName,
     columnsDefinition,
     tableHeight,
+    tableMinWidth,
     limits,
 }: Readonly<LimitReductionsTableProps>) {
     const { fields: rows } = useFieldArray({
@@ -35,22 +43,34 @@ export function CustomVoltageLevelTable({
     return (
         <TableContainer
             sx={{
-                height: tableHeight,
+                ...(tableHeight ? { height: tableHeight } : {}),
                 width: 'inherit',
+                overflowX: 'auto',
                 border: 'solid 0px rgba(0,0,0,0.1)',
             }}
         >
-            <Table stickyHeader size="small" sx={{ tableLayout: 'fixed' }}>
+            <Table
+                stickyHeader
+                size="small"
+                sx={{
+                    tableLayout: 'fixed',
+                    ...(tableMinWidth ? { minWidth: tableMinWidth } : {}),
+                    '& th:first-of-type': {
+                        ...stickyFirstColumnSx,
+                        zIndex: 3,
+                        textAlign: 'center',
+                    },
+                    '& td:first-of-type': {
+                        ...stickyFirstColumnSx,
+                        zIndex: 1,
+                    },
+                }}
+            >
                 <TableHead>
                     <TableRow>
                         {columnsDefinition.map((column) => (
                             <CustomTooltip title={column.tooltip}>
-                                <TableCell
-                                    key={column.dataKey}
-                                    sx={{
-                                        textAlign: 'center',
-                                    }}
-                                >
+                                <TableCell key={column.dataKey} sx={{ textAlign: 'center' }}>
                                     {column.label}
                                 </TableCell>
                             </CustomTooltip>
