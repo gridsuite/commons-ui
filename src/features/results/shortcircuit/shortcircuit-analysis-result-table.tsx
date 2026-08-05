@@ -404,7 +404,7 @@ export function ShortCircuitAnalysisResultTable({
 
     const getCurrent = useCallback(
         (x: SCAFaultResult | SCAFeederResult) => {
-            let current = NaN;
+            let current = Number.NaN;
             if (analysisType === ShortCircuitAnalysisType.ALL_BUSES) {
                 current = x.current;
             } else if (analysisType === ShortCircuitAnalysisType.ONE_BUS) {

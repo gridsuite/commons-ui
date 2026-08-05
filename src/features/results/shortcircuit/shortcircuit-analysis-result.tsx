@@ -143,7 +143,7 @@ export function ShortCircuitAnalysisResult({
 
     const handleChangeRowsPerPage = useCallback(
         (event: any) => {
-            const newRowsPerPage = parseInt(event.target.value, 10);
+            const newRowsPerPage = Number.parseInt(event.target.value, 10);
             onRowsPerPageChange(newRowsPerPage);
         },
         [onRowsPerPageChange]
