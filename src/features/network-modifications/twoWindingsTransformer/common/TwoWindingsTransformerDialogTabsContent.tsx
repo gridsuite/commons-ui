@@ -54,7 +54,7 @@ export function TwoWindingsTransformerDialogTabsContent({
                 <TwoWindingsTransformerCharacteristicsPane twtToModify={twtToModify} isModification={isModification} />
             </Box>
             <Box hidden={tabIndex !== TwoWindingsTransformerDialogTab.LIMITS_TAB}>
-                <LimitsPane equipmentToModify={twtToModify as BranchInfos} clearableFields={isModification} />
+                <LimitsPane equipmentToModify={twtToModify as BranchInfos} isModification />
             </Box>
             {isModification && (
                 <Box hidden={tabIndex !== TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB}>

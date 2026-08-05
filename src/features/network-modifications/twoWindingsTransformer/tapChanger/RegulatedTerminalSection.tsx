@@ -6,7 +6,7 @@
  */
 
 import { useIntl } from 'react-intl';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { getRegulationTypeLabel, getTapChangerEquipmentSectionTypeValue, getTapSideLabel } from './tapChanger.utils';
 import { RegulatingTerminalForm, REGULATION_TYPES } from '../../common';
 import { EquipmentType, FieldConstants, Identifiable, REGULATION_SIDES } from '../../../../utils';
