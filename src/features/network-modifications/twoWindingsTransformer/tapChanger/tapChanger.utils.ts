@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { REGULATION_TYPES } from '@gridsuite/commons-ui';
+
 import { IntlShape } from 'react-intl';
 import { FieldConstants, REGULATION_SIDES } from '../../../../utils';
 import { TapChangerStep, TapChangerStepMapInfos } from '../common/twoWindingsTransformer.types';
+import { REGULATION_TYPES } from '../../common/voltageRegulation/voltageRegulation.utils';
 
 export const getRegulationTypeLabel = (twt: any, tap: any, intl: IntlShape) => {
     if (tap?.regulatingTerminalConnectableId != null) {

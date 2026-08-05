@@ -5,21 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {
-    convertInputValue,
-    FieldType,
-    FloatInput,
-    MicroSusceptanceAdornment,
-    MVAPowerAdornment,
-    OhmAdornment,
-    PropertiesForm,
-    VoltageAdornment,
-} from '@gridsuite/commons-ui';
 import { Grid2 as Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TwoWindingsTransformerMapInfos } from '../common/twoWindingsTransformer.types';
-import { FieldConstants } from '../../../../utils';
-import { GridItem, GridSection } from '../../../../components';
+import {
+    convertInputValue,
+    FieldConstants,
+    FieldType,
+    MicroSusceptanceAdornment,
+    MVAPowerAdornment,
+    OhmAdornment,
+    VoltageAdornment,
+} from '../../../../utils';
+import { FloatInput, GridItem, GridSection } from '../../../../components';
+import { PropertiesForm } from '../../common';
 
 export interface TwoWindingsTransformerCharacteristicsPaneProps {
     id?: string;

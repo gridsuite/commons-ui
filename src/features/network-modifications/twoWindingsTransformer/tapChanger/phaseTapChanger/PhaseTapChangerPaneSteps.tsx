@@ -7,11 +7,11 @@
 
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { DndColumn, DndColumnType, parseIntData } from '@gridsuite/commons-ui';
 import { TapChangerMapInfos } from '../../common/twoWindingsTransformer.types';
-import { FieldConstants } from '../../../../../utils';
+import { FieldConstants, parseIntData } from '../../../../../utils';
 import { TapChangerSteps } from '../TapChangerSteps';
 import { TwoWindingsTransformerModificationDto } from '../../modification/twoWindingsTransformerModification.types';
+import { DndColumn, DndColumnType } from '../../../../../components';
 
 export interface PhaseTapChangerPaneStepsProps {
     disabled?: boolean;
