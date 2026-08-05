@@ -14,6 +14,7 @@ import {
     DeepNullable,
     RATIO_REGULATION_MODES,
     REGULATION_SIDES,
+    TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
 } from '../../../../../utils';
 import {
     getRegulatingTerminalEmptyFormData,
@@ -103,7 +104,7 @@ export const getRatioTapChangerValidationSchemaProps = (isModification = false) 
             .nullable()
             .when(FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES, {
                 is: true,
-                then: () => number().nullable().min(0, 'TargetDeadbandMustBeGreaterOrEqualToZero'),
+                then: () => number().nullable().min(0, TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
             }),
         [FieldConstants.LOW_TAP_POSITION]: number()
             .nullable()

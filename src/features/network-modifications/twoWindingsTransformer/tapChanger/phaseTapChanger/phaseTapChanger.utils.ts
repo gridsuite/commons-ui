@@ -19,6 +19,7 @@ import {
     FieldConstants,
     PHASE_REGULATION_MODES,
     REGULATION_SIDES,
+    TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
 } from '../../../../../utils';
 
 const getRegulatingTerminalPhaseTapChangerValidationSchema = () => ({
@@ -85,7 +86,7 @@ export const getPhaseTapChangerValidationSchemaProps = (isModification = false) 
                     enabled && regulationMode === PHASE_REGULATION_MODES.ACTIVE_POWER_CONTROL.id,
                 then: (schema) => schema.required(),
             }),
-        [FieldConstants.TARGET_DEADBAND]: number().nullable().min(0, 'TargetDeadbandMustBeGreaterOrEqualToZero'),
+        [FieldConstants.TARGET_DEADBAND]: number().nullable().min(0, TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.LOW_TAP_POSITION]: number()
             .nullable()
             .when(FieldConstants.ENABLED, {

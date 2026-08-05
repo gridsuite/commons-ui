@@ -6,25 +6,25 @@
  */
 
 import { InferType, object, number } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 
 export const getTwtCharacteristicsValidationSchemaProps = (isModification = false) =>
     object().shape({
         [FieldConstants.R]: isModification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
         [FieldConstants.X]: isModification ? number().nullable() : number().nullable().required(),
         [FieldConstants.G]: isModification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
         [FieldConstants.B]: isModification ? number().nullable() : number().nullable().required(),
         [FieldConstants.RATED_S]: number().nullable().positive('RatedNominalPowerMustBeGreaterThanZero'),
         [FieldConstants.RATED_U1]: isModification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
         [FieldConstants.RATED_U2]: isModification
-            ? number().nullable().min(0, 'mustBeGreaterOrEqualToZero')
-            : number().nullable().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            ? number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
+            : number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
     });
 
 type TwtCharacteristicsFormData = InferType<ReturnType<typeof getTwtCharacteristicsValidationSchemaProps>>;
