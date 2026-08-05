@@ -7,7 +7,8 @@
 
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { TwoWindingsTransformerModificationDto } from '../modification/twoWindingsTransformerModification.types';
-import { ConnectablePositionFormInfos, LimitsProperty } from '../../common';
+import { ConnectablePositionFormInfos } from '../../common/connectivity/connectivity.type';
+import { CurrentLimitsData } from '../../common/currentLimits/limits.types';
 
 export interface TapChangerStep extends TapChangerStepMapInfos {
     [FieldConstants.STEPS_TAP]: number;
@@ -67,21 +68,6 @@ interface MeasurementsInfos {
     validity: boolean;
 }
 
-export interface TemporaryLimitMapInfos {
-    name: string;
-    value?: number;
-    acceptableDuration?: number;
-}
-
-export interface CurrentLimitsMapInfos {
-    id?: string;
-    permanentLimit?: number;
-    temporaryLimits?: TemporaryLimitMapInfos[];
-    temporaryLimitsByName?: Record<string, TemporaryLimitMapInfos>;
-    applicability: string;
-    limitsProperties?: LimitsProperty[];
-}
-
 export interface TapChangerStepMapInfos {
     [FieldConstants.STEPS_RESISTANCE]: number;
     [FieldConstants.STEPS_REACTANCE]: number;
@@ -121,7 +107,7 @@ export interface TwoWindingsTransformerMapInfos extends Identifiable {
     q2?: number;
     i1?: number;
     i2?: number;
-    currentLimits?: CurrentLimitsMapInfos[];
+    currentLimits?: CurrentLimitsData[];
     selectedOperationalLimitsGroupId1?: string;
     selectedOperationalLimitsGroupId2?: string;
     phaseTapChanger?: TapChangerMapInfos;

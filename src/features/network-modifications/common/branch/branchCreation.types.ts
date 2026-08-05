@@ -11,7 +11,6 @@ import { OperationalLimitsGroupFormSchema } from '../../common/currentLimits/ope
 // cf BranchCreationInfos back DTO class
 export interface BranchCreationDto {
     type: ModificationType;
-    uuid?: string | null;
     equipmentId: string;
     equipmentName: string | null;
     properties: Property[] | null;

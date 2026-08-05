@@ -148,7 +148,7 @@ export function RatioTapChangerPaneSteps({
             handleImportRow={handleImportRow}
             disabled={disabled}
             previousValues={previousValues}
-            editData={editData?.[FieldConstants.RATIO_TAP_CHANGER] as Record<string, unknown> | undefined}
+            editData={editData?.ratioTapChanger?.steps}
             isModification={isModification}
         />
     );

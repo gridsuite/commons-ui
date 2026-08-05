@@ -173,7 +173,7 @@ export function PhaseTapChangerPaneSteps({
             handleImportRow={handleImportRow}
             disabled={disabled}
             previousValues={previousValues}
-            editData={editData?.[FieldConstants.PHASE_TAP_CHANGER] as Record<string, unknown> | undefined}
+            editData={editData?.phaseTapChanger?.steps}
             isModification={isModification}
         />
     );

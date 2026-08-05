@@ -18,6 +18,7 @@ import { DndColumn, DndTable, IntegerInput, useCustomFormContext } from '../../.
 import { roundToDefaultPrecision } from '../../../../utils/rounding';
 import { FieldConstants } from '../../../../utils';
 import { compareStepsWithPreviousValues, computeHighTapPosition, toTapChangerStepList } from './tapChanger.utils';
+import { TapChangerStepCreationDto } from '../creation/twoWindingsTransformerCreation.types';
 
 export interface TapChangerStepsProps {
     tapChanger: FieldConstants.PHASE_TAP_CHANGER | FieldConstants.RATIO_TAP_CHANGER;
@@ -31,7 +32,7 @@ export interface TapChangerStepsProps {
     handleImportRow: (val: Record<string, string>) => Record<string, string | number>;
     disabled?: boolean;
     previousValues?: TapChangerMapInfos;
-    editData?: Record<string, unknown>;
+    editData?: TapChangerStepCreationDto[] | null;
     isModification?: boolean;
 }
 
@@ -124,7 +125,7 @@ export function TapChangerSteps({
     });
 
     const areStepsModified = useMemo(() => {
-        if (editData?.[FieldConstants.STEPS] && isNodeBuilt) {
+        if (editData && isNodeBuilt) {
             return true;
         }
         return !compareStepsWithPreviousValues(
