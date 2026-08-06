@@ -24,6 +24,8 @@ export interface ComposedModificationMetadata extends NetworkModificationMetadat
     maxDepth?: number;
     name?: string;
     childFromShared?: boolean;
+    // Random id generated once per node
+    rowKey: UUID;
 }
 
 export interface ReferencedCompositeModifications extends NetworkModificationMetadata {

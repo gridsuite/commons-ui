@@ -41,9 +41,6 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
             event.stopPropagation();
             setAnchorEl(null);
             setIsLoading(true);
-            // Resolve the referenceId (the GridExplore element id) and the GridExplore base URL
-            // (from the apps metadata) in parallel, then copy "<exploreUrl>/elements/<referenceId>".
-            // referenceId is resolved from the detail because the list/metadata path may not carry it.
             Promise.all([
                 fetchNetworkModification(data.uuid).then((res) => res.json()) as Promise<ReferenceModificationInfos>,
                 fetchAppsMetadata(),

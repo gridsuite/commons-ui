@@ -9,10 +9,6 @@ import { RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Row, RowSelectionState, Updater } from '@tanstack/react-table';
 import { ComposedModificationMetadata } from '../../utils';
 
-function childRowId(parentRowId: string, uuid: string): string {
-    return parentRowId ? `${parentRowId}.${uuid}` : uuid;
-}
-
 /**
  * Ensures all subrows of a composite are selected if the composite also is, otherwise deselected the composite
  */
@@ -21,24 +17,24 @@ function normalizeCompositeSelection(
     roots: ComposedModificationMetadata[]
 ): RowSelectionState {
     const next: RowSelectionState = { ...rawSelection };
-    const visit = (node: ComposedModificationMetadata, parentRowId: string): boolean => {
-        const rowId = childRowId(parentRowId, node.uuid);
+
+    const visit = (node: ComposedModificationMetadata): boolean => {
         const children = node.subModifications;
         if (!children || children.length === 0) {
-            return next[rowId];
+            return next[node.rowKey];
         }
         // Recurse first so nested composites are resolved bottom-up.
-        const everyChildSelected = children.map((child) => visit(child, rowId)).every(Boolean);
+        const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
         if (everyChildSelected) {
-            next[rowId] = true;
+            next[node.rowKey] = true;
         } else {
             // Some or none of the children are selected: the composite must not be marked as fully selected.
-            delete next[rowId];
+            delete next[node.rowKey];
         }
         return everyChildSelected;
     };
 
-    roots.forEach((root) => visit(root, ''));
+    roots.forEach((root) => visit(root));
     return next;
 }
 
@@ -76,46 +72,44 @@ function propagateSelectionToLoadedDescendants(
     let next: RowSelectionState = selection;
     let mutated = false;
 
-    const visit = (node: ComposedModificationMetadata, parentRowId: string, ancestorSelected: boolean) => {
-        const rowId = childRowId(parentRowId, node.uuid);
-        const effectiveSelected = ancestorSelected || next[rowId];
-        if (effectiveSelected && !next[rowId]) {
+    const visit = (node: ComposedModificationMetadata, ancestorSelected: boolean) => {
+        const effectiveSelected = ancestorSelected || next[node.rowKey];
+        if (effectiveSelected && !next[node.rowKey]) {
             if (!mutated) {
                 next = { ...selection };
                 mutated = true;
             }
-            next[rowId] = true;
+            next[node.rowKey] = true;
         }
-        node.subModifications?.forEach((child) => visit(child, rowId, effectiveSelected));
+        node.subModifications?.forEach((child) => visit(child, effectiveSelected));
     };
 
-    roots.forEach((root) => visit(root, '', false));
+    roots.forEach((root) => visit(root, false));
     return mutated ? next : selection;
 }
 
 /**
- * Collects every uuid present anywhere in the tree (root + all nested levels).
+ * Collects every rowKey present anywhere in the tree (root + all nested levels).
  */
-function collectAllUuids(mods: ComposedModificationMetadata[]): Set<string> {
-    const uuids = new Set<string>();
-    const visit = (nodes: ComposedModificationMetadata[], parentRowId: string) =>
+function collectAllRowKeys(mods: ComposedModificationMetadata[]): Set<string> {
+    const rowKeys = new Set<string>();
+    const visit = (nodes: ComposedModificationMetadata[]) =>
         nodes.forEach((m) => {
-            const rowId = childRowId(parentRowId, m.uuid);
-            uuids.add(rowId);
-            visit(m.subModifications, rowId);
+            rowKeys.add(m.rowKey);
+            visit(m.subModifications);
         });
-    visit(mods, '');
-    return uuids;
+    visit(mods);
+    return rowKeys;
 }
 
 /**
- * Removes selection entries whose uuid is no longer present anywhere in the tree.
+ * Removes selection entries whose rowKey is no longer present anywhere in the tree.
  * This keeps the selection in sync after a move (cut/paste), delete, or restore
  * operation that changes which modifications exist in the current node.
  * Returns the same reference when nothing changed to avoid unnecessary re-renders.
  */
-function pruneStaleSelection(selection: RowSelectionState, allUuids: Set<string>): RowSelectionState {
-    const pruned = Object.fromEntries(Object.entries(selection).filter(([uuid]) => allUuids.has(uuid)));
+function pruneStaleSelection(selection: RowSelectionState, allRowKeys: Set<string>): RowSelectionState {
+    const pruned = Object.fromEntries(Object.entries(selection).filter(([rowKey]) => allRowKeys.has(rowKey)));
     return Object.keys(pruned).length === Object.keys(selection).length ? selection : pruned;
 }
 
@@ -158,8 +152,8 @@ export function useModificationsSelection({
     useEffect(() => {
         setRowSelection((prev) => {
             const propagated = propagateSelectionToLoadedDescendants(prev, modifications);
-            const allUuids = collectAllUuids(modifications);
-            return pruneStaleSelection(propagated, allUuids);
+            const allRowKeys = collectAllRowKeys(modifications);
+            return pruneStaleSelection(propagated, allRowKeys);
         });
     }, [modifications]);
 

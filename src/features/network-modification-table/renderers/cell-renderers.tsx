@@ -79,7 +79,6 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
 export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
-    // A reference to a shared-modification row shows a "copy link" action
     if (isReferenceModification(row.original)) {
         return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
     }
