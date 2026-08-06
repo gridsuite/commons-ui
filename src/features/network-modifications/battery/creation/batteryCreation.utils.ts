@@ -99,7 +99,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
         equipmentName: dto.equipmentName ?? '',
         maximumActivePower: dto.maxP,
         minimumActivePower: dto.minP,
-        activePowerSetpoint: dto.targetP,
+        activePowerSetpoint: dto.targetP ?? undefined,
         reactivePowerSetpoint: dto.targetQ,
         frequencyRegulation: dto.participate,
         droop: dto.droop,
@@ -157,8 +157,8 @@ export const batteryCreationFormToDto = (form: BatteryCreationFormData): Battery
         reactiveCapabilityCurvePoints: isReactiveCapabilityCurveOn
             ? (form.reactiveLimits.reactiveCapabilityCurveTable ?? null)
             : null,
-        targetP: form.activePowerSetpoint ?? 0,
-        targetQ: form.reactivePowerSetpoint ?? 0,
+        targetP: form.activePowerSetpoint ?? null,
+        targetQ: form.reactivePowerSetpoint ?? null,
         targetV: form.voltageSetpoint ?? null,
         voltageRegulationOn: form.voltageRegulation ?? null,
         participate: form.frequencyRegulation ?? null,
