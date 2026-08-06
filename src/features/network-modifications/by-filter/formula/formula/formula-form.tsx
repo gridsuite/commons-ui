@@ -6,7 +6,7 @@
  */
 
 import { useWatch } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { DragHandle } from '@mui/icons-material';
 import { EQUIPMENTS_FIELDS, EquipmentTypeOptionType } from './formula-utils';
 import ReferenceAutocompleteInput from './reference-autocomplete-input';
