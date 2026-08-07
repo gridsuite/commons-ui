@@ -37,7 +37,7 @@ import {
 import {
     FilterPOJO,
     FormPowerElectronicsCluster,
-    type PowerElectronicsCluster,
+    PowerElectronicsCluster,
     type PowerElectronicsMaterial,
 } from './short-circuit-parameters.type';
 import {
@@ -204,19 +204,6 @@ const parsePowerElectronicsMaterialsParamString = (
     }
 };
 
-const parsePowerElectronicsClustersParamString = (
-    paramString: string,
-    snackError: (message: SnackInputs) => void
-): (PowerElectronicsCluster & { active: boolean })[] => {
-    // Attempt to parse the string into an array of PowerElectronicsCluster objects
-    try {
-        return JSON.parse(paramString);
-    } catch (error) {
-        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsClustersParamParsingError' });
-        return [];
-    }
-};
-
 export const getDefaultShortCircuitSpecificParamsValues = (
     specificParametersDescriptionForProvider: SpecificParameterInfos[],
     snackError: (message: SnackInputs) => void
@@ -280,22 +267,13 @@ export const getShortCircuitSpecificParametersValues = (
         finalSpecificParameters[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS] = JSON.stringify(
             powerElectronicsClustersParam.map((sParam) => {
                 const { filters, ...rest } = sParam;
-                const lightFilters = // keep only id and name in filters for backend
-                    filters?.map((filter) => ({
-                        filterId: filter[ID],
-                        filterName: filter.name,
-                    })) ?? [];
+                const lightFilters = filters?.map((filter) => filter[ID]) ?? []; // keep only id in filters for backend
                 return { ...rest, filters: lightFilters };
             })
         );
     }
     if (nodeClusterFilterIds) {
-        const lightFilters = nodeClusterFilterIds.map((filter) => {
-            return {
-                filterId: filter[ID],
-                filterName: filter.name,
-            };
-        });
+        const lightFilters = nodeClusterFilterIds.map((filter) => filter[ID]);
         finalSpecificParameters[NODE_CLUSTER_FILTER_IDS] = JSON.stringify(lightFilters);
     }
     return finalSpecificParameters;
@@ -316,6 +294,19 @@ const formatElectronicsMaterialsParamString = (
     });
 };
 
+const parsePowerElectronicsClustersParamString = (
+    paramString: string,
+    snackError: (message: SnackInputs) => void
+): (PowerElectronicsCluster & { active: boolean })[] => {
+    // Attempt to parse the string into an array of PowerElectronicsCluster objects
+    try {
+        return JSON.parse(paramString);
+    } catch (error) {
+        snackWithFallback(snackError, error, { headerId: 'ShortCircuitPowerElectronicsClustersParamParsingError' });
+        return [];
+    }
+};
+
 const formatElectronicsClustersParamString = (
     defaultValues: PowerElectronicsCluster[],
     specificParamValue: string,
@@ -327,9 +318,9 @@ const formatElectronicsClustersParamString = (
         const { filters, ...rest } = cluster;
         return {
             ...rest,
-            filters: filters.map((filter) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            filters: filters.map((filter: { id: string; name: string }) => ({
+                [ID]: filter.id,
+                [NAME]: filter.name, // from back to front -> {id: uuid, name: string}
             })),
         };
     });
@@ -389,10 +380,11 @@ export const formatShortCircuitSpecificParameters = (
     const nodeClusterParam = specificParametersDescriptionForProvider.find((p) => p.name === NODE_CLUSTER);
     if (nodeClusterParam) {
         if (Object.hasOwn(specificParamsList, NODE_CLUSTER_FILTER_IDS)) {
+            // NODE_CLUSTER_FILTER_IDS is parsed when getting shortcircuit parameters
             const filters = JSON.parse(specificParamsList[NODE_CLUSTER_FILTER_IDS]);
-            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { filterId: any; filterName: any }) => ({
-                [ID]: filter.filterId,
-                [NAME]: filter.filterName, // from back to front -> {id: uuid, name: string}
+            formatted[NODE_CLUSTER_FILTER_IDS] = filters.map((filter: { id: any; name: any }) => ({
+                [ID]: filter.id,
+                [NAME]: filter.name, // from back to front -> {id: uuid, name: string}
             }));
         } else {
             formatted[NODE_CLUSTER_FILTER_IDS] = getDefaultSpecificParamsValues([nodeClusterParam])?.[
