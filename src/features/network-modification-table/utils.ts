@@ -35,6 +35,7 @@ export function isCompositeModification(modification: ComposedModificationMetada
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
+// TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
 export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
@@ -171,20 +172,18 @@ export function mergeSubModificationsIntoTree(
         if (!prevMod) {
             return nextMod;
         }
+        const carriedOverSubModifications =
+            nextMod.subModifications.length > 0 ? nextMod.subModifications : prevMod.subModifications;
         return {
             ...nextMod,
             rowKey: prevMod.rowKey,
             subModifications:
                 prevMod.subModifications.length === 0
                     ? nextMod.subModifications
-                    : mergeSubModificationsIntoTree(
-                          nextMod.subModifications.length > 0 ? nextMod.subModifications : prevMod.subModifications,
-                          prevMod.subModifications
-                      ),
+                    : mergeSubModificationsIntoTree(carriedOverSubModifications, prevMod.subModifications),
         };
     });
 }
-
 /**
  * Returns a new tree where the modification identified by {@code uuid} has the given
  * partial fields merged in. All other nodes are returned as-is (referentially stable).
@@ -289,7 +288,7 @@ export function moveSubModificationInTree(
  * at the call site (unlike the previous resolveUuidFromRowId path-parsing scheme, now removed).
  */
 export async function fetchSubModificationsForExpandedRows(
-    expandedRowKeys: String[],
+    expandedRowKeys: string[],
     mods: ComposedModificationMetadata[],
     setMods: Dispatch<SetStateAction<ComposedModificationMetadata[]>>,
     force = false
