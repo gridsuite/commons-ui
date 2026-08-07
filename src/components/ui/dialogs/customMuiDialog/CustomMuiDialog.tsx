@@ -8,7 +8,15 @@
 import { type MouseEvent, type ReactNode, useCallback, useState } from 'react';
 import { FieldErrors, FieldValues, SubmitHandler } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
-import { Dialog, DialogActions, DialogContent, DialogProps, DialogTitle, LinearProgress } from '@mui/material';
+import {
+    Breakpoint,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogProps,
+    DialogTitle,
+    LinearProgress,
+} from '@mui/material';
 import { SubmitButton } from '../../../ui/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../../ui/reactHookForm/utils/CancelButton';
 import { CustomFormProvider, MergedFormContextProps } from '../../../ui/reactHookForm/provider/CustomFormProvider';
@@ -28,6 +36,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     isDataFetching?: boolean;
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
+    dialogWidth?: Breakpoint;
 };
 
 const styles = {
@@ -84,6 +93,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     disabledSave,
     onCancel,
     children,
+    dialogWidth,
     confirmationMessageKey,
     unscrollableFullHeight = false,
     ...dialogProps
@@ -140,20 +150,23 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
         [onValidationError]
     );
 
+    let dialogSx;
+    if (unscrollableFullHeight) {
+        dialogSx = unscrollableDialogStyles.fullHeightDialog;
+    } else if (!dialogWidth) {
+        dialogSx = styles.dialogPaper;
+    }
+
     return (
         <CustomFormProvider<T> {...formContext}>
-            <Dialog
-                sx={unscrollableFullHeight ? unscrollableDialogStyles.fullHeightDialog : styles.dialogPaper}
-                open={open}
-                onClose={handleClose}
-                fullWidth
-                {...dialogProps}
-            >
+            <Dialog sx={dialogSx} open={open} onClose={handleClose} fullWidth maxWidth={dialogWidth} {...dialogProps}>
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
                     <FormattedMessage id={titleId} />
                 </DialogTitle>
-                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
+                <DialogContent
+                    sx={unscrollableFullHeight && !dialogWidth ? unscrollableDialogStyles.unscrollableContainer : null}
+                >
                     {children}
                 </DialogContent>
                 <DialogActions>
