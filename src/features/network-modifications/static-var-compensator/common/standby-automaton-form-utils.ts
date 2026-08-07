@@ -29,29 +29,29 @@ export const getStandbyAutomatonEmptyFormData = (id = FieldConstants.AUTOMATON) 
     },
 });
 
-const requiredIfAddStandbyAutomaton = (schema: NumberSchema<number | null | undefined>) =>
-    schema.nullable().when([FieldConstants.ADD_STAND_BY_AUTOMATON], {
+const requiredIfAddStandbyAutomaton = (baseSchema: NumberSchema<number | null | undefined>) =>
+    baseSchema.nullable().when([FieldConstants.ADD_STAND_BY_AUTOMATON], {
         is: true,
-        then: (s: Schema) => s.required(),
+        then: (schema: Schema) => schema.required(),
     });
 
-const requiredWhenSusceptanceChoice = (schema: NumberSchema<number | null | undefined>) =>
-    schema.when([FieldConstants.ADD_STAND_BY_AUTOMATON, FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON], {
+const requiredWhenSusceptanceChoice = (baseSchema: NumberSchema<number | null | undefined>) =>
+    baseSchema.when([FieldConstants.ADD_STAND_BY_AUTOMATON, FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON], {
         is: (addStandbyAutomaton: boolean, characteristicsChoiceAutomaton: string) =>
             addStandbyAutomaton && characteristicsChoiceAutomaton === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
-        then: (s) =>
-            s
+        then: (schema) =>
+            schema
                 .min(yup.ref(FieldConstants.MIN_S_AUTOMATON), 'StaticVarCompensatorErrorSFixLessThanSMin')
                 .max(yup.ref(FieldConstants.MAX_S_AUTOMATON), 'StaticVarCompensatorErrorSFixGreaterThanSMax')
                 .required(),
     });
 
-const requiredWhenQatNominalVChoice = (schema: NumberSchema<number | null | undefined>) =>
-    schema.when([FieldConstants.ADD_STAND_BY_AUTOMATON, FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON], {
+const requiredWhenQatNominalVChoice = (baseSchema: NumberSchema<number | null | undefined>) =>
+    baseSchema.when([FieldConstants.ADD_STAND_BY_AUTOMATON, FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON], {
         is: (addStandbyAutomaton: boolean, characteristicsChoiceAutomaton: string) =>
             addStandbyAutomaton && characteristicsChoiceAutomaton === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
-        then: (s) =>
-            s
+        then: (schema) =>
+            schema
                 .min(yup.ref(FieldConstants.MIN_Q_AUTOMATON), 'StaticVarCompensatorErrorQFixLessThanQMin')
                 .max(yup.ref(FieldConstants.MAX_Q_AUTOMATON), 'StaticVarCompensatorErrorQFixGreaterThanQMax')
                 .required(),
