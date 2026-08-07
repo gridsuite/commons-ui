@@ -6,10 +6,11 @@
  */
 import { backendFetchJson } from './utils';
 import { DynamicSimulationModelInfos, IdName } from '../utils';
-import { PREFIX_STUDY_SERVER_QUERIES } from './study';
+
+const PREFIX_DYNAMIC_MAPPING_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-mapping`;
 
 function getDynamicMappingUrl() {
-    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-mapping/`;
+    return `${PREFIX_DYNAMIC_MAPPING_SERVER_QUERIES}/`;
 }
 
 export function fetchDynamicSimulationModels(mapping: IdName): Promise<DynamicSimulationModelInfos[]> {
