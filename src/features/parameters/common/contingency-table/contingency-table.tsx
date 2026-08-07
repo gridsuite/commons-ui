@@ -140,6 +140,15 @@ function ContingencyTableWithApiRef(
         contingencyCountRefreshTrigger,
     ]);
 
+    useEffect(() => {
+        if (
+            simulatedContingencyCount === null ||
+            (simulatedContingencyCount.success && simulatedContingencyCount.notFoundElements === 0)
+        ) {
+            setExpanded(false);
+        }
+    }, [simulatedContingencyCount]);
+
     const renderContingencyCount = () => {
         if (!isBuiltCurrentNode) {
             return (
