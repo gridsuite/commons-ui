@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { forwardRef } from 'react';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { TabPanelProps } from '@mui/lab';
 import { ShortCircuitIccMaterialTable } from './short-circuit-icc-material-table';

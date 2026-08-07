@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid2 as Grid, Stack } from '@mui/material';
+import { Alert, Grid, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { RadioInput } from '../../../components/ui';
 import {

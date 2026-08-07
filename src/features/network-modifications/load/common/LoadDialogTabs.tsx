@@ -29,15 +29,16 @@ export function LoadDialogTabs({
             value={tabIndex}
             variant="scrollable"
             onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
-            TabIndicatorProps={{
-                sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+            slotProps={{
+                indicator: {
+                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                },
             }}
         >
             <Tab
                 label={<FormattedMessage id="ConnectivityTab" />}
                 sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CONNECTIVITY_TAB)}
             />
-
             <Tab
                 label={<FormattedMessage id="CharacteristicsTab" />}
                 sx={getTabStyle(tabIndexesWithError, LoadDialogTab.CHARACTERISTICS_TAB)}

@@ -62,10 +62,12 @@ export function ExpandingTextField({
             inputProps: { 'data-testid': 'DescriptionInputField' },
         },
         helperText: <Typography variant="caption">{descriptionCounter}</Typography>,
-        FormHelperTextProps: {
-            sx: {
-                ml: 'auto',
-                color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+        slotProps: {
+            formHelperText: {
+                sx: {
+                    ml: 'auto',
+                    color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+                },
             },
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),

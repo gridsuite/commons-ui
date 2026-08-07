@@ -95,41 +95,43 @@ export function QuickSearch({
             placeholder={placeholder ? intl.formatMessage({ id: placeholder }) : ''}
             sx={{ maxWidth: '500px', ...sx }}
             size="small"
-            InputProps={{
-                endAdornment: (
-                    <InputAdornment sx={{ padding: 0.2 }} position="end">
-                        {searchTerm && (
-                            <IconButton sx={styles.adornmentItem} onClick={handleClear}>
-                                <Clear />
-                            </IconButton>
-                        )}
-                        {resultsCountDisplay && (
-                            <>
-                                <Box sx={styles.adornmentItem}>
-                                    <span>
-                                        {currentResultIndex + 1}/{resultCount}
-                                    </span>
-                                </Box>
-                                <Box>
-                                    <IconButton
-                                        sx={styles.adornmentItem}
-                                        onClick={() => onNavigate('previous')}
-                                        disabled={resultCount === 0}
-                                    >
-                                        <KeyboardArrowUp />
-                                    </IconButton>
-                                    <IconButton
-                                        sx={styles.adornmentItem}
-                                        onClick={() => onNavigate('next')}
-                                        disabled={resultCount === 0}
-                                    >
-                                        <KeyboardArrowDown />
-                                    </IconButton>
-                                </Box>
-                            </>
-                        )}
-                    </InputAdornment>
-                ),
+            slotProps={{
+                input: {
+                    endAdornment: (
+                        <InputAdornment sx={{ padding: 0.2 }} position="end">
+                            {searchTerm && (
+                                <IconButton sx={styles.adornmentItem} onClick={handleClear}>
+                                    <Clear />
+                                </IconButton>
+                            )}
+                            {resultsCountDisplay && (
+                                <>
+                                    <Box sx={styles.adornmentItem}>
+                                        <span>
+                                            {currentResultIndex + 1}/{resultCount}
+                                        </span>
+                                    </Box>
+                                    <Box>
+                                        <IconButton
+                                            sx={styles.adornmentItem}
+                                            onClick={() => onNavigate('previous')}
+                                            disabled={resultCount === 0}
+                                        >
+                                            <KeyboardArrowUp />
+                                        </IconButton>
+                                        <IconButton
+                                            sx={styles.adornmentItem}
+                                            onClick={() => onNavigate('next')}
+                                            disabled={resultCount === 0}
+                                        >
+                                            <KeyboardArrowDown />
+                                        </IconButton>
+                                    </Box>
+                                </>
+                            )}
+                        </InputAdornment>
+                    ),
+                },
             }}
         />
     );
