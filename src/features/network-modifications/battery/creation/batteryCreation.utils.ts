@@ -28,6 +28,7 @@ import { BatteryCreationDto } from './batteryCreation.types';
 import {
     getActivePowerControlEmptyFormData,
     getActivePowerControlSchema,
+    getActivePowerSetPointSchema,
     getReactiveLimitsEmptyFormDataProps,
     getReactiveLimitsFormDataProps,
     getReactiveLimitsValidationSchema,
@@ -69,7 +70,11 @@ export const batteryCreationFormSchema = object()
             }),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),
-        ...getSetPointsSchema(),
+        ...getActivePowerSetPointSchema(),
+        // override for batteries
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
+            .nullable()
+            .required(),
         ...getVoltageRegulationSchema(),
         ...getActivePowerControlSchema(),
         ...getShortCircuitFormSchema(),
