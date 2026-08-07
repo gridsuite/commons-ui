@@ -21,7 +21,7 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
 import {
-    ExcludedNetworkModifications,
+    NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     ComposedModificationMetadata,
     NetworkModificationMetadata,
@@ -61,8 +61,8 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     currentNodeId?: UUID;
     currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
-    modificationsToExclude?: ExcludedNetworkModifications[];
-    setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
+    applicabilities?: NetworkModificationApplicabilities;
+    setApplicabilities?: Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
 }
 
@@ -81,8 +81,8 @@ export function NetworkModificationsTable({
     currentNodeId = undefined,
     currentRootNetworkUuid,
     rootNetworks,
-    modificationsToExclude,
-    setModificationsToExclude,
+    applicabilities,
+    setApplicabilities,
     isDisabled = false,
     isImpactedByNotification,
     notificationMessageId,
@@ -194,8 +194,8 @@ export function NetworkModificationsTable({
             },
             modifications: {
                 count: modifications.length,
-                toExclude: modificationsToExclude,
-                setToExclude: setModificationsToExclude,
+                applicabilities,
+                setApplicabilities,
             },
             interaction: {
                 lastClickedRowId,
@@ -217,8 +217,8 @@ export function NetworkModificationsTable({
             currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
-            modificationsToExclude,
-            setModificationsToExclude,
+            applicabilities,
+            setApplicabilities,
             lastClickedRowId,
             handleRowSelected,
             modificationToEditLabelRef,
