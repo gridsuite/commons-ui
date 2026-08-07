@@ -189,7 +189,7 @@ export const twoWindingsTransformerCreationFormSchema = object()
         [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, true),
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(false),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
-        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(), // TODO need toBeEstim wth Modification case
+        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
         [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(false),
         [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerValidationSchemaProps(false),
     })
@@ -204,7 +204,7 @@ export const twoWindingsTransformerCreationEmptyFormData: DeepNullable<TwoWindin
     [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionEmptyFormDataProps(),
     [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsEmptyFormData(),
     [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(false),
-    [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(), // TODO need toBeEstim wth Modification case
+    [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
     [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerEmptyFormData(false),
     [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerEmptyFormData(false),
     AdditionalProperties: [],
