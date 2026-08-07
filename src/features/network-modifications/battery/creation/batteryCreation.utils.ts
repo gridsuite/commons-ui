@@ -35,7 +35,6 @@ import {
     getRegulatingTerminalEquipmentData,
     getRegulatingTerminalVoltageLevelData,
     getSetPointsEmptyFormData,
-    getSetPointsSchema,
     getShortCircuitEmptyFormData,
     getShortCircuitFormData,
     getShortCircuitFormSchema,
@@ -72,9 +71,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),
         ...getActivePowerSetPointSchema(),
         // override for batteries
-        [FieldConstants.REACTIVE_POWER_SET_POINT]: number()
-            .nullable()
-            .required(),
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: number().nullable().required(),
         ...getVoltageRegulationSchema(),
         ...getActivePowerControlSchema(),
         ...getShortCircuitFormSchema(),
