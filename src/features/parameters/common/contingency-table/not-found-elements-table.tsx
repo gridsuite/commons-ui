@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
 import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { NotFoundElementsData } from './utils';
@@ -14,7 +20,7 @@ export default function NotFoundElementsTable({ data }: Readonly<NotFoundElement
                 <Table stickyHeader size="small">
                     <TableHead>
                         <TableRow>
-                            <TableCell key="list">{intl.formatMessage({ id: 'contingencyList' })}</TableCell>
+                            <TableCell key="list">{intl.formatMessage({ id: 'ContingenciesList' })}</TableCell>
                             <TableCell key="contingency">{intl.formatMessage({ id: 'Contingencies' })}</TableCell>
                             <TableCell key="element">{intl.formatMessage({ id: 'Equipment' })}</TableCell>
                         </TableRow>

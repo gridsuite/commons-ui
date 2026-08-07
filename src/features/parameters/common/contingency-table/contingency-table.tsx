@@ -108,7 +108,7 @@ function ContingencyTableWithApiRef(
         fetchContingencyCount?.(
             contingencyListsInfos
                 .filter((lists) => lists[ACTIVATED])
-                .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID])), // save names of the lists
+                .flatMap((lists) => lists[CONTINGENCY_LISTS]?.map((contingencyList) => contingencyList[ID])),
             abortSignal
         )
             .then((contingencyCount) => {
