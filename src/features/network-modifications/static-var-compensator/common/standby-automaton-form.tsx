@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { WarningAmber } from '@mui/icons-material';
-import { Box, FormControlLabel, Grid2 as Grid, TextField, Tooltip } from '@mui/material';
+import { Box, FormControlLabel, Grid, TextField, Tooltip } from '@mui/material';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { CheckboxInput, FloatInput, SwitchInput } from '../../../../components';
 import { SusceptanceArea } from './susceptance-area';

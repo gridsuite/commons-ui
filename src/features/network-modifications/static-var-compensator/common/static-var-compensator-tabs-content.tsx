@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { ConnectivityForm, ConnectivityNetworkProps, PropertiesForm } from '../../common';
 import { GridItem } from '../../../../components';
 import { StandbyAutomatonForm } from '../common/standby-automaton-form';

@@ -7,7 +7,7 @@
 
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Grid2 as Grid, InputAdornment, TextField } from '@mui/material';
+import { Grid, InputAdornment, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FloatInput, GridItem } from '../../../../components';
 import { FieldConstants, ReactivePowerAdornment, SusceptanceAdornment } from '../../../../utils';

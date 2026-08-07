@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Box, Stack } from '@mui/material';
 import { ConnectivityNetworkProps } from '../../common';
 import {
     STATIC_VAR_COMPENSATOR_TAB_FIELDS,
@@ -32,17 +32,13 @@ export function StaticVarCompensatorCreationForm({
     );
     return (
         <Stack spacing={2}>
-            <Grid>
-                <StaticVarCompensatorDialogHeader />
-            </Grid>
-            <Grid>
-                <StaticVarCompensatorDialogTabs
-                    tabIndex={tabIndex}
-                    tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
-                />
-            </Grid>
-            <Grid>
+            <StaticVarCompensatorDialogHeader />
+            <StaticVarCompensatorDialogTabs
+                tabIndex={tabIndex}
+                tabIndexesWithError={tabIndexesWithError}
+                setTabIndex={setTabIndex}
+            />
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
                 <StaticVarCompensatorTabsContent
                     voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}
@@ -50,7 +46,7 @@ export function StaticVarCompensatorCreationForm({
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                     tabIndex={tabIndex}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }
