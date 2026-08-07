@@ -15,8 +15,8 @@ export interface BatteryCreationDto {
     minP: number;
     maxP: number;
     reactiveCapabilityCurve?: boolean | null;
-    targetP: number;
-    targetQ: number;
+    targetP: number | null;
+    targetQ: number | null;
     targetV: number | null;
     voltageRegulationOn: boolean | null;
     regulatingTerminalId: string | null;
