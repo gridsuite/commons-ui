@@ -7,11 +7,10 @@
 import type { UUID } from 'node:crypto';
 import { DynamicMarginCalculationParametersInfos } from '../utils/types/dynamic-margin-calculation.type';
 import { backendFetch, backendFetchJson } from './utils';
-
-const PREFIX_DYNAMIC_MARGIN_CALCULATION_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/dynamic-margin-calculation`;
+import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 
 function getDynamicMarginCalculationUrl() {
-    return `${PREFIX_DYNAMIC_MARGIN_CALCULATION_SERVER_QUERIES}/v1/`;
+    return `${PREFIX_STUDY_SERVER_QUERIES}/v1/dynamic-margin-calculation/`;
 }
 
 export function fetchDynamicMarginCalculationProviders() {
