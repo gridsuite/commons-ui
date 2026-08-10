@@ -5,92 +5,74 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent, useCallback, useEffect, useMemo, useState, ForwardedRef } from 'react';
+import { useEffect, ForwardedRef } from 'react';
 
 import { FormattedMessage } from 'react-intl';
 
 import { Tab, Tabs } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import {
-    ILimitReductionsByVoltageLevel,
-    LimitReductionsTableForm,
-    TabPanel,
-    CONTINGENCY_LISTS_INFOS,
-    ContingencyTableApi,
-} from '../common';
+import { LimitReductionsTableForm, TabPanel, CONTINGENCY_LISTS_INFOS, ContingencyTableApi } from '../common';
 import { ContingencyTable } from '../common/contingency-table';
 import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
 import { ViolationsHidingParameters } from './security-analysis-violations-hiding';
-import { SAParametersEnriched } from '../../../utils/types';
 import { TabValues } from './constants';
-import type { MuiStyles } from '../../../utils/styles';
-
-const styles = {
-    tab: {
-        fontSize: 17,
-        fontWeight: 'bold',
-    },
-} as const satisfies MuiStyles;
+import { UseSecurityAnalysisParametersFormReturn } from './use-security-analysis-parameters-form';
+import { getTabStyle } from '../parameters-style';
 
 export function SecurityAnalysisParametersContent({
-    params,
-    currentProvider,
-    defaultLimitReductions,
+    securityAnalysisMethods,
     showContingencyCount,
     fetchContingencyCount,
     contingencyTableApiRef,
     isBuiltCurrentNode,
 }: Readonly<{
-    params: SAParametersEnriched | null;
-    currentProvider?: string;
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    securityAnalysisMethods: UseSecurityAnalysisParametersFormReturn;
     showContingencyCount: boolean;
     fetchContingencyCount?: (contingencyListIds: UUID[] | null, abortSignal: AbortSignal) => Promise<ContingencyCount>;
     contingencyTableApiRef?: ForwardedRef<ContingencyTableApi>;
     isBuiltCurrentNode?: boolean;
 }>) {
-    const [tabSelected, setTabSelected] = useState(TabValues.Contingencies);
-
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: number) => {
-        setTabSelected(newValue);
-    }, []);
-
-    const tabValue = useMemo(() => {
-        return tabSelected === TabValues.LimitReductions && !params?.limitReductions
-            ? TabValues.Contingencies
-            : tabSelected;
-    }, [params, tabSelected]);
+    const {
+        params,
+        watchProvider,
+        defaultLimitReductions,
+        selectedTab,
+        handleTabChange,
+        setSelectedTab,
+        tabIndexesWithError,
+    } = securityAnalysisMethods;
+    const currentProvider = watchProvider?.trim();
 
     useEffect(() => {
-        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && tabSelected === TabValues.LimitReductions) {
-            setTabSelected(TabValues.Contingencies);
+        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && selectedTab === TabValues.LimitReductions) {
+            setSelectedTab(TabValues.Contingencies);
         }
-    }, [currentProvider, tabSelected]);
+    }, [currentProvider, selectedTab, setSelectedTab]);
 
     return (
         <>
-            <Tabs value={tabValue} onChange={handleTabChange}>
+            <Tabs value={selectedTab} onChange={handleTabChange}>
                 <Tab
-                    label={<FormattedMessage id={TabValues[TabValues.Contingencies]} />}
+                    label={<FormattedMessage id={TabValues.Contingencies} />}
                     value={TabValues.Contingencies}
-                    sx={styles.tab}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.Contingencies)}
                 />
                 <Tab
-                    label={<FormattedMessage id={TabValues[TabValues.Aggravation]} />}
+                    label={<FormattedMessage id={TabValues.Aggravation} />}
                     value={TabValues.Aggravation}
-                    sx={styles.tab}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.Aggravation)}
                 />
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
                     <Tab
-                        label={<FormattedMessage id={TabValues[TabValues.LimitReductions]} />}
+                        label={<FormattedMessage id={TabValues.LimitReductions} />}
                         value={TabValues.LimitReductions}
-                        sx={styles.tab}
+                        sx={getTabStyle(tabIndexesWithError, TabValues.LimitReductions)}
                     />
                 )}
             </Tabs>
 
-            <TabPanel value={tabValue} index={TabValues.Contingencies} keepState>
+            <TabPanel value={selectedTab} index={TabValues.Contingencies} keepState>
                 <ContingencyTable
                     name={CONTINGENCY_LISTS_INFOS}
                     showContingencyCount={showContingencyCount}
@@ -99,10 +81,10 @@ export function SecurityAnalysisParametersContent({
                     ref={contingencyTableApiRef}
                 />
             </TabPanel>
-            <TabPanel value={tabValue} index={TabValues.Aggravation}>
+            <TabPanel value={selectedTab} index={TabValues.Aggravation}>
                 <ViolationsHidingParameters />
             </TabPanel>
-            <TabPanel value={tabValue} index={TabValues.LimitReductions}>
+            <TabPanel value={selectedTab} index={TabValues.LimitReductions}>
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
                     <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
                 )}

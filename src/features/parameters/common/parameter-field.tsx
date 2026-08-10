@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Chip, Grid2 as Grid, SxProps, Typography } from '@mui/material';
+import { Chip, Grid, SxProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
@@ -20,7 +20,6 @@ import {
     SwitchInput,
     TextInput,
 } from '../../../components/ui';
-import { LineSeparator } from './index';
 import { mergeSx } from '../../../utils';
 
 interface ParameterFieldProps {
@@ -80,14 +79,14 @@ function ParameterField({
                         fullWidth
                         multiple
                         size="small"
-                        renderTags={(val: any[], getTagsProps: any) =>
+                        renderValue={(val: any, getItemProps) =>
                             val.map((code: string, index: number) => (
                                 <Chip
                                     data-testid={`${id}.${name}.${code}`}
                                     key={code}
                                     size="small"
                                     label={code}
-                                    {...getTagsProps({ index })}
+                                    {...getItemProps({ index })}
                                 />
                             ))
                         }
@@ -117,7 +116,6 @@ function ParameterField({
             <Grid container size={INPUT_GRID_SIZE} sx={parametersStyles.controlItem}>
                 {renderField()}
             </Grid>
-            <LineSeparator />
         </Grid>
     );
 }

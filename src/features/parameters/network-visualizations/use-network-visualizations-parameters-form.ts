@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
@@ -33,8 +33,12 @@ import {
 import { useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
+import { useTabs } from '../common';
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;
@@ -44,6 +48,8 @@ export interface UseNetworkVisualizationParametersFormReturn {
     paramsLoading: boolean;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
+    tabIndexesWithError: TabValues[];
+    onValidationError: (errors: FieldErrors) => void;
 }
 
 // GridExplore versus GridStudy exclusive input params
@@ -70,13 +76,8 @@ export const useNetworkVisualizationParametersForm = ({
     studyUuid,
     parameters,
 }: UseNetworkVisualizationParametersFormProps): UseNetworkVisualizationParametersFormReturn => {
-    const [selectedTab, setSelectedTab] = useState(TabValues.MAP);
     const [paramsLoading, setParamsLoading] = useState<boolean>(false);
     const { snackError } = useSnackMessage();
-
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     const formSchema = useMemo(() => {
         return yup
@@ -127,6 +128,17 @@ export const useNetworkVisualizationParametersForm = ({
     });
 
     const { reset } = formMethods;
+
+    const {
+        selectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.MAP,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
@@ -191,5 +203,7 @@ export const useNetworkVisualizationParametersForm = ({
         paramsLoading,
         onSaveInline,
         onSaveDialog,
+        tabIndexesWithError,
+        onValidationError,
     };
 };

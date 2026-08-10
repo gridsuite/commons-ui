@@ -13,13 +13,10 @@ import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     InitialVoltage,
-    NODE_CLUSTER_FILTER_IDS,
     PredefinedParameters,
     SHORT_CIRCUIT_INITIAL_VOLTAGE_PROFILE_MODE,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER,
     SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS,
-    SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS,
     SHORT_CIRCUIT_PREDEFINED_PARAMS,
     SHORT_CIRCUIT_VOLTAGE_RANGES,
     SHORT_CIRCUIT_WITH_LOADS,
@@ -30,9 +27,12 @@ import {
 import { updateParameter } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, useTabs, VERSION_PARAMETER } from '../common';
 import {
     formatShortCircuitSpecificParameters,
     getCommonShortCircuitParametersFormSchema,
@@ -40,6 +40,7 @@ import {
     getShortCircuitSpecificParametersValues,
     getSpecificShortCircuitParametersFormSchema,
     ShortCircuitParametersTabValues,
+    TAB_FIELDS,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
@@ -76,16 +77,9 @@ export const useShortCircuitParametersForm = ({
 }: UseShortCircuitParametersFormProps): UseShortCircuitParametersFormReturn => {
     const { params, updateParameters, specificParamsDescription } = parametersBackend;
     const provider = params?.provider;
-    const [selectedTab, setSelectedTab] = useState<ShortCircuitParametersTabValues>(
-        ShortCircuitParametersTabValues.GENERAL
-    );
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<ShortCircuitParametersTabValues[]>([]);
+
     const [paramsLoaded, setParamsLoaded] = useState(false);
     const { snackError } = useSnackMessage();
-
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: ShortCircuitParametersTabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     const specificParametersDescriptionForProvider = useMemo<SpecificParameterInfos[]>(() => {
         return provider && specificParamsDescription?.[provider] ? specificParamsDescription[provider] : [];
@@ -240,29 +234,17 @@ export const useShortCircuitParametersForm = ({
         [provider, snackError, specificParametersDescriptionForProvider]
     );
 
-    const onValidationError = useCallback(
-        (_errors: FieldErrors) => {
-            console.error('onValidationError: ', _errors);
-            const tabsInError = [];
-            if (
-                (_errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_MATERIALS] ||
-                    _errors?.[SHORT_CIRCUIT_POWER_ELECTRONICS_CLUSTERS]) &&
-                ShortCircuitParametersTabValues.POWER_ELECTRONICS !== selectedTab
-            ) {
-                tabsInError.push(ShortCircuitParametersTabValues.POWER_ELECTRONICS);
-            }
-            if (
-                (_errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_IN_CALCULATION_CLUSTER] ||
-                    _errors?.[SHORT_CIRCUIT_ONLY_STARTED_GENERATORS_OUTSIDE_CALCULATION_CLUSTER] ||
-                    _errors?.[NODE_CLUSTER_FILTER_IDS]) &&
-                ShortCircuitParametersTabValues.STUDY_AREA !== selectedTab
-            ) {
-                tabsInError.push(ShortCircuitParametersTabValues.STUDY_AREA);
-            }
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const {
+        selectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: ShortCircuitParametersTabValues.GENERAL,
+        tabEnum: ShortCircuitParametersTabValues,
+        errors: formMethods.formState.errors,
+        tabFields: TAB_FIELDS,
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {

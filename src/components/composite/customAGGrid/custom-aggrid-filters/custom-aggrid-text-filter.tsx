@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useMemo } from 'react';
-import { Grid2 as Grid, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
+import { Grid, IconButton, InputAdornment, Stack, TextField } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { mergeSx, MuiStyles } from '../../../../utils';
@@ -57,19 +57,21 @@ export function CustomAggridTextFilter({
                     placeholder={intl.formatMessage({
                         id: 'filter.filterOoo',
                     })}
-                    inputProps={{
-                        type: isNumberInput ? FilterDataTypes.NUMBER : FilterDataTypes.TEXT,
-                    }}
                     sx={mergeSx(styles.input, isNumberInput ? styles.noArrows : undefined)}
-                    /* eslint-disable-next-line react/jsx-no-duplicate-props */
-                    InputProps={{
-                        endAdornment: value ? (
-                            <InputAdornment position="end">
-                                <IconButton aria-label="clear filter" onClick={onClear} edge="end" size="small">
-                                    <ClearIcon />
-                                </IconButton>
-                            </InputAdornment>
-                        ) : null,
+                    slotProps={{
+                        input: {
+                            endAdornment: value ? (
+                                <InputAdornment position="end">
+                                    <IconButton aria-label="clear filter" onClick={onClear} edge="end" size="small">
+                                        <ClearIcon />
+                                    </IconButton>
+                                </InputAdornment>
+                            ) : null,
+                        },
+
+                        htmlInput: {
+                            type: isNumberInput ? FilterDataTypes.NUMBER : FilterDataTypes.TEXT,
+                        },
                     }}
                 />
             </Grid>

@@ -5,13 +5,14 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
+import { isDisabledValidationButton } from '../../../utils/form-utils';
 
 export function VoltageInitParametersEditionDialog({
     id,
@@ -32,15 +33,15 @@ export function VoltageInitParametersEditionDialog({
     });
 
     const {
-        formState: { errors, dirtyFields },
+        formState: { errors },
     } = voltageInitMethods.formMethods;
-    const disableSave = Object.keys(errors).length > 0 || Object.keys(dirtyFields).length === 0;
 
     return (
         <CustomMuiDialog
             open={open}
             onClose={onClose}
             onSave={voltageInitMethods.onSaveDialog}
+            onValidationError={voltageInitMethods.onValidationError}
             titleId={titleId}
             formContext={{
                 ...voltageInitMethods.formMethods,
@@ -48,10 +49,12 @@ export function VoltageInitParametersEditionDialog({
                 removeOptional: true,
                 language,
             }}
-            disabledSave={disableSave}
-            PaperProps={{
-                sx: {
-                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+            disabledSave={isDisabledValidationButton(errors)}
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

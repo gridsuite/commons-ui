@@ -7,6 +7,7 @@
 
 import { InferType, number, object, string } from 'yup';
 import {
+    ACTIVE_LIMITS_MIN_MAX_INVALID,
     DeepNullable,
     FieldConstants,
     ModificationType,
@@ -27,14 +28,19 @@ import { BatteryCreationDto } from './batteryCreation.types';
 import {
     getActivePowerControlEmptyFormData,
     getActivePowerControlSchema,
+    getActivePowerSetPointSchema,
     getReactiveLimitsEmptyFormDataProps,
     getReactiveLimitsFormDataProps,
     getReactiveLimitsValidationSchema,
+    getRegulatingTerminalEquipmentData,
+    getRegulatingTerminalVoltageLevelData,
     getSetPointsEmptyFormData,
-    getSetPointsSchema,
     getShortCircuitEmptyFormData,
     getShortCircuitFormData,
     getShortCircuitFormSchema,
+    getVoltageRegulationEmptyFormData,
+    getVoltageRegulationSchema,
+    REGULATION_TYPES,
 } from '../../common';
 
 export const batteryCreationFormSchema = object()
@@ -44,7 +50,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.MAXIMUM_ACTIVE_POWER]: number()
             .nullable()
             .required()
-            .test('max-greater-than-min', 'ActiveLimitsMinMaxInvalid', function checkMaxGreaterThanMin(value) {
+            .test('max-greater-than-min', ACTIVE_LIMITS_MIN_MAX_INVALID, function checkMaxGreaterThanMin(value) {
                 const min = this.parent[FieldConstants.MINIMUM_ACTIVE_POWER];
                 if (value != null && min != null) {
                     return value >= min;
@@ -54,7 +60,7 @@ export const batteryCreationFormSchema = object()
         [FieldConstants.MINIMUM_ACTIVE_POWER]: number()
             .nullable()
             .required()
-            .test('min-less-than-max', 'ActiveLimitsMinMaxInvalid', function checkMinLessThanMax(value) {
+            .test('min-less-than-max', ACTIVE_LIMITS_MIN_MAX_INVALID, function checkMinLessThanMax(value) {
                 const max = this.parent[FieldConstants.MAXIMUM_ACTIVE_POWER];
                 if (value != null && max != null) {
                     return value <= max;
@@ -63,7 +69,10 @@ export const batteryCreationFormSchema = object()
             }),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(false),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),
-        ...getSetPointsSchema(),
+        ...getActivePowerSetPointSchema(),
+        // override for batteries
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: number().nullable().required(),
+        ...getVoltageRegulationSchema(),
         ...getActivePowerControlSchema(),
         ...getShortCircuitFormSchema(),
     })
@@ -81,6 +90,7 @@ export const batteryCreationEmptyFormData: DeepNullable<BatteryCreationFormData>
     reactiveLimits: getReactiveLimitsEmptyFormDataProps(),
     AdditionalProperties: [],
     ...getSetPointsEmptyFormData(),
+    ...getVoltageRegulationEmptyFormData(),
     ...getActivePowerControlEmptyFormData(),
     ...getShortCircuitEmptyFormData(),
 };
@@ -91,7 +101,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
         equipmentName: dto.equipmentName ?? '',
         maximumActivePower: dto.maxP,
         minimumActivePower: dto.minP,
-        activePowerSetpoint: dto.targetP,
+        activePowerSetpoint: dto.targetP ?? undefined,
         reactivePowerSetpoint: dto.targetQ,
         frequencyRegulation: dto.participate,
         droop: dto.droop,
@@ -109,6 +119,16 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
             maximumReactivePower: dto?.maxQ,
             reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurve ? dto?.reactiveCapabilityCurvePoints : null,
         }),
+        voltageLevel: getRegulatingTerminalVoltageLevelData({
+            voltageLevelId: dto.regulatingTerminalVlId,
+        }),
+        equipment: getRegulatingTerminalEquipmentData({
+            equipmentId: dto.regulatingTerminalId,
+            equipmentType: dto.regulatingTerminalType ?? undefined,
+        }),
+        voltageRegulationType: dto?.regulatingTerminalId ? REGULATION_TYPES.DISTANT.id : REGULATION_TYPES.LOCAL.id,
+        voltageRegulation: dto.voltageRegulationOn,
+        voltageSetpoint: dto.targetV,
         AdditionalProperties: getFilledPropertiesFromModification(dto.properties),
         ...getShortCircuitFormData({
             directTransX: dto.directTransX,
@@ -119,6 +139,7 @@ export const batteryCreationDtoToForm = (dto: BatteryCreationDto): BatteryCreati
 
 export const batteryCreationFormToDto = (form: BatteryCreationFormData): BatteryCreationDto => {
     const isReactiveCapabilityCurveOn = form.reactiveLimits.reactiveCapabilityCurveChoice === 'CURVE';
+    const isDistantRegulation = form[FieldConstants.VOLTAGE_REGULATION_TYPE] === REGULATION_TYPES.DISTANT.id;
     return {
         type: ModificationType.BATTERY_CREATION,
         equipmentId: form.equipmentID,
@@ -138,11 +159,16 @@ export const batteryCreationFormToDto = (form: BatteryCreationFormData): Battery
         reactiveCapabilityCurvePoints: isReactiveCapabilityCurveOn
             ? (form.reactiveLimits.reactiveCapabilityCurveTable ?? null)
             : null,
-        targetP: form.activePowerSetpoint ?? 0,
-        targetQ: form.reactivePowerSetpoint ?? 0,
+        targetP: form.activePowerSetpoint ?? null,
+        targetQ: form.reactivePowerSetpoint ?? null,
+        targetV: form.voltageSetpoint ?? null,
+        voltageRegulationOn: form.voltageRegulation ?? null,
         participate: form.frequencyRegulation ?? null,
         droop: form.droop ?? null,
         directTransX: form.directTransX ?? null,
         stepUpTransformerX: form.transformerReactance ?? null,
+        regulatingTerminalId: isDistantRegulation ? (form.equipment?.id ?? null) : null,
+        regulatingTerminalType: isDistantRegulation ? (form.equipment?.type ?? null) : null,
+        regulatingTerminalVlId: isDistantRegulation ? (form.voltageLevel?.id ?? null) : null,
     };
 };

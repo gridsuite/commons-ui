@@ -47,7 +47,7 @@ export function BooleanInput<TInput extends InputTypes>({
             checked={value}
             onChange={handleChangeValue}
             inputRef={ref}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            slotProps={{ input: { 'aria-label': 'primary checkbox' } }}
             {...(otherFormProps as any)}
             {...props}
         />

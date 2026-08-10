@@ -16,6 +16,7 @@ import {
     mapLimitReductions,
     setLimitReductions,
     splitCommonParameters,
+    TAB_FIELDS,
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
@@ -25,6 +26,7 @@ import {
     PROVIDER,
     SPECIFIC_PARAMETERS,
     toFormValuesLimitReductions,
+    useTabs,
     VERSION_PARAMETER,
 } from '../common';
 import {
@@ -36,7 +38,10 @@ import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants'
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { useSnackMessage } from '../../../hooks';
 import {
     formatSpecificParameters,
@@ -75,9 +80,7 @@ export const useLoadFlowParametersForm = (
 ): UseLoadFlowParametersFormReturn => {
     const { providers, params, updateParameters, specificParamsDescription, defaultLimitReductions } =
         parametersBackend;
-    const [selectedTab, setSelectedTab] = useState(TabValues.GENERAL);
     const [limitReductionNumber, setLimitReductionNumber] = useState(0);
-    const [tabIndexesWithError, setTabIndexesWithError] = useState<TabValues[]>([]);
     const [specificParametersDescriptionForProvider, setSpecificParametersDescriptionForProvider] = useState<
         SpecificParameterInfos[]
     >(() => {
@@ -86,10 +89,6 @@ export const useLoadFlowParametersForm = (
     const { snackError } = useSnackMessage();
 
     const previousWatchProviderRef = useRef<string | undefined>(undefined);
-
-    const handleTabChange = useCallback((event: SyntheticEvent, newValue: TabValues) => {
-        setSelectedTab(newValue);
-    }, []);
 
     const specificParametersDefaultValues = useMemo(() => {
         return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
@@ -230,30 +229,20 @@ export const useLoadFlowParametersForm = (
             }));
     }, [providers, isDeveloperMode]);
 
-    const onValidationError = useCallback(
-        (errors: FieldErrors) => {
-            const tabsInError = [];
-            console.log('ERRORS', errors);
-            if (errors?.[LIMIT_REDUCTIONS_FORM] && TabValues.LIMIT_REDUCTIONS !== selectedTab) {
-                tabsInError.push(TabValues.LIMIT_REDUCTIONS);
-            }
-            if (errors?.[COMMON_PARAMETERS] && TabValues.GENERAL !== selectedTab) {
-                tabsInError.push(TabValues.GENERAL);
-            }
-            if (errors?.[SPECIFIC_PARAMETERS] && TabValues.PROVIDER_SPECIFIC !== selectedTab) {
-                tabsInError.push(TabValues.PROVIDER_SPECIFIC);
-            }
-            if (errors?.[ADVANCED_PARAMETERS] && TabValues.ADVANCED !== selectedTab) {
-                tabsInError.push(TabValues.ADVANCED);
-            }
-            setTabIndexesWithError(tabsInError);
-        },
-        [selectedTab]
-    );
+    const {
+        selectedTab,
+        onTabChange: handleTabChange,
+        tabsWithError: tabIndexesWithError,
+        onError: onValidationError,
+    } = useTabs({
+        defaultTab: TabValues.GENERAL,
+        tabEnum: TabValues,
+        errors: formMethods.formState.errors,
+        tabFields: TAB_FIELDS,
+    });
 
     const onSaveInline = useCallback(
         (formData: Record<string, any>) => {
-            setTabIndexesWithError([]);
             updateParameters(formatNewParams(formData));
         },
         [updateParameters, formatNewParams]
@@ -262,7 +251,6 @@ export const useLoadFlowParametersForm = (
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                setTabIndexesWithError([]);
                 updateParameter(
                     parametersUuid,
                     formatNewParams(formData),

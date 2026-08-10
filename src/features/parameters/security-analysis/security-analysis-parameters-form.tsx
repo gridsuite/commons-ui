@@ -32,9 +32,7 @@ export function SecurityAnalysisParametersForm({
         <Stack sx={parametersStyles.scrollableGrid}>
             <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
             <SecurityAnalysisParametersContent
-                params={securityAnalysisMethods.params}
-                currentProvider={securityAnalysisMethods.watchProvider?.trim()}
-                defaultLimitReductions={securityAnalysisMethods.defaultLimitReductions}
+                securityAnalysisMethods={securityAnalysisMethods}
                 showContingencyCount={showContingencyCount}
                 fetchContingencyCount={fetchContingencyCount}
                 contingencyTableApiRef={contingencyTableApiRef}

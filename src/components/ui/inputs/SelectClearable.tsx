@@ -50,7 +50,9 @@ export function SelectClearable(props: Readonly<SelectClearableProps>) {
                             label,
                         }),
                     })}
-                    inputProps={{ ...inputProps, readOnly: true }}
+                    slotProps={{
+                        htmlInput: { ...inputProps, readOnly: true },
+                    }}
                 />
             )}
             options={options}

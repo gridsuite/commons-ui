@@ -6,7 +6,7 @@
  */
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { alpha, Box, Chip, Theme, useTheme } from '@mui/material';
+import { Box, Chip, Theme, useTheme } from '@mui/material';
 import { AgGridReact } from 'ag-grid-react';
 import {
     GridApi as GridApiType,
@@ -67,7 +67,7 @@ const chipStyle = (severity: string, severityFilter: string[], theme: Theme) =>
         cursor: 'pointer',
         border: `1px solid ${theme.palette.divider}`,
         '&:hover': {
-            backgroundColor: alpha(REPORT_SEVERITY[severity as keyof typeof REPORT_SEVERITY].colorHexCode, 0.5),
+            backgroundColor: theme.alpha(REPORT_SEVERITY[severity as keyof typeof REPORT_SEVERITY].colorHexCode, 0.5),
         },
         '& .MuiChip-deleteIcon': {
             color: theme.palette.text.primary,
