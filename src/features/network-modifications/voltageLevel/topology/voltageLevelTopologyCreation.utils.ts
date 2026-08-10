@@ -8,16 +8,7 @@ import * as yup from 'yup';
 import { IntlShape } from 'react-intl';
 import { DeepNullable, FieldConstants, ModificationType } from '../../../../utils';
 import { MAX_SECTIONS_COUNT } from '../creation/voltageLevel.constants';
-import {
-    CreateVoltageLevelTopologyDialogSchemaForm,
-    CreateVoltageLevelTopologyInfos,
-} from './voltageLevelTopologyCreation.types';
-
-export const createVoltageLevelTopologyEmptyFormData: DeepNullable<CreateVoltageLevelTopologyDialogSchemaForm> = {
-    [FieldConstants.SECTION_COUNT]: null,
-    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: '',
-    [FieldConstants.SWITCH_KINDS]: [],
-};
+import { CreateVoltageLevelTopologyInfos } from './voltageLevelTopologyCreation.types';
 
 export const createVoltageLevelTopologyFormSchema = yup
     .object()
@@ -35,9 +26,24 @@ export const createVoltageLevelTopologyFormSchema = yup
                 is: (sectionCount: number) => sectionCount > 1,
                 then: (schema) => schema.required(),
             }),
-        [FieldConstants.SWITCH_KINDS]: yup.array().nullable(),
+        [FieldConstants.SWITCH_KINDS]: yup
+            .array()
+            .of(
+                yup.object().shape({
+                    [FieldConstants.SWITCH_KIND]: yup.string().required(),
+                })
+            )
+            .nullable(),
     })
     .required();
+
+export type CreateVoltageLevelTopologyDialogSchemaForm = yup.InferType<typeof createVoltageLevelTopologyFormSchema>;
+
+export const createVoltageLevelTopologyEmptyFormData: DeepNullable<CreateVoltageLevelTopologyDialogSchemaForm> = {
+    [FieldConstants.SECTION_COUNT]: null,
+    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]: '',
+    [FieldConstants.SWITCH_KINDS]: [],
+};
 
 export const createVoltageLevelTopologyDtoToForm = (
     editData: CreateVoltageLevelTopologyInfos | undefined,
@@ -57,12 +63,11 @@ export const createVoltageLevelTopologyDtoToForm = (
 export const createVoltageLevelTopologyFormToDto = (
     voltageLevelTopology: CreateVoltageLevelTopologyDialogSchemaForm,
     voltageLevelId: string
-): CreateVoltageLevelTopologyInfos =>
-    ({
-        type: ModificationType.CREATE_VOLTAGE_LEVEL_TOPOLOGY,
-        voltageLevelId,
-        sectionCount: voltageLevelTopology[FieldConstants.SECTION_COUNT],
-        switchKinds: voltageLevelTopology[FieldConstants.SWITCH_KINDS]?.map(
-            (switchKindData) => switchKindData[FieldConstants.SWITCH_KIND]
-        ),
-    }) satisfies CreateVoltageLevelTopologyInfos;
+): CreateVoltageLevelTopologyInfos => ({
+    type: ModificationType.CREATE_VOLTAGE_LEVEL_TOPOLOGY,
+    voltageLevelId,
+    sectionCount: voltageLevelTopology[FieldConstants.SECTION_COUNT],
+    switchKinds: voltageLevelTopology[FieldConstants.SWITCH_KINDS]?.map(
+        (switchKindData) => switchKindData[FieldConstants.SWITCH_KIND]
+    ),
+});

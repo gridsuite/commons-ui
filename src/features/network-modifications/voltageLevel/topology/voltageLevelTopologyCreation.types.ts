@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FieldConstants, ModificationType } from '../../../../utils';
+import { ModificationType } from '../../../../utils';
 
 export interface CreateVoltageLevelTopologyInfos {
     type: ModificationType;
@@ -13,9 +13,3 @@ export interface CreateVoltageLevelTopologyInfos {
     sectionCount?: number | null;
     switchKinds?: string[] | null;
 }
-
-export type CreateVoltageLevelTopologyDialogSchemaForm = {
-    [FieldConstants.SECTION_COUNT]?: number | null;
-    [FieldConstants.SWITCH_KINDS]?: { [FieldConstants.SWITCH_KIND]: string }[] | null;
-    [FieldConstants.SWITCHES_BETWEEN_SECTIONS]?: string | null;
-};
