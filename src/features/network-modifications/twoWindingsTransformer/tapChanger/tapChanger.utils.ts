@@ -31,6 +31,26 @@ export const getTapSideLabel = (twt: any, tap: any, intl: IntlShape) => {
     return null;
 };
 
+const STEP_DATA_FIELDS = [
+    FieldConstants.STEPS_TAP,
+    FieldConstants.STEPS_RESISTANCE,
+    FieldConstants.STEPS_REACTANCE,
+    FieldConstants.STEPS_CONDUCTANCE,
+    FieldConstants.STEPS_SUSCEPTANCE,
+    FieldConstants.STEPS_RATIO,
+    FieldConstants.STEPS_ALPHA,
+] as const;
+
+const isStepEqual = (step: TapChangerStep, previousStep: TapChangerStep) =>
+    STEP_DATA_FIELDS.every((field) => {
+        const value = step[field];
+        const previousValue = previousStep[field];
+        if (value == null || previousValue == null) {
+            return value == null && previousValue == null;
+        }
+        return Number(value) === Number(previousValue);
+    });
+
 export const compareStepsWithPreviousValues = (tapSteps: TapChangerStep[], previousValues?: TapChangerStep[]) => {
     if (previousValues === undefined) {
         return false;
@@ -38,10 +58,7 @@ export const compareStepsWithPreviousValues = (tapSteps: TapChangerStep[], previ
     if (tapSteps.length !== previousValues?.length) {
         return false;
     }
-    return tapSteps.every((step, index) => {
-        const previousStep = previousValues[index];
-        return JSON.stringify(step) === JSON.stringify(previousStep);
-    });
+    return tapSteps.every((step, index) => isStepEqual(step, previousValues[index]));
 };
 
 export const computeHighTapPosition = (steps: Record<number, TapChangerStepMapInfos>) => {
