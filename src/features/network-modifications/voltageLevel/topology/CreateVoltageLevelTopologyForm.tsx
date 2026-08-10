@@ -4,8 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
-import { Box, Button, Grid2 as Grid, Stack, TextField, Tooltip } from '@mui/material';
+import { ComponentType, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Box, Button, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { InfoOutlined } from '@mui/icons-material';
@@ -35,8 +35,16 @@ export function CreateVoltageLevelTopologyForm({
     const { trigger } = useFormContext();
     const { isNodeBuilt } = useCustomFormContext();
     const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
+    const isFirstRender = useRef(true);
 
     useEffect(() => {
+        // Skip the very first run: on mount, SECTION_COUNT still holds its initial empty/default
+        // value (editData hasn't been applied via reset() yet), so triggering validation here would
+        // flash a spurious "Required" error until the async edit data fills the field in.
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
         trigger(FieldConstants.SECTION_COUNT);
     }, [watchSectionCount, trigger]);
 
@@ -54,8 +62,10 @@ export function CreateVoltageLevelTopologyForm({
                 fullWidth
                 label={intl.formatMessage({ id: 'VoltageLevelId' })}
                 value={voltageLevelId ?? ''}
-                InputProps={{
-                    readOnly: true,
+                slotProps={{
+                    input: {
+                        readOnly: true,
+                    },
                 }}
                 disabled
                 {...filledTextField}
