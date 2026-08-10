@@ -73,18 +73,18 @@ function resolveTargetComposite(
     targetRow: Row<ComposedModificationMetadata>
 ): { rowKey: UUID | null; uuid: UUID | null } {
     if (droppingIntoExpandedComposite) {
-        return { rowKey: targetRow.original.rowKey, uuid: targetRow.original.uuid };
+        return { rowKey: targetRow.id as UUID, uuid: targetRow.original.uuid };
     }
     if (targetRow.depth > 0) {
         const parent = targetRow.getParentRow();
-        return { rowKey: parent?.original.rowKey ?? null, uuid: parent?.original.uuid ?? null };
+        return { rowKey: (parent?.id as UUID | undefined) ?? null, uuid: parent?.original.uuid ?? null };
     }
     return { rowKey: null, uuid: null };
 }
 
 function getTargetSiblings(targetCompositeRowKey: UUID | null, rows: Row<ComposedModificationMetadata>[]) {
     return targetCompositeRowKey
-        ? rows.filter((r) => r.depth > 0 && r.getParentRow()?.original.rowKey === targetCompositeRowKey)
+        ? rows.filter((r) => r.depth > 0 && r.getParentRow()?.id === targetCompositeRowKey)
         : rows.filter((r) => r.depth === 0);
 }
 
@@ -132,7 +132,7 @@ export const useModificationsDragAndDrop = ({
                     (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
                     !!(
                         isCompositeModification(sourceRow.original) &&
-                        findModificationInTree(targetRow.original.rowKey, [sourceRow.original])
+                        findModificationInTree(targetRow.id as UUID, [sourceRow.original])
                     )
                 );
             }
@@ -195,10 +195,10 @@ export const useModificationsDragAndDrop = ({
                 return;
             }
 
-            const movingRowKey = sourceRow.original.rowKey;
+            const movingRowKey = sourceRow.id as UUID;
             const movingUuid = sourceRow.original.uuid;
             const sourceParent = sourceRow.depth > 0 ? sourceRow.getParentRow() : undefined;
-            const sourceCompositeRowKey = sourceParent?.original.rowKey ?? null;
+            const sourceCompositeRowKey = (sourceParent?.id as UUID | undefined) ?? null;
             const sourceContainerId = sourceParent?.original.uuid ?? null;
 
             const isDraggingDown = destination.index > source.index;
@@ -218,13 +218,11 @@ export const useModificationsDragAndDrop = ({
                     // Landing on an expanded composite header: enter it at first position
                     [landingSibling] = targetSiblings;
                 } else {
-                    const landingIndexInSiblings = targetSiblings.findIndex(
-                        (r) => r.original.rowKey === targetRow.original.rowKey
-                    );
+                    const landingIndexInSiblings = targetSiblings.findIndex((r) => r.id === targetRow.id);
                     const beforeSiblingIndex = isDraggingDown ? landingIndexInSiblings + 1 : landingIndexInSiblings;
                     landingSibling = targetSiblings[beforeSiblingIndex];
                 }
-                const beforeRowKey: UUID | null = landingSibling?.original.rowKey ?? null;
+                const beforeRowKey: UUID | null = (landingSibling?.id as UUID | undefined) ?? null;
                 beforeUuid = landingSibling?.original.uuid ?? null;
 
                 setComposedModifications((prev) =>
@@ -237,8 +235,8 @@ export const useModificationsDragAndDrop = ({
                     )
                 );
             } else {
-                const oldPosition = composedModifications.findIndex((m) => m.rowKey === sourceRow.original.rowKey);
-                const newPosition = composedModifications.findIndex((m) => m.rowKey === targetRow.original.rowKey);
+                const oldPosition = composedModifications.findIndex((m) => m.rowKey === sourceRow.id);
+                const newPosition = composedModifications.findIndex((m) => m.rowKey === targetRow.id);
 
                 if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
                     return;

@@ -177,8 +177,9 @@ export function NetworkModificationsTable({
 
             const prevRecord = prevExpanded === true ? {} : prevExpanded;
             const nextRecord = nextExpanded === true ? {} : nextExpanded;
-            // expanded state is keyed by rowKey
-            const newlyExpandedRowKeys = Object.keys(nextRecord).filter((id) => nextRecord[id] && !prevRecord[id]);
+            const newlyExpandedRowKeys = Object.keys(nextRecord).filter(
+                (id) => nextRecord[id] && !prevRecord[id]
+            ) as UUID[];
 
             setComposedModifications((prevMods) => {
                 fetchSubModificationsForExpandedRows(newlyExpandedRowKeys, prevMods, setComposedModifications);
@@ -242,8 +243,8 @@ export function NetworkModificationsTable({
         state: { expanded, rowSelection },
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
-        getSubRows: (row) => row.subModifications,
-        getRowId: (row) => row.rowKey,
+        getSubRows: (originalRow) => originalRow.subModifications,
+        getRowId: (originalRow) => originalRow.rowKey,
         getRowCanExpand: (row) => isCompositeModification(row.original) || isReferenceModification(row.original),
         enableRowSelection: true,
         enableSubRowSelection: true,

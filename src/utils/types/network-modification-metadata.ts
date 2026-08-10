@@ -19,15 +19,16 @@ export interface NetworkModificationMetadata {
     messageValues: string;
 }
 
-export interface ComposedModificationMetadata extends NetworkModificationMetadata {
+export interface BasicComposedModificationMetadata extends NetworkModificationMetadata {
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
     childFromShared?: boolean;
-    // Random id generated once per node
-    rowKey: UUID;
 }
 
+export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {
+    rowKey: UUID;
+}
 export interface ReferencedCompositeModifications extends NetworkModificationMetadata {
     modificationsInfos?: NetworkModificationMetadata[];
 }
@@ -35,5 +36,5 @@ export interface ReferencedCompositeModifications extends NetworkModificationMet
 export interface ReferenceModificationInfos extends NetworkModificationMetadata {
     referenceId?: UUID;
     referenceType?: string;
-    referenceInfos?: ComposedModificationMetadata;
+    referenceInfos?: BasicComposedModificationMetadata;
 }

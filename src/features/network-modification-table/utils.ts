@@ -136,7 +136,7 @@ export function findModificationInTree(
  * @param tree all the modifications of the tree
  */
 export function updateSubModificationsOfACompositeInTree(
-    parentRowKey: string,
+    parentRowKey: UUID,
     subModifications: ComposedModificationMetadata[],
     tree: ComposedModificationMetadata[]
 ): ComposedModificationMetadata[] {
@@ -205,7 +205,7 @@ export function updateModificationFieldInTree(
 }
 
 function getModificationInTree(
-    modRowKey: string,
+    modRowKey: UUID,
     sourceParentRowKey: UUID | null,
     mods: ComposedModificationMetadata[]
 ): ComposedModificationMetadata | undefined {
@@ -288,7 +288,7 @@ export function moveSubModificationInTree(
  * at the call site (unlike the previous resolveUuidFromRowId path-parsing scheme, now removed).
  */
 export async function fetchSubModificationsForExpandedRows(
-    expandedRowKeys: string[],
+    expandedRowKeys: UUID[],
     mods: ComposedModificationMetadata[],
     setMods: Dispatch<SetStateAction<ComposedModificationMetadata[]>>,
     force = false
