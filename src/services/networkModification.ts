@@ -10,14 +10,8 @@ import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponen
 import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
-export const getBaseNetworkModificationUrl = () => `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modification`;
-
 export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
     `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
-
-function getUrl() {
-    return `${getBaseNetworkModificationUrl()}/network-modifications`;
-}
 
 export enum ModificationContainerType {
     GROUP = 'GROUP',
@@ -30,7 +24,7 @@ export type ModificationContainer = {
 };
 
 export function fetchNetworkModification(modificationUuid: UUID) {
-    const modificationFetchUrl = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
+    const modificationFetchUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
     return backendFetch(modificationFetchUrl);
 }
@@ -51,14 +45,14 @@ export function fetchBusBarSectionsForNewCoupler(
     });
 
     const url =
-        `${getBaseNetworkModificationUrl()}/network-modifications/busbar-sections-for-new-coupler` +
+        `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/busbar-sections-for-new-coupler` +
         `?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
 }
 
 export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {
-    const url = `${getUrl()}/${safeEncodeURIComponent(modificationUuid)}`;
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
 
     console.info('Updating modification', { url });
 
@@ -82,7 +76,7 @@ export function updateNetworkModificationsMetadata(
 ) {
     const urlSearchParams = new URLSearchParams();
     modificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
-    const url = `${getUrl()}?${urlSearchParams.toString()}`;
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetch(url, {
         method: 'PUT',
@@ -101,7 +95,7 @@ export function getNetworkModificationsFromComposite(
     const urlSearchParams = new URLSearchParams();
     compositeModificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
     urlSearchParams.append('onlyMetadata', String(onlyMetadata));
-    const url = `${getBaseNetworkModificationUrl()}/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
 }
