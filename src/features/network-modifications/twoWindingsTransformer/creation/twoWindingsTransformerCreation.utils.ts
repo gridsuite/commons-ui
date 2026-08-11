@@ -189,7 +189,6 @@ export const twoWindingsTransformerCreationFormSchema = object()
         [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(false, true),
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(false),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(false),
-        [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
         [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(false),
         [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerValidationSchemaProps(false),
     })
@@ -204,7 +203,6 @@ export const twoWindingsTransformerCreationEmptyFormData: DeepNullable<TwoWindin
     [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionEmptyFormDataProps(),
     [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsEmptyFormData(),
     [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(false),
-    [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
     [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerEmptyFormData(false),
     [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerEmptyFormData(false),
     AdditionalProperties: [],
@@ -251,7 +249,6 @@ export const twoWindingsTransformerCreationDtoToForm = (
             twtDto?.selectedOperationalLimitsGroupId1 ?? null,
             twtDto?.selectedOperationalLimitsGroupId2 ?? null
         ),
-        stateEstimation: {},
         ...getPhaseTapChangerFormData({
             enabled: phaseTap?.tapPosition !== undefined,
             regulationMode: phaseTap?.isRegulating ? phaseTap?.regulationMode : PHASE_REGULATION_MODES.OFF.id,
