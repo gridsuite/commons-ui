@@ -301,6 +301,28 @@ export const networkModificationsEn = {
     G: 'Magnetizing conductance',
     B: 'Magnetizing susceptance',
 
+    // Voltage level section creation
+    CreateVoltageLevelSection: 'Add busbar section',
+    VoltageLevelSectionCreationError: 'Error while creating a section',
+    VoltageLevelId: 'Voltage level ID',
+    BusBarSectionsReference: 'Busbar reference section',
+    CreateCouplingDeviceDiagramButton: 'Show voltage level',
+    builtNodeTooltipForDiagram: 'Current diagram taking into account all applied modifications',
+    notValidVoltageLevel: 'Invalid voltage level to add busbar section. Please re-create the voltage level.',
+    SectionPosition: 'Position',
+    isAfterBusBarSectionId: 'New section side',
+    Switch: 'Switch',
+    newSection: 'New section',
+    switchesAfterSections: 'Switch after',
+    switchesBeforeSections: 'Switch before',
+    Busbar: 'Busbar',
+    Before: 'Before',
+    After: 'After',
+    allBusbarSections: 'All',
+    allOptionHelperText: 'Busbars have different sections (number or index)',
+    areSwitchesOpen: 'Open',
+    areSwitchesClosed: 'Closed',
+
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',

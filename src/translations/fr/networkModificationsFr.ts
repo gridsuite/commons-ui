@@ -307,6 +307,28 @@ export const networkModificationsFr = {
     G: 'Conductance magnétisante',
     B: 'Susceptance magnétisante',
 
+    // Voltage level section creation
+    CreateVoltageLevelSection: 'Ajouter un tronçon ou une section',
+    VoltageLevelSectionCreationError: "Erreur lors de la création d'une section",
+    VoltageLevelId: 'ID Poste',
+    BusBarSectionsReference: 'Section de jeu de barres de référence',
+    CreateCouplingDeviceDiagramButton: 'Voir le poste',
+    builtNodeTooltipForDiagram: 'Diagramme courant prenant en compte toutes les modifications réalisées',
+    notValidVoltageLevel: "Poste invalide pour l'ajout de section/tronçon. Veuillez re-créer le poste.",
+    SectionPosition: 'Position',
+    isAfterBusBarSectionId: 'Côté de la nouvelle section',
+    Switch: 'Organes de coupure',
+    newSection: 'Nouvelle section',
+    switchesAfterSections: 'OC après',
+    switchesBeforeSections: 'OC avant',
+    Busbar: 'Jeu de barres',
+    Before: 'Avant',
+    After: 'Après',
+    allBusbarSections: 'Tous',
+    allOptionHelperText: "Tous les jeux de barres n'ont pas les memes sections (index et nombre)",
+    areSwitchesOpen: 'Ouverts',
+    areSwitchesClosed: 'Fermés',
+
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
