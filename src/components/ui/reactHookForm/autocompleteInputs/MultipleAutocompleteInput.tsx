@@ -31,7 +31,8 @@ export function MultipleAutocompleteInput({ name, ...props }: any) {
         return newValues.filter((val, index) => newValues.indexOf(val) === index);
     };
 
-    const { chip: slotPropsChip, ...slotProps } = props?.slotProps ?? {};
+    const { slotProps, ...otherProps } = props;
+    const { chip: slotPropsChip, ...otherSlotProps } = slotProps;
 
     return (
         <AutocompleteInput
@@ -46,8 +47,8 @@ export function MultipleAutocompleteInput({ name, ...props }: any) {
             onBlur={handleOnBlur}
             blurOnSelect={false}
             multiple
-            slotProps={{ chip: { size: 'small', ...slotPropsChip }, ...slotProps }}
-            {...props}
+            slotProps={{ chip: { size: 'small', ...slotPropsChip }, ...otherSlotProps }}
+            {...otherProps}
         />
     );
 }

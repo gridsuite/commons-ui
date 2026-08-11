@@ -47,11 +47,8 @@ export function ExpandingTextField({
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
-    const {
-        input: slotPropsInput,
-        formHelperText: slotPropsFormHelperText,
-        ...slotProps
-    } = textFieldFormProps?.slotProps ?? {};
+    const { slotProps, ...otherProps } = textFieldFormProps ?? {};
+    const { input: slotPropsInput, formHelperText: slotPropsFormHelperText, ...otherSlotProps } = slotProps ?? {};
 
     const formProps: TextInputProps['formProps'] = {
         size: 'medium',
@@ -77,11 +74,11 @@ export function ExpandingTextField({
                 },
                 ...slotPropsFormHelperText,
             },
-            ...slotProps,
+            ...otherSlotProps,
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(sx && { sx }),
-        ...textFieldFormProps,
+        ...otherProps,
     };
     return <TextInput name={name} label={label} formProps={formProps} {...otherTexFieldProps} />;
 }

@@ -81,7 +81,8 @@ export function UniqueNameInput({
         </InputAdornment>
     );
 
-    const { input: slotPropsInput, ...slotProps } = formProps?.slotProps ?? {};
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <TextField
@@ -108,9 +109,9 @@ export function UniqueNameInput({
                     },
                     ...slotPropsInput,
                 },
-                ...slotProps,
+                ...otherSlotProps,
             }}
-            {...formProps}
+            {...otherFormProps}
         />
     );
 }

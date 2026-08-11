@@ -94,7 +94,8 @@ export function TextInput({
                   !isFieldRequired(name, validationSchema, getValues()) && !formProps?.disabled && !removeOptional,
           });
 
-    const { input: slotPropsInput, ...slotProps } = formProps?.slotProps ?? {};
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <Field
@@ -121,7 +122,7 @@ export function TextInput({
                     ),
                     ...slotPropsInput,
                 },
-                ...slotProps,
+                ...otherSlotProps,
             }}
             inputRef={ref}
             {...(clearable &&
@@ -137,7 +138,7 @@ export function TextInput({
                 />
             }
             {...genHelperError(error?.message)}
-            {...formProps}
+            {...otherFormProps}
             {...(adornment && { ...finalAdornment })}
         />
     );

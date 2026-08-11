@@ -88,7 +88,8 @@ export function TableNumericalInput({
         onChange(outputTransform(previousValue));
     };
 
-    const { input: slotPropsInput, ...slotProps } = props?.slotProps ?? {};
+    const { slotProps, ...otherProps } = props;
+    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <TextField
@@ -132,10 +133,10 @@ export function TableNumericalInput({
                     },
                     ...slotPropsInput,
                 },
-                ...slotProps,
+                ...otherSlotProps,
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
-            {...props}
+            {...otherProps}
         />
     );
 }
