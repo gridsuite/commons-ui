@@ -317,7 +317,9 @@ export const networkModificationsFr = {
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
-
+    copyLink: 'Copier le lien',
+    linkCopied: 'Lien copié',
+    linkCopyError: 'Erreur lors de la copie du lien',
     // Voltage level topology creation
     CreateVoltageLevelTopology: 'Ajouter un jeu de barre',
     CreateVoltageLevelTopologyError: "Erreur lors de la création d'une topologie de poste",

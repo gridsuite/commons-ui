@@ -218,7 +218,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             {renderDepthBox()}
 
             <Box sx={networkModificationTableStyles.nameCellInnerRow}>
-                {isComposite && (
+                {row.getCanExpand() && (
                     <Box sx={networkModificationTableStyles.nameCellTogglerBox}>
                         <IconButton
                             size="small"
@@ -238,8 +238,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                     </Box>
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
-                    {/* Edit mode — composite only */}
-                    {isComposite && isEditing ? (
+                    {isEditing ? (
                         <Box
                             sx={mergeSx(networkModificationTableStyles.modificationLabel, {
                                 display: 'inline-flex',
