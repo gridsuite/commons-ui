@@ -132,16 +132,6 @@ export const getPhaseTapChangerValidationSchemaProps = (isModification = false) 
 
 export type PhaseTapChangerFormSchema = InferType<ReturnType<typeof getPhaseTapChangerValidationSchemaProps>>;
 
-/* TODO DBR
-export type PhaseTapChangerFormSchema = InferType<
-    ReturnType<typeof phaseTapChangerValidationSchema>[typeof FieldConstants.PHASE_TAP_CHANGER]
->;
-
-export const getPhaseTapChangerValidationSchema = (isModification = false, id = FieldConstants.PHASE_TAP_CHANGER) => {
-    return phaseTapChangerValidationSchema(isModification, id);
-};
-*/
-
 export const getPhaseTapChangerEmptyFormData = (isModification = false): DeepNullable<PhaseTapChangerFormSchema> => {
     return {
         [FieldConstants.ENABLED]: false,

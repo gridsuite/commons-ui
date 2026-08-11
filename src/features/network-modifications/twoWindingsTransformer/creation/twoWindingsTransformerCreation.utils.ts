@@ -44,10 +44,6 @@ import {
     getLimitsValidationSchemaProps,
     sanitizeLimitsGroups,
 } from '../../common/currentLimits/limitsPane.utils';
-import {
-    getBranchActiveReactivePowerEmptyFormDataProperties,
-    getBranchActiveReactivePowerValidationSchemaObject,
-} from '../../common/measurements';
 import { getTwtCharacteristicsEmptyFormData, getTwtCharacteristicsValidationSchemaProps } from '../characteristics';
 import {
     computeHighTapPosition,

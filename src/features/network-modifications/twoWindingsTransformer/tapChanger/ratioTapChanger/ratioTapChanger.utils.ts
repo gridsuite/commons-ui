@@ -154,19 +154,6 @@ export const getRatioTapChangerValidationSchemaProps = (isModification = false) 
     });
 
 export type RatioTapChangerFormSchema = InferType<ReturnType<typeof getRatioTapChangerValidationSchemaProps>>;
-/* TODO DBR
-const ratioTapChangerValidationSchema = (isModification: boolean, id: string) => ({
-    [id]: getRatioTapChangerValidationSchemaProps(isModification),
-});
-
-export type RatioTapChangerFormSchema = InferType<
-    ReturnType<typeof ratioTapChangerValidationSchema>[typeof FieldConstants.RATIO_TAP_CHANGER]
->;
-
-export const getRatioTapChangerValidationSchema = (isModification = false, id = FieldConstants.RATIO_TAP_CHANGER) => {
-    return ratioTapChangerValidationSchema(isModification, id);
-};
-*/
 
 export const getRatioTapChangerEmptyFormData = (isModification = false): DeepNullable<RatioTapChangerFormSchema> => {
     return {
