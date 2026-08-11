@@ -13,7 +13,7 @@ export const processConfigEn = {
     'process_config/providersParameters': 'Providers parameters',
     'process_config/loadflow': 'Loadflow',
     'process_config/securityAnalysis': 'Security analysis',
-    'process_config/shortcircuit': 'Shortcircuit',
+    'process_config/shortcircuit': 'Short circuit',
     'processConfig/fetchProcessConfigError': 'An error occured when fetching the process configuration',
     'processConfig/updateProcessConfigError': 'An error occurred while updating the process configuration',
 };
