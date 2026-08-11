@@ -366,6 +366,9 @@ export const networkModificationsFr = {
     GeneratePhaseTapRowsError: 'Veuillez générer les prises du déphaseur',
     GenerateRatioTapRowsError: 'Veuillez générer les prises du régleur',
     RatioValuesError: 'Les rapports de transformation doivent être ordonnés et sans duplication',
+    copyLink: 'Copier le lien',
+    linkCopied: 'Lien copié',
+    linkCopyError: 'Erreur lors de la copie du lien',
 
     // Tabs
     SubstationTab: 'Site',

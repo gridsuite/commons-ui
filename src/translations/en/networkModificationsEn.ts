@@ -360,6 +360,9 @@ export const networkModificationsEn = {
     GeneratePhaseTapRowsError: 'Please generate the phase changer steps',
     GenerateRatioTapRowsError: 'Please generate the ratio changer steps',
     RatioValuesError: 'The values of the ratio tap ratios must be ordered and without duplicates',
+    copyLink: 'Copy link',
+    linkCopied: 'Link copied',
+    linkCopyError: 'Error while attempting to copy link',
 
     // Tabs
     SubstationTab: 'Substation',
