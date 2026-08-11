@@ -64,6 +64,7 @@ export enum FieldConstants {
     HVDC_LINE_LCC_DELETION_SPECIFIC_TYPE = 'HVDC_LINE_WITH_LCC',
     ID = 'id',
     LOADFLOW_PARAMETERS = 'loadflowParameters',
+    SHORTCIRCUIT_PARAMETERS = 'shortcircuitParameters',
     LOAD_TYPE = 'loadType',
     MARGINAL_COST = 'marginalCost',
     MAX_Q_AT_NOMINAL_V = 'maxQAtNominalV',
