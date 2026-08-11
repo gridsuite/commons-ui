@@ -127,6 +127,9 @@ export const useModificationsDragAndDrop = ({
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
             if (isCompositeModification(sourceRow.original)) {
+                if (isReferenceModification(targetRow.original) || isTargetChildOfReference(targetRow)) {
+                    return true;
+                }
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
                 return (
                     (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
