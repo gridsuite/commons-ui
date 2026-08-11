@@ -88,6 +88,8 @@ export function TableNumericalInput({
         onChange(outputTransform(previousValue));
     };
 
+    const { input: slotPropsInput, ...slotProps } = props?.slotProps ?? {};
+
     return (
         <TextField
             value={transformedValue}
@@ -128,7 +130,9 @@ export function TableNumericalInput({
                         lang: 'en-US', // to have '.' as decimal separator
                         ...inputProps,
                     },
+                    ...slotPropsInput,
                 },
+                ...slotProps,
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...props}

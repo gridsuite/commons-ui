@@ -81,6 +81,8 @@ export function UniqueNameInput({
         </InputAdornment>
     );
 
+    const { input: slotPropsInput, ...slotProps } = formProps?.slotProps ?? {};
+
     return (
         <TextField
             // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
@@ -104,7 +106,9 @@ export function UniqueNameInput({
                     inputProps: {
                         'data-testid': 'NameInputField',
                     },
+                    ...slotPropsInput,
                 },
+                ...slotProps,
             }}
             {...formProps}
         />

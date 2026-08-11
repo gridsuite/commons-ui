@@ -47,28 +47,37 @@ export function ExpandingTextField({
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
+    const {
+        input: slotPropsInput,
+        formHelperText: slotPropsFormHelperText,
+        ...slotProps
+    } = textFieldFormProps?.slotProps ?? {};
+
     const formProps: TextInputProps['formProps'] = {
         size: 'medium',
         multiline: true,
         onFocus: handleFocus,
         onBlur: handleBlur,
-        InputProps: {
-            style: {
-                textOverflow: 'ellipsis',
-                overflow: 'hidden', // disable scrolling
-                whiteSpace: 'pre',
-                resize: 'none', // or 'horizontal' for horizontal resizing
-            },
-            inputProps: { 'data-testid': 'DescriptionInputField' },
-        },
         helperText: <Typography variant="caption">{descriptionCounter}</Typography>,
         slotProps: {
+            input: {
+                style: {
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden', // disable scrolling
+                    whiteSpace: 'pre',
+                    resize: 'none', // or 'horizontal' for horizontal resizing
+                },
+                inputProps: { 'data-testid': 'DescriptionInputField' },
+                ...slotPropsInput,
+            },
             formHelperText: {
                 sx: {
                     ml: 'auto',
                     color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
                 },
+                ...slotPropsFormHelperText,
             },
+            ...slotProps,
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(sx && { sx }),

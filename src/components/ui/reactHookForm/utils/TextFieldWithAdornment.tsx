@@ -91,6 +91,7 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             slotProps={{
+                ...otherProps?.slotProps,
                 input: adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText(),
             }}
         />
