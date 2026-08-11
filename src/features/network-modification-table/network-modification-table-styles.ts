@@ -207,11 +207,11 @@ export const DROP_INDICATOR_BOTTOM = 'inset 0 -2px 0 #90caf9';
 export const DROP_FORBIDDEN_INDICATOR_TOP = 'inset 0 2px 0 #FF3636';
 export const DROP_FORBIDDEN_INDICATOR_BOTTOM = 'inset 0 -2px 0 #FF3636';
 
-function getRowBackgroundColor(isHighlighted: boolean, isComposite: boolean, theme: Theme) {
+function getRowBackgroundColor(isHighlighted: boolean, isCompositeOrIsReference: boolean, theme: Theme) {
     if (isHighlighted) {
         return HIGHLIGHT_COLOR_BASE;
     }
-    if (!isComposite) {
+    if (!isCompositeOrIsReference) {
         return 'transparent';
     }
     return theme.palette.mode === 'light'
