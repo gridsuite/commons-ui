@@ -20,7 +20,7 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
 };
 
 export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
-    const { adornmentPosition, adornmentText, value, variant, handleClearValue, ...otherProps } = props;
+    const { adornmentPosition, adornmentText, value, variant, handleClearValue, slotProps, ...otherProps } = props;
 
     const [isFocused, setIsFocused] = useState(false);
 
@@ -91,6 +91,7 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
             slotProps={{
+                ...slotProps,
                 input: adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText(),
             }}
         />
