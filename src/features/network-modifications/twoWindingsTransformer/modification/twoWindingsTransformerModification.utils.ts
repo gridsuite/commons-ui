@@ -50,7 +50,7 @@ export const twoWindingsTransformerModificationEmptyFormData: DeepNullable<TwoWi
     {
         [FieldConstants.EQUIPMENT_ID]: '',
         [FieldConstants.EQUIPMENT_NAME]: '',
-        [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionEmptyFormDataProps(),
+        [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionEmptyFormDataProps(true),
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsEmptyFormData(),
         [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
         [FieldConstants.TO_BE_ESTIMATED]: toBeEstimatedEmptyFormData,
