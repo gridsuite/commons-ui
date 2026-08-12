@@ -40,6 +40,7 @@ import {
     findDepth,
     formatToComposedModification,
     isCompositeModification,
+    isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
     removeUuidsFromTree,
@@ -48,7 +49,7 @@ import { ModificationRow } from './row';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
-    handleCellClick: (modification: NetworkModificationMetadata) => void;
+    handleCellClick: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
@@ -139,11 +140,13 @@ export function NetworkModificationsTable({
         const prevMods = composedModificationsRef.current;
         // Uuids now at the top level have an authoritative position there. Any stale
         // carried-over child with the same uuid (cut out of a composite, pasted at root)
-        // must be stripped, otherwise it renders twice → duplicate row ids / React keys.
+        // must be stripped, otherwise it renders twice → duplicate nodes in the tree.
         const newTopLevelUuids = new Set(modifications.map((m) => m.uuid));
 
         // Carry over already-fetched children (avoids an empty flash during the re-fetch),
-        // then deep-filter out any uuid that moved to the top level.
+        // then deep-filter out any uuid that moved to the top level
+        // also carries the previous rowKey forward for every matched node, so expanded/selection
+        // state (keyed by rowKey) survives this refresh untouched.
         const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods).map(
             (mod) =>
                 mod.subModifications.length > 0
@@ -155,11 +158,12 @@ export function NetworkModificationsTable({
         // Re-fetch authoritative children for every composite that already had loaded children,
         // correcting anything stale that was temporarily preserved above.
         // Source of truth: prevMods — nextMods children may have been filtered just above.
+        // The rowKeys collected here are still valid in nextMods since the merge above preserved them.
         const loadedComposites: ComposedModificationMetadata[] = [];
         findAllLoadedCompositeModifications(prevMods, loadedComposites);
         if (loadedComposites.length > 0) {
             fetchSubModificationsForExpandedRows(
-                loadedComposites.map((m) => m.uuid),
+                loadedComposites.map((m) => m.rowKey),
                 nextMods,
                 setComposedModifications,
                 true
@@ -173,10 +177,12 @@ export function NetworkModificationsTable({
 
             const prevRecord = prevExpanded === true ? {} : prevExpanded;
             const nextRecord = nextExpanded === true ? {} : nextExpanded;
-            const newlyExpandedIds = Object.keys(nextRecord).filter((id) => nextRecord[id] && !prevRecord[id]);
+            const newlyExpandedRowKeys = Object.keys(nextRecord).filter(
+                (id) => nextRecord[id] && !prevRecord[id]
+            ) as UUID[];
 
             setComposedModifications((prevMods) => {
-                fetchSubModificationsForExpandedRows(newlyExpandedIds, prevMods, setComposedModifications);
+                fetchSubModificationsForExpandedRows(newlyExpandedRowKeys, prevMods, setComposedModifications);
                 return [...prevMods];
             });
 
@@ -237,9 +243,9 @@ export function NetworkModificationsTable({
         state: { expanded, rowSelection },
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
-        getSubRows: (row) => row.subModifications,
-        getRowId: (row) => row.uuid,
-        getRowCanExpand: (row) => isCompositeModification(row.original),
+        getSubRows: (originalRow) => originalRow.subModifications,
+        getRowId: (originalRow) => originalRow.rowKey,
+        getRowCanExpand: (row) => isCompositeModification(row.original) || isReferenceModification(row.original),
         enableRowSelection: true,
         enableSubRowSelection: true,
         enableExpanding: true,
@@ -278,16 +284,18 @@ export function NetworkModificationsTable({
             return;
         }
         table.resetRowSelection();
-        // fetch all the descendants of the modificationUuidsToReset :
-        const uuidsToReset = new Set<string>(modificationUuidsToReset);
+
+        // collect matching nodes' rowKeys since expanded state is keyed by rowKey
+        const targetUuids = new Set<string>(modificationUuidsToReset);
+        const rowKeysToUnexpanded = new Set<UUID>();
         const collectAll = (mod: ComposedModificationMetadata) => {
-            uuidsToReset.add(mod.uuid);
+            rowKeysToUnexpanded.add(mod.rowKey);
             mod.subModifications?.forEach(collectAll);
         };
         const collectDescendants = (mods: ComposedModificationMetadata[]) => {
             mods.forEach((mod) => {
-                if (uuidsToReset.has(mod.uuid)) {
-                    mod.subModifications?.forEach(collectAll);
+                if (targetUuids.has(mod.uuid)) {
+                    collectAll(mod);
                 } else {
                     collectDescendants(mod.subModifications ?? []);
                 }
@@ -295,13 +303,12 @@ export function NetworkModificationsTable({
         };
         collectDescendants(composedModificationsRef.current);
 
-        // unexpand all uuidsToReset
         setExpanded((prev) => {
             if (prev === true) {
                 return prev;
             }
             const next = { ...prev };
-            uuidsToReset.forEach((uuid) => delete next[uuid]);
+            rowKeysToUnexpanded.forEach((rowKey) => delete next[rowKey]);
             return next;
         });
     }, [modificationUuidsToReset, table]);

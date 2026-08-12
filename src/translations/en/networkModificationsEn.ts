@@ -311,4 +311,15 @@ export const networkModificationsEn = {
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Additional information',
     StateEstimationTab: 'State estimation',
+    copyLink: 'Copy link',
+    linkCopied: 'Link copied',
+    linkCopyError: 'Error while attempting to copy link',
+    // Voltage level topology creation
+    CreateVoltageLevelTopology: 'Adding a busbar',
+    CreateVoltageLevelTopologyError: 'Error while creating a voltage level topology',
+    CreateCouplingDeviceDiagramButton: 'Show voltage level',
+    builtNodeTooltipForDiagram: 'Current diagram taking into account all applied modifications',
+    AtLeastOneSectionAdded: 'At least one busbar section must be added',
+    SectionCount: 'Section count',
+    VoltageLevelId: 'Voltage level ID',
 };
