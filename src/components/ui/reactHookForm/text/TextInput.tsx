@@ -94,6 +94,8 @@ export function TextInput({
                   !isFieldRequired(name, validationSchema, getValues()) && !formProps?.disabled && !removeOptional,
           });
 
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+
     return (
         <Field
             data-testid={dataTestId}
@@ -118,6 +120,7 @@ export function TextInput({
                         </InputAdornment>
                     ),
                 },
+                ...slotProps,
             }}
             inputRef={ref}
             {...(clearable &&
@@ -133,7 +136,7 @@ export function TextInput({
                 />
             }
             {...genHelperError(error?.message)}
-            {...formProps}
+            {...otherFormProps}
             {...(adornment && { ...finalAdornment })}
         />
     );

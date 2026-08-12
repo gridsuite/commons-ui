@@ -56,6 +56,8 @@ export function CheckboxNullableInput({
     // Get the current label based on value
     const currentLabel = typeof label === 'function' ? label(value) : label;
 
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+
     return (
         <FormControl fullWidth size="small">
             <FormControlLabel
@@ -70,8 +72,9 @@ export function CheckboxNullableInput({
                             input: {
                                 'aria-label': 'primary checkbox',
                             },
+                            ...slotProps,
                         }}
-                        {...formProps}
+                        {...otherFormProps}
                     />
                 }
                 label={
