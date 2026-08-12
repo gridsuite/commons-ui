@@ -48,7 +48,6 @@ export function ExpandingTextField({
     const rowsToDisplay = isFocused ? rows : minRows;
 
     const { slotProps, ...otherProps } = textFieldFormProps ?? {};
-    const { input: slotPropsInput, formHelperText: slotPropsFormHelperText, ...otherSlotProps } = slotProps ?? {};
 
     const formProps: TextInputProps['formProps'] = {
         size: 'medium',
@@ -65,16 +64,14 @@ export function ExpandingTextField({
                     resize: 'none', // or 'horizontal' for horizontal resizing
                 },
                 inputProps: { 'data-testid': 'DescriptionInputField' },
-                ...slotPropsInput,
             },
             formHelperText: {
                 sx: {
                     ml: 'auto',
                     color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
                 },
-                ...slotPropsFormHelperText,
             },
-            ...otherSlotProps,
+            ...slotProps,
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(sx && { sx }),

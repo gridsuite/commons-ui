@@ -95,7 +95,6 @@ export function TextInput({
           });
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
-    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <Field
@@ -120,9 +119,8 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
-                    ...slotPropsInput,
                 },
-                ...otherSlotProps,
+                ...slotProps,
             }}
             inputRef={ref}
             {...(clearable &&

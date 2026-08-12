@@ -82,12 +82,10 @@ export function UniqueNameInput({
     );
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
-    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <TextField
-            // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
-            autoComplete="new-password"
+            autoComplete="new-password" // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
             onChange={handleManualChange}
             onBlur={onBlur}
             value={value}
@@ -107,9 +105,8 @@ export function UniqueNameInput({
                     inputProps: {
                         'data-testid': 'NameInputField',
                     },
-                    ...slotPropsInput,
                 },
-                ...otherSlotProps,
+                ...slotProps,
             }}
             {...otherFormProps}
         />

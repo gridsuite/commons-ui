@@ -89,7 +89,6 @@ export function TableNumericalInput({
     };
 
     const { slotProps, ...otherProps } = props;
-    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <TextField
@@ -131,9 +130,8 @@ export function TableNumericalInput({
                         lang: 'en-US', // to have '.' as decimal separator
                         ...inputProps,
                     },
-                    ...slotPropsInput,
                 },
-                ...otherSlotProps,
+                ...slotProps,
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...otherProps}

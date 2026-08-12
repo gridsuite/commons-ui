@@ -27,7 +27,6 @@ export function BooleanInput<TInput extends InputTypes>({
     Input,
 }: Readonly<BooleanInputProps<TInput>>) {
     const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
-    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
     const {
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
@@ -47,7 +46,7 @@ export function BooleanInput<TInput extends InputTypes>({
             checked={value}
             onChange={handleChangeValue}
             inputRef={ref}
-            slotProps={{ input: { 'aria-label': 'primary checkbox', ...slotPropsInput }, ...otherSlotProps }}
+            slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
             {...(otherFormProps as any)}
         />
     );

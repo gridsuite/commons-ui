@@ -57,7 +57,6 @@ export function CheckboxNullableInput({
     const currentLabel = typeof label === 'function' ? label(value) : label;
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
-    const { input: slotPropsInput, ...otherSlotProps } = slotProps ?? {};
 
     return (
         <FormControl fullWidth size="small">
@@ -72,9 +71,8 @@ export function CheckboxNullableInput({
                         slotProps={{
                             input: {
                                 'aria-label': 'primary checkbox',
-                                ...slotPropsInput,
                             },
-                            ...otherSlotProps,
+                            ...slotProps,
                         }}
                         {...otherFormProps}
                     />
