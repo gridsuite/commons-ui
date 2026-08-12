@@ -24,38 +24,6 @@ export interface TapChangerPaneProps {
     isModification?: boolean;
 }
 
-// Creation/Modification form types
-export interface EntityIdReference {
-    [FieldConstants.ID]: string;
-}
-
-export type ConnectivityFormSchema = {
-    [FieldConstants.VOLTAGE_LEVEL]: EntityIdReference | null;
-    [FieldConstants.BUS_OR_BUSBAR_SECTION]: EntityIdReference | null;
-    [FieldConstants.CONNECTION_DIRECTION]: string | null;
-    [FieldConstants.CONNECTION_NAME]: string;
-    [FieldConstants.CONNECTION_POSITION]: number | null;
-    [FieldConstants.CONNECTED]: boolean | null;
-};
-
-export interface MeasurementFormSchema {
-    [FieldConstants.VALUE]: number | null;
-    [FieldConstants.VALIDITY]: boolean | null;
-}
-
-export interface ToBeEstimatedFormSchema {
-    [FieldConstants.RATIO_TAP_CHANGER_STATUS]: boolean | null;
-    [FieldConstants.PHASE_TAP_CHANGER_STATUS]: boolean | null;
-}
-
-export interface StateEstimationFormSchema {
-    [FieldConstants.MEASUREMENT_P1]: MeasurementFormSchema;
-    [FieldConstants.MEASUREMENT_Q1]: MeasurementFormSchema;
-    [FieldConstants.MEASUREMENT_P2]: MeasurementFormSchema;
-    [FieldConstants.MEASUREMENT_Q2]: MeasurementFormSchema;
-    [FieldConstants.TO_BE_ESTIMATED]: ToBeEstimatedFormSchema;
-}
-
 // Types from network map server response
 
 interface TwoWindingsTransformerToBeEstimatedInfos {

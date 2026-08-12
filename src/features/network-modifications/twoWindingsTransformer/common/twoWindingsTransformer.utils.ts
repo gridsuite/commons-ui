@@ -23,7 +23,10 @@ export const TWT_TAB_FIELDS: Readonly<Partial<Record<TwoWindingsTransformerDialo
         FieldConstants.ADDITIONAL_PROPERTIES,
     ],
     [TwoWindingsTransformerDialogTab.LIMITS_TAB]: [FieldConstants.LIMITS],
-    [TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB]: [FieldConstants.STATE_ESTIMATION],
+    [TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB]: [
+        FieldConstants.STATE_ESTIMATION,
+        FieldConstants.TO_BE_ESTIMATED,
+    ],
     [TwoWindingsTransformerDialogTab.RATIO_TAP_TAB]: [FieldConstants.RATIO_TAP_CHANGER],
     [TwoWindingsTransformerDialogTab.PHASE_TAP_TAB]: [FieldConstants.PHASE_TAP_CHANGER],
 };
