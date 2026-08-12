@@ -77,7 +77,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
 
         setIsLoading(true);
 
-        const newStatus = !isApplicableOn(applicabilities, modificationUuid, rootNetwork.tag);
+        // toggle the current applicability
+        const newApplicability = !isApplicableOn(applicabilities, modificationUuid, rootNetwork.tag);
 
         // Apply optimistic update
         setApplicabilities(getToggledApplicabilities(applicabilities, modificationUuid, rootNetwork.tag));
@@ -88,7 +89,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             currentNodeId,
             rootNetwork.rootNetworkUuid,
             modificationUuid,
-            newStatus
+            newApplicability
         )
             .catch((error) => {
                 // Rollback on failure by toggling back
