@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useRef } from 'react';
 import { useController, useFormContext } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
-import { ElementType, FieldConstants } from '../utils';
+import { ElementType, FieldConstants, NAME_ALREADY_USED, NAME_EMPTY } from '../utils';
 import { useDebounce } from './useDebounce';
 import { elementAlreadyExists } from '../services';
 
@@ -63,7 +63,7 @@ export function useUniqueNameValidation({
                         if (alreadyExist) {
                             setError(name, {
                                 type: 'validate',
-                                message: 'use-unique-name-validation/nameAlreadyUsed',
+                                message: NAME_ALREADY_USED,
                             });
                         }
                     })
@@ -136,7 +136,7 @@ export function useUniqueNameValidation({
             clearErrors('root.isValidating');
             setError(name, {
                 type: 'validate',
-                message: 'use-unique-name-validation/nameEmpty',
+                message: NAME_EMPTY,
             });
         }
     }, [

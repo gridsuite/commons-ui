@@ -11,7 +11,7 @@ import { hasElementPermission, PermissionType } from '../../services';
 import { equalsArrayAnyOrder, NetworkModificationMetadata } from '../../utils';
 import { NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
-import { isSharedModification } from './utils';
+import { isReferenceModification } from './utils';
 
 const EMPTY_UUID_SET: Set<UUID> = new Set();
 
@@ -93,7 +93,7 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     useEffect(() => {
         let aborted = false;
 
-        const sharedModifications = modifications.filter(isSharedModification);
+        const sharedModifications = modifications.filter(isReferenceModification);
         const referenceIds = getReferenceIds(sharedModifications);
 
         const missingIds = referenceIds.filter((id) => !permissionsCache.has(id));

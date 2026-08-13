@@ -15,10 +15,10 @@ import {
     DndColumnType,
     DndTable,
     getDefaultRowData,
-} from '../../components';
-import { ElementType } from '../../utils';
+} from '../../../components';
+import { ElementType } from '../../../utils';
 
-export function UpdateProcessConfigModifications({ name }: Readonly<{ name: string }>) {
+export function ProcessConfigModificationsEdition({ name }: Readonly<{ name: string }>) {
     const intl = useIntl();
     const useFieldArrayModifications = useFieldArray({
         name,

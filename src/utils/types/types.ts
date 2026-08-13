@@ -10,6 +10,23 @@ import { ElementType } from './elementType';
 
 export type Input = string | number;
 
+export enum ElementStatus {
+    CREATING = 'CREATING',
+    CREATED = 'CREATED',
+    DELETING = 'DELETING',
+}
+
+export enum ReferenceType {
+    STUDY_NODE = 'STUDY_NODE',
+    NETWORK_MODIFICATION = 'NETWORK_MODIFICATION',
+    DIRECTORY_ELEMENT = 'DIRECTORY_ELEMENT',
+}
+
+export type ReferenceAttributes = {
+    referenceId: UUID;
+    referenceType: ReferenceType;
+};
+
 export type ElementAttributes = {
     elementUuid: UUID;
     elementName: string;
@@ -25,6 +42,7 @@ export type ElementAttributes = {
     lastModificationDate: string;
     lastModifiedBy: string; // id
     lastModifiedByLabel?: string; // enrich with user identity server
+    status?: ElementStatus;
     children: ElementAttributes[];
     parentUuid: null | UUID;
     specificMetadata: {
@@ -38,6 +56,7 @@ export type ElementAttributes = {
     subtype?: string;
     // only uploading element have this field
     id?: string;
+    references?: ReferenceAttributes[];
 };
 
 export type Option =

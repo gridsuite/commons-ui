@@ -27,8 +27,10 @@ export function GeneratorDialogTabs({
             value={tabIndex}
             variant="scrollable"
             onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
-            TabIndicatorProps={{
-                sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+            slotProps={{
+                indicator: {
+                    sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                },
             }}
         >
             <Tab

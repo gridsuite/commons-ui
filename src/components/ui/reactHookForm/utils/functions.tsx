@@ -7,7 +7,7 @@
 import { FormattedMessage } from 'react-intl';
 import { getIn, SchemaDescription } from 'yup';
 import { ReactElement } from 'react';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 
 export function genHelperError(...errors: any[]) {
     const inError = errors.find((e) => e);

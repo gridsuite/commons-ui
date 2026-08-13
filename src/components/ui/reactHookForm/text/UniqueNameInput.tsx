@@ -81,6 +81,8 @@ export function UniqueNameInput({
         </InputAdornment>
     );
 
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+
     return (
         <TextField
             autoComplete="new-password" // turns off the browser autocomplete. May be replaced by "off" but it is not well supported by some browsers
@@ -97,13 +99,16 @@ export function UniqueNameInput({
             fullWidth={fullWidth}
             error={!!error}
             helperText={translatedError}
-            InputProps={{
-                endAdornment,
-                inputProps: {
-                    'data-testid': 'NameInputField',
+            slotProps={{
+                input: {
+                    endAdornment,
+                    inputProps: {
+                        'data-testid': 'NameInputField',
+                    },
                 },
+                ...slotProps,
             }}
-            {...formProps}
+            {...otherFormProps}
         />
     );
 }

@@ -18,8 +18,9 @@ import { DescriptionCell } from './description-cell';
 import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
-import { isModificationEditLocked } from '../utils';
+import { isModificationEditLocked, isReferenceModification } from '../utils';
 import { ComposedModificationMetadata } from '../../../utils';
+import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
  * Cell/header renderers must keep a stable reference across renders to avoid
@@ -95,6 +96,14 @@ export function DescriptionCellRenderer(context: CCtx) {
     );
 }
 
+export function ReferenceCellRenderer({ row, table }: CCtx) {
+    const { meta } = table.options;
+
+    if (isReferenceModification(row.original)) {
+        return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
+    }
+    return null;
+}
 export function SwitchCellRenderer(context: CCtx) {
     const { row, table } = context;
     const { meta } = table.options;

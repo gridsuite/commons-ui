@@ -6,7 +6,7 @@
  */
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { Grid2 as Grid, SxProps } from '@mui/material';
+import { Grid, SxProps } from '@mui/material';
 import * as yup from 'yup';
 import { ACCURACY, CALCULATION_TYPE, LOAD_FILTERS, LOAD_MODELS_RULE, LOADS_VARIATIONS, VARIATION } from './constants';
 import {
@@ -15,6 +15,7 @@ import {
     EquipmentType,
     ID,
     LoadModelsRule,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     ParameterType,
     SpecificParameterInfos,
     YUP_REQUIRED,
@@ -40,7 +41,7 @@ export const formSchema = yup.object().shape({
                     })
                 )
                 .min(1, YUP_REQUIRED),
-            [VARIATION]: yup.number().min(0, 'mustBeGreaterOrEqualToZero').required(),
+            [VARIATION]: yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
             [ACTIVE]: yup.boolean().nullable().notRequired(),
         })
     ),

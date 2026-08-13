@@ -15,7 +15,7 @@ interface TableTextInputProps {
     inputProps?: InputBaseComponentProps;
 }
 
-export function TableTextInput({ name, hideErrorMessage, inputProps, ...props }: Readonly<TableTextInputProps>) {
+export function TableTextInput({ name, hideErrorMessage, inputProps }: Readonly<TableTextInputProps>) {
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -37,17 +37,18 @@ export function TableTextInput({ name, hideErrorMessage, inputProps, ...props }:
             size="small"
             fullWidth
             inputRef={ref}
-            InputProps={{
-                disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
-                inputProps: {
-                    style: {
-                        fontSize: 'small',
+            slotProps={{
+                input: {
+                    disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
+                    inputProps: {
+                        style: {
+                            fontSize: 'small',
+                        },
+                        ...inputProps,
                     },
-                    ...inputProps,
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
-            {...props}
         />
     );
 }

@@ -108,7 +108,9 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
-                    inputProps={{ ...inputProps, readOnly }}
+                    slotProps={{
+                        htmlInput: { ...inputProps, readOnly },
+                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue

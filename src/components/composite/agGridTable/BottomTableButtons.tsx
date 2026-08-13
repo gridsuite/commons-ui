@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 as Grid, IconButton, styled } from '@mui/material';
+import { Box, Grid, IconButton, styled } from '@mui/material';
 import { ArrowCircleDown, ArrowCircleUp, ControlPoint as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
