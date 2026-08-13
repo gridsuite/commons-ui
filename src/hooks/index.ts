@@ -19,4 +19,3 @@ export * from './useSelectAppearance';
 export * from './use-parameters-backend';
 export * from './useGetLabelEquipmentTypes';
 export * from './useOpenLoaderShortWait';
-export * from './useIntlResultStatusMessages';

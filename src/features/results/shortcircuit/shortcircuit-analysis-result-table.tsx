@@ -34,9 +34,9 @@ import {
 } from '../../../components';
 import { mappingTabs } from './shortcircuit-analysis-result-content';
 import { getRows, MuiStyles, RunningStatus, unitToKiloUnit } from '../../../utils';
-import { useIntlResultStatusMessages } from '../../../hooks';
 import { getNoRowsMessage } from '../utils';
 import { AGGRID_LOCALES } from '../../../translations/not-intl/aggrid-locales';
+import { useIntlResultStatusMessages } from '../hooks';
 
 export const SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE = 'shortcircuitAnalysisResult';
 

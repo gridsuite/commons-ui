@@ -160,6 +160,7 @@ export function CheckboxAutocomplete<Value>({
             disableCloseOnSelect
             size="small"
             disableListWrap
+            slots={{ popper: StyledPopper }}
             options={options}
             noOptionsText={intl.formatMessage({ id: 'noOption' })}
             getOptionLabel={getOptionLabel}
@@ -172,8 +173,8 @@ export function CheckboxAutocomplete<Value>({
             inputValue={inputValue}
             onChange={handleChange}
             onBlur={handleBlur}
-            slots={{ popper: StyledPopper }}
             slotProps={{
+                ...otherProps?.slotProps,
                 listbox: { component: virtualize ? VirtualizedList : undefined },
             }}
         />

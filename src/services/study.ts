@@ -11,10 +11,10 @@ import { NetworkVisualizationParameters } from '../features/parameters/network-v
 import { type ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../features/parameters/voltage-init/voltage-init.type';
 
-const PREFIX_STUDY_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
+export const PREFIX_STUDY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
 const getStudyUrl = (studyUuid: UUID | null) =>
-    `${PREFIX_STUDY_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
+    `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}`;
 
 export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string) {
     console.info('get filter export on study root node');
@@ -30,7 +30,7 @@ export function exportFilter(studyUuid: UUID, filterUuid?: UUID, token?: string)
 
 export function getAvailableComponentLibraries(): Promise<string[]> {
     console.info('get available component libraries for diagrams');
-    return backendFetchJson(`${PREFIX_STUDY_QUERIES}/v1/svg-component-libraries`);
+    return backendFetchJson(`${PREFIX_STUDY_SERVER_QUERIES}/v1/svg-component-libraries`);
 }
 
 export function getStudyNetworkVisualizationsParameters(studyUuid: UUID): Promise<NetworkVisualizationParameters> {
