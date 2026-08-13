@@ -356,4 +356,9 @@ export const networkModificationsFr = {
     AtLeastOneSectionAdded: 'Il faut ajouter au moins une section de jeu de barre',
     SectionCount: 'Nombre de sections',
     VoltageLevelId: 'ID Poste',
+    // Voltage level coupling device creation
+    CreateCouplingDevice: 'Ajouter un couplage ou un omnibus',
+    CouplingDeviceText: 'Sections de jeu de barre',
+    CouplingDeviceBusBarSectionToolTipText:
+        'Si les deux sections de barre sélectionnées ont des numéros de tronçon/section différents la modification crée un omnibus, autrement elle crée un couplage',
 };
