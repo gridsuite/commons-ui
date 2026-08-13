@@ -163,7 +163,7 @@ interface PhaseTapChangerFormDataInput {
     [FieldConstants.STEPS]?: TapChangerStep[];
     [FieldConstants.VOLTAGE_LEVEL_ID]?: string;
     [FieldConstants.EQUIPMENT_ID]?: string;
-    [FieldConstants.EQUIPMENT_TYPE_FIELD]?: string;
+    [FieldConstants.EQUIPMENT_TYPE]?: string;
 }
 
 export const getPhaseTapChangerFormData = (
@@ -199,7 +199,7 @@ export const getPhaseTapChangerFormData = (
         [FieldConstants.STEPS]: steps,
         ...getRegulatingTerminalFormData({
             [FieldConstants.EQUIPMENT_ID]: equipmentID,
-            [FieldConstants.EQUIPMENT_TYPE_FIELD]: equipmentType,
+            [FieldConstants.EQUIPMENT_TYPE]: equipmentType,
             [FieldConstants.VOLTAGE_LEVEL_ID]: voltageLevelId,
         }),
     },

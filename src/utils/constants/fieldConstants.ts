@@ -55,7 +55,6 @@ export enum FieldConstants {
     EQUIPMENT_IDS = 'equipmentIDs',
     EQUIPMENT_TABLE = 'equipmentTable',
     EQUIPMENT_TYPE = 'equipmentType',
-    EQUIPMENT_TYPE_FIELD = 'equipmentType',
     FILTER_TYPE = 'filterType',
     FILTERS = 'filters',
     FLOW_SET_POINT_REGULATING_VALUE = 'flowSetPointRegulatingValue',
