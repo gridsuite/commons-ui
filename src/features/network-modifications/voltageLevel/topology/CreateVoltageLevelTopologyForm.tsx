@@ -4,10 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Button, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { InfoOutlined } from '@mui/icons-material';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { IntegerInput, useCustomFormContext } from '../../../../components/ui';
 import { SwitchesBetweenSections } from '../creation';
 import { FieldConstants } from '../../../../utils';
@@ -26,6 +27,20 @@ export function CreateVoltageLevelTopologyForm({
     const intl = useIntl();
 
     const { isNodeBuilt } = useCustomFormContext();
+    const { trigger } = useFormContext();
+    const watchSectionCount = useWatch({ name: FieldConstants.SECTION_COUNT });
+    // Skip the very first run: on mount, SECTION_COUNT still holds its initial empty/default
+    // value (editData hasn't been applied via reset() yet), so triggering validation here would
+    // flash a spurious "Required" error until the async edit data fills the field in.
+    const isFirstRender = useRef(true);
+
+    useEffect(() => {
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+            return;
+        }
+        trigger(FieldConstants.SECTION_COUNT);
+    }, [watchSectionCount, trigger]);
 
     const handleCloseDiagramPane = () => {
         setIsDiagramPaneOpen(false);
