@@ -58,7 +58,7 @@ export function BottomTableButtons({
                 {csvProps?.extraButtons && <Grid>{csvProps.extraButtons}</Grid>}
                 <Grid sx={{ marginLeft: 'auto' }}>
                     <InnerColoredButton onClick={handleAddRow} aria-label="Add row">
-                        <AddIcon />
+                        <AddIcon data-testid="ControlPointIcon" />
                     </InnerColoredButton>
                     <InnerColoredButton
                         onClick={handleDeleteRows}
