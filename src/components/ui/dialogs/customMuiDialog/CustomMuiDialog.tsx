@@ -59,9 +59,15 @@ const styles = {
  * </fullHeightDialog>
  */
 export const unscrollableDialogStyles = {
-    fullHeightDialog: {
+    fullHeightDialogWithWidth: {
         '.MuiDialog-paper': {
             minWidth: '90vw',
+            margin: 'auto',
+            height: '95vh',
+        },
+    },
+    fullHeightDialog: {
+        '.MuiDialog-paper': {
             margin: 'auto',
             height: '95vh',
         },
@@ -151,8 +157,10 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     );
 
     let dialogSx;
-    if (unscrollableFullHeight) {
+    if (unscrollableFullHeight && dialogWidth) {
         dialogSx = unscrollableDialogStyles.fullHeightDialog;
+    } else if (unscrollableFullHeight) {
+        dialogSx = unscrollableDialogStyles.fullHeightDialogWithWidth;
     } else if (!dialogWidth) {
         dialogSx = styles.dialogPaper;
     }
@@ -164,9 +172,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                 <DialogTitle data-testid="DialogTitle">
                     <FormattedMessage id={titleId} />
                 </DialogTitle>
-                <DialogContent
-                    sx={unscrollableFullHeight && !dialogWidth ? unscrollableDialogStyles.unscrollableContainer : null}
-                >
+                <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}
                 </DialogContent>
                 <DialogActions>
