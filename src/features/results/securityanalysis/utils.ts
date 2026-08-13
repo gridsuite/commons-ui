@@ -15,33 +15,6 @@ import {
     LimitViolation,
     SecurityAnalysisNmkTableRow,
 } from './security-analysis.type';
-import { RunningStatus, RunningStatusMessage } from '../../../utils/running-status';
-
-export function getNoRowsMessage(
-    messages: RunningStatusMessage,
-    rows: any[] | undefined,
-    status: string,
-    isDataReady?: boolean
-): string | undefined {
-    switch (status) {
-        case RunningStatus.IDLE:
-            return messages.noCalculation;
-        case RunningStatus.RUNNING:
-            return messages.running;
-        case RunningStatus.FAILED:
-            return messages.failed;
-        case RunningStatus.SUCCEED:
-            if (!isDataReady || !rows) {
-                return messages.fetching;
-            }
-            if (rows?.length === 0) {
-                return messages.noData ? messages.noData : messages.noLimitViolation;
-            }
-            return undefined;
-        default:
-            return messages.noCalculation;
-    }
-}
 
 export const PAGE_OPTIONS = [25, 100, 500, 1000];
 

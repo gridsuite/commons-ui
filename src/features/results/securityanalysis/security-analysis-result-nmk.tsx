@@ -22,11 +22,11 @@ import { getRows, MuiStyles } from '../../../utils';
 import {
     flattenNmKResultsConstraints,
     flattenNmKResultsContingencies,
-    getNoRowsMessage,
     handlePostSortRows,
     mapNmKResultsCutOffPower,
     PAGE_OPTIONS,
 } from './utils';
+import { getNoRowsMessage } from '../utils';
 
 const styles = {
     container: {
