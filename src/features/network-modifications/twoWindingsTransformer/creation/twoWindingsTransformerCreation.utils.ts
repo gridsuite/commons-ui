@@ -306,8 +306,9 @@ export const twoWindingsTransformerCreationFormToDto = (
             terminalRefConnectableVlId: hasLoadTapCapabilities
                 ? computeTapTerminalVlId(ratioForm, twtForm.connectivity)
                 : null,
-            targetV: hasLoadTapCapabilities ? Number(twtForm.ratioTapChanger.targetV) : null,
-            targetDeadband: hasLoadTapCapabilities ? Number(twtForm.ratioTapChanger.targetDeadband) : null,
+            targetV: hasLoadTapCapabilities && ratioForm.targetV != null ? Number(ratioForm.targetV) : null,
+            targetDeadband:
+                hasLoadTapCapabilities && ratioForm.targetDeadband != null ? Number(ratioForm.targetDeadband) : null,
         };
     }
     if (enablePhaseTapChanger) {
