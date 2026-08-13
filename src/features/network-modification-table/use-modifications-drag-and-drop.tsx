@@ -126,33 +126,23 @@ export const useModificationsDragAndDrop = ({
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
-            if (isCompositeModification(sourceRow.original)) {
+            const sourceIsCompositeOrReference =
+                isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
+
+            if (sourceIsCompositeOrReference) {
                 if (isReferenceModification(targetRow.original) || isTargetChildOfReference(targetRow)) {
                     return true;
                 }
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
                 return (
                     (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
-                    !!(
-                        isCompositeModification(sourceRow.original) &&
-                        findModificationInTree(targetRow.id as UUID, [sourceRow.original])
-                    )
+                    !!findModificationInTree(targetRow.id as UUID, [sourceRow.original])
                 );
             }
-            // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
-            if (
-                isReferenceModification(sourceRow.original) ||
-                isReferenceModification(targetRow.original) ||
-                isTargetChildOfReference(targetRow)
-            ) {
-                return true;
-            }
-
             return false;
         },
         [computeTargetDepth]
     );
-
     const handleDragUpdate = useCallback(
         (update: DragUpdate) => {
             clearRowDragIndicators(containerRef.current);
