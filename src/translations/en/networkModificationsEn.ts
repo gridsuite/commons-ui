@@ -322,4 +322,9 @@ export const networkModificationsEn = {
     AtLeastOneSectionAdded: 'At least one busbar section must be added',
     SectionCount: 'Section count',
     VoltageLevelId: 'Voltage level ID',
+    // Voltage level coupling device creation
+    CreateCouplingDevice: 'Add a coupling device',
+    CouplingDeviceText: 'Bus bar sections',
+    CouplingDeviceBusBarSectionToolTipText:
+        'If both bus bar sections have a different section number it creates an omnibus otherwise a coupling device',
 };
