@@ -47,6 +47,7 @@ import {
 import { getTwtCharacteristicsEmptyFormData, getTwtCharacteristicsValidationSchemaProps } from '../characteristics';
 import {
     computeHighTapPosition,
+    computeRatioTapChangerRegulating,
     getPhaseTapChangerEmptyFormData,
     getPhaseTapChangerFormData,
     getPhaseTapChangerValidationSchemaProps,
@@ -85,10 +86,6 @@ export const getTapSideForEdit = (
     return tap?.terminalRefConnectableVlId === twt?.voltageLevelId1
         ? REGULATION_SIDES.SIDE1.id
         : REGULATION_SIDES.SIDE2.id;
-};
-
-const computeRatioTapChangerRegulating = (ratioTapChangerFormValues: RatioTapChangerFormSchema) => {
-    return ratioTapChangerFormValues?.regulationMode === RATIO_REGULATION_MODES.VOLTAGE_REGULATION.id;
 };
 
 const computeRegulatingTerminalId = (
