@@ -6,12 +6,12 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-import { Box, Button, Grid, TextField, Tooltip } from '@mui/material';
+import { Box, Button, Grid, TextField } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { useState } from 'react';
 import { InfoOutlined } from '@mui/icons-material';
-import { AutocompleteInput, GridItem, GridSection } from '../../../../components';
+import { AutocompleteInput, CustomTooltip, GridItem, GridSection } from '../../../../components';
 import { FieldConstants, getObjectId, Option } from '../../../../utils';
 import { filledTextField, PositionDiagramPaneType } from '../../common';
 
@@ -71,9 +71,9 @@ export function CouplingDeviceCreationForm({
     );
 
     const diagramToolTip = canOpenDiagram ? (
-        <Tooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: 'builtNodeTooltipForDiagram' })}>
+        <CustomTooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: 'builtNodeTooltipForDiagram' })}>
             <InfoOutlined color="info" fontSize="medium" />
-        </Tooltip>
+        </CustomTooltip>
     ) : null;
 
     return (
