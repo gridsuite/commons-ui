@@ -193,8 +193,10 @@ export function VoltageLevelSectionCreationForm({
     };
 
     const handleChangeBusbarIndex = useCallback(() => {
-        setValue(FieldConstants.BUSBAR_SECTION_ID, null);
-    }, [setValue]);
+        if (!isFreeInputMode) {
+            setValue(FieldConstants.BUSBAR_SECTION_ID, null);
+        }
+    }, [isFreeInputMode, setValue]);
 
     const freeInputOutputTransform = useCallback(
         (value: Option | null) => (typeof value === 'string' ? { id: value, label: value } : value),
