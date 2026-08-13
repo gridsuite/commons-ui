@@ -130,14 +130,20 @@ export const useModificationsDragAndDrop = ({
                 isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
 
             if (sourceIsCompositeOrReference) {
-                if (isReferenceModification(targetRow.original) || isTargetChildOfReference(targetRow)) {
-                    return true;
-                }
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
-                return (
-                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
-                    !!findModificationInTree(targetRow.id as UUID, [sourceRow.original])
-                );
+                const exceedsNestingLimit =
+                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH;
+                const isSelfDrop = !!findModificationInTree(targetRow.id as UUID, [sourceRow.original]);
+
+                // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
+                // into another shared modification, nor into one of its descendants (expanded children
+                // of the referenced composite).
+                const sourceIsReference = isReferenceModification(sourceRow.original);
+                const targetIsReferenceOrItsDescendant =
+                    isReferenceModification(targetRow.original) || isTargetChildOfReference(targetRow);
+                const isReferenceIntoReference = sourceIsReference && targetIsReferenceOrItsDescendant;
+
+                return exceedsNestingLimit || isSelfDrop || isReferenceIntoReference;
             }
             return false;
         },
