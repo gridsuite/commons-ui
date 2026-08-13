@@ -11,6 +11,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { Box } from '@mui/material';
 import { GsLangUser, MuiStyles } from '../../utils';
 import { CsvExport, CustomAGGrid } from '../../components';
+import { AGGRID_LOCALES } from '../../translations/not-intl/aggrid-locales';
 
 const styles = {
     gridContainer: {
@@ -95,6 +96,7 @@ export function RenderTableAndExportCsv({
                                 api.showNoRowsOverlay();
                             }
                         }}
+                        overrideLocales={AGGRID_LOCALES}
                     />
                 </Box>
             )}
