@@ -8,10 +8,9 @@
 import { Box, Stack } from '@mui/material';
 import { useMemo } from 'react';
 import { useIntl } from 'react-intl';
-import { CheckboxNullableInput } from '@gridsuite/commons-ui';
 import { ToBeEstimatedInfo } from './toBeEstimated.type';
 import { FieldConstants } from '../../../../../utils';
-import { GridSection } from '../../../../../components';
+import { CheckboxNullableInput, GridSection } from '../../../../../components';
 
 interface ToBeEstimatedProps {
     toBeEstimated?: ToBeEstimatedInfo;
