@@ -9,8 +9,8 @@ import { Key, RefObject, useCallback } from 'react';
 import { ColDef, GridReadyEvent, RowClassParams, RowStyle } from 'ag-grid-community';
 import { AgGridReact } from 'ag-grid-react';
 import { Box } from '@mui/material';
-import { GsLangUser, MuiStyles } from '../../../utils';
-import { CsvExport, CustomAGGrid } from '../../../components';
+import { GsLangUser, MuiStyles } from '../../utils';
+import { CsvExport, CustomAGGrid } from '../../components';
 
 const styles = {
     gridContainer: {
