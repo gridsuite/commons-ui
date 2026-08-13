@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid, Tooltip } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { InfoOutlined } from '@mui/icons-material';
 import type { SxStyle } from '../../../utils';
 import { mergeSx } from '../../../utils';
+import { CustomTooltip } from '../../ui';
 
 export interface GridSectionProps {
     title: string;
@@ -44,9 +45,9 @@ export function GridSection({
                     {isLiteralText ? title : <FormattedMessage id={title} />}
 
                     {tooltipEnabled && (
-                        <Tooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: tooltipMessage })}>
+                        <CustomTooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: tooltipMessage })}>
                             <InfoOutlined color="info" fontSize="medium" />
-                        </Tooltip>
+                        </CustomTooltip>
                     )}
                 </Box>
             </Grid>
