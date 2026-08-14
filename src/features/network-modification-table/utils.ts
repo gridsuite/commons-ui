@@ -48,11 +48,8 @@ export function isModificationEditLocked(
 }
 
 /**
- * Collects the uuids of everything nested inside the given shared modifications, at any depth.
- *
- * Those are the modifications the user isn't allowed to touch when he has no write permission on the shared
- * modification holding them. The shared modifications themselves are deliberately left out: acting on one as
- * a whole (moving it, deleting it, assembling it into a composite) stays allowed.
+ * Collects the uuids of everything nested inside the given shared modifications.
+ * The shared modifications themselves are deliberately left out.
  *
  * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
  * @param mods all the modifications of the tree

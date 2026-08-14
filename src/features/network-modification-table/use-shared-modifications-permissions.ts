@@ -9,17 +9,11 @@ import { useCallback, useEffect, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { hasElementPermission, PermissionType } from '../../services';
 import { equalsArrayAnyOrder, NetworkModificationMetadata } from '../../utils';
-import { NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
+import { directoriesNotificationType, NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
 import { isReferenceModification } from './utils';
 
 const EMPTY_UUID_SET: Set<UUID> = new Set();
-
-// The directory server has no notification dedicated to permissions: any change on a directory - including
-// the ones on its permissions - is emitted under this single type.
-// See useStudyPath
-// TODO mutualize this with enum
-const UPDATE_DIRECTORY_NOTIFICATION_TYPE = 'UPDATE_DIRECTORY';
 
 /** The distinct elements referenced by the given shared modifications. */
 function getReferenceIds(sharedModifications: NetworkModificationMetadata[]): UUID[] {
@@ -76,12 +70,14 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     // referenceId -> has the write permission
     const [permissionsCache, setPermissionsCache] = useState<Map<UUID, boolean>>(() => new Map());
 
-    // A directory notification may carry a permission change, which would make the cached answers wrong. It
+    // The directory server has no notification dedicated to permissions: any change on a directory - including
+    // the ones on its permissions - is emitted under this single type. See useStudyPath.
+    // Such a notification may therefore carry a permission change, which would make the cached answers wrong. It
     // doesn't tell which elements are affected - only which directory - and an element's directory is unknown
     // here, so the whole cache is dropped.
     const handleDirectoryNotification = useCallback((event: MessageEvent<string>) => {
         const eventData = JSON.parse(event.data);
-        if (eventData.headers?.notificationType === UPDATE_DIRECTORY_NOTIFICATION_TYPE) {
+        if (eventData.headers?.notificationType === directoriesNotificationType.UPDATE_DIRECTORY) {
             setPermissionsCache(new Map());
         }
     }, []);

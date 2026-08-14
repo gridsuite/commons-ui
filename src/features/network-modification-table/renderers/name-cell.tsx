@@ -156,6 +156,7 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
     const defaultCompositeName: string = useMemo(() => intl.formatMessage({ id: 'CompositeModification' }), [intl]);
 
     // triggers composite name editing from outside the component
+    // i.e., when a composite is being created
     useEffect(() => {
         const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
         if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
@@ -197,7 +198,7 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const renamableModeProps = isCompositeAndRenamable
+    const renamableCompositeModeProps = isCompositeAndRenamable
         ? {
               ref: labelRef,
               onClick: handleLabelClick,
@@ -273,11 +274,11 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
-                                {...renamableModeProps}
+                                {...renamableCompositeModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
                                     createModificationNameCellStyle(row.original.activated),
-                                    renamableModeProps.sx
+                                    renamableCompositeModeProps.sx
                                 )}
                             >
                                 {label}
