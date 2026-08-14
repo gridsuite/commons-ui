@@ -50,7 +50,7 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
-    const isRenamable = isComposite && !isRenameDisabled;
+    const isCompositeAndRenamable = isComposite && !isRenameDisabled;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -158,13 +158,13 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
     // triggers composite name editing from outside the component
     useEffect(() => {
         const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
-        if (isRenamable && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
+        if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
             beginEditingName(defaultCompositeName);
             if (meta) {
                 meta.interaction.modificationToEditLabel.current = null;
             }
         }
-    }, [meta, defaultCompositeName, isRenamable, row.original.uuid, beginEditingName]);
+    }, [meta, defaultCompositeName, isComposite, row.original.uuid, beginEditingName]);
 
     const handleLabelClick = useCallback(
         (e: React.MouseEvent) => {
@@ -197,7 +197,7 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const renamableModeProps = isRenamable
+    const renamableModeProps = isCompositeAndRenamable
         ? {
               ref: labelRef,
               onClick: handleLabelClick,
