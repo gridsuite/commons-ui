@@ -6,7 +6,7 @@
  */
 
 import { useMemo } from 'react';
-import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
+import { Autocomplete, AutocompleteProps, IconButtonProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
 import { useCustomFormContext } from '../provider';
@@ -126,6 +126,10 @@ export function AutocompleteInput({
                 />
             )}
             {...props}
+            slotProps={{
+                ...props.slotProps,
+                popupIndicator: { 'data-testid': 'ExpandList' } as Partial<IconButtonProps>,
+            }}
         />
     );
 }
