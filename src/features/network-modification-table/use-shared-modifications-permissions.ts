@@ -62,7 +62,7 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
  */
 // TODO a permission granted through a group stays cached when the user is added to / removed from that group:
 // user-admin-server emits no notification on group membership changes, unlike directory-server on permissions.
-// Also consider deleting this hook on using Redux instead if we start using permissions at several places.
+// Also consider deleting this hook and using Redux instead if we start using permissions at several places.
 export function useSharedModificationsPermissions(modifications: NetworkModificationMetadata[]): {
     readOnlyReferenceModificationUuids: Set<UUID>;
 } {
