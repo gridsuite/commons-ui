@@ -37,25 +37,26 @@ export function isCompositeModification(modification: NetworkModificationMetadat
 
 /**
  * Tells whether a modification can't be edited because of the permissions on a shared modification: either it
- * is a shared modification the user can't write into, or it sits inside one.
+ * is a reference modification pointing at one the user can't write into, or it sits inside such a reference.
  */
 export function isModificationEditLocked(
     uuid: UUID,
-    readOnlySharedModificationUuids: Set<UUID> | undefined,
+    readOnlyReferenceModificationUuids: Set<UUID> | undefined,
     lockedNestedModificationUuids: Set<UUID> | undefined
 ): boolean {
-    return !!readOnlySharedModificationUuids?.has(uuid) || !!lockedNestedModificationUuids?.has(uuid);
+    return !!readOnlyReferenceModificationUuids?.has(uuid) || !!lockedNestedModificationUuids?.has(uuid);
 }
 
 /**
- * Collects the uuids of everything nested inside the given shared modifications.
- * The shared modifications themselves are deliberately left out.
+ * Collects the uuids of everything nested inside the given reference modifications.
+ * The reference modifications themselves are deliberately left out.
  *
- * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
+ * @param readOnlyReferenceModificationUuids uuids of the reference modifications pointing at a shared
+ * modification the user can't write into
  * @param mods all the modifications of the tree
  */
 export function collectLockedNestedModificationUuids(
-    readOnlySharedModificationUuids: Set<UUID>,
+    readOnlyReferenceModificationUuids: Set<UUID>,
     mods: ComposedModificationMetadata[]
 ): Set<UUID> {
     const locked = new Set<UUID>();
@@ -64,12 +65,12 @@ export function collectLockedNestedModificationUuids(
         locked.add(mod.uuid);
         mod.subModifications?.forEach(collectAll);
     };
-    const visit = (currentMods: ComposedModificationMetadata[], insideReadOnlyShared: boolean) => {
+    const visit = (currentMods: ComposedModificationMetadata[], insideReadOnlyReferenceModification: boolean) => {
         currentMods.forEach((mod) => {
-            if (insideReadOnlyShared) {
+            if (insideReadOnlyReferenceModification) {
                 collectAll(mod);
             } else {
-                visit(mod.subModifications ?? [], readOnlySharedModificationUuids.has(mod.uuid));
+                visit(mod.subModifications ?? [], readOnlyReferenceModificationUuids.has(mod.uuid));
             }
         });
     };

@@ -35,12 +35,12 @@ import { ReferenceLinkCell } from './reference-link-cell';
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
 type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
 
-/** True when the row can't be edited because of the permissions on the shared modification holding it. */
+/** True when the row can't be edited because of the permissions on the shared modification behind it. */
 function isRowEditLocked({ row, table }: CCtx): boolean {
     const permissions = table.options.meta?.permissions;
     return isModificationEditLocked(
         row.original.uuid,
-        permissions?.readOnlySharedModificationUuids,
+        permissions?.readOnlyReferenceModificationUuids,
         permissions?.lockedNestedModificationUuids
     );
 }

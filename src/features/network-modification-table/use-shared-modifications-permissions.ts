@@ -15,11 +15,11 @@ import { isReferenceModification } from './utils';
 
 const EMPTY_UUID_SET: Set<UUID> = new Set();
 
-/** The distinct elements referenced by the given shared modifications. */
-function getReferenceIds(sharedModifications: NetworkModificationMetadata[]): UUID[] {
+/** The distinct shared modifications pointed at by the given reference modifications. */
+function getReferenceIds(referenceModifications: NetworkModificationMetadata[]): UUID[] {
     return [
         ...new Set(
-            sharedModifications
+            referenceModifications
                 .map((modification) => modification.referenceId)
                 .filter((id): id is UUID => id !== undefined)
         ),
@@ -27,16 +27,16 @@ function getReferenceIds(sharedModifications: NetworkModificationMetadata[]): UU
 }
 
 /**
- * @param sharedModifications the shared modifications of the current node
+ * @param referenceModifications the reference modifications of the current node
  * @param permissions referenceId -> whether the user has the write permission on it
- * @return the uuids of the shared modifications whose referenced element can't be written into
+ * @return the uuids of the reference modifications whose shared modification can't be written into
  */
-function buildReadOnlySharedModificationUuids(
-    sharedModifications: NetworkModificationMetadata[],
+function buildReadOnlyReferenceModificationUuids(
+    referenceModifications: NetworkModificationMetadata[],
     permissions: Map<UUID, boolean>
 ): Set<UUID> {
     return new Set(
-        sharedModifications
+        referenceModifications
             .filter((modification) => !!modification.referenceId && !permissions.get(modification.referenceId))
             .map((modification) => modification.uuid)
     );
@@ -52,21 +52,22 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
 }
 
 /**
- * Resolves the write permission the current user has on the shared modifications of a node.
+ * Resolves the write permission the current user has on the shared modifications a node points at.
  *
- * A shared modification carries the uuid of the composite it references, which is also the uuid of the
- * corresponding element in the directory - so its permission is the one of the directory holding that element.
+ * A reference modification carries the uuid of the shared modification it points at, which is also the uuid of
+ * the corresponding element in the directory - so its permission is the one of the directory holding it.
  *
  * @param modifications the modifications of the current node, as returned by the server
- * @return the uuids of the shared modification **rows** the user is not allowed to write into
+ * @return the uuids of the reference modification **rows** the user is not allowed to write into
  */
 // TODO a permission granted through a group stays cached when the user is added to / removed from that group:
 // user-admin-server emits no notification on group membership changes, unlike directory-server on permissions.
 // Also consider deleting this hook on using Redux instead if we start using permissions at several places.
 export function useSharedModificationsPermissions(modifications: NetworkModificationMetadata[]): {
-    readOnlySharedModificationUuids: Set<UUID>;
+    readOnlyReferenceModificationUuids: Set<UUID>;
 } {
-    const [readOnlySharedModificationUuids, setReadOnlySharedModificationUuids] = useState<Set<UUID>>(EMPTY_UUID_SET);
+    const [readOnlyReferenceModificationUuids, setReadOnlyReferenceModificationUuids] =
+        useState<Set<UUID>>(EMPTY_UUID_SET);
     // referenceId -> has the write permission
     const [permissionsCache, setPermissionsCache] = useState<Map<UUID, boolean>>(() => new Map());
 
@@ -89,16 +90,16 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     useEffect(() => {
         let aborted = false;
 
-        const sharedModifications = modifications.filter(isReferenceModification);
-        const referenceIds = getReferenceIds(sharedModifications);
+        const referenceModifications = modifications.filter(isReferenceModification);
+        const referenceIds = getReferenceIds(referenceModifications);
 
         const missingIds = referenceIds.filter((id) => !permissionsCache.has(id));
         if (missingIds.length === 0) {
-            setReadOnlySharedModificationUuids(
+            setReadOnlyReferenceModificationUuids(
                 replaceIfChanged(
                     referenceIds.length === 0
                         ? EMPTY_UUID_SET
-                        : buildReadOnlySharedModificationUuids(sharedModifications, permissionsCache)
+                        : buildReadOnlyReferenceModificationUuids(referenceModifications, permissionsCache)
                 )
             );
             // no fetch needed
@@ -122,5 +123,5 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
         };
     }, [modifications, permissionsCache]);
 
-    return { readOnlySharedModificationUuids };
+    return { readOnlyReferenceModificationUuids };
 }

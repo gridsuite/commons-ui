@@ -70,7 +70,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationsToExclude?: ExcludedNetworkModifications[];
     setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
     isDisabled?: boolean;
-    readOnlySharedModificationUuids?: Set<UUID>;
+    readOnlyReferenceModificationUuids?: Set<UUID>;
 }
 
 export function NetworkModificationsTable({
@@ -91,7 +91,7 @@ export function NetworkModificationsTable({
     modificationsToExclude,
     setModificationsToExclude,
     isDisabled = false,
-    readOnlySharedModificationUuids,
+    readOnlyReferenceModificationUuids,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -113,14 +113,14 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    // Everything nested inside a shared modification the user can't write into. Kept in a ref as well, so that
+    // Everything nested inside a read-only reference modification. Kept in a ref as well, so that
     // handleRowSelected can read it without being recreated every time the tree changes.
     const lockedNestedModificationUuids = useMemo(
         () =>
-            readOnlySharedModificationUuids?.size
-                ? collectLockedNestedModificationUuids(readOnlySharedModificationUuids, composedModifications)
+            readOnlyReferenceModificationUuids?.size
+                ? collectLockedNestedModificationUuids(readOnlyReferenceModificationUuids, composedModifications)
                 : undefined,
-        [readOnlySharedModificationUuids, composedModifications]
+        [readOnlyReferenceModificationUuids, composedModifications]
     );
     const lockedNestedModificationUuidsRef = useRef(lockedNestedModificationUuids);
     useEffect(() => {
@@ -234,7 +234,7 @@ export function NetworkModificationsTable({
                 modificationToEditLabel: modificationToEditLabelRef,
             },
             permissions: {
-                readOnlySharedModificationUuids,
+                readOnlyReferenceModificationUuids,
                 lockedNestedModificationUuids,
             },
             status: {
@@ -257,7 +257,7 @@ export function NetworkModificationsTable({
             handleRowSelected,
             modificationToEditLabelRef,
             isRowDragDisabled,
-            readOnlySharedModificationUuids,
+            readOnlyReferenceModificationUuids,
             lockedNestedModificationUuids,
             isImpactedByNotification,
             notificationMessageId,

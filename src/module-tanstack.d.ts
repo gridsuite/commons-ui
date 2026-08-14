@@ -32,9 +32,9 @@ declare module '@tanstack/react-table' {
             modificationToEditLabel: RefObject<UUID | null>;
         };
         permissions: {
-            // shared modifications the user can't write into
-            readOnlySharedModificationUuids?: Set<UUID>;
-            // everything nested inside those, at any depth - the shared modifications themselves are NOT part of it
+            // reference modifications pointing at a shared modification the user can't write into
+            readOnlyReferenceModificationUuids?: Set<UUID>;
+            // everything nested inside those, at any depth - the reference modifications themselves are NOT part of it
             lockedNestedModificationUuids?: Set<UUID>;
         };
         status: {
