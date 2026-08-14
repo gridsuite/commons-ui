@@ -29,6 +29,7 @@ export function TwoWindingsTransformerForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
+    editData,
     isModification = false,
 }: Readonly<TwoWindingsTransformerFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<TwoWindingsTransformerDialogTab>(
@@ -54,6 +55,7 @@ export function TwoWindingsTransformerForm({
                     PositionDiagramPane={PositionDiagramPane}
                     isModification={isModification}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+                    editData={editData}
                 />
             </Box>
         </Stack>
