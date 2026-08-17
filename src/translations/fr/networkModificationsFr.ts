@@ -336,6 +336,7 @@ export const networkModificationsFr = {
     OnLoad: 'Passage de prises en charge',
     RegulationMode: 'Mode de réglage',
     TargetVoltage: 'Consigne de tension',
+    None: 'Aucun',
     TargetVoltageMustBeGreaterThanZero: 'La tension doit être supérieure à 0',
     Deadband: 'Bande morte',
     TargetDeadbandMustBeGreaterOrEqualToZero: 'La valeur de la bande morte doit être supérieure ou égale à 0',

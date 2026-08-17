@@ -330,6 +330,7 @@ export const networkModificationsEn = {
     OnLoad: 'On-load tap changing',
     RegulationMode: 'Regulation mode',
     TargetVoltage: 'Voltage setpoint',
+    None: 'None',
     TargetVoltageMustBeGreaterThanZero: 'Voltage value must be greater than 0',
     Deadband: 'Deadband',
     TargetDeadbandMustBeGreaterOrEqualToZero: 'Deadband value must be greater than or equal to 0',
