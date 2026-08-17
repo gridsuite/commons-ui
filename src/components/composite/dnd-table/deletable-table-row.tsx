@@ -41,7 +41,7 @@ export function DeletableTableRow({
                                 id: 'DeleteRows',
                             })}
                         >
-                            <IconButton onClick={onClick} data-testid="DeleteButton">
+                            <IconButton onClick={onClick} data-testid="DeleteRowButton">
                                 <DeleteIcon />
                             </IconButton>
                         </CustomTooltip>
