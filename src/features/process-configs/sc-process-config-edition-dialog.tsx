@@ -44,28 +44,40 @@ export function SCProcessConfigEditionDialog({
 
     const { reset } = formMethods;
 
-    const fetchFormData = useCallback(async () => {
-        const persitedProcessConfig = await fetchProcessConfig(processConfigUuid);
-        if (persitedProcessConfig) {
-            const formData = await getNamedSCProcessConfigFormData(
-                persitedProcessConfig.processConfig,
-                processConfigName,
-                description
-            );
-            reset({ ...formData });
-        }
-    }, [fetchProcessConfig, processConfigUuid, processConfigName, description, reset]);
-
     useEffect(() => {
+        let cancelled = false;
         setIsLoading(true);
-        fetchFormData()
-            .finally(() => setIsLoading(false))
-            .catch((error) => {
-                snackWithFallback(snackError, error, {
-                    headerId: `processConfig/fetchProcessConfigError`,
-                });
-            });
-    }, [fetchFormData, snackError]);
+
+        (async () => {
+            try {
+                const persistedProcessConfig = await fetchProcessConfig(processConfigUuid);
+                if (!cancelled && persistedProcessConfig) {
+                    const formData = await getNamedSCProcessConfigFormData(
+                        persistedProcessConfig.processConfig,
+                        processConfigName,
+                        description
+                    );
+                    if (!cancelled) {
+                        reset({ ...formData });
+                    }
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    snackWithFallback(snackError, error, {
+                        headerId: 'processConfig/fetchProcessConfigError',
+                    });
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoading(false);
+                }
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [fetchProcessConfig, processConfigUuid, processConfigName, description, reset, snackError]);
 
     const handleUpdateProcessConfig = useCallback(
         (formData: NamedSCProcessConfigFormSchema) => {
