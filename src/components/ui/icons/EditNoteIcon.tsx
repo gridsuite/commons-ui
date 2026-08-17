@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import AddNotes from '@material-symbols/svg-400/outlined/add_notes.svg?react';
+import AddNotes from '@material-symbols/svg-400/outlined/add_notes-fill.svg?react';
 import { SvgIcon, type SvgIconProps } from '@mui/material';
 import { StickyNote2Outlined } from '@mui/icons-material';
 

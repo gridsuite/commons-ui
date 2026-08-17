@@ -27,7 +27,7 @@ export interface Connectivity {
     terminalConnected?: boolean;
 }
 
-type PositionDiagramPaneType = React.ComponentType<{
+export type PositionDiagramPaneType = React.ComponentType<{
     open: boolean;
     onClose: () => void;
     voltageLevelId: string;
