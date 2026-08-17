@@ -40,6 +40,8 @@ export interface ColumnBase {
     // for example, refresh contingency count against a change of selected contingency
     shouldHandleOnChangeCell?: boolean;
     hideErrorMessage?: boolean;
+    // data-testid set on the cell input of this column, in every row
+    dataTestId?: string;
 }
 
 export interface ColumnText extends ColumnBase {

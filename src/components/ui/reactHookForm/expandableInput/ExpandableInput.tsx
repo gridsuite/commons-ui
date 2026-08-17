@@ -29,6 +29,8 @@ export interface ExpandableInputProps {
     watchProps?: boolean;
     disabled?: boolean;
     disabledDeletion?: (idx: number) => boolean;
+    // when set, each row gets a data-testid made of this prefix followed by the row index
+    rowDataTestIdPrefix?: string;
 }
 
 // This component is used to display Array of objects.
@@ -50,6 +52,7 @@ export const ExpandableInput = forwardRef(
             watchProps = true,
             disabled = false,
             disabledDeletion,
+            rowDataTestIdPrefix,
         }: Readonly<ExpandableInputProps>,
         ref
     ) => {
@@ -89,13 +92,19 @@ export const ExpandableInput = forwardRef(
                             }}
                             deletionMark={getDeletionMark?.(idx)}
                             disabledDeletion={disabledDeletion?.(idx)}
+                            dataTestId={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${idx}`}
                         >
                             <Field name={name} index={idx} {...fieldProps} />
                         </DeletableRow>
                     ))}
                 {addButtonLabel && (
                     <Grid>
-                        <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
+                        <AddButton
+                            disabled={disabled}
+                            onClick={() => append(initialValue)}
+                            label={addButtonLabel}
+                            data-testid="AddBTN"
+                        />
                     </Grid>
                 )}
             </Grid>

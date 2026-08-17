@@ -69,6 +69,7 @@ function EditableTableCell({
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
+                    data-testid={column.dataTestId}
                     name={name}
                     previousValue={previousValue}
                     valueModified={valueModified}
@@ -81,7 +82,12 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.TEXT && (
-                <TableTextInput {...props} name={name} hideErrorMessage={column.hideErrorMessage} />
+                <TableTextInput
+                    {...props}
+                    name={name}
+                    hideErrorMessage={column.hideErrorMessage}
+                    dataTestId={column.dataTestId}
+                />
             )}
             {column.type === DndColumnType.AUTOCOMPLETE && (
                 <AutocompleteInput
@@ -145,6 +151,7 @@ export type DndTableRowProps = TableRowProps & {
     onDeleteRow: (index: number) => void;
     multiselect?: boolean;
     nextSnapshotCellWidthSx: (isDragging: boolean) => SxProps<Theme> | undefined;
+    rowDataTestIdPrefix?: string;
 };
 export function DndTableRow({
     rowId,
@@ -164,6 +171,7 @@ export function DndTableRow({
     onDeleteRow,
     multiselect,
     nextSnapshotCellWidthSx,
+    rowDataTestIdPrefix,
 }: Readonly<DndTableRowProps>) {
     const intl = useIntl();
 
@@ -175,6 +183,7 @@ export function DndTableRow({
                 onDeleteRow(index);
             }}
             disabledDeletion={disabledDeletion || multiselect}
+            dataTestId={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${index}`}
         >
             {!disableDragAndDrop && (
                 <CustomTooltip
@@ -185,6 +194,7 @@ export function DndTableRow({
                     <TableCell
                         sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}
                         {...(disabled ? {} : { ...provided.dragHandleProps })}
+                        data-testid="DragAndDropBTN"
                     >
                         <DragIndicatorIcon />
                     </TableCell>

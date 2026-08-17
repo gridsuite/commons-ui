@@ -13,11 +13,13 @@ import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 type DeletableTableRowProps = TableRowProps & {
     onClick: () => void;
     disabledDeletion?: boolean | null;
+    dataTestId?: string;
 };
 
 export function DeletableTableRow({
     onClick,
     disabledDeletion,
+    dataTestId,
     children,
     ...otherProps
 }: Readonly<DeletableTableRowProps>) {
@@ -28,6 +30,7 @@ export function DeletableTableRow({
             {...otherProps}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
+            data-testid={dataTestId}
         >
             {children}
             {!disabledDeletion && (
@@ -38,7 +41,7 @@ export function DeletableTableRow({
                                 id: 'DeleteRows',
                             })}
                         >
-                            <IconButton onClick={onClick}>
+                            <IconButton onClick={onClick} data-testid="DeleteBTN">
                                 <DeleteIcon />
                             </IconButton>
                         </CustomTooltip>
