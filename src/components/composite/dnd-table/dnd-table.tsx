@@ -339,7 +339,11 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 })}
                             >
                                 <span>
-                                    <IconButton disabled={disabled} onClick={handleAddRowsButton} data-testid="AddBTN">
+                                    <IconButton
+                                        disabled={disabled}
+                                        onClick={handleAddRowsButton}
+                                        data-testid="AddButton"
+                                    >
                                         <AddCircleIcon />
                                     </IconButton>
                                 </span>

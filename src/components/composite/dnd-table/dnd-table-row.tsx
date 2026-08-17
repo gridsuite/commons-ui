@@ -194,7 +194,7 @@ export function DndTableRow({
                     <TableCell
                         sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}
                         {...(disabled ? {} : { ...provided.dragHandleProps })}
-                        data-testid="DragAndDropBTN"
+                        data-testid="DragAndDropButton"
                     >
                         <DragIndicatorIcon />
                     </TableCell>

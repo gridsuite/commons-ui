@@ -22,7 +22,7 @@ export function AddButton({ label, mode = AddButtonMode.ADD, ...buttonProps }: R
     return (
         <Button
             startIcon={mode === AddButtonMode.ADD ? <ControlPoint /> : <Edit />}
-            data-testid={mode === AddButtonMode.ADD ? 'AddBTN' : 'EditBTN'}
+            data-testid={mode === AddButtonMode.ADD ? 'AddButton' : 'EditButton'}
             {...buttonProps}
         >
             <FormattedMessage id={label} />

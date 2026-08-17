@@ -47,7 +47,7 @@ export function DeletableRow({
                             id: deletionMark ? 'button.restore' : 'DeleteRows',
                         })}
                     >
-                        <IconButton onClick={onClick} data-testid="DeleteBTN">
+                        <IconButton onClick={onClick} data-testid="DeleteButton">
                             {deletionMark ? <RestoreFromTrashIcon /> : <DeleteIcon />}
                         </IconButton>
                     </CustomTooltip>
