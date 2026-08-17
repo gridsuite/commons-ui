@@ -20,7 +20,7 @@ export interface DescriptionCellProps {
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     isDisabled?: boolean;
-    // the dialog stays reachable, only its validation is denied
+    // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
 }
 
@@ -53,6 +53,11 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const handleModifyDescription = useCallback(() => {
         setOpenDescModificationDialog(true);
     }, []);
+
+    // Nothing to read and nothing to write
+    if (empty && isSaveDisabled) {
+        return null;
+    }
 
     return (
         <>
