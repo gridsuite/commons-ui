@@ -13,15 +13,11 @@ export enum NotificationsUrlKeys {
     DIRECTORY_DELETE_STUDY = 'DIRECTORY_DELETE_STUDY',
     MONITOR = 'MONITOR',
 }
-export const directoriesNotificationType = {
-    DELETE_DIRECTORY: 'DELETE_DIRECTORY',
-    ADD_DIRECTORY: 'ADD_DIRECTORY',
-    UPDATE_DIRECTORY: 'UPDATE_DIRECTORY',
-    CASE_EXPORT_FINISHED: 'caseExportFinished',
-} as const;
-
-export type DirectoriesNotificationType =
-    (typeof directoriesNotificationType)[keyof typeof directoriesNotificationType];
+export enum DirectoriesNotificationType {
+    DELETE_DIRECTORY = 'DELETE_DIRECTORY',
+    ADD_DIRECTORY = 'ADD_DIRECTORY',
+    UPDATE_DIRECTORY = 'UPDATE_DIRECTORY',
+}
 
 export const PREFIX_CONFIG_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/config-notification`;
 export const PREFIX_STUDY_NOTIFICATION_WS = `${import.meta.env.VITE_WS_GATEWAY}/study-notification`;

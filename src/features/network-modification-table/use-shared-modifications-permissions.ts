@@ -9,7 +9,7 @@ import { useCallback, useEffect, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import { hasElementPermission, PermissionType } from '../../services';
 import { equalsArrayAnyOrder, NetworkModificationMetadata } from '../../utils';
-import { directoriesNotificationType, NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
+import { DirectoriesNotificationType, NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
 import { isReferenceModification } from './utils';
 
@@ -78,7 +78,7 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     // here, so the whole cache is dropped.
     const handleDirectoryNotification = useCallback((event: MessageEvent<string>) => {
         const eventData = JSON.parse(event.data);
-        if (eventData.headers?.notificationType === directoriesNotificationType.UPDATE_DIRECTORY) {
+        if (eventData.headers?.notificationType === DirectoriesNotificationType.UPDATE_DIRECTORY) {
             setPermissionsCache(new Map());
         }
     }, []);
