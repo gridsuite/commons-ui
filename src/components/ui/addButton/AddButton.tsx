@@ -20,7 +20,11 @@ export interface AddButtonProps extends ButtonProps {
 
 export function AddButton({ label, mode = AddButtonMode.ADD, ...buttonProps }: Readonly<AddButtonProps>) {
     return (
-        <Button startIcon={mode === AddButtonMode.ADD ? <ControlPoint /> : <Edit />} {...buttonProps}>
+        <Button
+            startIcon={mode === AddButtonMode.ADD ? <ControlPoint /> : <Edit />}
+            data-testid="AddBTN"
+            {...buttonProps}
+        >
             <FormattedMessage id={label} />
         </Button>
     );

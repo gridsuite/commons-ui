@@ -99,12 +99,7 @@ export const ExpandableInput = forwardRef(
                     ))}
                 {addButtonLabel && (
                     <Grid>
-                        <AddButton
-                            disabled={disabled}
-                            onClick={() => append(initialValue)}
-                            label={addButtonLabel}
-                            data-testid="AddBTN"
-                        />
+                        <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
                     </Grid>
                 )}
             </Grid>
