@@ -69,7 +69,7 @@ function EditableTableCell({
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
-                    data-testid={column.dataTestId}
+                    data-testid={column['data-testid']}
                     name={name}
                     previousValue={previousValue}
                     valueModified={valueModified}
@@ -86,7 +86,7 @@ function EditableTableCell({
                     {...props}
                     name={name}
                     hideErrorMessage={column.hideErrorMessage}
-                    dataTestId={column.dataTestId}
+                    data-testid={column['data-testid']}
                 />
             )}
             {column.type === DndColumnType.AUTOCOMPLETE && (
@@ -183,7 +183,7 @@ export function DndTableRow({
                 onDeleteRow(index);
             }}
             disabledDeletion={disabledDeletion || multiselect}
-            dataTestId={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${index}`}
+            data-testid={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${index}`}
         >
             {!disableDragAndDrop && (
                 <CustomTooltip

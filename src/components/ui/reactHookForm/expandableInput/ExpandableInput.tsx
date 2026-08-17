@@ -92,7 +92,7 @@ export const ExpandableInput = forwardRef(
                             }}
                             deletionMark={getDeletionMark?.(idx)}
                             disabledDeletion={disabledDeletion?.(idx)}
-                            dataTestId={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${idx}`}
+                            data-testid={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${idx}`}
                         >
                             <Field name={name} index={idx} {...fieldProps} />
                         </DeletableRow>

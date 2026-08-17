@@ -41,7 +41,7 @@ export interface ColumnBase {
     shouldHandleOnChangeCell?: boolean;
     hideErrorMessage?: boolean;
     // data-testid set on the cell input of this column, in every row
-    dataTestId?: string;
+    'data-testid'?: string;
 }
 
 export interface ColumnText extends ColumnBase {
