@@ -151,7 +151,7 @@ export type DndTableRowProps = TableRowProps & {
     onDeleteRow: (index: number) => void;
     multiselect?: boolean;
     nextSnapshotCellWidthSx: (isDragging: boolean) => SxProps<Theme> | undefined;
-    rowDataTestIdPrefix?: string;
+    rowDataTestId?: string;
 };
 export function DndTableRow({
     rowId,
@@ -171,7 +171,7 @@ export function DndTableRow({
     onDeleteRow,
     multiselect,
     nextSnapshotCellWidthSx,
-    rowDataTestIdPrefix,
+    rowDataTestId,
 }: Readonly<DndTableRowProps>) {
     const intl = useIntl();
 
@@ -183,7 +183,7 @@ export function DndTableRow({
                 onDeleteRow(index);
             }}
             disabledDeletion={disabledDeletion || multiselect}
-            dataTestId={rowDataTestIdPrefix && `${rowDataTestIdPrefix}${index}`}
+            dataTestId={rowDataTestId}
         >
             {!disableDragAndDrop && (
                 <CustomTooltip

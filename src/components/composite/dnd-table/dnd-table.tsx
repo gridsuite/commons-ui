@@ -112,8 +112,8 @@ export interface DndTableProps {
     multiselect?: boolean;
     onChange?: (changedRow: any) => void;
     onDelete?: (removedRows: any[]) => void;
-    // when set, each row gets a data-testid made of this prefix followed by the row index
-    rowDataTestIdPrefix?: string;
+    // when set, every row gets this data-testid
+    rowDataTestId?: string;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
@@ -143,7 +143,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         multiselect,
         onChange,
         onDelete,
-        rowDataTestIdPrefix,
+        rowDataTestId,
     } = props;
     const intl = useIntl();
 
@@ -392,7 +392,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                     onDeleteRow={handleDeleteRow}
                                     multiselect={multiselect}
                                     nextSnapshotCellWidthSx={nextSnapshotCellWidthSx}
-                                    rowDataTestIdPrefix={rowDataTestIdPrefix}
+                                    rowDataTestId={rowDataTestId}
                                 />
                             );
                             // Portal the dragging row to document.body to avoid CSS transform
