@@ -461,4 +461,15 @@ export const networkModificationsFr = {
     notBuiltNodeTooltipVlTopoModif:
         "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
     Undefined: 'Non défini',
+
+    // Voltage level modification
+    ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",
+    switchId: "ID de l'organe de coupure",
+    Open: 'Ouvert',
+    Closed: 'Fermé',
+    previousStatus: 'État précédent',
+    currentStatus: 'État modifié',
+    copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
+    modifiedSwitchesSeparatorTitle: 'OC modifiés',
+    unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
 };
