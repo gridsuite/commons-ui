@@ -18,7 +18,7 @@ export type BooleanInputProps<TInput extends InputTypes> = {
     label?: string;
     formProps?: InputProps<TInput>;
     Input: TInput;
-    'data-testid'?: string;
+    dataTestId?: string;
 };
 
 export function BooleanInput<TInput extends InputTypes>({
@@ -26,7 +26,7 @@ export function BooleanInput<TInput extends InputTypes>({
     label,
     formProps,
     Input,
-    'data-testid': dataTestId,
+    dataTestId,
 }: Readonly<BooleanInputProps<TInput>>) {
     const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {

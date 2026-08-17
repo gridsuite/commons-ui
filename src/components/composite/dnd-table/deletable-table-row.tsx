@@ -13,13 +13,13 @@ import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 type DeletableTableRowProps = TableRowProps & {
     onClick: () => void;
     disabledDeletion?: boolean | null;
-    'data-testid'?: string;
+    dataTestId?: string;
 };
 
 export function DeletableTableRow({
     onClick,
     disabledDeletion,
-    'data-testid': dataTestId,
+    dataTestId,
     children,
     ...otherProps
 }: Readonly<DeletableTableRowProps>) {

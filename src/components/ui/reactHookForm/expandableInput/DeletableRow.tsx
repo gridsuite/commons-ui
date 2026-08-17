@@ -15,7 +15,7 @@ export interface DeletableRowProps extends PropsWithChildren {
     onClick: () => void;
     deletionMark?: boolean | null;
     disabledDeletion?: boolean | null;
-    'data-testid'?: string;
+    dataTestId?: string;
 }
 
 export function DeletableRow({
@@ -23,7 +23,7 @@ export function DeletableRow({
     onClick,
     deletionMark,
     disabledDeletion,
-    'data-testid': dataTestId,
+    dataTestId,
     children,
 }: Readonly<DeletableRowProps>) {
     const intl = useIntl();

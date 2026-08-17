@@ -13,15 +13,10 @@ interface TableTextInputProps {
     name: string;
     hideErrorMessage?: boolean;
     inputProps?: InputBaseComponentProps;
-    'data-testid'?: string;
+    dataTestId?: string;
 }
 
-export function TableTextInput({
-    name,
-    hideErrorMessage,
-    inputProps,
-    'data-testid': dataTestId,
-}: Readonly<TableTextInputProps>) {
+export function TableTextInput({ name, hideErrorMessage, inputProps, dataTestId }: Readonly<TableTextInputProps>) {
     const {
         field: { onChange, value, ref },
         fieldState: { error },
