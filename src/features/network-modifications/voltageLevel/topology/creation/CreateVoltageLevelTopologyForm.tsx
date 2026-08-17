@@ -9,10 +9,10 @@ import { Box, Button, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { InfoOutlined } from '@mui/icons-material';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { IntegerInput, useCustomFormContext } from '../../../../components/ui';
-import { SwitchesBetweenSections } from '../creation';
-import { FieldConstants } from '../../../../utils';
-import { filledTextField, PositionDiagramPaneType } from '../../common';
+import { IntegerInput, useCustomFormContext } from '../../../../../components/ui';
+import { SwitchesBetweenSections } from '../../creation';
+import { FieldConstants } from '../../../../../utils';
+import { filledTextField, PositionDiagramPaneType } from '../../../common';
 
 export interface CreateVoltageLevelTopologyFormProps {
     voltageLevelId: string;

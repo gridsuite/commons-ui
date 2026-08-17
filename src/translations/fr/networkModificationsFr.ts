@@ -335,6 +335,17 @@ export const networkModificationsFr = {
     b0: 'Susceptance fixe',
     fixQAtNominalV: 'Q fixe',
 
+    ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",
+    switchId: "ID de l'organe de coupure",
+    Open: 'Ouvert',
+    Closed: 'Fermé',
+    previousStatus: 'État précédent',
+    currentStatus: 'État modifié',
+    builtNodeTooltipVlTopoModif: 'Liste des organes de coupure tenant compte de toutes les modifications réalisées',
+    notBuiltNodeTooltipVlTopoModif:
+        "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
+    copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
+
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',

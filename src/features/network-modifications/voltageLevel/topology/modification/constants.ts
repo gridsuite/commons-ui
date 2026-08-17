@@ -5,9 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './coupling-device';
-export * from './creation';
-export * from './voltage-level.type';
-export * from './modification';
-export * from './topology/creation';
-export * from './topology/modification';
+export const TOPOLOGY_MODIFICATION_TABLE = 'topologyModificationTable';
+export const SWITCH_ID = 'switchId';
+export const PREV_CONNECTION_STATUS = 'prevConnectionStatus';
+export const CURRENT_CONNECTION_STATUS = 'currentConnectionStatus';

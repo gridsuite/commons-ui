@@ -329,6 +329,16 @@ export const networkModificationsEn = {
     b0: 'Fixed part of susceptance',
     fixQAtNominalV: 'Q fixed',
 
+    ModifyVoltageLevelTopology: 'Modify voltage level topology',
+    switchId: 'Switch ID',
+    Open: 'Open',
+    Closed: 'Closed',
+    previousStatus: 'Previous status',
+    currentStatus: 'Modified status',
+    builtNodeTooltipVlTopoModif: 'Switches list taking into account all applied modifications',
+    notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
+    copyPreviousTopologyStatus: 'Fill with previous status',
+
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
