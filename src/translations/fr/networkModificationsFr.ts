@@ -361,6 +361,7 @@ export const networkModificationsFr = {
     CouplingDeviceText: 'Sections de jeu de barre',
     CouplingDeviceBusBarSectionToolTipText:
         'Si les deux sections de barre sélectionnées ont des numéros de tronçon/section différents la modification crée un omnibus, autrement elle crée un couplage',
+    // Voltage level section creation
     CreateVoltageLevelSection: 'Ajouter un tronçon ou une section',
     VoltageLevelSectionCreationError: "Erreur lors de la création d'une section",
     BusBarSectionsReference: 'Section de jeu de barres de référence',
@@ -375,7 +376,7 @@ export const networkModificationsFr = {
     Before: 'Avant',
     After: 'Après',
     allBusbarSections: 'Tous',
-    allOptionHelperText: "Tous les jeux de barres n'ont pas les memes sections (index et nombre)",
+    allOptionHelperText: "Tous les jeux de barres n'ont pas les mêmes sections (index et nombre)",
     areSwitchesOpen: 'Ouverts',
     areSwitchesClosed: 'Fermés',
 };

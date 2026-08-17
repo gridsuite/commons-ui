@@ -56,16 +56,16 @@ export const voltageLevelSectionCreationFormSchema = object()
 export type VoltageLevelSectionCreationFormData = InferType<typeof voltageLevelSectionCreationFormSchema>;
 
 export const voltageLevelSectionCreationEmptyFormData: DeepNullable<VoltageLevelSectionCreationFormData> = {
-    equipmentID: '',
-    busbarIndex: null,
-    busbarSectionId: null,
-    isAfterBusBarSectionId: null,
-    switchesBeforeSections: null,
-    switchesAfterSections: null,
-    allBusbarSections: false,
-    newSwitchStates: true,
-    switchBeforeNotRequired: false,
-    switchAfterNotRequired: false,
+    [FieldConstants.EQUIPMENT_ID]: '',
+    [FieldConstants.BUS_BAR_INDEX]: null,
+    [FieldConstants.BUSBAR_SECTION_ID]: null,
+    [FieldConstants.IS_AFTER_BUSBAR_SECTION_ID]: null,
+    [FieldConstants.SWITCHES_BEFORE_SECTIONS]: null,
+    [FieldConstants.SWITCHES_AFTER_SECTIONS]: null,
+    [FieldConstants.ALL_BUS_BAR_SECTIONS]: false,
+    [FieldConstants.NEW_SWITCH_STATES]: true,
+    [FieldConstants.SWITCH_BEFORE_NOT_REQUIRED]: false,
+    [FieldConstants.SWITCH_AFTER_NOT_REQUIRED]: false,
 };
 
 const getBusBarIndexValue = ({

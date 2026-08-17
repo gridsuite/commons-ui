@@ -13,6 +13,7 @@ import { AutocompleteInput, SelectInput, SwitchInput, useCustomFormContext } fro
 import { areIdsEqual, FieldConstants, getObjectId, Option } from '../../../../utils';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { filledTextField } from '../../common';
+import { PositionDiagramPaneType } from '../../common/connectivity/connectivity.type';
 import { SWITCH_TYPE } from '../creation';
 import { BusBarSections } from './voltageLevelSectionCreation.types';
 import { POSITION_NEW_SECTION_SIDE } from './voltageLevelSectionCreation.utils';
@@ -32,12 +33,6 @@ const getArrayPosition = (data: BusBarSections, selectedOptionId: string) => {
 };
 
 type OptionWithDisabled = Option & { disabled?: boolean };
-
-type PositionDiagramPaneType = React.ComponentType<{
-    open: boolean;
-    onClose: () => void;
-    voltageLevelId: string;
-}>;
 
 export interface VoltageLevelSectionCreationFormProps {
     busBarSectionInfos?: BusBarSections;

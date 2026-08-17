@@ -355,6 +355,7 @@ export const networkModificationsEn = {
     CouplingDeviceText: 'Bus bar sections',
     CouplingDeviceBusBarSectionToolTipText:
         'If both bus bar sections have a different section number it creates an omnibus otherwise a coupling device',
+    // Voltage level section creation
     CreateVoltageLevelSection: 'Add busbar section',
     VoltageLevelSectionCreationError: 'Error while creating a section',
     BusBarSectionsReference: 'Busbar reference section',
