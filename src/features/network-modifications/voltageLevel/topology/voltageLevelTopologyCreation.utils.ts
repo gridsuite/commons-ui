@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { IntlShape } from 'react-intl';
 import { DeepNullable, FieldConstants, ModificationType } from '../../../../utils';
 import { MAX_SECTIONS_COUNT } from '../creation/voltageLevel.constants';
-import { CreateVoltageLevelTopologyInfos } from './voltageLevelTopologyCreation.types';
+import { CreateVoltageLevelTopologyDto } from './voltageLevelTopologyCreation.types';
 
 export const createVoltageLevelTopologyFormSchema = yup
     .object()
@@ -46,7 +46,7 @@ export const createVoltageLevelTopologyEmptyFormData: DeepNullable<CreateVoltage
 };
 
 export const createVoltageLevelTopologyDtoToForm = (
-    editData: CreateVoltageLevelTopologyInfos | undefined,
+    editData: CreateVoltageLevelTopologyDto | undefined,
     intl: IntlShape
 ): DeepNullable<CreateVoltageLevelTopologyDialogSchemaForm> => {
     const switchKinds =
@@ -63,7 +63,7 @@ export const createVoltageLevelTopologyDtoToForm = (
 export const createVoltageLevelTopologyFormToDto = (
     voltageLevelTopology: CreateVoltageLevelTopologyDialogSchemaForm,
     voltageLevelId: string
-): CreateVoltageLevelTopologyInfos => ({
+): CreateVoltageLevelTopologyDto => ({
     type: ModificationType.CREATE_VOLTAGE_LEVEL_TOPOLOGY,
     voltageLevelId,
     sectionCount: voltageLevelTopology[FieldConstants.SECTION_COUNT],

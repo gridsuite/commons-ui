@@ -152,6 +152,7 @@ export const networkModificationsFr = {
     Setpoints: 'Consignes',
     ActivePowerText: 'Puissance active',
     ReactivePowerText: 'Puissance réactive',
+    ReactivePowerRegulationText: 'Réglage de réactif',
     RegulationTypeText: 'Type de réglage',
     QPercentText: 'Cœfficient de participation',
     RegulatingTerminalGenerator: 'Terminal distant réglé',
@@ -307,6 +308,33 @@ export const networkModificationsFr = {
     G: 'Conductance magnétisante',
     B: 'Susceptance magnétisante',
 
+    maximumSusceptance: 'Susceptance max',
+    minSusceptance: 'Susceptance min',
+    maxQAtVnominal: 'Q max à tension nominale',
+    minQAtNominalV: 'Q min à tension nominale',
+    ModeAutomaton: 'Mode',
+    StandbyAutomaton: 'En veille',
+    StandbyNotAvailable: "La mise en veille n'est possible qu'en mode de réglage de tension",
+    LowVoltageSetpoint: 'U consigne bas',
+    HighVoltageSetpoint: 'U consigne haut',
+    LowVoltageThreshold: 'U activation bas',
+    HighVoltageThreshold: 'U activation haut',
+    AddAutomaton: 'Ajouter un automate',
+    CreateStaticVarCompensator: 'Créer un CSPR',
+    StaticVarCompensatorCreationError: "Erreur lors de la création d'un cspr",
+    StaticVarCompensatorErrorQFixGreaterThanQMax: 'La valeur de Q Fixe doit être inférieure à la valeur de Q maximum',
+    StaticVarCompensatorErrorQFixLessThanQMin: 'La valeur de Q Fixe doit être supérieure à la valeur de Q minimum',
+    StaticVarCompensatorErrorSFixGreaterThanSMax:
+        'La valeur de Susceptance Fixe doit être inférieure à la valeur de susceptance maximum',
+    StaticVarCompensatorErrorSFixLessThanSMin:
+        'La valeur de Susceptance Fixe doit être supérieure à la valeur de susceptance minimum',
+    StaticVarCompensatorConnectivityTab: 'Connectivité',
+    StaticVarCompensatorSetPointsAndLimitsTab: 'Consignes & Limites',
+    StaticVarCompensatorAutomatonTab: 'Automate',
+    StaticVarCompensatorAdditionalInfosTab: 'Compléments',
+    b0: 'Susceptance fixe',
+    fixQAtNominalV: 'Q fixe',
+
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
@@ -328,4 +356,9 @@ export const networkModificationsFr = {
     AtLeastOneSectionAdded: 'Il faut ajouter au moins une section de jeu de barre',
     SectionCount: 'Nombre de sections',
     VoltageLevelId: 'ID Poste',
+    // Voltage level coupling device creation
+    CreateCouplingDevice: 'Ajouter un couplage ou un omnibus',
+    CouplingDeviceText: 'Sections de jeu de barre',
+    CouplingDeviceBusBarSectionToolTipText:
+        'Si les deux sections de barre sélectionnées ont des numéros de tronçon/section différents la modification crée un omnibus, autrement elle crée un couplage',
 };
