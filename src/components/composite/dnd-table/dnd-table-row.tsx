@@ -93,6 +93,7 @@ function EditableTableCell({
                 <AutocompleteInput
                     forcePopupIcon
                     freeSolo
+                    dataTestId={column.dataTestId}
                     name={name}
                     options={column.options}
                     inputTransform={(value) => value ?? ''}
@@ -101,11 +102,19 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.SELECT && (
-                <SelectInput options={column.options} name={name} size="small" fullWidth disableClearable />
+                <SelectInput
+                    options={column.options}
+                    name={name}
+                    size="small"
+                    fullWidth
+                    disableClearable
+                    dataTestId={column.dataTestId}
+                />
             )}
             {column.type === DndColumnType.DIRECTORY_ITEMS && (
                 <DirectoryItemsInput
                     name={name}
+                    dataTestId={column.dataTestId}
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType}
                     titleId={column.titleId}
@@ -116,11 +125,12 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && (
-                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} />
+                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} dataTestId={column.dataTestId} />
             )}
             {column.type === DndColumnType.SWITCH && (
                 <SwitchInput
                     name={name}
+                    dataTestId={column.dataTestId}
                     formProps={{
                         // callback to propagate a change to parent via column config
                         onChange: (_, checked) => column.shouldHandleOnChangeCell && onChangeCell?.(checked),

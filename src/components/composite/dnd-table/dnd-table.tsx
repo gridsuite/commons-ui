@@ -112,7 +112,6 @@ export interface DndTableProps {
     multiselect?: boolean;
     onChange?: (changedRow: any) => void;
     onDelete?: (removedRows: any[]) => void;
-    // when set, every row gets this data-testid
     rowDataTestId?: string;
 }
 
