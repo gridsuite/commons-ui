@@ -374,5 +374,3 @@ export const networkModificationsEn = {
     areSwitchesOpen: 'Open',
     areSwitchesClosed: 'Closed',
 };
-
-
