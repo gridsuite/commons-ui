@@ -11,6 +11,8 @@ import { LineDialogHeader, LineDialogHeaderProps } from './LineDialogHeader';
 import { LineDialogTabs } from './LineDialogTabs';
 import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogTabsContent';
 import { useTabsWithError } from '../../hooks';
+import { useCustomFormContext } from '../../../../components';
+import { ReadOnlyBoundary } from '../../../../components/ui/reactHookForm/provider/ReadOnlyBoundary';
 
 interface LineFormProps
     extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
@@ -27,6 +29,7 @@ export function LineForm({
         LINE_TAB_FIELDS,
         withConnectivity ? LineDialogTab.CONNECTIVITY_TAB : LineDialogTab.CHARACTERISTICS_TAB
     );
+    const { readOnly } = useCustomFormContext();
 
     return (
         <Stack spacing={2} height="100%">
@@ -39,15 +42,17 @@ export function LineForm({
                 withConnectivity={withConnectivity}
             />
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
-                <LineDialogTabsContent
-                    tabIndex={tabIndex}
-                    lineToModify={lineToModify}
-                    voltageLevelOptions={voltageLevelOptions}
-                    fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
-                    PositionDiagramPane={PositionDiagramPane}
-                    isModification={isModification}
-                    withConnectivity={withConnectivity}
-                />
+                <ReadOnlyBoundary readOnly={readOnly}>
+                    <LineDialogTabsContent
+                        tabIndex={tabIndex}
+                        lineToModify={lineToModify}
+                        voltageLevelOptions={voltageLevelOptions}
+                        fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+                        PositionDiagramPane={PositionDiagramPane}
+                        isModification={isModification}
+                        withConnectivity={withConnectivity}
+                    />
+                </ReadOnlyBoundary>
             </Box>
         </Stack>
     );
