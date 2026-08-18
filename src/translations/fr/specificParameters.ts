@@ -71,7 +71,7 @@ export const specificParametersFr = {
     referenceBusSelectionMode: 'Mode de sélection du nœud bilan',
     writeReferenceTerminals: 'Écrire les terminaux de référence',
     voltageTargetPriorities: 'Priorités des consignes de tension',
-    transformerVoltageControlUseInitialTapPosition: 'relative tap position',
+    transformerVoltageControlUseInitialTapPosition: 'Préserver la position initiale ou relative de prise',
     generatorVoltageControlMinNominalVoltage: 'Tension nominale minimale pour le contrôle de tension des générateurs',
     fictitiousGeneratorVoltageControlCheckMode: 'Contrôles de tension des générateurs fictifs',
     areaInterchangeControl: 'Equilibre avec les échanges de zone',
@@ -86,8 +86,7 @@ export const specificParametersFr = {
     incrementalShuntControlOuterLoopMaxSectionShift: 'Décalage maximal de section de shunt',
     fixVoltageTargets: 'Correction automatique des consignes de tension',
     acDcNetwork: 'Calcul de charge AC/DC simultané',
-    allowNonLinearShuntZeroSection:
-        'Autoriser la position zéro de la section de compensation en dérivation non linéaire',
+    allowNonLinearShuntZeroSection: 'Autoriser une section nulle implicite pour les shunts non linéaires',
 
     // Dyna Flow
     svcRegulationOn: 'Régulation de tension par les CSPR',

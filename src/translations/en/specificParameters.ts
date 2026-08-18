@@ -70,7 +70,7 @@ export const specificParametersEn = {
     referenceBusSelectionMode: 'Reference bus selection mode',
     writeReferenceTerminals: 'Write reference terminals',
     voltageTargetPriorities: 'Voltage target priorities',
-    transformerVoltageControlUseInitialTapPosition: 'Preserve initial',
+    transformerVoltageControlUseInitialTapPosition: 'Preserve initial relative tap position',
     generatorVoltageControlMinNominalVoltage: 'Minimum nominal voltage for generator voltage control',
     fictitiousGeneratorVoltageControlCheckMode: 'Fictitious generator voltage control checks',
     areaInterchangeControl: 'Area interchange control over slack',
@@ -85,7 +85,7 @@ export const specificParametersEn = {
     incrementalShuntControlOuterLoopMaxSectionShift: 'Maximum shunt section shift',
     fixVoltageTargets: 'Auto-correct voltage targets',
     acDcNetwork: 'Simultaneous AC/DC load flow',
-    allowNonLinearShuntZeroSection: 'Allow Non-Linear Shunt Compensator zero section position',
+    allowNonLinearShuntZeroSection: 'Allow implicit zero section for non-linear shunts',
 
     // Dyna Flow
     svcRegulationOn: 'SVC voltage regulation',
