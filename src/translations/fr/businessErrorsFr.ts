@@ -111,6 +111,7 @@ export const businessErrorsFr = {
         'Le type de container pour la modification {modificationId} est introuvable',
     'modification.notFound': 'La modification {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
+    'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
     'modification.deletion.argument.error':
         "Modification suppression : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
     'modification.duplication.argument.error':

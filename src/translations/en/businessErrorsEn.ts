@@ -107,6 +107,7 @@ export const businessErrorsEn = {
     'modification.container.type.notFound': 'Modification container type of {modificationId} not found',
     'modification.notFound': 'Modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
+    'modification.infos.error': 'Modification infos error : {errorMessage}',
     'modification.deletion.argument.error':
         'Modification deletion : invalid arguments (need to specify the group id or give a list of modifications ids)',
     'modification.duplication.argument.error':
