@@ -13,12 +13,15 @@ export const topBarFr = {
     'top-bar/userInformation': 'Informations utilisateur',
     'top-bar/about': 'À propos',
     'top-bar/displayMode': "Mode d'affichage",
+    'top-bar/darkMode': 'Mode sombre',
     'top-bar/equipmentLabel': 'Label des ouvrages',
     'top-bar/id': 'Id',
     'top-bar/name': 'Nom',
     'top-bar/language': 'Langue',
     'top-bar/developerModeWarning':
         'Mode développeur : Certaines fonctionnalités ne sont pas complètes et peuvent ne pas fonctionner comme prévu.',
+    'top-bar/settings': 'Réglages',
+    'top-bar/minimize': 'Réduire le menu',
 
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version {version}',

@@ -1,8 +1,9 @@
 import { DisplaySettings } from '@mui/icons-material';
+import { useIntl } from 'react-intl';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { DarkModeToggle } from './DarkModeToggle';
 import { LanguageSelection } from './LanguageSelection';
-import { submenuFooterStyle } from '../common/submenuFooterStyle';
+import { submenuFooterStyle } from '../common/submenu-footer-style';
 import { GsLang, GsTheme } from '../../../../utils';
 import { CustomNestedMenuItem } from '../../../../components';
 
@@ -21,7 +22,8 @@ export function SettingsMenu({
     selectedLanguage,
     setSelectedLanguage,
 }: SettingsMenuProps) {
-    const settingsLabel = 'Réglages';
+    const intl = useIntl();
+    const settingsLabel = intl.formatMessage({ id: 'top-bar/settings' });
     const availableLanguages: GsLang[] = ['sys', 'fr', 'en'];
 
     return (

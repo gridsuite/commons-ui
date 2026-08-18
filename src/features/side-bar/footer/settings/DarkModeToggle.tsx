@@ -1,6 +1,7 @@
 import { CustomMenuItem, DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
-import { Stack, Switch, Typography } from '@mui/material';
+import { Stack, Switch } from '@mui/material';
 import { ChangeEvent } from 'react';
+import { FormattedMessage } from 'react-intl';
 import { GsTheme } from '../../../../utils';
 
 interface DarkModeToggleProps {
@@ -19,7 +20,7 @@ export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeTogg
     return (
         <CustomMenuItem sx={{ px: 2 }}>
             <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
-                <Typography>Mode sombre</Typography>
+                <FormattedMessage id="top-bar/darkMode" />
                 <Switch checked={isDarkMode} onChange={toggleMode} />
             </Stack>
         </CustomMenuItem>

@@ -3,7 +3,7 @@ import { Apps } from '@mui/icons-material';
 import GridexploreLogo from 'assets/images/gridexplore_logo.svg?react';
 import { OtherAppRedirection } from './OtherAppRedirection';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
-import { submenuFooterStyle } from '../common/submenuFooterStyle';
+import { submenuFooterStyle } from '../common/submenu-footer-style';
 
 export function ApplicationMenu({ isMinimized }: { isMinimized: boolean }) {
     const applicationLabel = 'Mes applications';
