@@ -99,4 +99,28 @@ export const businessErrorsFr = {
 
     'monitor.server.differentProcessConfigType':
         'Impossible de comparer 2 configurations de processus de type différent : {processConfigEntity1Type} vs {processConfigEntity2Type}',
+
+    'network.notFound': 'Réseau {networkId} non trouvé',
+    'network.variant.notFound': 'Variante {variantId} pour le réseau {networkId} non trouvé',
+
+    'modification.container.notFound':
+        'Le container de modification {containerId} de type {containerType} est introuvable',
+    'modification.container.badType':
+        'Le type du container {containerId} est invalide : type actuel {} -> type attendu {expectedContainerType}',
+    'modification.container.type.notFound':
+        'Le type de container pour la modification {modificationId} est introuvable',
+    'modification.notFound': 'La modification {modificationId} est introuvable',
+    'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
+    'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
+    'modification.deletion.argument.error':
+        "Modification suppression : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
+    'modification.duplication.argument.error':
+        "Modification duplication : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
+    'modification.with_group.deletion.forbidden':
+        'Suppression non autorisée : la modification {modificationId} appartient au groupe {groupId}',
+    'modification.description.missing': 'La description de la modification réseau est manquante',
+    'modification.composite.move.cycle.error':
+        'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
+    'modification.voltageLevel.attachmentLine.missing':
+        'La ligne de piquage pour le poste {voltageLevelId} est manquante',
 };

@@ -278,7 +278,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                             <CustomTooltip title={intl.formatMessage({ id: titleId })}>
                                 <span>
                                     <IconButton size="small" disabled={disable}>
-                                        <DriveFolderUpload />
+                                        <DriveFolderUpload data-testid="DriveFolderUploadIcon" />
                                     </IconButton>
                                 </span>
                             </CustomTooltip>
