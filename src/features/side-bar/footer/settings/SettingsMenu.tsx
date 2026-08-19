@@ -6,6 +6,7 @@ import { LanguageSelection } from './LanguageSelection';
 import { submenuFooterStyle } from '../common/submenu-footer-style';
 import { GsLang, GsTheme } from '../../../../utils';
 import { CustomNestedMenuItem } from '../../../../components';
+import { Box, Typography } from '@mui/material';
 
 interface SettingsMenuProps {
     isMinimized: boolean;
@@ -35,8 +36,17 @@ export function SettingsMenu({
             {isMinimized && <MinimizedSubMenuHeader label={settingsLabel} />}
             <DarkModeToggle currentTheme={currentTheme} setTheme={setTheme} />
             <CustomNestedMenuItem
-                label={intl.formatMessage({ id: 'top-bar/language' })}
-                sx={submenuFooterStyle.nestedSubMenu}
+                renderLabel={() => (
+                    <Box sx={submenuFooterStyle.subMenu}>
+                        {intl.formatMessage({ id: 'top-bar/language' })}
+                        <Typography component="span" fontSize={12} sx={{ opacity: 0.7 }}>
+                            {' - '}
+                            {intl.formatMessage({
+                                id: `top-bar/language/${selectedLanguage}`,
+                            })}
+                        </Typography>
+                    </Box>
+                )}
             >
                 {availableLanguages.map((language) => (
                     <LanguageSelection

@@ -1,5 +1,5 @@
-import { Typography } from '@mui/material';
 import { Done } from '@mui/icons-material';
+import { FormattedMessage } from 'react-intl';
 import { GsLang } from '../../../../utils';
 import { CustomMenuItem } from '../../../../components';
 
@@ -20,8 +20,8 @@ export function LanguageSelection({
 
     return (
         <CustomMenuItem sx={{ px: 2 }} onClick={onClick}>
-            <Typography>{language}</Typography>
-            {isSelectedLanguage && <Done />}
+            <FormattedMessage id={`top-bar/language/${language}`} />
+            <Done color="info" sx={{ ml: 1, visibility: isSelectedLanguage ? 'initial' : 'hidden' }} />
         </CustomMenuItem>
     );
 }

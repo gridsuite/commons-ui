@@ -18,6 +18,9 @@ export const topBarFr = {
     'top-bar/id': 'Id',
     'top-bar/name': 'Nom',
     'top-bar/language': 'Langue',
+    'top-bar/language/fr': 'Français',
+    'top-bar/language/en': 'English',
+    'top-bar/language/sys': 'Navigateur | Browser',
     'top-bar/developerModeWarning':
         'Mode développeur : Certaines fonctionnalités ne sont pas complètes et peuvent ne pas fonctionner comme prévu.',
     'top-bar/settings': 'Réglages',

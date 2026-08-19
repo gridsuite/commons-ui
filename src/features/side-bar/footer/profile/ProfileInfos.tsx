@@ -1,4 +1,4 @@
-import { Box, Divider, ListItemIcon, ListItemText, MenuItem } from '@mui/material';
+import { Box, Divider, MenuItem } from '@mui/material';
 import { Person } from '@mui/icons-material';
 import { UserProfile } from 'oidc-client-ts';
 
@@ -7,15 +7,15 @@ export function ProfileInfos({ userProfile }: Readonly<{ userProfile?: UserProfi
         <>
             <MenuItem
                 sx={{
-                    px: 2,
+                    px: 1.5,
                     '&.Mui-disabled': {
                         opacity: 1,
                     },
                 }}
                 disabled
             >
-                <Person fontSize="small" />
-                <Box component="span">
+                <Person />
+                <Box component="span" px={1}>
                     {userProfile?.name} <br />
                     <Box component="span">{userProfile?.email}</Box>
                 </Box>

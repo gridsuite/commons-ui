@@ -6,6 +6,7 @@ import { AboutDialog, GridSuiteModule } from '../topBar';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
+    isLoggedIn: boolean;
     appName: string;
     appLicense?: string;
     appVersion?: string;
@@ -15,6 +16,7 @@ interface AppSideBarHeaderProps {
 
 export function AppSidebarHeader({
     isMinimized,
+    isLoggedIn,
     appName,
     appLicense,
     appVersion,
@@ -60,9 +62,11 @@ export function AppSidebarHeader({
                     spacing={1}
                 >
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
-                    <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
-                        <Info fontSize="small" />
-                    </IconButton>
+                    {isLoggedIn && (
+                        <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
+                            <Info fontSize="small" />
+                        </IconButton>
+                    )}
                 </Stack>
                 <Divider />
             </Stack>

@@ -32,6 +32,7 @@ export function AppSidebarFooter({
     userProfile,
     onLogoutClick,
 }: Readonly<AppSidebarFooterProps>) {
+    const isUserLoggedIn = !!userProfile;
     return (
         <Stack sx={{ p: 1 }}>
             <MenuList
@@ -42,26 +43,30 @@ export function AppSidebarFooter({
                     },
                 }}
             >
-                <ApplicationMenu isMinimized={isMinimized} />
-                <ProfileMenu
-                    isMinimized={isMinimized}
-                    isDeveloperMode={isDeveloperMode}
-                    handleChangeDeveloperMode={handleChangeDeveloperMode}
-                    userProfile={userProfile}
-                />
-                <SettingsMenu
-                    isMinimized={isMinimized}
-                    currentTheme={currentTheme}
-                    setTheme={setTheme}
-                    selectedLanguage={selectedLanguage}
-                    setSelectedLanguage={setSelectedLanguage}
-                />
-                <SidebarMenuItem
-                    label="top-bar/logout"
-                    icon={<Logout />}
-                    onClick={onLogoutClick}
-                    showLabel={!isMinimized}
-                />
+                {isUserLoggedIn && (
+                    <>
+                        <ApplicationMenu isMinimized={isMinimized} />
+                        <ProfileMenu
+                            isMinimized={isMinimized}
+                            isDeveloperMode={isDeveloperMode}
+                            handleChangeDeveloperMode={handleChangeDeveloperMode}
+                            userProfile={userProfile}
+                        />
+                        <SettingsMenu
+                            isMinimized={isMinimized}
+                            currentTheme={currentTheme}
+                            setTheme={setTheme}
+                            selectedLanguage={selectedLanguage}
+                            setSelectedLanguage={setSelectedLanguage}
+                        />
+                        <SidebarMenuItem
+                            label="top-bar/logout"
+                            icon={<Logout />}
+                            onClick={onLogoutClick}
+                            showLabel={!isMinimized}
+                        />
+                    </>
+                )}
                 <Divider />
 
                 <SidebarMenuItem

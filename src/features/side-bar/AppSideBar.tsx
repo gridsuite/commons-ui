@@ -51,6 +51,7 @@ export function AppSideBar({
         >
             <AppSidebarHeader
                 isMinimized={isMinimized}
+                isLoggedIn={!!userProfile}
                 appName={appName}
                 additionalModulesPromise={additionalModulesPromise}
                 globalVersionPromise={globalVersionPromise}
