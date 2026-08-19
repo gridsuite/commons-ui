@@ -11,32 +11,36 @@ import { VscHvdcLineInfo } from '../vscHvdcLine.types';
 import { VscHdvLineCreationDto } from '../../creation/vscHvdcLineCreation.types';
 
 export const getVscHvdcLineCharacteristicsCreationSchema = () =>
-    object().shape({
-        [FieldConstants.NOMINAL_V]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
-        [FieldConstants.R]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
-        [FieldConstants.MAX_P]: number().nullable().required(),
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]: number().nullable(),
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: number().nullable(),
-        [FieldConstants.CONVERTERS_MODE]: string().required(),
-        [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: boolean(),
-        [FieldConstants.ACTIVE_POWER_SET_POINT]: number().nullable().required(),
-        [FieldConstants.P0]: number()
-            .nullable()
-            .default(null)
-            .when([FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL, FieldConstants.DROOP], {
-                is: (angleDroopActivePowerControl: boolean, droop: number) =>
-                    angleDroopActivePowerControl || (droop !== null && droop !== undefined),
-                then: (schema) => schema.required(),
-            }),
-        [FieldConstants.DROOP]: number()
-            .nullable()
-            .default(null)
-            .when([FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL, FieldConstants.P0], {
-                is: (angleDroopActivePowerControl: boolean, p0: number) =>
-                    angleDroopActivePowerControl || (p0 !== null && p0 !== undefined),
-                then: (schema) => schema.required(),
-            }),
-    });
+    object().shape(
+        {
+            [FieldConstants.NOMINAL_V]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
+            [FieldConstants.R]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO).required(),
+            [FieldConstants.MAX_P]: number().nullable().required(),
+            [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]: number().nullable(),
+            [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: number().nullable(),
+            [FieldConstants.CONVERTERS_MODE]: string().required(),
+            [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: boolean(),
+            [FieldConstants.ACTIVE_POWER_SET_POINT]: number().nullable().required(),
+            [FieldConstants.P0]: number()
+                .nullable()
+                .default(null)
+                .when([FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL, FieldConstants.DROOP], {
+                    is: (angleDroopActivePowerControl: boolean, droop: number) =>
+                        angleDroopActivePowerControl || (droop !== null && droop !== undefined),
+                    then: (schema) => schema.required(),
+                }),
+            [FieldConstants.DROOP]: number()
+                .nullable()
+                .default(null)
+                .when([FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL, FieldConstants.P0], {
+                    is: (angleDroopActivePowerControl: boolean, p0: number) =>
+                        angleDroopActivePowerControl || (p0 !== null && p0 !== undefined),
+                    then: (schema) => schema.required(),
+                }),
+        },
+        // p0 and droop are mutually dependent via when(), causing a cyclic dependency at runtime.
+        [[FieldConstants.P0, FieldConstants.DROOP]] // excludedEdges => skip during cycle detection
+    );
 
 export type VscHvdcLineCharacteristicsCreationFormData = InferType<
     ReturnType<typeof getVscHvdcLineCharacteristicsCreationSchema>
