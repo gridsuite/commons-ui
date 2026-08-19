@@ -30,7 +30,7 @@ import {
     getInjectionActiveReactivePowerEmptyFormDataProperties,
     getInjectionActiveReactivePowerValidationSchemaProperties,
 } from '../../../../common/measurements/injectionActiveReactivePowerForm.utils';
-import { ConverterStationCreationDto } from '../../creation';
+import { ConverterStationCreationDto } from '../../creation/vscHvdcLineCreation.types';
 import { ReactiveCapabilityCurvePoints } from '../../../../common';
 import { ConverterStationInfos } from '../vscHvdcLine.types';
 
