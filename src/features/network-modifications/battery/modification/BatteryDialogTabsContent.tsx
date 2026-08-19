@@ -19,6 +19,7 @@ import {
     PropertiesForm,
     ReactiveLimitsForm,
     ShortCircuitForm,
+    UpdateReactiveCapabilityCurveTable,
     VoltageRegulationForm,
 } from '../../common';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
@@ -27,7 +28,7 @@ import { ActivePowerAdornment, EquipmentType, Identifiable, ReactivePowerAdornme
 
 export interface BatteryDialogTabsContentProps extends ConnectivityNetworkProps {
     batteryToModify?: BatteryFormInfos | null;
-    updatePreviousReactiveCapabilityCurveTable: (action: string, index: number) => void;
+    updatePreviousReactiveCapabilityCurveTable: UpdateReactiveCapabilityCurveTable;
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     tabIndex: number;
 }

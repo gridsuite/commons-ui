@@ -334,6 +334,10 @@ export const networkModificationsFr = {
     StaticVarCompensatorAdditionalInfosTab: 'Compléments',
     b0: 'Susceptance fixe',
     fixQAtNominalV: 'Q fixe',
+    converterStation1: 'Station 1',
+    converterStation2: 'Station 2',
+    side1RectifierSide2Inverter: 'Flux (1->2)',
+    side1InverterSide2Rectifier: 'Flux (2->1)',
 
     // Tabs
     SubstationTab: 'Site',
@@ -345,6 +349,10 @@ export const networkModificationsFr = {
     StructureTab: 'Structure',
     AdditionalInformationTab: 'Compléments',
     StateEstimationTab: "Estimation d'état",
+    HvdcLineTab: 'Ligne HVDC',
+    ConverterStation1Tab: 'Station 1',
+    ConverterStation2Tab: 'Station 2',
+
     copyLink: 'Copier le lien',
     linkCopied: 'Lien copié',
     linkCopyError: 'Erreur lors de la copie du lien',

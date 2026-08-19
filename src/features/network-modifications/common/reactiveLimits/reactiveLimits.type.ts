@@ -19,3 +19,5 @@ export interface MinMaxReactiveLimitsFormInfos {
 export type ReactiveCapabilityCurve = ReactiveCapabilityCurveRow[] | null | undefined;
 
 export type ReactiveCapabilityCurveRow = { maxQ: number | null; minQ: number | null; p: number | null };
+
+export type UpdateReactiveCapabilityCurveTable = (action: string, index: number) => void;
