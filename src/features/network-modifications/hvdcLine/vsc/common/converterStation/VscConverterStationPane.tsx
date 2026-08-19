@@ -53,7 +53,7 @@ export function VscConverterStationPane({
         if (!voltageRegulationOnWatch) {
             trigger(`${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`);
         }
-    });
+    }, [voltageRegulationOnWatch, trigger, id]);
 
     const generatorIdField = isModification ? (
         <TextField
