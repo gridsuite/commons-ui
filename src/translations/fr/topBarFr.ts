@@ -11,6 +11,7 @@ export const topBarFr = {
     'top-bar/goFullScreen': 'Plein écran',
     'top-bar/exitFullScreen': 'Quitter mode plein écran',
     'top-bar/userInformation': 'Informations utilisateur',
+    'top-bar/myApps': 'Mes applications',
     'top-bar/about': 'À propos',
     'top-bar/displayMode': "Mode d'affichage",
     'top-bar/darkMode': 'Mode sombre',

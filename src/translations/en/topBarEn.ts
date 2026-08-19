@@ -11,6 +11,7 @@ export const topBarEn = {
     'top-bar/goFullScreen': 'Full screen',
     'top-bar/exitFullScreen': 'Exit full screen mode',
     'top-bar/userInformation': 'User information',
+    'top-bar/myApps': 'My apps',
     'top-bar/about': 'About',
     'top-bar/displayMode': 'Display mode',
     'top-bar/darkMode': 'Dark mode',
