@@ -404,7 +404,7 @@ export const networkModificationsEn = {
     copyLink: 'Copy link',
     linkCopied: 'Link copied',
     linkCopyError: 'Error while attempting to copy link',
-    // Voltage level topology creation
+    // Voltage level creation
     CreateVoltageLevelTopology: 'Adding a busbar',
     CreateVoltageLevelTopologyError: 'Error while creating a voltage level topology',
     CreateCouplingDeviceDiagramButton: 'Show voltage level',
@@ -417,4 +417,22 @@ export const networkModificationsEn = {
     CouplingDeviceText: 'Bus bar sections',
     CouplingDeviceBusBarSectionToolTipText:
         'If both bus bar sections have a different section number it creates an omnibus otherwise a coupling device',
+    // Voltage level section creation
+    CreateVoltageLevelSection: 'Add busbar section',
+    VoltageLevelSectionCreationError: 'Error while creating a section',
+    BusBarSectionsReference: 'Busbar reference section',
+    notValidVoltageLevel: 'Invalid voltage level to add busbar section. Please re-create the voltage level.',
+    SectionPosition: 'Position',
+    isAfterBusBarSectionId: 'New section side',
+    Switch: 'Switch',
+    newSection: 'New section',
+    switchesAfterSections: 'Switch after',
+    switchesBeforeSections: 'Switch before',
+    Busbar: 'Busbar',
+    Before: 'Before',
+    After: 'After',
+    allBusbarSections: 'All',
+    allOptionHelperText: 'Busbars have different sections (number or index)',
+    areSwitchesOpen: 'Open',
+    areSwitchesClosed: 'Closed',
 };
