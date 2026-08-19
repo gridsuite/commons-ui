@@ -21,7 +21,7 @@ export function SettingsMenu({
     setTheme,
     selectedLanguage,
     setSelectedLanguage,
-}: SettingsMenuProps) {
+}: Readonly<SettingsMenuProps>) {
     const intl = useIntl();
     const settingsLabel = intl.formatMessage({ id: 'top-bar/settings' });
     const availableLanguages: GsLang[] = ['sys', 'fr', 'en'];
@@ -34,7 +34,10 @@ export function SettingsMenu({
         >
             {isMinimized && <MinimizedSubMenuHeader label={settingsLabel} />}
             <DarkModeToggle currentTheme={currentTheme} setTheme={setTheme} />
-            <CustomNestedMenuItem label="Langue" sx={submenuFooterStyle.nestedSubMenu}>
+            <CustomNestedMenuItem
+                label={intl.formatMessage({ id: 'top-bar/language' })}
+                sx={submenuFooterStyle.nestedSubMenu}
+            >
                 {availableLanguages.map((language) => (
                     <LanguageSelection
                         language={language}

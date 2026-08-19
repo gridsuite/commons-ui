@@ -1,4 +1,3 @@
-import { CustomNestedMenuItem, UserInformationDialog, UserSettingsDialog } from '@gridsuite/commons-ui';
 import { Badge, ManageAccounts } from '@mui/icons-material';
 import { UserProfile } from 'oidc-client-ts';
 import { useState } from 'react';
@@ -8,6 +7,8 @@ import { ProfileInfos } from './ProfileInfos';
 import { UserAvatarIcon } from './UserIcon';
 import { SidebarMenuItem } from '../common/SideBarMenuItem';
 import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { CustomNestedMenuItem } from '../../../../components';
+import { UserInformationDialog, UserSettingsDialog } from '../../../topBar';
 
 interface ProfileMenuProps {
     isMinimized: boolean;

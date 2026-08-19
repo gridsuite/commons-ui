@@ -14,15 +14,11 @@ export function ProfileInfos({ userProfile }: Readonly<{ userProfile?: UserProfi
                 }}
                 disabled
             >
-                <ListItemIcon>
-                    <Person fontSize="small" />
-                </ListItemIcon>
-                <ListItemText>
-                    <Box component="span">
-                        {userProfile?.name} <br />
-                        <Box component="span">{userProfile?.email}</Box>
-                    </Box>
-                </ListItemText>
+                <Person fontSize="small" />
+                <Box component="span">
+                    {userProfile?.name} <br />
+                    <Box component="span">{userProfile?.email}</Box>
+                </Box>
             </MenuItem>
             <Divider />
         </>

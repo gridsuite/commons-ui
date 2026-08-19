@@ -1,9 +1,8 @@
 import { Box, Divider, Stack, Typography, IconButton } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import { AboutDialog } from '@gridsuite/commons-ui';
 import { useState } from 'react';
 import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
-import { GridSuiteModule } from '../topBar';
+import { AboutDialog, GridSuiteModule } from '../topBar';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;

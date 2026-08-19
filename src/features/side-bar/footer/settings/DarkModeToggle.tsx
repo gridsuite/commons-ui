@@ -1,8 +1,8 @@
-import { CustomMenuItem, DARK_THEME, LIGHT_THEME } from '@gridsuite/commons-ui';
 import { Stack, Switch } from '@mui/material';
 import { ChangeEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { GsTheme } from '../../../../utils';
+import { DARK_THEME, GsTheme, LIGHT_THEME } from '../../../../utils';
+import { CustomMenuItem } from '../../../../components';
 
 interface DarkModeToggleProps {
     currentTheme: GsTheme;

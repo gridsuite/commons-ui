@@ -1,7 +1,7 @@
-import { CustomMenuItem } from '@gridsuite/commons-ui';
 import { ListItemText } from '@mui/material';
 import { OpenInNew } from '@mui/icons-material';
 import { ElementType } from 'react';
+import { CustomMenuItem } from '../../../../components';
 
 interface OtherAppRedirectionProps {
     appName: string;
