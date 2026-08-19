@@ -21,7 +21,7 @@ import { ReactiveLimitsForm } from '../../../../common/reactiveLimits/ReactiveLi
 import { ConnectivityForm, ConnectivityNetworkProps } from '../../../../common/connectivity';
 import { FieldConstants, PercentageAdornment, ReactivePowerAdornment, VoltageAdornment } from '../../../../../../utils';
 import { UpdateReactiveCapabilityCurveTable } from '../../../../common/reactiveLimits/reactiveLimits.type';
-import { ConverterStationInfos } from '../index';
+import { ConverterStationInfos } from '../vscHvdcLine.types';
 
 interface VscConverterStationPaneProps extends ConnectivityNetworkProps {
     id: string;

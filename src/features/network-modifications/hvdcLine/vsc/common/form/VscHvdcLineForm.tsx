@@ -9,9 +9,9 @@ import { Box, Stack } from '@mui/material';
 import { VscHvdcLineDialogHeader, VscHvdcLineDialogHeaderProps } from './VscHvdcLineDialogHeader';
 import { VscHvdcLineDialogTabs } from './VscHvdcLineDialogTabs';
 import { VscHvdcLineDialogTabsContent, VscHvdcLineDialogTabsContentProps } from './VscHvdcLineDialogTabsContent';
-import { LINE_TAB_FIELDS, VscHvdcLineDialogTab } from './vscHvdcLine.utils';
-import { useTabsWithError } from '../../../hooks/useTabsWithError';
-import { UpdateReactiveCapabilityCurveTableConverterStation } from './converterStation';
+import { HVDC_LINE_TAB_FIELDS, VscHvdcLineDialogTab } from './vscHvdcLine.utils';
+import { useTabsWithError } from '../../../../hooks/useTabsWithError';
+import { UpdateReactiveCapabilityCurveTableConverterStation } from '../converterStation/vscConverterStationPane.utils';
 
 interface VscHvdcLineFormProps
     extends
@@ -29,7 +29,7 @@ export function VscHvdcLineForm({
     isModification = false,
 }: Readonly<VscHvdcLineFormProps>) {
     const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<VscHvdcLineDialogTab>(
-        LINE_TAB_FIELDS,
+        HVDC_LINE_TAB_FIELDS,
         VscHvdcLineDialogTab.HVDC_LINE_TAB
     );
 

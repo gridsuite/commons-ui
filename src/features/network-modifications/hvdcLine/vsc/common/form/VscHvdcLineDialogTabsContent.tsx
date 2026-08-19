@@ -7,14 +7,14 @@
 
 import { Box } from '@mui/material';
 import { VscHvdcLineDialogTab } from './vscHvdcLine.utils';
-import { VscHvdcLineInfo } from './vscHvdcLine.types';
-import { ConnectivityNetworkProps } from '../../../common/connectivity';
-import { GridSection } from '../../../../../components';
-import { PowerMeasurementsForm } from '../../../common/measurements';
-import { VscConverterStationPane } from './converterStation/VscConverterStationPane';
-import { FieldConstants } from '../../../../../utils';
-import { VscHvdcLinePane } from './line/VscHvdcLinePane';
-import { UpdateReactiveCapabilityCurveTableConverterStation } from './converterStation';
+import { VscHvdcLineInfo } from '../vscHvdcLine.types';
+import { ConnectivityNetworkProps } from '../../../../common/connectivity';
+import { GridSection } from '../../../../../../components';
+import { PowerMeasurementsForm } from '../../../../common/measurements';
+import { VscConverterStationPane } from '../converterStation/VscConverterStationPane';
+import { FieldConstants } from '../../../../../../utils';
+import { VscHvdcLineCharacteristicsPane } from '../characteristics/VscHvdcLineCharacteristicsPane';
+import { UpdateReactiveCapabilityCurveTableConverterStation } from '../converterStation';
 
 export interface VscHvdcLineDialogTabsContentProps extends ConnectivityNetworkProps {
     hvdcLineToModify?: VscHvdcLineInfo | null;
@@ -35,7 +35,7 @@ export function VscHvdcLineDialogTabsContent({
     return (
         <>
             <Box hidden={tabIndex !== VscHvdcLineDialogTab.HVDC_LINE_TAB}>
-                <VscHvdcLinePane hvdcLineToModify={hvdcLineToModify} isModification={isModification} />
+                <VscHvdcLineCharacteristicsPane hvdcLineToModify={hvdcLineToModify} isModification={isModification} />
             </Box>
             <Box hidden={tabIndex !== VscHvdcLineDialogTab.CONVERTER_STATION_1_TAB}>
                 <VscConverterStationPane

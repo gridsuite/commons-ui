@@ -7,10 +7,10 @@
 
 import { Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { FieldConstants } from '../../../../../utils';
-import { filledTextField } from '../../../common';
-import { GridItem, TextInput } from '../../../../../components';
-import { VscHvdcLineInfo } from './vscHvdcLine.types';
+import { FieldConstants } from '../../../../../../utils';
+import { filledTextField } from '../../../../common';
+import { GridItem, TextInput } from '../../../../../../components';
+import { VscHvdcLineInfo } from '../vscHvdcLine.types';
 
 export interface VscHvdcLineDialogHeaderProps {
     hvdcLineToModify?: VscHvdcLineInfo | null;

@@ -9,7 +9,7 @@ import React from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { VscHvdcLineDialogTab } from './vscHvdcLine.utils';
-import { getTabIndicatorStyle, getTabStyle } from '../../../../parameters';
+import { getTabIndicatorStyle, getTabStyle } from '../../../../../parameters';
 
 interface VscHvdcLineDialogTabsProps {
     tabIndex: number;

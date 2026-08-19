@@ -6,22 +6,24 @@
  */
 
 import { InferType, object, string } from 'yup';
-import { VscHdvLineCreationDto } from './vscHvdcLineCreation.types';
 import { DeepNullable, FieldConstants, ModificationType, sanitizeString } from '../../../../../utils';
 import {
     creationPropertiesSchema,
     getFilledPropertiesFromModification,
     toModificationProperties,
-} from '../../../common/properties';
+} from '../../../common/properties/';
+import {
+    getVscHvdcLineCharacteristicsCreationSchema,
+    getVscHvdcLineCharacteristicsDtoToForm,
+    getVscHvdcLineCharacteristicsEmptyFormData,
+} from '../common/characteristics/vscHvdcLineCharacteristicsPane.utils';
 import {
     converterStationCreationDtoToForm,
     converterStationCreationFormToDto,
     getVscConverterStationCreationSchema,
     getVscConverterStationEmptyFormData,
-    getVscHvdcLineCharacteristicsCreationSchema,
-    getVscHvdcLineCharacteristicsDtoToForm,
-    getVscHvdcLineCharacteristicsEmptyFormData,
-} from '../common';
+} from '../common/converterStation/vscConverterStationPane.utils';
+import { VscHdvLineCreationDto } from './vscHvdcLineCreation.types';
 
 export const vscHvdcLineCreationFormSchema = () =>
     object()

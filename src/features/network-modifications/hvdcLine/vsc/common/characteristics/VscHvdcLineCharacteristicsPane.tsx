@@ -21,17 +21,17 @@ import {
 } from '../../../../../../components';
 import { PropertiesForm } from '../../../../common/properties';
 
-interface VscHvdcLinePaneProps {
+interface VscHvdcLineCharacteristicsPaneProps {
     id?: string;
     isModification: boolean;
     hvdcLineToModify?: VscHvdcLineInfo | null;
 }
 
-export function VscHvdcLinePane({
+export function VscHvdcLineCharacteristicsPane({
     id = FieldConstants.HVDC_LINE,
     isModification = false,
     hvdcLineToModify,
-}: Readonly<VscHvdcLinePaneProps>) {
+}: Readonly<VscHvdcLineCharacteristicsPaneProps>) {
     const intl = useIntl();
     const { trigger } = useFormContext();
 
@@ -102,6 +102,7 @@ export function VscHvdcLinePane({
                 id: VSC_CONVERTER_MODE.SIDE_1_RECTIFIER_SIDE_2_INVERTER.label,
             });
         }
+        return undefined;
     };
 
     const converterModeField = (

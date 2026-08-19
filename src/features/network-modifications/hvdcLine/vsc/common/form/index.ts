@@ -5,4 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './vscHvdcLineCreation.types';
+export * from './vscHvdcLine.utils';
+export * from './VscHvdcLineDialogTabs';
+export * from './VscHvdcLineDialogTabsContent';
+export * from './VscHvdcLineDialogHeader';
+export * from './VscHvdcLineForm';
