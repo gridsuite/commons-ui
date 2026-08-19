@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { AppSidebarHeader } from './AppSidebarHeader';
 import { AppSidebarFooter } from './footer/AppSidebarFooter';
 import { GridSuiteModule } from '../topBar';
-import { GsLang, GsTheme } from '../../utils';
+import { GsLang, GsTheme, Metadata } from '../../utils';
 
 type SidebarProps = {
     isDeveloperMode: boolean;
@@ -14,6 +14,7 @@ type SidebarProps = {
     selectedLanguage: GsLang;
     setSelectedLanguage: (newSelectedLanguage: GsLang) => Promise<void>;
     userProfile?: UserProfile;
+    appsAndUrls: Metadata[];
     onLogoutClick?: () => void;
     appName: string;
     appLicense?: string;
@@ -30,6 +31,7 @@ export function AppSideBar({
     selectedLanguage,
     setSelectedLanguage,
     userProfile,
+    appsAndUrls,
     appName,
     appLicense,
     appVersion,
@@ -75,6 +77,7 @@ export function AppSideBar({
                 isDeveloperMode={isDeveloperMode}
                 handleChangeDeveloperMode={handleChangeDeveloperMode}
                 userProfile={userProfile}
+                appsAndUrls={appsAndUrls}
                 onLogoutClick={onLogoutClick}
             />
         </Stack>

@@ -1,4 +1,4 @@
-import { Box, Divider, Stack, Typography, IconButton } from '@mui/material';
+import { Box, Divider, Stack, Typography, IconButton, Tooltip } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import { useState } from 'react';
 import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
@@ -51,23 +51,28 @@ export function AppSidebarHeader({
                     )}
                 </Stack>
 
-                <Stack
-                    width="100%"
-                    direction="row"
-                    sx={{
-                        alignSelf: 'flex-end',
-                    }}
-                    alignItems="center"
-                    justifyContent={isMinimized ? 'center' : 'end'}
-                    spacing={1}
-                >
-                    {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
-                    {isLoggedIn && (
-                        <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
-                            <Info fontSize="small" />
-                        </IconButton>
-                    )}
-                </Stack>
+                {isLoggedIn && (
+                    <Stack
+                        width="100%"
+                        direction="row"
+                        sx={{
+                            alignSelf: 'flex-end',
+                        }}
+                        alignItems="center"
+                        justifyContent={isMinimized ? 'center' : 'end'}
+                        spacing={1}
+                    >
+                        <>
+                            {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
+                            <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
+                                <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
+                                    <Info fontSize="small" />
+                                </IconButton>
+                            </Tooltip>
+                        </>
+                    </Stack>
+                )}
+
                 <Divider />
             </Stack>
             <AboutDialog

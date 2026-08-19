@@ -1,11 +1,14 @@
 import { Apps } from '@mui/icons-material';
-import GridexploreLogo from 'assets/images/gridexplore_logo.svg?react';
 import { OtherAppRedirection } from './OtherAppRedirection';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { submenuFooterStyle } from '../common/submenu-footer-style';
 import { CustomNestedMenuItem } from '../../../../components';
+import { Metadata } from '../../../../utils';
 
-export function ApplicationMenu({ isMinimized }: Readonly<{ isMinimized: boolean }>) {
+export function ApplicationMenu({
+    isMinimized,
+    appsAndUrls,
+}: Readonly<{ isMinimized: boolean; appsAndUrls: Metadata[] }>) {
     const applicationLabel = 'Mes applications';
     return (
         <CustomNestedMenuItem
@@ -14,7 +17,12 @@ export function ApplicationMenu({ isMinimized }: Readonly<{ isMinimized: boolean
             sx={submenuFooterStyle.subMenu}
         >
             {isMinimized && <MinimizedSubMenuHeader label={applicationLabel} />}
-            <OtherAppRedirection AppLogo={GridexploreLogo} appName="GridExplore" />
+
+            {appsAndUrls
+                ?.filter((item) => !item.hiddenInAppsMenu)
+                .map((item) => (
+                    <OtherAppRedirection key={item.name} app={item} />
+                ))}
         </CustomNestedMenuItem>
     );
 }

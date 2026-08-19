@@ -5,7 +5,7 @@ import { ApplicationMenu } from './applications/ApplicationMenu';
 import { SidebarMenuItem } from './common/SideBarMenuItem';
 import { ProfileMenu } from './profile/ProfileMenu';
 import { SettingsMenu } from './settings/SettingsMenu';
-import { GsLang, GsTheme } from '../../../utils';
+import { GsLang, GsTheme, Metadata } from '../../../utils';
 
 export interface AppSidebarFooterProps {
     isMinimized: boolean;
@@ -17,6 +17,7 @@ export interface AppSidebarFooterProps {
     selectedLanguage: GsLang;
     setSelectedLanguage: (newSelectedLanguage: GsLang) => Promise<void>;
     userProfile?: UserProfile;
+    appsAndUrls: Metadata[];
     onLogoutClick?: () => void;
 }
 
@@ -30,6 +31,7 @@ export function AppSidebarFooter({
     selectedLanguage,
     setSelectedLanguage,
     userProfile,
+    appsAndUrls,
     onLogoutClick,
 }: Readonly<AppSidebarFooterProps>) {
     const isUserLoggedIn = !!userProfile;
@@ -45,7 +47,7 @@ export function AppSidebarFooter({
             >
                 {isUserLoggedIn && (
                     <>
-                        <ApplicationMenu isMinimized={isMinimized} />
+                        <ApplicationMenu isMinimized={isMinimized} appsAndUrls={appsAndUrls} />
                         <ProfileMenu
                             isMinimized={isMinimized}
                             isDeveloperMode={isDeveloperMode}
