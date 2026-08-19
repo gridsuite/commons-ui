@@ -50,7 +50,7 @@ export function VscHvdcLinePane({
         <FloatInput
             name={`${id}.${FieldConstants.NOMINAL_V}`}
             adornment={VoltageAdornment}
-            label={'dcNominalVoltageLabel'}
+            label="dcNominalVoltageLabel"
             previousValue={hvdcLineToModify?.nominalV}
         />
     );
@@ -59,7 +59,7 @@ export function VscHvdcLinePane({
         <FloatInput
             name={`${id}.${FieldConstants.R}`}
             adornment={OhmAdornment}
-            label={'dcResistanceLabel'}
+            label="dcResistanceLabel"
             previousValue={hvdcLineToModify?.r}
         />
     );
@@ -68,7 +68,7 @@ export function VscHvdcLinePane({
         <FloatInput
             name={`${id}.${FieldConstants.MAX_P}`}
             adornment={ActivePowerAdornment}
-            label={'MaximumActivePowerText'}
+            label="MaximumActivePowerText"
             previousValue={hvdcLineToModify?.maxP}
         />
     );
@@ -77,7 +77,7 @@ export function VscHvdcLinePane({
         <FloatInput
             name={`${id}.${FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1}`}
             adornment={ActivePowerAdornment}
-            label={'operatorActivePowerLimitSide1Label'}
+            label="operatorActivePowerLimitSide1Label"
             previousValue={hvdcLineToModify?.hvdcOperatorActivePowerRange?.oprFromCS1toCS2}
         />
     );
@@ -86,7 +86,7 @@ export function VscHvdcLinePane({
         <FloatInput
             name={`${id}.${FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2}`}
             adornment={ActivePowerAdornment}
-            label={'operatorActivePowerLimitSide2Label'}
+            label="operatorActivePowerLimitSide2Label"
             previousValue={hvdcLineToModify?.hvdcOperatorActivePowerRange?.oprFromCS2toCS1}
         />
     );
@@ -96,7 +96,8 @@ export function VscHvdcLinePane({
             return intl.formatMessage({
                 id: VSC_CONVERTER_MODE.SIDE_1_INVERTER_SIDE_2_RECTIFIER.label,
             });
-        } else if (hvdcLineToModify?.convertersMode === VSC_CONVERTER_MODE.SIDE_1_RECTIFIER_SIDE_2_INVERTER.id) {
+        }
+        if (hvdcLineToModify?.convertersMode === VSC_CONVERTER_MODE.SIDE_1_RECTIFIER_SIDE_2_INVERTER.id) {
             return intl.formatMessage({
                 id: VSC_CONVERTER_MODE.SIDE_1_RECTIFIER_SIDE_2_INVERTER.label,
             });
@@ -106,9 +107,9 @@ export function VscHvdcLinePane({
     const converterModeField = (
         <SelectInput
             name={`${id}.${FieldConstants.CONVERTERS_MODE}`}
-            label={'converterModeLabel'}
+            label="converterModeLabel"
             options={Object.values(VSC_CONVERTER_MODE)}
-            size={'small'}
+            size="small"
             disableClearable
             previousValue={previousConverterMode()}
         />
@@ -117,7 +118,7 @@ export function VscHvdcLinePane({
     const activePowerField = (
         <FloatInput
             name={`${id}.${FieldConstants.ACTIVE_POWER_SET_POINT}`}
-            label={'ActivePowerText'}
+            label="ActivePowerText"
             adornment={ActivePowerAdornment}
             previousValue={hvdcLineToModify?.activePowerSetpoint}
         />
@@ -136,18 +137,17 @@ export function VscHvdcLinePane({
             return (
                 <CheckboxNullableInput
                     name={`${id}.${FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL}`}
-                    label={'angleDroopActivePowerControlLabel'}
+                    label="angleDroopActivePowerControlLabel"
                     previousValue={previousAngleDropPowerControl()}
                 />
             );
-        } else {
-            return (
-                <SwitchInput
-                    name={`${id}.${FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL}`}
-                    label={'angleDroopActivePowerControlLabel'}
-                />
-            );
         }
+        return (
+            <SwitchInput
+                name={`${id}.${FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL}`}
+                label="angleDroopActivePowerControlLabel"
+            />
+        );
     }
 
     const AngleDroopActivePowerControl = getAngleDroopActivePowerControlField();
@@ -155,7 +155,7 @@ export function VscHvdcLinePane({
     const p0Field = (
         <FloatInput
             name={`${id}.${FieldConstants.P0}`}
-            label={'p0Label'}
+            label="p0Label"
             adornment={ActivePowerAdornment}
             previousValue={hvdcLineToModify?.hvdcAngleDroopActivePowerControl?.p0}
         />
@@ -164,7 +164,7 @@ export function VscHvdcLinePane({
     const droopField = (
         <FloatInput
             name={`${id}.${FieldConstants.DROOP}`}
-            label={'droopLabel'}
+            label="droopLabel"
             previousValue={hvdcLineToModify?.hvdcAngleDroopActivePowerControl?.droop}
         />
     );
@@ -177,12 +177,12 @@ export function VscHvdcLinePane({
                 <GridItem>{dcResistanceField}</GridItem>
                 <GridItem>{maximumActivePowerField}</GridItem>
             </Grid>
-            <GridSection title={'Limits'} />
+            <GridSection title="Limits" />
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <GridItem>{operatorActivePowerLimitSide1Field}</GridItem>
                 <GridItem>{operatorActivePowerLimitSide2Field}</GridItem>
             </Grid>
-            <GridSection title={'Setpoints'} />
+            <GridSection title="Setpoints" />
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <GridItem>{converterModeField}</GridItem>
                 <GridItem>{activePowerField}</GridItem>

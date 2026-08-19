@@ -40,7 +40,7 @@ export function VscHvdcLineDialogTabsContent({
             <Box hidden={tabIndex !== VscHvdcLineDialogTab.CONVERTER_STATION_1_TAB}>
                 <VscConverterStationPane
                     id={FieldConstants.CONVERTER_STATION_1}
-                    stationLabel={'converterStation1'}
+                    stationLabel="converterStation1"
                     stationToModify={hvdcLineToModify?.converterStation1}
                     isModification={isModification}
                     voltageLevelOptions={voltageLevelOptions}
@@ -58,7 +58,7 @@ export function VscHvdcLineDialogTabsContent({
             <Box hidden={tabIndex !== VscHvdcLineDialogTab.CONVERTER_STATION_2_TAB}>
                 <VscConverterStationPane
                     id={FieldConstants.CONVERTER_STATION_2}
-                    stationLabel={'converterStation2'}
+                    stationLabel="converterStation2"
                     stationToModify={hvdcLineToModify?.converterStation2}
                     isModification={isModification}
                     voltageLevelOptions={voltageLevelOptions}
@@ -76,13 +76,13 @@ export function VscHvdcLineDialogTabsContent({
             {isModification && (
                 <Box hidden={tabIndex !== VscHvdcLineDialogTab.STATE_ESTIMATION_TAB}>
                     <GridSection title="MeasurementsSection" />
-                    <GridSection title={'converterStation1'} />
+                    <GridSection title="converterStation1" />
                     <PowerMeasurementsForm
                         activePowerMeasurement={hvdcLineToModify?.converterStation1?.measurementP}
                         reactivePowerMeasurement={hvdcLineToModify?.converterStation1?.measurementQ}
                         idPrefix={FieldConstants.CONVERTER_STATION_1}
                     />
-                    <GridSection title={'converterStation2'} />
+                    <GridSection title="converterStation2" />
                     <PowerMeasurementsForm
                         activePowerMeasurement={hvdcLineToModify?.converterStation2?.measurementP}
                         reactivePowerMeasurement={hvdcLineToModify?.converterStation2?.measurementQ}

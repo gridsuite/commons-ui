@@ -59,7 +59,7 @@ export function VscConverterStationPane({
         <TextField
             size="small"
             fullWidth
-            label={'ID'}
+            label="ID"
             value={stationToModify?.id}
             disabled
             slotProps={{
@@ -69,13 +69,13 @@ export function VscConverterStationPane({
             }}
         />
     ) : (
-        <TextInput name={`${id}.${FieldConstants.CONVERTER_STATION_ID}`} label={'converterStationId'} />
+        <TextInput name={`${id}.${FieldConstants.CONVERTER_STATION_ID}`} label="converterStationId" />
     );
 
     const generatorNameField = (
         <TextInput
             name={`${id}.${FieldConstants.CONVERTER_STATION_NAME}`}
-            label={'converterStationName'}
+            label="converterStationName"
             previousValue={stationToModify?.name ?? ''}
         />
     );
@@ -99,7 +99,7 @@ export function VscConverterStationPane({
     const lossFactorField = (
         <FloatInput
             name={`${id}.${FieldConstants.LOSS_FACTOR}`}
-            label={'lossFactorLabel'}
+            label="lossFactorLabel"
             adornment={PercentageAdornment}
             previousValue={stationToModify?.lossFactor}
         />
@@ -109,7 +109,7 @@ export function VscConverterStationPane({
         <FloatInput
             name={`${id}.${FieldConstants.REACTIVE_POWER}`}
             adornment={ReactivePowerAdornment}
-            label={'ReactivePowerText'}
+            label="ReactivePowerText"
             previousValue={stationToModify?.reactivePowerSetpoint ?? undefined}
         />
     );
@@ -122,20 +122,20 @@ export function VscConverterStationPane({
     const voltageRegulation = isModification ? (
         <CheckboxNullableInput
             name={`${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`}
-            label={'VoltageRegulationText'}
+            label="VoltageRegulationText"
             previousValue={previousVoltageRegulatorOn()}
             id={undefined}
             formProps={undefined}
         />
     ) : (
-        <SwitchInput name={`${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`} label={'VoltageRegulationText'} />
+        <SwitchInput name={`${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`} label="VoltageRegulationText" />
     );
 
     const voltageField = (
         <FloatInput
             name={`${id}.${FieldConstants.VOLTAGE}`}
             adornment={VoltageAdornment}
-            label={'VoltageText'}
+            label="VoltageText"
             previousValue={stationToModify?.voltageSetpoint || undefined}
         />
     );
@@ -150,7 +150,7 @@ export function VscConverterStationPane({
 
             {!isModification && (
                 <>
-                    <GridSection title={'Connectivity'} />
+                    <GridSection title="Connectivity" />
                     <Grid container spacing={2}>
                         <GridItem size={12}>{connectivityForm}</GridItem>
                     </Grid>
@@ -170,7 +170,7 @@ export function VscConverterStationPane({
                 updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTableConverterStation}
             />
 
-            <GridSection title={'Setpoints'} />
+            <GridSection title="Setpoints" />
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <GridItem size={4}>{reactivePowerField}</GridItem>
             </Grid>

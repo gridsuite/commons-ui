@@ -177,7 +177,7 @@ export function converterStationCreationFromCopy(
     converterStation?: ConverterStationInfos
 ): VscConverterStationCreationFormData {
     return {
-        [FieldConstants.CONVERTER_STATION_ID]: converterStation?.id + '(1)',
+        [FieldConstants.CONVERTER_STATION_ID]: `${converterStation?.id}(1)`,
         [FieldConstants.CONVERTER_STATION_NAME]: converterStation?.name ?? '',
         [FieldConstants.LOSS_FACTOR]: converterStation?.lossFactor ?? 0,
         [FieldConstants.REACTIVE_POWER]: converterStation?.reactivePowerSetpoint ?? null,
