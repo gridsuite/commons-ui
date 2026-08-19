@@ -37,6 +37,7 @@ import { getRows, MuiStyles, RunningStatus, unitToKiloUnit } from '../../../util
 import { getNoRowsMessage } from '../utils';
 import { AGGRID_LOCALES } from '../../../translations/not-intl/aggrid-locales';
 import { useIntlResultStatusMessages } from '../hooks';
+import { createMultiEnumFilterParams } from '../common/utils';
 
 export const SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE = 'shortcircuitAnalysisResult';
 
@@ -214,8 +215,6 @@ export function ShortCircuitAnalysisResultTable({
                 },
             };
         };
-
-        const createMultiEnumFilterParams = {};
 
         return [
             {

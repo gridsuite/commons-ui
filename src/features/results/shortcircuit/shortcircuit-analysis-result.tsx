@@ -31,7 +31,7 @@ import {
 import { useOpenLoaderShortWait, useSnackMessage } from '../../../hooks';
 import { ComputingType, RunningStatus, snackWithFallback } from '../../../utils';
 import { CustomTablePagination, PaginationConfig, SortConfig } from '../../../components';
-import { PAGE_OPTIONS } from '../common/utils';
+import { RESULT_PAGE_OPTIONS } from '../common/utils';
 import { GlobalFilters } from '../../global-filter';
 
 export type FetchPagedResultsParams = {
@@ -43,7 +43,7 @@ export type FetchPagedResultsParams = {
         page: number;
         size: number;
         filter: ShortcircuitFilterConfig[] | null;
-        sort: SortConfig[] | null | undefined;
+        sort: SortConfig[] | undefined;
     };
     globalFilters?: GlobalFilters;
 };
@@ -294,7 +294,7 @@ export function ShortCircuitAnalysisResult({
                 onVoltageLevelClick={onVoltageLevelClick}
             />
             <CustomTablePagination
-                rowsPerPageOptions={PAGE_OPTIONS}
+                rowsPerPageOptions={RESULT_PAGE_OPTIONS}
                 count={count}
                 rowsPerPage={rowsPerPage}
                 page={page}

@@ -26,7 +26,7 @@ import {
     mapNmKResultsCutOffPower,
 } from './utils';
 import { getNoRowsMessage } from '../utils';
-import { PAGE_OPTIONS } from '../common/utils';
+import { RESULT_PAGE_OPTIONS } from '../common/utils';
 
 const styles = {
     container: {
@@ -108,7 +108,7 @@ export function SecurityAnalysisResultNmk({
                 />
             </Box>
             <Box>
-                <CustomTablePagination rowsPerPageOptions={PAGE_OPTIONS} {...paginationProps} />
+                <CustomTablePagination rowsPerPageOptions={RESULT_PAGE_OPTIONS} {...paginationProps} />
             </Box>
         </Box>
     );

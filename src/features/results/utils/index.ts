@@ -6,4 +6,3 @@
  */
 
 export * from './no-rows-message';
-export * from './page-and-sort';
