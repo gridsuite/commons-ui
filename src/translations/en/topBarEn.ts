@@ -21,7 +21,7 @@ export const topBarEn = {
     'top-bar/language': 'Language',
     'top-bar/language/fr': 'Français',
     'top-bar/language/en': 'English',
-    'top-bar/language/sys': 'Navigateur | Browser',
+    'top-bar/language/sys': 'Browser',
     'top-bar/developerModeWarning': 'Developer mode: Some features are incomplete and may not work as expected.',
     'top-bar/settings': 'Settings',
     'top-bar/minimize': 'Minimize',

@@ -59,27 +59,27 @@ export function AppSidebarHeader({
                     )}
                 </Stack>
 
-                {isLoggedIn && (
-                    <Stack
-                        width="100%"
-                        direction="row"
-                        sx={{
-                            alignSelf: 'flex-end',
-                        }}
-                        alignItems="center"
-                        justifyContent={isMinimized ? 'center' : 'end'}
-                        spacing={1}
-                    >
-                        <>
-                            {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
-                            <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
-                                <IconButton sx={{ paddingX: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
-                                    <Info fontSize="small" />
-                                </IconButton>
-                            </Tooltip>
-                        </>
-                    </Stack>
-                )}
+                <Stack
+                    width="100%"
+                    direction="row"
+                    sx={{
+                        alignSelf: 'flex-end',
+                        marginY: 1,
+                        visibility: isLoggedIn ? 'inherit' : 'hidden',
+                    }}
+                    alignItems="center"
+                    justifyContent={isMinimized ? 'center' : 'end'}
+                    spacing={1}
+                >
+                    <>
+                        {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
+                        <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
+                            <IconButton sx={{ padding: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
+                                <Info fontSize="small" color="disabled" />
+                            </IconButton>
+                        </Tooltip>
+                    </>
+                </Stack>
 
                 <Divider />
             </Stack>
