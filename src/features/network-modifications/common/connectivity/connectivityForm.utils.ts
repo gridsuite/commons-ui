@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { bool, number, object, string } from 'yup';
+import { bool, InferType, number, object, string } from 'yup';
 import { VoltageLevelFormInfos } from '../../voltageLevel/voltage-level.type';
 import { FieldConstants, YUP_REQUIRED } from '../../../../utils';
 
@@ -92,6 +92,8 @@ export const getBranchConnectivityWithPositionSchema = (
             displayConnectivity
         ),
     });
+
+export type BranchConnectivityFormData = InferType<ReturnType<typeof getBranchConnectivityWithPositionSchema>>;
 
 export const getCon1andCon2WithPositionValidationSchema = (
     isEquipmentModification = false,
