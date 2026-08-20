@@ -9,6 +9,7 @@ import { GsLang, GsTheme, Metadata } from '../../../utils';
 
 export interface AppSidebarFooterProps {
     isMinimized: boolean;
+    isSmallScreen: boolean;
     toggleSideBarMinimized: () => void;
     isDeveloperMode: boolean;
     handleChangeDeveloperMode: (newValue: boolean) => void;
@@ -23,6 +24,7 @@ export interface AppSidebarFooterProps {
 
 export function AppSidebarFooter({
     isMinimized,
+    isSmallScreen,
     toggleSideBarMinimized,
     isDeveloperMode,
     handleChangeDeveloperMode,
@@ -76,6 +78,7 @@ export function AppSidebarFooter({
                     icon={isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
                     onClick={toggleSideBarMinimized}
                     showLabel={!isMinimized}
+                    disabled={isSmallScreen}
                 />
             </MenuList>
         </Stack>

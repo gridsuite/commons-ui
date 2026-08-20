@@ -1,12 +1,12 @@
 import { DisplaySettings } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
+import { Box, Typography } from '@mui/material';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { DarkModeToggle } from './DarkModeToggle';
 import { LanguageSelection } from './LanguageSelection';
 import { submenuFooterStyle } from '../common/submenu-footer-style';
 import { GsLang, GsTheme } from '../../../../utils';
 import { CustomNestedMenuItem } from '../../../../components';
-import { Box, Typography } from '@mui/material';
 
 interface SettingsMenuProps {
     isMinimized: boolean;

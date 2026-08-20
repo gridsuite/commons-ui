@@ -1,6 +1,6 @@
-import { Box, Stack } from '@mui/material';
+import { Box, Breakpoint, Stack, Theme, useMediaQuery } from '@mui/material';
 import { UserProfile } from 'oidc-client-ts';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AppSidebarHeader } from './AppSidebarHeader';
 import { AppSidebarFooter } from './footer/AppSidebarFooter';
 import { GridSuiteModule } from '../topBar';
@@ -8,6 +8,7 @@ import { GsLang, GsTheme, Metadata } from '../../utils';
 
 type SidebarProps = {
     isDeveloperMode: boolean;
+    smallScreenBreakpoint: number | Breakpoint;
     handleChangeDeveloperMode: (newValue: boolean) => void;
     currentTheme: GsTheme;
     setTheme: (newTheme: GsTheme) => Promise<void>;
@@ -25,6 +26,7 @@ type SidebarProps = {
 
 export function AppSideBar({
     isDeveloperMode,
+    smallScreenBreakpoint,
     handleChangeDeveloperMode,
     currentTheme,
     setTheme,
@@ -43,6 +45,15 @@ export function AppSideBar({
     const toggleSideBarMinimized = (): void => {
         setIsMinimized((previousIsSideBarMinimized) => !previousIsSideBarMinimized);
     };
+
+    const isSmallScreen = useMediaQuery((theme: Theme) => theme.breakpoints.down(smallScreenBreakpoint));
+
+    useEffect(() => {
+        if (isSmallScreen) {
+            setIsMinimized(true);
+        }
+    }, [isSmallScreen]);
+
     return (
         <Stack
             component="aside"
@@ -69,6 +80,7 @@ export function AppSideBar({
 
             <AppSidebarFooter
                 isMinimized={isMinimized}
+                isSmallScreen={isSmallScreen}
                 toggleSideBarMinimized={toggleSideBarMinimized}
                 currentTheme={currentTheme}
                 setTheme={setTheme}

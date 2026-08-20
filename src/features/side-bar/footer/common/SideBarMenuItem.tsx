@@ -9,12 +9,19 @@ interface SidebarMenuItemProps {
     icon?: ReactNode;
     onClick?: () => void;
     showLabel?: boolean;
+    disabled?: boolean;
 }
 
-export function SidebarMenuItem({ label, icon, onClick, showLabel = true }: Readonly<SidebarMenuItemProps>) {
+export function SidebarMenuItem({
+    label,
+    icon,
+    onClick,
+    showLabel = true,
+    disabled = false,
+}: Readonly<SidebarMenuItemProps>) {
     const intl = useIntl();
     return (
-        <CustomMenuItem onClick={onClick} sx={submenuFooterStyle.subMenu}>
+        <CustomMenuItem disabled={disabled} onClick={onClick} sx={submenuFooterStyle.subMenu}>
             {icon} {showLabel && <Typography px={1}>{intl.formatMessage({ id: label })}</Typography>}
         </CustomMenuItem>
     );
