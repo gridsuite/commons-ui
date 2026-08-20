@@ -9,3 +9,4 @@ export * from './creation';
 export * from './voltage-level.type';
 export * from './modification';
 export * from './topology';
+export * from './section';

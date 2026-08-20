@@ -29,6 +29,10 @@ export interface ExpandableInputProps {
     watchProps?: boolean;
     disabled?: boolean;
     disabledDeletion?: (idx: number) => boolean;
+    // when set, every row gets this data-testid
+    rowDataTestId?: string;
+    // when set, overrides the data-testid of the add button
+    addButtonDataTestId?: string;
 }
 
 // This component is used to display Array of objects.
@@ -50,6 +54,8 @@ export const ExpandableInput = forwardRef(
             watchProps = true,
             disabled = false,
             disabledDeletion,
+            rowDataTestId,
+            addButtonDataTestId,
         }: Readonly<ExpandableInputProps>,
         ref
     ) => {
@@ -89,13 +95,19 @@ export const ExpandableInput = forwardRef(
                             }}
                             deletionMark={getDeletionMark?.(idx)}
                             disabledDeletion={disabledDeletion?.(idx)}
+                            dataTestId={rowDataTestId}
                         >
                             <Field name={name} index={idx} {...fieldProps} />
                         </DeletableRow>
                     ))}
                 {addButtonLabel && (
                     <Grid>
-                        <AddButton disabled={disabled} onClick={() => append(initialValue)} label={addButtonLabel} />
+                        <AddButton
+                            disabled={disabled}
+                            onClick={() => append(initialValue)}
+                            label={addButtonLabel}
+                            data-testid={addButtonDataTestId}
+                        />
                     </Grid>
                 )}
             </Grid>

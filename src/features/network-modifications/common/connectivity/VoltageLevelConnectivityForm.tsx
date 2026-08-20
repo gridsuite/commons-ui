@@ -133,6 +133,7 @@ export function VoltageLevelConnectivityForm({
                     options={vlOptions}
                     getOptionLabel={getObjectId}
                     size="small"
+                    dataTestId="VoltageLevelInput"
                 />
             </Grid>
             <Grid size="grow">
@@ -156,6 +157,7 @@ export function VoltageLevelConnectivityForm({
                         return value;
                     }}
                     size="small"
+                    dataTestId="BusBarSectionInput"
                 />
             </Grid>
         </Grid>
