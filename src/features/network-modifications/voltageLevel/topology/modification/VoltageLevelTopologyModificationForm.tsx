@@ -7,6 +7,7 @@
 
 import React, { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import { PublishedWithChanges } from '@mui/icons-material';
 import { CustomAGGrid, SeparatorCellRenderer, useCustomFormContext } from '../../../../../components';
@@ -14,21 +15,28 @@ import { HeaderWithTooltip } from './HeaderWithTooltip';
 import { ConnectionCellRenderer } from './ConnectionCellRender';
 import { filledTextField } from '../../../common';
 import { CURRENT_CONNECTION_STATUS, PREV_CONNECTION_STATUS, SWITCH_ID, TOPOLOGY_MODIFICATION_TABLE } from './constants';
-import { SwitchRowForm } from './voltageLevelTopologyModification.types';
+import {
+    SwitchDto,
+    SwitchRowForm,
+    TopologyVoltageLevelModificationDto,
+} from './voltageLevelTopologyModification.types';
+import { FieldConstants } from '../../../../../utils';
 
 interface VoltageLevelTopologyModificationFormProps {
-    selectedId: string;
-    mergedRowData: SwitchRowForm[];
-    isUpdate: boolean;
+    voltageLevelToModify: TopologyVoltageLevelModificationDto | null | undefined;
+    switchesToModify: SwitchDto[];
+    isModification?: boolean;
 }
 
 export function VoltageLevelTopologyModificationForm({
-    selectedId,
-    mergedRowData,
-    isUpdate,
+    voltageLevelToModify,
+    switchesToModify,
+    isModification = false,
 }: Readonly<VoltageLevelTopologyModificationFormProps>) {
     const intl = useIntl();
-    const { getValues, setValue, isNodeBuilt } = useCustomFormContext();
+    const { setValue, isNodeBuilt } = useCustomFormContext();
+    const equipmentId: string = useWatch({ name: FieldConstants.EQUIPMENT_ID }); //todo maybe simplifier et utiliser cette valeur
+    const switchRowForms: SwitchRowForm[] = useWatch({ name: TOPOLOGY_MODIFICATION_TABLE });
 
     const defaultColDef = useMemo(
         () => ({
@@ -64,7 +72,7 @@ export function VoltageLevelTopologyModificationForm({
                         id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
                     }),
                     isNodeBuilt: isNodeBuilt,
-                    disabledTooltip: !isUpdate && isNodeBuilt,
+                    disabledTooltip: !isModification && isNodeBuilt,
                 },
             },
             {
@@ -87,7 +95,7 @@ export function VoltageLevelTopologyModificationForm({
                         id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
                     }),
                     isNodeBuilt: isNodeBuilt,
-                    disabledTooltip: !isUpdate && isNodeBuilt,
+                    disabledTooltip: !isModification && isNodeBuilt,
                 },
             },
             {
@@ -97,8 +105,8 @@ export function VoltageLevelTopologyModificationForm({
                     if (data.type === 'SEPARATOR') {
                         return null;
                     }
-                    const watchTable: SwitchRowForm[] = getValues(TOPOLOGY_MODIFICATION_TABLE);
-                    const formIndex = watchTable.findIndex((item: SwitchRowForm) => item.switchId === data.switchId);
+                    const watchTable = switchRowForms;
+                    const formIndex = watchTable.findIndex((item) => item.switchId === data.switchId);
                     return ConnectionCellRenderer({
                         name: `${TOPOLOGY_MODIFICATION_TABLE}[${formIndex}].${CURRENT_CONNECTION_STATUS}`,
                     });
@@ -115,36 +123,135 @@ export function VoltageLevelTopologyModificationForm({
                 editable: false,
             },
         ],
-        [isNodeBuilt, intl, isUpdate, getValues]
+        [isNodeBuilt, intl, isModification, switchRowForms]
     );
 
     const copyPreviousToCurrentStatus = useCallback(() => {
-        const formValues = getValues(TOPOLOGY_MODIFICATION_TABLE);
-        formValues.forEach((row: SwitchRowForm, index: number) => {
+        const formValues = switchRowForms; //todo renamee
+        formValues.forEach((row, index) => {
             // if row.currentConnectionStatus is not null we want to keep the value
             if (row.type === 'SEPARATOR' || row.currentConnectionStatus !== null) {
                 return;
             }
             // should revert because CURRENT_CONNECTION_STATUS presents 'close' while PREV_CONNECTION_STATUS presents 'open'
             const newValue = !row[PREV_CONNECTION_STATUS];
-            setValue(
-                `${TOPOLOGY_MODIFICATION_TABLE}[${index}].${CURRENT_CONNECTION_STATUS}`,
-                newValue,
-                {
-                    shouldDirty: true,
-                }
-            );
+            setValue(`${TOPOLOGY_MODIFICATION_TABLE}[${index}].${CURRENT_CONNECTION_STATUS}`, newValue, {
+                shouldDirty: true,
+            });
         });
-    }, [getValues, setValue]);
+    }, [setValue, switchRowForms]);
 
+    const isSwitchModified = useCallback(
+        (switchId: string): boolean => {
+            return (
+                voltageLevelToModify?.equipmentAttributeModificationList?.some((mod) => mod.equipmentId === switchId) ??
+                false
+            );
+        },
+        [voltageLevelToModify]
+    );
+    const mergedRowData = useMemo(() => {
+        const SEPARATOR_TYPE = 'SEPARATOR';
+        const SWITCH_TYPE = 'SWITCH';
+        const result = [];
+        const watchTable = switchRowForms;
+        if (watchTable?.length > 0) {
+            const sortedWatchTable = [...watchTable].sort((a, b) => (a.switchId ?? '').localeCompare(b.switchId ?? ''));
+
+            const modifiedSwitches = sortedWatchTable
+                .filter((sw) => sw.switchId && isSwitchModified(sw.switchId))
+                .sort((a, b) => a.switchId!.localeCompare(b.switchId!));
+
+            const unmodifiedSwitches = sortedWatchTable
+                .filter((sw) => sw.switchId && !isSwitchModified(sw.switchId))
+                .sort((a, b) => a.switchId!.localeCompare(b.switchId!));
+
+            if (modifiedSwitches.length > 0) {
+                result.push({
+                    type: SEPARATOR_TYPE,
+                    id: 'modified-separator',
+                    title:
+                        intl.formatMessage({ id: 'modifiedSwitchesSeparatorTitle' }) + ` (${modifiedSwitches.length})`,
+                    count: modifiedSwitches.length,
+                    [SWITCH_ID]: '',
+                    [PREV_CONNECTION_STATUS]: null,
+                    [CURRENT_CONNECTION_STATUS]: null,
+                });
+
+                modifiedSwitches.forEach((sw) => {
+                    const matchingSwitchInfos = switchesToModify?.find((attr) => attr.id === sw.switchId);
+                    const matchingAttributeEditData = voltageLevelToModify?.equipmentAttributeModificationList?.find(
+                        (attr) => attr.equipmentId === sw.switchId
+                    );
+
+                    const open = isNodeBuilt
+                        ? matchingSwitchInfos?.open
+                        : (matchingAttributeEditData?.equipmentAttributeValue ?? matchingSwitchInfos?.open);
+
+                    // Note that 'open' should be inverted when initializing CURRENT_CONNECTION_STATUS which presents 'close'
+                    result.push({
+                        ...sw,
+                        type: SWITCH_TYPE,
+                        isModified: false,
+                        [CURRENT_CONNECTION_STATUS]: !open,
+                    });
+                    const formValues = switchRowForms; //todo rename
+                    const index = formValues?.findIndex((item) => item.switchId === sw.switchId);
+                    if (index !== -1) {
+                        setValue(`${TOPOLOGY_MODIFICATION_TABLE}.${index}.${CURRENT_CONNECTION_STATUS}`, !open);
+                    }
+                });
+
+                if (unmodifiedSwitches.length > 0) {
+                    result.push({
+                        type: SEPARATOR_TYPE,
+                        id: 'unmodified-separator',
+                        title:
+                            intl.formatMessage({ id: 'unModifiedSwitchesSeparatorTitle' }) +
+                            ` (${unmodifiedSwitches.length})`,
+                        count: unmodifiedSwitches.length,
+                        [SWITCH_ID]: '',
+                        [PREV_CONNECTION_STATUS]: null,
+                        [CURRENT_CONNECTION_STATUS]: null,
+                    });
+
+                    unmodifiedSwitches.forEach((sw) => {
+                        result.push({
+                            ...sw,
+                            type: SWITCH_TYPE,
+                            isModified: false,
+                        });
+                    });
+                }
+            } else {
+                unmodifiedSwitches.forEach((sw) => {
+                    result.push({
+                        ...sw,
+                        type: SWITCH_TYPE,
+                        isModified: false,
+                    });
+                });
+            }
+            return result;
+        }
+        return [];
+    }, [
+        isSwitchModified,
+        intl,
+        switchesToModify,
+        isNodeBuilt,
+        setValue,
+        equipmentId,
+        switchRowForms,
+    ]);
     return (
-        <Stack sx={{ height: '100%' }}>
+        <Stack sx={{ height: '100%', minHeight: 0 }}>
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <Grid size={4}>
                     <TextField
                         fullWidth
                         label="ID"
-                        value={selectedId}
+                        value={equipmentId}
                         size="small"
                         slotProps={{
                             input: { readOnly: true },
@@ -181,6 +288,8 @@ export function VoltageLevelTopologyModificationForm({
                     animateRows={false}
                     domLayout="normal"
                     headerHeight={48}
+                    onGridReady={(params) => params.api.sizeColumnsToFit()}
+                    onGridSizeChanged={(params) => params.api.sizeColumnsToFit()}
                 />
             </Box>
         </Stack>

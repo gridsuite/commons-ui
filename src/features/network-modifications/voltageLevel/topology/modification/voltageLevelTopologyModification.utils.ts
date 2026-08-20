@@ -6,14 +6,16 @@
  */
 
 import * as yup from 'yup';
-import { EquipmentType, MODIFICATION_TYPES } from '../../../../../utils';
+import { EquipmentType, FieldConstants, MODIFICATION_TYPES } from '../../../../../utils';
 import {
-    EquipmentAttributeModificationInfos,
-    TopologyVoltageLevelModificationInfos,
+    EquipmentAttributeModificationDto,
+    TopologyVoltageLevelModificationDto,
 } from './voltageLevelTopologyModification.types';
 import { CURRENT_CONNECTION_STATUS, PREV_CONNECTION_STATUS, SWITCH_ID, TOPOLOGY_MODIFICATION_TABLE } from './constants';
+import { getPropertiesFromModification } from '../../../common';
 
 export const voltageLevelTopologyModificationFormSchema = yup.object().shape({
+    [FieldConstants.EQUIPMENT_ID]: yup.string().required(),
     [TOPOLOGY_MODIFICATION_TABLE]: yup
         .array()
         .of(
@@ -41,32 +43,41 @@ export const voltageLevelTopologyModificationEmptyFormData = {
 };
 
 export const voltageLevelTopologyModificationFormToDto = (
-    voltageLevelTopologyModificationFormData: VoltageLevelTopologyModificationFormSchemaType,
+    formData: VoltageLevelTopologyModificationFormSchemaType,
     uuid: string | null | undefined,
-    selectedId: string
-): TopologyVoltageLevelModificationInfos => {
-    let equipmentAttributeModificationInfos: EquipmentAttributeModificationInfos[] = [];
-
-    if (voltageLevelTopologyModificationFormData[TOPOLOGY_MODIFICATION_TABLE]?.length > 0) {
-        equipmentAttributeModificationInfos = voltageLevelTopologyModificationFormData[
-            TOPOLOGY_MODIFICATION_TABLE
-        ]
-            .filter((item) => {
-                return item?.currentConnectionStatus != null;
-            })
-            .map((item) => ({
-                type: MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type,
-                equipmentId: item.switchId ?? '',
-                equipmentAttributeName: 'open',
-                // Note that 'currentConnectionStatus' which presents 'close' should be inverted when submitting open attribute
-                equipmentAttributeValue: Boolean(!item.currentConnectionStatus),
-                equipmentType: EquipmentType.SWITCH,
-            }));
+): TopologyVoltageLevelModificationDto => {
+    let equipmentAttributeModificationInfos: EquipmentAttributeModificationDto[] = [];
+    if (formData[TOPOLOGY_MODIFICATION_TABLE]?.length > 0) {
+        equipmentAttributeModificationInfos = formData[TOPOLOGY_MODIFICATION_TABLE].filter((item) => {
+            return item?.currentConnectionStatus != null;
+        }).map((item) => ({
+            type: MODIFICATION_TYPES.EQUIPMENT_ATTRIBUTE_MODIFICATION.type,
+            equipmentId: item.switchId ?? '',
+            equipmentAttributeName: 'open',
+            // Note that 'currentConnectionStatus' which presents 'close' should be inverted when submitting open attribute
+            equipmentAttributeValue: Boolean(!item.currentConnectionStatus),
+            equipmentType: EquipmentType.SWITCH,
+        }));
     }
     return {
         type: MODIFICATION_TYPES.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION.type,
         uuid: uuid ?? null,
-        equipmentId: selectedId,
+        equipmentId: formData.equipmentID,
         equipmentAttributeModificationList: equipmentAttributeModificationInfos,
+    };
+};
+
+export const voltageLevelTopologyModificationDtoToForm = (
+    dto: TopologyVoltageLevelModificationDto,
+    includePreviousValues = true
+): VoltageLevelTopologyModificationFormSchemaType => {
+    return {
+        [FieldConstants.EQUIPMENT_ID]: dto.equipmentId,
+        [TOPOLOGY_MODIFICATION_TABLE]: dto.equipmentAttributeModificationList.map((item) => ({
+            [SWITCH_ID]: item.equipmentId,
+            [CURRENT_CONNECTION_STATUS]: Boolean(!item.equipmentAttributeValue),
+            [PREV_CONNECTION_STATUS]: null,
+        })),
+        ...getPropertiesFromModification(dto.properties, includePreviousValues),
     };
 };

@@ -6,8 +6,9 @@
  */
 
 import { ModificationType } from '../../../../../utils';
+import { Property } from '../../../common';
 
-export type EquipmentAttributeModificationInfos = {
+export type EquipmentAttributeModificationDto = {
     type: string;
     equipmentId: string;
     equipmentAttributeName: string;
@@ -15,17 +16,23 @@ export type EquipmentAttributeModificationInfos = {
     equipmentType: string;
 };
 
-export interface TopologyVoltageLevelModificationInfos {
+export interface TopologyVoltageLevelModificationDto {
     type: ModificationType;
     uuid: string | null;
     equipmentId: string;
-    equipmentAttributeModificationList: EquipmentAttributeModificationInfos[];
+    equipmentAttributeModificationList: EquipmentAttributeModificationDto[];
+    properties?: Property[] | null;
 }
 
 export type SwitchRowForm = {
     switchId?: string;
     prevConnectionStatus?: boolean | null;
     currentConnectionStatus?: boolean | null;
-    type?: string;
-    isModified?: boolean;
+    type?: string;//todo regarder si present dans grid explore
+    isModified?: boolean; // todo idem
+};
+
+export type SwitchDto = {//todo maybe remove SwitchInfo from study
+    id: string;
+    open: boolean;
 };

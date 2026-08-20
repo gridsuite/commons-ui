@@ -338,6 +338,8 @@ export const networkModificationsEn = {
     builtNodeTooltipVlTopoModif: 'Switches list taking into account all applied modifications',
     notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
     copyPreviousTopologyStatus: 'Fill with previous status',
+    modifiedSwitchesSeparatorTitle: 'Modification',
+    unModifiedSwitchesSeparatorTitle: 'No-modification',
 
     // Tabs
     SubstationTab: 'Substation',

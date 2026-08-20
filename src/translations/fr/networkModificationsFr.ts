@@ -345,6 +345,8 @@ export const networkModificationsFr = {
     notBuiltNodeTooltipVlTopoModif:
         "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
     copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
+    modifiedSwitchesSeparatorTitle: 'OC modifiés',
+    unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
 
     // Tabs
     SubstationTab: 'Site',
