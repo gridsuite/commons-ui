@@ -16,8 +16,6 @@ import {
     SecurityAnalysisNmkTableRow,
 } from './security-analysis.type';
 
-export const PAGE_OPTIONS = [25, 100, 500, 1000];
-
 // MAX_INT32 sentinel value used by Powsybl
 const MAX_INT32 = 2147483647;
 
