@@ -94,7 +94,6 @@ export const networkModificationsFr = {
     TwoWindingsTransformerRatioTapChangerTab: 'Régleur',
     TwoWindingsTransformerPhaseTapChangerTab: 'Déphaseur',
     StaticVarCompensatorAutomatonTab: 'Automate',
-    StaticVarCompensatorAdditionalInfosTab: 'Compléments',
 
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CompositeModification: 'Modification composite',

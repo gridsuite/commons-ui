@@ -37,7 +37,7 @@ export function StaticVarCompensatorDialogTabs({
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.AUTOMATON_TAB)}
                 />
                 <Tab
-                    label={<FormattedMessage id="StaticVarCompensatorAdditionalInfosTab" />}
+                    label={<FormattedMessage id="AdditionalInformationTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB)}
                 />
             </Tabs>

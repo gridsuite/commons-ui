@@ -90,7 +90,6 @@ export const networkModificationsEn = {
     TwoWindingsTransformerRatioTapChangerTab: 'Ratio tap changer',
     TwoWindingsTransformerPhaseTapChangerTab: 'Phase tap changer',
     StaticVarCompensatorAutomatonTab: 'Automaton',
-    StaticVarCompensatorAdditionalInfosTab: 'Additional information',
 
     ModificationReadError: 'An error occurred while fetching the modification',
     CompositeModification: 'Composite modification',
