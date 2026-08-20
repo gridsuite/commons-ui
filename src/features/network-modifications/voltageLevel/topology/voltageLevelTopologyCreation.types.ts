@@ -6,7 +6,7 @@
  */
 import { ModificationType } from '../../../../utils';
 
-export interface CreateVoltageLevelTopologyInfos {
+export interface CreateVoltageLevelTopologyDto {
     type: ModificationType;
     uuid?: string;
     voltageLevelId: string;

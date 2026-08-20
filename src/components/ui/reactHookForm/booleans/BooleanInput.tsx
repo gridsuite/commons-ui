@@ -18,6 +18,7 @@ export type BooleanInputProps<TInput extends InputTypes> = {
     label?: string;
     formProps?: InputProps<TInput>;
     Input: TInput;
+    dataTestId?: string;
 };
 
 export function BooleanInput<TInput extends InputTypes>({
@@ -25,6 +26,7 @@ export function BooleanInput<TInput extends InputTypes>({
     label,
     formProps,
     Input,
+    dataTestId,
 }: Readonly<BooleanInputProps<TInput>>) {
     const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
@@ -43,10 +45,11 @@ export function BooleanInput<TInput extends InputTypes>({
 
     const CustomInput = (
         <Input
-            checked={value}
+            checked={value ?? false} // Prevents component from switching to uncontrolled mode
             onChange={handleChangeValue}
             inputRef={ref}
             slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
+            data-testid={dataTestId}
             {...(otherFormProps as any)}
         />
     );

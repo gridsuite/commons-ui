@@ -483,14 +483,14 @@ export function TopBar({
                                                     aria-label={LIGHT_THEME}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    <WbSunnyIcon fontSize="small" />
+                                                    <WbSunnyIcon fontSize="small" data-testid="WbSunnyIcon" />
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={DARK_THEME}
                                                     aria-label={DARK_THEME}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    <Brightness3Icon fontSize="small" />
+                                                    <Brightness3Icon fontSize="small" data-testid="Brightness3Icon" />
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>

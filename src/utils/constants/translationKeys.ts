@@ -31,6 +31,7 @@ export const SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT =
 export const CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID = 'CreateSubstationInVoltageLevelIdenticalId';
 export const MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER =
     'MinActivePowerMustBeLessOrEqualToMaxActivePower';
+export const TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'TargetDeadbandMustBeGreaterOrEqualToZero';
 
 export const NAME_ALREADY_USED = 'nameAlreadyUsed';
 export const NUMERIC_VALUE_OR_EMPTY_FIELD = 'NumericValueOrEmptyField';
