@@ -54,7 +54,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
         setOpenDescModificationDialog(true);
     }, []);
 
-    // Nothing to read and nothing to write
+    // As the description is empty and we can't update it, we don't want to render the cell and its button
     if (empty && isSaveDisabled) {
         return null;
     }
