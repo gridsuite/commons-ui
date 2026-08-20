@@ -147,6 +147,33 @@ export function getLoadTypeLabel(loadTypeId: string) {
     return LOAD_TYPES.find(({ id }) => id === loadTypeId)?.label;
 }
 
+export const REGULATION_SIDES = {
+    SIDE1: { id: 'SIDE1', label: 'RegulatedSide1' },
+    SIDE2: { id: 'SIDE2', label: 'RegulatedSide2' },
+} as const;
+
+export const PHASE_REGULATION_MODES = {
+    CURRENT_LIMITER: { id: 'CURRENT_LIMITER', label: 'CurrentLimiter' },
+    ACTIVE_POWER_CONTROL: {
+        id: 'ACTIVE_POWER_CONTROL',
+        label: 'PhaseActivePowerControl',
+    },
+    OFF: { id: 'OFF', label: 'Off' }, // used for the ui but doesn't exist in powsybl => should not be sent to the back
+} as const;
+
+export const RATIO_REGULATION_MODES = {
+    FIXED_RATIO: {
+        // isRegulating false
+        id: 'FIXED_RATIO',
+        label: 'FixedRatio',
+    },
+    VOLTAGE_REGULATION: {
+        // isRegulating true
+        id: 'VOLTAGE_REGULATION',
+        label: 'VoltageRegulation',
+    },
+} as const;
+
 export const UNDEFINED_CONNECTION_DIRECTION = 'UNDEFINED';
 // Relevant ConnectablePosition.Direction Powsybl enum values
 export const CONNECTION_DIRECTIONS = [
