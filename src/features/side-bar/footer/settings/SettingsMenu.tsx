@@ -43,10 +43,11 @@ export function SettingsMenu({
             {isMinimized && <MinimizedSubMenuHeader label={settingsLabel} />}
             <DarkModeToggle currentTheme={currentTheme} setTheme={setTheme} />
             <CustomNestedMenuItem
+                sx={submenuFooterStyle.subMenuChildren}
                 renderLabel={() => (
-                    <Box sx={submenuFooterStyle.subMenu}>
+                    <Box>
                         {intl.formatMessage({ id: 'top-bar/language' })}
-                        <Typography component="span" fontSize={12} sx={{ opacity: 0.7 }}>
+                        <Typography component="span" fontSize={12} sx={{ color: 'text.disabled' }}>
                             {' - '}
                             {intl.formatMessage({
                                 id: `top-bar/language/${selectedLanguage}`,

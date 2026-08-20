@@ -10,6 +10,7 @@ import { ChangeEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DARK_THEME, GsTheme, LIGHT_THEME } from '../../../../utils';
 import { CustomMenuItem } from '../../../../components';
+import { submenuFooterStyle } from '../common/submenu-footer-style';
 
 interface DarkModeToggleProps {
     currentTheme: GsTheme;
@@ -25,7 +26,7 @@ export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeTogg
             .catch((err) => console.error(err));
     };
     return (
-        <CustomMenuItem sx={{ px: 2 }}>
+        <CustomMenuItem sx={submenuFooterStyle.subMenuChildren}>
             <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
                 <FormattedMessage id="top-bar/darkMode" />
                 <Switch checked={isDarkMode} onChange={toggleMode} />

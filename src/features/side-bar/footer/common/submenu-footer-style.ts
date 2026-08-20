@@ -9,5 +9,16 @@ export const submenuFooterStyle = {
     subMenu: {
         pl: 1.5,
         mb: 0.5,
+        color: 'inherit',
+        '&:hover': {
+            color: 'inherit',
+        },
+    },
+    subMenuChildren: {
+        pl: 2,
+        color: 'inherit',
+        '&:hover': {
+            color: 'inherit',
+        },
     },
 };
