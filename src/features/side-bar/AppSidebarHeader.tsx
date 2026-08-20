@@ -1,13 +1,13 @@
 import { Box, Divider, Stack, Typography, IconButton, Tooltip } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import { useState } from 'react';
-import GridmonitorLogo from 'assets/images/gridmonitor_logo.svg?react';
+import { ReactNode, useState } from 'react';
 import { AboutDialog, GridSuiteModule } from '../topBar';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
     isLoggedIn: boolean;
     appName: string;
+    appLogo: ReactNode;
     appLicense?: string;
     appVersion?: string;
     globalVersionPromise: () => Promise<string>;
@@ -18,6 +18,7 @@ export function AppSidebarHeader({
     isMinimized,
     isLoggedIn,
     appName,
+    appLogo,
     appLicense,
     appVersion,
     globalVersionPromise,
@@ -40,7 +41,7 @@ export function AppSidebarHeader({
                         justifyContent: isMinimized ? 'center' : 'normal',
                     }}
                 >
-                    <GridmonitorLogo />
+                    {appLogo}
                     {!isMinimized && (
                         <Typography variant="h6">
                             Grid

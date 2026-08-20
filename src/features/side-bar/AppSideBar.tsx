@@ -1,6 +1,6 @@
 import { Box, Breakpoint, Stack, Theme, useMediaQuery } from '@mui/material';
 import { UserProfile } from 'oidc-client-ts';
-import { useEffect, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { AppSidebarHeader } from './AppSidebarHeader';
 import { AppSidebarFooter } from './footer/AppSidebarFooter';
 import { GridSuiteModule } from '../topBar';
@@ -18,6 +18,7 @@ type SidebarProps = {
     appsAndUrls: Metadata[];
     onLogoutClick?: () => void;
     appName: string;
+    appLogo: ReactNode;
     appLicense?: string;
     appVersion?: string;
     globalVersionPromise: () => Promise<string>;
@@ -35,6 +36,7 @@ export function AppSideBar({
     userProfile,
     appsAndUrls,
     appName,
+    appLogo,
     appLicense,
     appVersion,
     globalVersionPromise,
@@ -66,6 +68,7 @@ export function AppSideBar({
                 isMinimized={isMinimized}
                 isLoggedIn={!!userProfile}
                 appName={appName}
+                appLogo={appLogo}
                 additionalModulesPromise={additionalModulesPromise}
                 globalVersionPromise={globalVersionPromise}
                 appLicense={appLicense}
