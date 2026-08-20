@@ -9,6 +9,7 @@ import { InferType, object, boolean, number, string } from 'yup';
 import {
     AttributeModification,
     FieldConstants,
+    ModificationType,
     MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     NORMALIZED_PERCENTAGE,
     sanitizeString,
@@ -110,6 +111,7 @@ export function converterStationCreationFormToDto(
     const reactiveLimits = formData[FieldConstants.REACTIVE_LIMITS];
     const isReactiveCapabilityCurveOn = reactiveLimits[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE] === 'CURVE';
     return {
+        type: ModificationType.CONVERTER_STATION_CREATION,
         equipmentId: formData[FieldConstants.CONVERTER_STATION_ID],
         equipmentName: formData[FieldConstants.CONVERTER_STATION_NAME] ?? null,
         lossFactor: formData[FieldConstants.LOSS_FACTOR],

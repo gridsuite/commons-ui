@@ -18,6 +18,7 @@ interface InjectionCreationDto {
 }
 
 export interface ConverterStationCreationDto extends InjectionCreationDto {
+    type: ModificationType;
     equipmentId: string;
     equipmentName: string | null;
     lossFactor: number | null;
