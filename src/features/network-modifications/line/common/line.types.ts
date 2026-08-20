@@ -33,6 +33,7 @@ export type BranchInfos = EquipmentWithProperties & {
     b2?: number;
 };
 
+// map-server DTO
 export interface LineFormInfos {
     id: string;
     name: string | null;
