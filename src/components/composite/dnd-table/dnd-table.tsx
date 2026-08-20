@@ -112,6 +112,7 @@ export interface DndTableProps {
     multiselect?: boolean;
     onChange?: (changedRow: any) => void;
     onDelete?: (removedRows: any[]) => void;
+    rowDataTestId?: string;
 }
 
 export function DndTable(props: Readonly<DndTableProps>) {
@@ -141,6 +142,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         multiselect,
         onChange,
         onDelete,
+        rowDataTestId,
     } = props;
     const intl = useIntl();
 
@@ -336,7 +338,11 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 })}
                             >
                                 <span>
-                                    <IconButton disabled={disabled} onClick={handleAddRowsButton}>
+                                    <IconButton
+                                        disabled={disabled}
+                                        onClick={handleAddRowsButton}
+                                        data-testid="AddRowButton"
+                                    >
                                         <AddCircleIcon />
                                     </IconButton>
                                 </span>
@@ -385,6 +391,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                     onDeleteRow={handleDeleteRow}
                                     multiselect={multiselect}
                                     nextSnapshotCellWidthSx={nextSnapshotCellWidthSx}
+                                    rowDataTestId={rowDataTestId}
                                 />
                             );
                             // Portal the dragging row to document.body to avoid CSS transform
