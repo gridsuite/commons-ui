@@ -5,22 +5,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Theme, Typography, TypographyProps } from '@mui/material';
-import { mergeSx } from '../../../utils';
+import { SxProps, Typography } from '@mui/material';
+import { mergeSx, MuiStyles } from '../../../utils';
 
 const styles = {
-    separator: (theme: Theme) => ({
+    separator: (theme) => ({
         fontWeight: 'bold',
         fontSize: '1rem',
         width: '100%',
         marginTop: theme.spacing(1),
     }),
+} as const satisfies MuiStyles;
+
+type SeparatorCellRendererProps = {
+    value: string;
+    sx?: SxProps;
 };
 
-export function SeparatorCellRenderer({ children, sx, ...otherProps }: Readonly<TypographyProps>) {
+export function SeparatorCellRenderer({ value, sx }: Readonly<SeparatorCellRendererProps>) {
     return (
-        <Typography variant="subtitle1" color="primary" sx={mergeSx(styles.separator, sx)} {...otherProps}>
-            {children}
+        <Typography variant="subtitle1" color="primary" sx={mergeSx(styles.separator, sx)}>
+            {value}
         </Typography>
     );
 }
