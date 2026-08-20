@@ -239,7 +239,7 @@ export const getAllLimitsFormData = (
     selectedOperationalLimitsGroupId1: string | null = null,
     selectedOperationalLimitsGroupId2: string | null = null,
     enableOLGModification: boolean | null = true,
-    id = FieldConstants.LIMITS
+    id: typeof FieldConstants.LIMITS = FieldConstants.LIMITS
 ) => {
     return {
         [id]: getAllLimitsFormDataProperties(
