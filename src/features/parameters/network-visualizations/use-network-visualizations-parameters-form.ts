@@ -30,7 +30,7 @@ import {
     setStudyNetworkVisualizationParameters,
     updateParameter,
 } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
 import {
@@ -38,7 +38,6 @@ import {
     getNameElementEditorSchema,
 } from '../../../components/ui/dialogs/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
-import { useTabs } from '../common';
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;
@@ -136,7 +135,7 @@ export const useNetworkVisualizationParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.MAP,
-        tabEnum: TabValues,
+        tabValues: Object.values(TabValues),
         errors: formMethods.formState.errors,
     });
 

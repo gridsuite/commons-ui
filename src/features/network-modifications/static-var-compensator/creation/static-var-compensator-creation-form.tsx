@@ -6,6 +6,7 @@
  */
 
 import { Box, Stack } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 import { ConnectivityNetworkProps } from '../../common';
 import {
     STATIC_VAR_COMPENSATOR_TAB_FIELDS,
@@ -14,7 +15,7 @@ import {
 import { StaticVarCompensatorDialogHeader, StaticVarCompensatorDialogTabs } from '../common';
 import { StaticVarCompensatorTabsContent } from '../common/static-var-compensator-tabs-content';
 import { EquipmentType, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 export interface StaticVarCompensatorCreationFormProps extends ConnectivityNetworkProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
@@ -26,10 +27,16 @@ export function StaticVarCompensatorCreationForm({
     fetchBusesOrBusbarSections,
     fetchVoltageLevelEquipments,
 }: StaticVarCompensatorCreationFormProps) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<StaticVarCompensatorDialogTab>(
-        STATIC_VAR_COMPENSATOR_TAB_FIELDS,
-        StaticVarCompensatorDialogTab.CONNECTIVITY_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<StaticVarCompensatorDialogTab>({
+        defaultTab: StaticVarCompensatorDialogTab.CONNECTIVITY_TAB,
+        errors,
+        tabFields: STATIC_VAR_COMPENSATOR_TAB_FIELDS,
+    });
     return (
         <Stack spacing={2}>
             <StaticVarCompensatorDialogHeader />

@@ -6,11 +6,12 @@
  */
 
 import { Box, Stack } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 import { LINE_TAB_FIELDS, LineDialogTab } from './line.utils';
 import { LineDialogHeader, LineDialogHeaderProps } from './LineDialogHeader';
 import { LineDialogTabs } from './LineDialogTabs';
 import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogTabsContent';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 interface LineFormProps
     extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
@@ -23,10 +24,16 @@ export function LineForm({
     isModification = false,
     withConnectivity = true,
 }: Readonly<LineFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LineDialogTab>(
-        LINE_TAB_FIELDS,
-        withConnectivity ? LineDialogTab.CONNECTIVITY_TAB : LineDialogTab.CHARACTERISTICS_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<LineDialogTab>({
+        defaultTab: withConnectivity ? LineDialogTab.CONNECTIVITY_TAB : LineDialogTab.CHARACTERISTICS_TAB,
+        errors,
+        tabFields: LINE_TAB_FIELDS,
+    });
 
     return (
         <Stack spacing={2} height="100%">

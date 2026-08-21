@@ -6,13 +6,13 @@
  */
 
 import { Grid, Stack } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
 import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {
@@ -27,10 +27,17 @@ export function BatteryModificationForm({
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
 }: Readonly<BatteryModificationFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<BatteryDialogTab>(
-        BATTERY_TAB_FIELDS,
-        BatteryDialogTab.CONNECTIVITY_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<BatteryDialogTab>({
+        defaultTab: BatteryDialogTab.CONNECTIVITY_TAB,
+        errors,
+        tabFields: BATTERY_TAB_FIELDS,
+    });
+
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (

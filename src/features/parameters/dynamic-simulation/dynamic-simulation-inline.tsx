@@ -17,8 +17,7 @@ import {
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
-import { useTabs } from '../common/hook/use-tabs';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import {
     toFormValues,
@@ -67,7 +66,7 @@ export function DynamicSimulationInline({
 
     const useTabsReturn = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
-        tabEnum: TabValues,
+        tabValues: Object.values(TabValues),
         errors: formState.errors,
     });
 

@@ -6,11 +6,12 @@
  */
 
 import { Grid, Stack } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 import { LOAD_TAB_FIELDS, LoadDialogTab } from './load.utils';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
 import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogTabsContent';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 interface LoadFormProps
     extends LoadDialogHeaderProps, Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {}
@@ -22,10 +23,16 @@ export function LoadForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
 }: Readonly<LoadFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LoadDialogTab>(
-        LOAD_TAB_FIELDS,
-        LoadDialogTab.CONNECTIVITY_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<LoadDialogTab>({
+        defaultTab: LoadDialogTab.CONNECTIVITY_TAB,
+        errors,
+        tabFields: LOAD_TAB_FIELDS,
+    });
 
     return (
         <Stack spacing={2}>
