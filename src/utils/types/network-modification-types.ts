@@ -16,10 +16,11 @@ export type AttributeModification<T> = {
     op: OperationType;
 };
 
-export interface ExcludedNetworkModifications {
-    rootNetworkUuid: UUID;
-    modificationUuidsToExclude: UUID[];
-}
+/**
+ * Applicability of each network modification per root network tag, as held by the modifications themselves:
+ * a tag without an entry is applicable.
+ */
+export type NetworkModificationApplicabilities = Record<UUID, Record<string, boolean>>;
 
 export interface RootNetworkRowInfo {
     rootNetworkUuid: UUID;
