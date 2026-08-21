@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
 import {
     ColumnDef,
@@ -35,6 +35,7 @@ import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
+    collectApplicabilities,
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
     findDepth,
@@ -62,8 +63,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     currentNodeId?: UUID;
     currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
-    applicabilities?: NetworkModificationApplicabilities;
-    setApplicabilities?: Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
 }
 
@@ -82,8 +81,6 @@ export function NetworkModificationsTable({
     currentNodeId = undefined,
     currentRootNetworkUuid,
     rootNetworks,
-    applicabilities,
-    setApplicabilities,
     isDisabled = false,
     isImpactedByNotification,
     notificationMessageId,
@@ -99,6 +96,12 @@ export function NetworkModificationsTable({
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
+
+    const [applicabilities, setApplicabilities] = useState<NetworkModificationApplicabilities>({});
+    useEffect(() => {
+        setApplicabilities(collectApplicabilities(composedModifications));
+    }, [composedModifications]);
+
     // composedModificationsRef is used to access composedModifications data from other useEffects
     // without having to add composedModifications to their dependencies (so it doesn't trigger them)
     const composedModificationsRef = useRef(composedModifications);

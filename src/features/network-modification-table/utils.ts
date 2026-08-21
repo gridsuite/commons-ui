@@ -11,12 +11,27 @@ import { fetchNetworkModification, getNetworkModificationsFromComposite } from '
 import {
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
+    NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
     ReferenceModificationInfos,
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
+// Indexes by uuid the applicability every modification of the tree carries, sub modifications included.
+export function collectApplicabilities(
+    modifications: ComposedModificationMetadata[]
+): NetworkModificationApplicabilities {
+    return modifications.reduce<NetworkModificationApplicabilities>(
+        (applicabilities, modification) => ({
+            ...applicabilities,
+            [modification.uuid]: modification.applicabilityByRootNetworkTag ?? {},
+            ...collectApplicabilities(modification.subModifications),
+        }),
+        {}
+    );
+}
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
@@ -30,6 +45,12 @@ export const formatToComposedModification = (
         rowKey: crypto.randomUUID(),
     }));
 };
+
+// Remove the applicabilities
+export function toMessageValues(modification: NetworkModificationMetadata) {
+    const { applicabilityByRootNetworkTag, ...messageValues } = modification;
+    return messageValues;
+}
 
 export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
