@@ -17,7 +17,7 @@ interface VscHvdcLineFormProps
     extends
         VscHvdcLineDialogHeaderProps,
         Omit<VscHvdcLineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'hvdcLineToModify'> {
-    updatePreviousReactiveCapabilityCurveTableConverterStation: UpdateReactiveCapabilityCurveTableConverterStation;
+    updatePreviousReactiveCapabilityCurveTableConverterStation?: UpdateReactiveCapabilityCurveTableConverterStation;
 }
 
 export function VscHvdcLineForm({

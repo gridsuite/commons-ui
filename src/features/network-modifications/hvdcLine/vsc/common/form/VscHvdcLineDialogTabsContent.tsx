@@ -19,7 +19,7 @@ import { UpdateReactiveCapabilityCurveTableConverterStation } from '../converter
 export interface VscHvdcLineDialogTabsContentProps extends ConnectivityNetworkProps {
     hvdcLineToModify?: VscHvdcLineInfo | null;
     tabIndex: number;
-    updatePreviousReactiveCapabilityCurveTableConverterStation: UpdateReactiveCapabilityCurveTableConverterStation;
+    updatePreviousReactiveCapabilityCurveTableConverterStation?: UpdateReactiveCapabilityCurveTableConverterStation;
     isModification?: boolean;
 }
 
@@ -47,7 +47,7 @@ export function VscHvdcLineDialogTabsContent({
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     updatePreviousReactiveCapabilityCurveTableConverterStation={(action, index) => {
-                        updatePreviousReactiveCapabilityCurveTableConverterStation(
+                        updatePreviousReactiveCapabilityCurveTableConverterStation?.(
                             action,
                             index,
                             FieldConstants.CONVERTER_STATION_1
@@ -65,7 +65,7 @@ export function VscHvdcLineDialogTabsContent({
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     updatePreviousReactiveCapabilityCurveTableConverterStation={(action, index) => {
-                        updatePreviousReactiveCapabilityCurveTableConverterStation(
+                        updatePreviousReactiveCapabilityCurveTableConverterStation?.(
                             action,
                             index,
                             FieldConstants.CONVERTER_STATION_2
