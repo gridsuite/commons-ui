@@ -31,12 +31,56 @@ export const formatToComposedModification = (
     }));
 };
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
+/**
+ * Tells whether a modification can't be edited because of the permissions on a shared modification: either it
+ * is a reference modification pointing at one the user can't write into, or it sits inside such a reference.
+ */
+export function isModificationEditLocked(
+    uuid: UUID,
+    readOnlyReferenceModificationUuids: Set<UUID> | undefined,
+    lockedNestedModificationUuids: Set<UUID> | undefined
+): boolean {
+    return !!readOnlyReferenceModificationUuids?.has(uuid) || !!lockedNestedModificationUuids?.has(uuid);
+}
+
+/**
+ * Collects the uuids of everything nested inside the given reference modifications.
+ * The reference modifications themselves are deliberately left out.
+ *
+ * @param readOnlyReferenceModificationUuids uuids of the reference modifications pointing at a shared
+ * modification the user can't write into
+ * @param mods all the modifications of the tree
+ */
+export function collectLockedNestedModificationUuids(
+    readOnlyReferenceModificationUuids: Set<UUID>,
+    mods: ComposedModificationMetadata[]
+): Set<UUID> {
+    const locked = new Set<UUID>();
+
+    const collectAll = (mod: ComposedModificationMetadata) => {
+        locked.add(mod.uuid);
+        mod.subModifications?.forEach(collectAll);
+    };
+    const visit = (currentMods: ComposedModificationMetadata[], insideReadOnlyReferenceModification: boolean) => {
+        currentMods.forEach((mod) => {
+            if (insideReadOnlyReferenceModification) {
+                collectAll(mod);
+            } else {
+                visit(mod.subModifications ?? [], readOnlyReferenceModificationUuids.has(mod.uuid));
+            }
+        });
+    };
+    visit(mods, false);
+
+    return locked;
+}
+
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
-export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
