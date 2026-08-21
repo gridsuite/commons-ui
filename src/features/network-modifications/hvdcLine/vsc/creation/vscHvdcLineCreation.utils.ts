@@ -25,19 +25,18 @@ import {
 } from '../common/converterStation/vscConverterStationPane.utils';
 import { VscHdvLineCreationDto } from './vscHvdcLineCreation.types';
 
-export const vscHvdcLineCreationFormSchema = () =>
-    object()
-        .shape({
-            [FieldConstants.EQUIPMENT_ID]: string().required(),
-            [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
-            [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsCreationSchema(),
-            [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationCreationSchema(),
-            [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationCreationSchema(),
-        })
-        .concat(creationPropertiesSchema)
-        .required();
+export const vscHvdcLineCreationFormSchema = object()
+    .shape({
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
+        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsCreationSchema(),
+        [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationCreationSchema(),
+        [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationCreationSchema(),
+    })
+    .concat(creationPropertiesSchema)
+    .required();
 
-export type VscHvdcLineCreationFormData = InferType<ReturnType<typeof vscHvdcLineCreationFormSchema>>;
+export type VscHvdcLineCreationFormData = InferType<typeof vscHvdcLineCreationFormSchema>;
 
 export const vscHvdcLineCreationEmptyFormData: DeepNullable<VscHvdcLineCreationFormData> = {
     [FieldConstants.EQUIPMENT_ID]: null,
