@@ -45,7 +45,7 @@ export function VscHvdcLineDialogTabs({
             />
             <Tab
                 value={VscHvdcLineDialogTab.CONVERTER_STATION_2_TAB}
-                label={<FormattedMessage id="ConverterStation1Tab" />}
+                label={<FormattedMessage id="ConverterStation2Tab" />}
                 sx={getTabStyle(tabIndexesWithError, VscHvdcLineDialogTab.CONVERTER_STATION_2_TAB)}
             />
             {isModification && (
