@@ -41,9 +41,10 @@ interface ChipItemsInputProps {
     label?: string;
     name: string;
     hideErrorMessage?: boolean;
+    dataTestId?: string;
 }
 
-export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipItemsInputProps>) {
+export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Readonly<ChipItemsInputProps>) {
     const [textEntered, setTextEntered] = useState('');
     const { snackError } = useSnackMessage();
 
@@ -129,6 +130,7 @@ export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipI
                 )}
 
                 <TextField
+                    data-testid={dataTestId}
                     variant="standard"
                     value={textEntered}
                     onKeyDown={keyPress}

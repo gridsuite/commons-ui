@@ -1,0 +1,133 @@
+/**
+ * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { Grid } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
+import { TwoWindingsTransformerMapInfos } from '../common/twoWindingsTransformer.types';
+import {
+    convertInputValue,
+    FieldConstants,
+    FieldType,
+    MicroSusceptanceAdornment,
+    MVAPowerAdornment,
+    OhmAdornment,
+    VoltageAdornment,
+} from '../../../../utils';
+import { FloatInput, GridItem, GridSection } from '../../../../components';
+import { PropertiesForm } from '../../common';
+
+export interface TwoWindingsTransformerCharacteristicsPaneProps {
+    id?: string;
+    twtToModify?: TwoWindingsTransformerMapInfos | null;
+    isModification?: boolean;
+}
+
+export function TwoWindingsTransformerCharacteristicsPane({
+    id = FieldConstants.CHARACTERISTICS,
+    twtToModify,
+    isModification = false,
+}: Readonly<TwoWindingsTransformerCharacteristicsPaneProps>) {
+    const seriesResistanceField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.R}`}
+            label="SeriesResistanceText"
+            adornment={OhmAdornment}
+            previousValue={twtToModify?.r}
+            clearable={isModification}
+        />
+    );
+
+    const seriesReactanceField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.X}`}
+            label="SeriesReactanceText"
+            adornment={OhmAdornment}
+            previousValue={twtToModify?.x}
+            clearable={isModification}
+        />
+    );
+
+    const magnetizingConductanceField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.G}`}
+            label="G"
+            adornment={MicroSusceptanceAdornment}
+            previousValue={convertInputValue(FieldType.G, twtToModify?.g)}
+            clearable={isModification}
+        />
+    );
+
+    const magnetizingSusceptanceField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.B}`}
+            label="B"
+            adornment={MicroSusceptanceAdornment}
+            previousValue={convertInputValue(FieldType.B, twtToModify?.b)}
+            clearable={isModification}
+        />
+    );
+
+    const ratedSField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.RATED_S}`}
+            label="RatedNominalPowerText"
+            adornment={MVAPowerAdornment}
+            previousValue={twtToModify?.ratedS}
+            clearable={isModification}
+        />
+    );
+
+    const ratedVoltage1Field = (
+        <FloatInput
+            name={`${id}.${FieldConstants.RATED_U1}`}
+            label="RatedVoltage"
+            adornment={VoltageAdornment}
+            previousValue={twtToModify?.ratedU1}
+            clearable={isModification}
+        />
+    );
+
+    const ratedVoltage2Field = (
+        <FloatInput
+            name={`${id}.${FieldConstants.RATED_U2}`}
+            label="RatedVoltage"
+            adornment={VoltageAdornment}
+            previousValue={twtToModify?.ratedU2}
+            clearable={isModification}
+        />
+    );
+
+    return (
+        <>
+            <GridSection title="Characteristics" />
+            <Grid container spacing={2}>
+                <GridItem>{seriesResistanceField}</GridItem>
+                <GridItem>{seriesReactanceField}</GridItem>
+                <GridItem>{magnetizingConductanceField}</GridItem>
+                <GridItem>{magnetizingSusceptanceField}</GridItem>
+                <GridItem>{ratedSField}</GridItem>
+            </Grid>
+            <Grid container spacing={2}>
+                <Grid size={6}>
+                    <h4>
+                        <FormattedMessage id="Side1" />
+                    </h4>
+                </Grid>
+                <Grid size={6}>
+                    <h4>
+                        <FormattedMessage id="Side2" />
+                    </h4>
+                </Grid>
+            </Grid>
+            <Grid container spacing={2}>
+                <GridItem>{ratedVoltage1Field}</GridItem>
+                <GridItem>{ratedVoltage2Field}</GridItem>
+            </Grid>
+            <PropertiesForm networkElementType="twt" isModification={isModification} />
+        </>
+    );
+}
