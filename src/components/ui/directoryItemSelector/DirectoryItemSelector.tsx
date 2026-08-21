@@ -7,17 +7,30 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import type { MuiStyles } from '../../../utils';
 import {
     getFileIcon,
     ElementType,
     arraysContainIdenticalStrings,
     ElementAttributes,
     snackWithFallback,
+    MuiStyles,
 } from '../../../utils';
-import { TreeViewFinder, TreeViewFinderNodeProps, TreeViewFinderProps } from '../treeViewFinder';
+import {
+    EXPLORE_APP_NAME,
+    RECENTS_PARAMETER_NAME,
+    TreeViewFinder,
+    TreeViewFinderNodeProps,
+    TreeViewFinderProps,
+} from '../treeViewFinder';
 import { useSnackMessage } from '../../../hooks';
-import { fetchDirectoryContent, fetchElementsInfos, fetchRootFolders } from '../../../services';
+import {
+    backendFetchJson,
+    fetchConfigParameter,
+    fetchDirectoryContent,
+    fetchElementsInfos,
+    fetchRootFolders,
+    updateConfigParameter,
+} from '../../../services';
 import {
     fetchChildrenForExpandedNodes,
     getExpansionPathsForSelected,
@@ -158,8 +171,6 @@ function updatedTree(
 }
 
 export interface DirectoryItemSelectorProps extends TreeViewFinderProps {
-    types: string[];
-    equipmentTypes?: string[];
     itemFilter?: (val: ElementAttributes) => boolean;
     expanded?: UUID[];
     inline?: boolean;
@@ -176,6 +187,25 @@ function sortHandlingDirectories(a: TreeViewFinderNodeProps, b: TreeViewFinderNo
     }
     return a.name.localeCompare(b.name);
 }
+
+const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
+
+export function searchElementsInfos(searchTerm: string, currentDirectoryUuid: UUID | undefined) {
+    console.info("Fetching elements infos matching with '%s' term ... ", searchTerm);
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('userInput', searchTerm);
+    if (currentDirectoryUuid) {
+        urlSearchParams.append('directoryUuid', currentDirectoryUuid);
+    }
+    return backendFetchJson(
+        `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/elements/indexation-infos?${urlSearchParams.toString()}`,
+        {
+            method: 'get',
+        }
+    );
+}
+
+const MAX_RECENTS = 10; // max number of recent elements
 
 export function DirectoryItemSelector({
     open,
@@ -396,14 +426,57 @@ export function DirectoryItemSelector({
     }, [open, isRootsLoaded, updateRootDirectories, initializeExpansion]);
 
     const handleClose = useCallback(
-        (nodes: TreeViewFinderNodeProps[]) => {
+        (nodes: TreeViewFinderNodeProps[], shouldUpdateRecents?: boolean) => {
             if (nodes && nodes.length > 0) {
                 const lastSelectedNode = nodes[0];
-                saveLastSelectedDirectoryFromNode(lastSelectedNode);
+                if (shouldUpdateRecents) {
+                    fetchConfigParameter(EXPLORE_APP_NAME, RECENTS_PARAMETER_NAME).then((recents) => {
+                        let newValue: string = '';
+                        const parents: TreeViewFinderNodeProps[] | undefined = lastSelectedNode.parents;
+                        const fullPath = parents ? [...parents.map((parent) => parent.name)].join('/') : '';
+
+                        let recentAlreadyHere: boolean = false;
+                        if (recents !== undefined && recents !== null && recents !== '') {
+                            const arrayRecents: any[] = JSON.parse(recents.value) as any[];
+                            recentAlreadyHere = arrayRecents.some((recent) => recent.id === lastSelectedNode.id);
+                            if (!recentAlreadyHere) {
+                                // We limit the number of recent items to MAX_RECENTS, due to limitations
+                                // in config-server when updating a parameter, as the new value provided is in
+                                // the URL
+                                if (arrayRecents.length === MAX_RECENTS) {
+                                    arrayRecents.pop();
+                                }
+                                arrayRecents.unshift({
+                                    id: lastSelectedNode.id,
+                                    name: lastSelectedNode.name,
+                                    type: lastSelectedNode.type,
+                                    equipmentType: lastSelectedNode.specificMetadata?.equipmentType,
+                                    date: new Date().toISOString(),
+                                    path: fullPath,
+                                });
+                                newValue = JSON.stringify(arrayRecents);
+                            }
+                        } else {
+                            newValue = JSON.stringify([
+                                {
+                                    id: lastSelectedNode.id,
+                                    name: lastSelectedNode.name,
+                                    type: lastSelectedNode.type,
+                                    equipmentType: lastSelectedNode.specificMetadata?.equipmentType,
+                                    date: new Date().toISOString(),
+                                    path: fullPath,
+                                },
+                            ]);
+                        }
+                        if (!recentAlreadyHere) {
+                            updateConfigParameter(EXPLORE_APP_NAME, RECENTS_PARAMETER_NAME, newValue).then();
+                        }
+                    });
+
+                    saveLastSelectedDirectoryFromNode(lastSelectedNode).then();
+                }
             }
-
             setAutoExpandedNodes([]);
-
             onClose(nodes);
         },
         [onClose]
@@ -420,8 +493,38 @@ export function DirectoryItemSelector({
             onlyLeaves // defaulted to true
             selected={selected}
             onClose={handleClose}
+            types={types}
+            equipmentTypes={equipmentTypes}
             {...otherTreeViewFinderProps}
             data={data}
+            fetchSearchElements={(term) =>
+                searchElementsInfos(term, undefined).then(async (page) => {
+                    // searchElementInfos return only the type of elements indexed in elasticsearch :
+                    // we need to fetch the metadata to get the equipment type, in order to filter
+                    // the search results by type and equipment type
+                    // TODO later ? : add equipment type in indexation, so we can do without this part
+                    const ids: any[] = page.content.map((e: any) => e.id);
+                    const elementsAttributes = await fetchElementsInfos(ids);
+                    const filteredIds = elementsAttributes
+                        .filter(
+                            (e) =>
+                                types.includes(e.type as string) &&
+                                (equipmentTypes === undefined ||
+                                    equipmentTypes.includes(e.specificMetadata?.equipmentType))
+                        )
+                        .map((e) => e.elementUuid);
+                    return {
+                        ...page,
+                        content: page.content
+                            .filter((e: any) => filteredIds.includes(e.id))
+                            .map((e: { id: any; name: any; pathName: any }) => ({
+                                id: e.id,
+                                name: e.name,
+                                pathName: e.pathName,
+                            })),
+                    };
+                })
+            }
         />
     );
 }

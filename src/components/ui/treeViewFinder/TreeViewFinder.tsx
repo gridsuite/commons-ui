@@ -5,9 +5,19 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
+import React, {
+    Dispatch,
+    FunctionComponent,
+    ReactElement,
+    SetStateAction,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from 'react';
 import { useIntl } from 'react-intl';
 import {
+    Box,
     Button,
     type ButtonProps,
     Dialog,
@@ -18,18 +28,42 @@ import {
     type ModalProps,
     styled,
     Typography,
+    Tab,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Tabs,
 } from '@mui/material';
 import { SimpleTreeView, SimpleTreeViewClasses, TreeItem } from '@mui/x-tree-view';
 import {
     Check as CheckIcon,
     ChevronRight as ChevronRightIcon,
     ExpandMore as ExpandMoreIcon,
+    AccessTime,
+    FolderOpen,
+    Star,
 } from '@mui/icons-material';
 import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../../utils/styles';
 import { CancelButton } from '../reactHookForm/utils/CancelButton';
 import { ElementAttributes, ElementType } from '../../../utils';
 import { doesNodeHasChildren } from './TreeViewUtils';
+import { HighlightedText } from './HighlightedText';
+import { TreeViewSearchBar, type SearchBarItem, type TreeViewSearchBarProps } from './TreeViewSearchBar';
+import { fetchConfigParameter, fetchDirectoryElementPath, fetchElementNames } from '../../../services';
+
+export const FAVORITES_PARAMETER_NAME = 'favoriteElements';
+export const RECENTS_PARAMETER_NAME = 'recentElements';
+export const EXPLORE_APP_NAME = 'Explore';
+
+const enum SelectorTab {
+    FAVORITES = 'favorites',
+    RECENTS = 'recents',
+    BROWSE = 'browse',
+}
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -93,6 +127,9 @@ interface TreeViewFinderNodeMapProps {
 }
 
 export interface TreeViewFinderProps {
+    types: string[];
+    equipmentTypes?: string[];
+
     // TreeView Props
     defaultExpanded?: string[];
     defaultSelected?: string[];
@@ -105,7 +142,7 @@ export interface TreeViewFinderProps {
     // dialog props
     contentText?: string;
     open: ModalProps['open'];
-    onClose: (nodes: TreeViewFinderNodeProps[]) => void;
+    onClose: (nodes: TreeViewFinderNodeProps[], shouldUpdateRecents?: boolean) => void;
     validationButtonText?: string;
     cancelButtonProps?: ButtonProps;
     title?: string;
@@ -118,6 +155,8 @@ export interface TreeViewFinderProps {
 
     inline?: boolean;
     onSelectionChange?: (nodes: TreeViewFinderNodeProps[]) => void;
+    fetchSearchElements?: TreeViewSearchBarProps<SearchBarItem>['fetchElements'];
+
     /**
      * TreeViewFinder documentation :
      * Component to choose elements in a flat list or a Tree data structure
@@ -147,6 +186,7 @@ export interface TreeViewFinderProps {
      * @param {Array}           [expanded] - ids of the expanded items
      * @param {Boolean}         [inline=false] - When true, renders only the tree content without the Dialog wrapper. Action buttons are hidden in inline mode.
      * @callback                onSelectionChange - Called whenever the selection changes in inline mode with the currently selected selectable nodes.
+     * @callback                fetchSearchElements - Called to search matching elements
      */
 }
 
@@ -161,6 +201,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         defaultExpanded,
         defaultSelected,
         onClose,
+        types,
+        equipmentTypes,
         onTreeBrowse,
         validationButtonText,
         onlyLeaves = true,
@@ -172,6 +214,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         expanded: expandedProp,
         inline = false,
         onSelectionChange,
+        fetchSearchElements,
     } = props;
 
     const [mapPrintedNodes, setMapPrintedNodes] = useState<TreeViewFinderNodeMapProps>({});
@@ -180,9 +223,24 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const [expanded, setExpanded] = useState<string[] | undefined>(defaultExpanded ?? []);
     // Controlled selected for TreeView
     const [selected, setSelected] = useState<string[] | undefined>(defaultSelected ?? []);
+    // Row selected in recents or favorites
+    const [rowSelected, setRowSelected] = useState<any | undefined>(undefined);
 
     const scrollRef = useRef<(HTMLLIElement | null)[]>([]);
     const [autoScrollAllowed, setAutoScrollAllowed] = useState<boolean>(true);
+
+    const [activeTab, setActiveTab] = useState<SelectorTab>(SelectorTab.BROWSE);
+
+    const [highlightedNodeId, setHighlightedNodeId] = useState<string | null>(null);
+    const [currentSearchTerm, setCurrentSearchTerm] = useState('');
+    const [recents, setRecents] = useState<any[]>([]);
+    const [favorites, setFavorites] = useState<any[]>([]);
+
+    // map of node id to node html element reference
+    const nodeRefsMap = useRef<Map<string, HTMLLIElement>>(new Map());
+    const treeContainerRef = useRef<HTMLDivElement | null>(null);
+    const isSearchDisabled =
+        !fetchSearchElements || activeTab === SelectorTab.FAVORITES || activeTab === SelectorTab.RECENTS;
 
     /* Utilities */
     const isLeaf = (node: TreeViewFinderNodeProps) => {
@@ -195,8 +253,10 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 
     const isValidationDisabled = () => {
         return (
-            selected?.length === 0 ||
-            (selected?.length === selectedProp?.length && selected?.every((itemId) => selectedProp?.includes(itemId)))
+            rowSelected === undefined &&
+            (selected?.length === 0 ||
+                (selected?.length === selectedProp?.length &&
+                    selected?.every((itemId) => selectedProp?.includes(itemId))))
         );
     };
 
@@ -242,13 +302,52 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
 
     // Effects
     useEffect(() => {
+        function fetchParameter(paramName: string, setActions: Dispatch<SetStateAction<any[]>>) {
+            fetchConfigParameter(EXPLORE_APP_NAME, paramName).then((paramValue) => {
+                if (paramValue !== undefined && paramValue !== null && paramValue !== '') {
+                    let values: any[] = JSON.parse(paramValue.value) as any[];
+
+                    // Filtering on types and equipment types
+                    const allUuids: Set<string> = new Set(
+                        values
+                            .filter(
+                                (e) =>
+                                    types.includes(e.type) &&
+                                    (equipmentTypes === undefined || equipmentTypes.includes(e.equipmentType))
+                            )
+                            .map((value: any) => value.id)
+                    );
+
+                    // Remove deleted elements
+                    const elementNamesPromise =
+                        allUuids.size === 0 ? Promise.resolve(null) : fetchElementNames(allUuids);
+                    elementNamesPromise.then((elementNames) => {
+                        values = elementNames
+                            ? values.filter((value) => {
+                                  return value.id in elementNames;
+                              })
+                            : [];
+                        setActions(values);
+                    });
+                }
+            });
+        }
+
+        if (open) {
+            // fetch recents and favorites
+            fetchParameter(RECENTS_PARAMETER_NAME, setRecents);
+            fetchParameter(FAVORITES_PARAMETER_NAME, setFavorites);
+        }
+    }, [data, open, types, equipmentTypes]);
+
+    useEffect(() => {
         // compute all mapPrintedNodes here from data prop
         // if data changes in current expanded nodes
         const newMapPrintedNodes = computeMapPrintedNodes(data);
         setMapPrintedNodes(newMapPrintedNodes);
     }, [data, computeMapPrintedNodes]);
 
-    const computeSelectedNodes = (): TreeViewFinderNodeProps[] => {
+    const computeSelectedNodesFromTree = (): TreeViewFinderNodeProps[] => {
         if (!selected) {
             return [];
         }
@@ -258,15 +357,17 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 if (!selectedNode) {
                     return null;
                 }
-
                 const parents = findParents(itemId, data ?? []);
-
                 return {
                     ...selectedNode,
                     parents: parents ?? [],
                 };
             })
             .filter((node) => node !== null) as TreeViewFinderNodeProps[];
+    };
+
+    const computeSelectedNodeFromRecentsOrFavorites = (): TreeViewFinderNodeProps[] => {
+        return [{ id: rowSelected.id, name: rowSelected.name }];
     };
 
     const handleNodeToggle = (_e: React.SyntheticEvent | null, itemIds: string[]) => {
@@ -363,6 +464,35 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         }
     };
 
+    /**
+     * Callback called when user select a result from the search dropdown.
+     */
+    const handleSearchSelection = useCallback(
+        (item: SearchBarItem) => {
+            // Save the search term so HighlightedText can use it
+            setCurrentSearchTerm(item.name);
+
+            // Expand every ancestor of the found node.
+            fetchDirectoryElementPath(item.id as UUID).then((response: ElementAttributes[]) => {
+                const path = response.filter((e) => e.elementUuid !== item.id).map((e) => e.elementUuid);
+
+                setExpanded((prev) => Array.from(new Set([...(prev ?? []), ...path])));
+                // Trigger onTreeBrowse for each ancestor that wasn't already expanded
+                path.forEach((a) => {
+                    if (!expanded?.includes(a)) {
+                        onTreeBrowse?.(a);
+                    }
+                });
+                // Mark the node as highlighted
+                setHighlightedNodeId(item.id);
+                // Select the node in order to enable validation button
+                handleNodeSelect(null, item.id);
+            });
+        },
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [data, expanded, onTreeBrowse]
+    );
+
     /* Render utilities */
     const getValidationButtonText = () => {
         if (validationButtonText) {
@@ -403,10 +533,13 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     };
 
     const renderTreeItemLabel = (node: TreeViewFinderNodeProps) => {
+        const isHighlighted = node.id === highlightedNodeId && currentSearchTerm.length > 0;
         return (
             <div className={composeClasses(classes, cssLabelRoot)}>
                 {getNodeIcon(node)}
-                <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
+                <Typography className={composeClasses(classes, cssLabelText)}>
+                    {isHighlighted ? <HighlightedText text={node.name} highlight={currentSearchTerm} /> : node.name}
+                </Typography>
             </div>
         );
     };
@@ -414,6 +547,43 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const showChevron = (node: TreeViewFinderNodeProps) => {
         return !!(node.childrenCount && node.childrenCount > 0);
     };
+
+    // Scroll to the highlighted node
+    useEffect(() => {
+        if (!highlightedNodeId) {
+            return undefined;
+        }
+
+        const scrollToNode = () => {
+            const treeItemEl = nodeRefsMap.current.get(highlightedNodeId);
+            if (!treeItemEl) {
+                return false;
+            }
+            treeItemEl.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'center' });
+            return true;
+        };
+
+        if (scrollToNode()) {
+            return undefined;
+        }
+
+        const treeContainer = treeContainerRef.current;
+        if (!treeContainer) {
+            return undefined;
+        }
+
+        // Using a MutationObserver on the tree container so we are notified as
+        // soon as the TreeItem is mounted (after async directory expansion).
+        const observer = new MutationObserver(() => {
+            if (scrollToNode()) {
+                observer.disconnect();
+            }
+        });
+
+        observer.observe(treeContainer, { childList: true, subtree: true });
+
+        return () => observer.disconnect();
+    }, [highlightedNodeId]);
 
     const renderTree = (node: TreeViewFinderNodeProps) => {
         if (!node) {
@@ -445,13 +615,20 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                     },
                 }}
                 ref={(element) => {
+                    // add each mounted node to the map, and remove it on unmount
+                    if (element) {
+                        nodeRefsMap.current.set(node.id, element);
+                    } else {
+                        nodeRefsMap.current.delete(node.id);
+                    }
+
                     // Add to scroll ref if it's a selected element, or if no selected elements and it's an expanded element
                     const shouldAddToScrollRef =
                         selectedProp && selectedProp.length > 0
                             ? selectedProp.includes(node.id)
                             : (expandedProp?.includes(node.id) ?? false);
 
-                    if (shouldAddToScrollRef) {
+                    if (shouldAddToScrollRef || node.id === highlightedNodeId) {
                         scrollRef.current.push(element);
                     }
                 }}
@@ -488,13 +665,24 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
     const handleCancel = () => {
         onClose?.([]);
         setSelected([]);
+        setRowSelected(undefined);
         setAutoScrollAllowed(true);
+        setHighlightedNodeId(null);
+        setCurrentSearchTerm('');
     };
 
     const handleValidate = () => {
-        onClose?.(computeSelectedNodes());
+        onClose?.(
+            activeTab === SelectorTab.BROWSE
+                ? computeSelectedNodesFromTree()
+                : computeSelectedNodeFromRecentsOrFavorites(),
+            activeTab === SelectorTab.BROWSE
+        );
         setSelected([]);
+        setRowSelected(undefined);
         setAutoScrollAllowed(true);
+        setHighlightedNodeId(null);
+        setCurrentSearchTerm('');
     };
 
     const actionButtons = (
@@ -511,6 +699,11 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             </Button>
         </>
     );
+
+    const handleRowClick = (row: any) => {
+        // set selected row
+        setRowSelected(row);
+    };
 
     /* ── Inline mode ── */
     if (inline) {
@@ -532,6 +725,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 if (r === 'escapeKeyDown') {
                     onClose?.([]);
                     setSelected([]);
+                    setRowSelected(undefined);
                 }
             }}
             aria-labelledby="TreeViewFindertitle"
@@ -546,7 +740,87 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                 <DialogContentText>
                     {contentText ?? intl.formatMessage({ id: 'treeview_finder/contentText' }, { multiSelect })}
                 </DialogContentText>
-                {renderTreeView}
+
+                <Box sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
+                    <Box sx={{ px: 1, pt: 1, pb: 0.5 }}>
+                        {fetchSearchElements ? (
+                            <TreeViewSearchBar<SearchBarItem>
+                                fetchElements={fetchSearchElements}
+                                onSelectionChange={handleSearchSelection}
+                                disabled={isSearchDisabled}
+                            />
+                        ) : (
+                            /* Disable TextField when no fetch function is provided */
+                            <TreeViewSearchBar<SearchBarItem>
+                                fetchElements={() => Promise.resolve([])}
+                                onSelectionChange={() => {}}
+                                disabled
+                            />
+                        )}
+                    </Box>
+
+                    <Tabs
+                        value={activeTab}
+                        onChange={(_e, newTab: SelectorTab) => setActiveTab(newTab)}
+                        variant="fullWidth"
+                        sx={{ borderBottom: 1, borderColor: 'divider', minHeight: 48 }}
+                    >
+                        <Tab
+                            value={SelectorTab.FAVORITES}
+                            icon={<Star fontSize="small" />}
+                            iconPosition="start"
+                            label={intl.formatMessage({ id: 'directoryItemSelector/tab/favorites' })}
+                            sx={{ textTransform: 'none', minHeight: 48 }}
+                        />
+                        <Tab
+                            value={SelectorTab.RECENTS}
+                            icon={<AccessTime fontSize="small" />}
+                            iconPosition="start"
+                            label={intl.formatMessage({ id: 'directoryItemSelector/tab/recents' })}
+                            sx={{ textTransform: 'none', minHeight: 48 }}
+                        />
+                        <Tab
+                            value={SelectorTab.BROWSE}
+                            icon={<FolderOpen fontSize="small" />}
+                            iconPosition="start"
+                            label={intl.formatMessage({ id: 'directoryItemSelector/tab/browse' })}
+                            sx={{ textTransform: 'none', minHeight: 48 }}
+                        />
+                    </Tabs>
+
+                    {(activeTab === SelectorTab.FAVORITES || activeTab === SelectorTab.RECENTS) && (
+                        <TableContainer sx={{ flex: 1, maxHeight: 400, overflowY: 'auto' }}>
+                            <Table stickyHeader size="small">
+                                <TableHead>
+                                    <TableRow>
+                                        <TableCell>
+                                            {intl.formatMessage({ id: 'directoryItemSelector/table/name' })}
+                                        </TableCell>
+                                        <TableCell>
+                                            {intl.formatMessage({ id: 'directoryItemSelector/table/directory' })}
+                                        </TableCell>
+                                    </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                    {(activeTab === SelectorTab.RECENTS ? recents : favorites).map((item: any) => (
+                                        <TableRow
+                                            key={item.id}
+                                            hover
+                                            selected={rowSelected?.id === item.id}
+                                            sx={{ height: 40, cursor: 'pointer' }}
+                                            onClick={() => handleRowClick(item)}
+                                        >
+                                            <TableCell>{item.name}</TableCell>
+                                            <TableCell>{item.path}</TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                        </TableContainer>
+                    )}
+
+                    {activeTab === SelectorTab.BROWSE && <div ref={treeContainerRef}>{renderTreeView}</div>}
+                </Box>
             </DialogContent>
             <DialogActions>{actionButtons}</DialogActions>
         </Dialog>
