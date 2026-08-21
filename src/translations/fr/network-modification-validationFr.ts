@@ -13,6 +13,7 @@ import {
     SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
     SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
+    TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
     VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
     WRONG_REF_OR_VALUE_ERROR,
@@ -44,6 +45,7 @@ export const networkModificationValidationFr = {
         "Lors de l'utilisation de %, ce champ doit être une valeur numérique positive valide",
     [VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR]:
         "Lors de l'utilisation de %, ce champ doit être une référence de champ valide",
+    [TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'La valeur de la bande morte doit être supérieure ou égale à 0',
     TemporaryLimitNameUnicityError: 'Les noms des limites temporaires doivent être uniques dans la table',
     TemporaryLimitDurationUnicityError: 'Les tempos des limites temporaires doivent être uniques dans la table',
     LimitSetApplicabilityError: "2 jeux de limites de même nom doivent s'appliquer sur des côtés différents.",

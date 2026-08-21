@@ -7,6 +7,7 @@
 
 import { FieldConstants } from './constants/fieldConstants';
 import { RunningStatus } from './running-status';
+import { toNumber } from './validation-functions';
 
 /**
  * Returns true when the given form rows contain at least one cell with a
@@ -70,3 +71,51 @@ export const isObjectEmpty = (object: object) => object && Object.keys(object).l
 export function getRows(rows: any[] | undefined, status: string): any[] {
     return status === RunningStatus.SUCCEED && rows ? rows : [];
 }
+
+/**
+ * Returns true if every element of this array is a number and they are ordered (ascending or descending)
+ * @param array or numbers
+ * @returns {boolean}
+ */
+export const areNumbersOrdered = (array?: unknown) => {
+    if (!Array.isArray(array)) {
+        return false;
+    }
+    if (array.length === 0) {
+        return true;
+    }
+    if (array.length === 1) {
+        return !Number.isNaN(toNumber(array[0]));
+    }
+
+    let current = toNumber(array[0]);
+    if (Number.isNaN(current)) {
+        return false;
+    }
+    let order = null;
+
+    for (let i = 1; i < array.length; i++) {
+        const nextOne = toNumber(array[i]);
+        if (Number.isNaN(nextOne)) {
+            return false;
+        }
+        if (current !== nextOne) {
+            if (order === null) {
+                order = current < nextOne ? 'asc' : 'desc';
+            }
+            if ((order === 'asc' && current > nextOne) || (order === 'desc' && current < nextOne)) {
+                return false;
+            }
+            current = nextOne;
+        }
+    }
+    return true;
+};
+
+export const addSelectedFieldToRows = <T>(rows?: T[]): (T & { selected: boolean })[] => {
+    return (
+        rows?.map((row) => {
+            return { ...row, [FieldConstants.SELECTED]: false };
+        }) ?? []
+    );
+};
