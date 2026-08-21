@@ -309,6 +309,8 @@ export const networkModificationsFr = {
     unlimited: 'Illimité',
     forbidden: 'Interdit',
     Applicability: 'Applicable sur',
+    disableOLGeditionByReplace:
+        "Les données saisies pour les jeux de limites seront replacées par les valeurs courantes de l'équipement. Voulez-vous continuer ?",
     disableOLGedition: 'Les données saisies pour les jeux de limites ne seront pas conservées. Voulez-vous continuer ?',
     Edit: 'Édition',
     View: 'Visualisation',

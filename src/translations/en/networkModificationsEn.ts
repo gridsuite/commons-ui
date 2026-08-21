@@ -303,6 +303,8 @@ export const networkModificationsEn = {
     unlimited: 'Unlimited',
     forbidden: 'Forbidden',
     Applicability: 'Applicability',
+    disableOLGeditionByReplace:
+        "Entered limit sets data will be lost and replaced by the equipment actual values. Do you wish to continue?",
     disableOLGedition: 'Entered limit sets data will be lost. Do you wish to continue?',
     Edit: 'Edit',
     View: 'View',
