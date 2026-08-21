@@ -17,7 +17,7 @@ import {
 import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { DynamicSecurityAnalysisParametersForm } from './dynamic-security-analysis-parameters-form';
-import { useTabs } from '../common/hook/use-tabs';
+import { useTabs } from '../../../hooks';
 import { TabValues } from './dynamic-security-analysis.type';
 
 type DynamicSecurityAnalysisInlineProps = {
@@ -44,7 +44,7 @@ export function DynamicSecurityAnalysisInline({
 
     const useTabsReturn = useTabs({
         defaultTab: TabValues.SCENARIO,
-        tabEnum: TabValues,
+        tabValues: Object.values(TabValues),
         errors: formState.errors,
     });
 

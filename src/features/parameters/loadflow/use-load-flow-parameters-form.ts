@@ -26,7 +26,6 @@ import {
     PROVIDER,
     SPECIFIC_PARAMETERS,
     toFormValuesLimitReductions,
-    useTabs,
     VERSION_PARAMETER,
 } from '../common';
 import {
@@ -42,7 +41,7 @@ import {
     getNameElementEditorEmptyFormData,
     getNameElementEditorSchema,
 } from '../../../components/ui/dialogs/name-element-editor';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import {
     formatSpecificParameters,
     getAllSpecificParametersValues,
@@ -236,7 +235,7 @@ export const useLoadFlowParametersForm = (
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.GENERAL,
-        tabEnum: TabValues,
+        tabValues: Object.values(TabValues),
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

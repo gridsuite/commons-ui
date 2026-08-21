@@ -20,8 +20,7 @@ import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fetchDynamicMarginCalculationParameters } from '../../../services/dynamic-margin-calculation';
-import { useSnackMessage } from '../../../hooks';
-import { useTabs } from '../common/hook/use-tabs';
+import { useSnackMessage, useTabs } from '../../../hooks';
 import { TabValues } from './dynamic-margin-calculation.type';
 
 type DynamicMarginCalculationInlineProps = {
@@ -50,8 +49,8 @@ export function DynamicMarginCalculationInline({
     const { reset, getValues, formState, handleSubmit } = formMethods;
 
     const useTabsReturn = useTabs({
-        defaultTab: Object.values(TabValues)[0],
-        tabEnum: TabValues,
+        defaultTab: TabValues.TAB_TIME_DELAY,
+        tabValues: Object.values(TabValues),
         errors: formState.errors,
     });
 

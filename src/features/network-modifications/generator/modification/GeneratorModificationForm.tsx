@@ -6,13 +6,13 @@
  */
 
 import { Grid, Stack } from '@mui/material';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import { GENERATOR_TAB_FIELDS, GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
 import { GeneratorDialogTabs } from './GeneratorDialogTabs';
 import { GeneratorDialogTabsContent, GeneratorDialogTabsContentProps } from './GeneratorDialogTabsContent';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 interface GeneratorModificationFormProps
     extends GeneratorDialogHeaderProps, Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
@@ -27,10 +27,16 @@ export function GeneratorModificationForm({
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
 }: Readonly<GeneratorModificationFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<GeneratorDialogTab>(
-        GENERATOR_TAB_FIELDS,
-        GeneratorDialogTab.CONNECTIVITY_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<GeneratorDialogTab>({
+        defaultTab: GeneratorDialogTab.CONNECTIVITY_TAB,
+        errors,
+        tabFields: GENERATOR_TAB_FIELDS,
+    });
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (

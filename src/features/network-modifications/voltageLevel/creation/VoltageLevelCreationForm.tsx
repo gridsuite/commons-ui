@@ -7,14 +7,14 @@
 
 import { Box, Grid, Tab, Tabs, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { useWatch } from 'react-hook-form';
+import { useFormState, useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
 import { FieldConstants } from '../../../../utils';
 import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
 import { filledTextField, PropertiesForm } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
-import { useTabsWithError } from '../../hooks';
+import { useTabs } from '../../../../hooks';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
@@ -25,10 +25,16 @@ export function VoltageLevelCreationForm({
     substationOptions,
     showDeleteSubstationButton = true,
 }: VoltageLevelCreationFormProps = {}) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<VoltageLevelTab>(
-        VOLTAGE_LEVEL_TAB_FIELDS,
-        VoltageLevelTab.SUBSTATION_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<VoltageLevelTab>({
+        defaultTab: VoltageLevelTab.SUBSTATION_TAB,
+        errors,
+        tabFields: VOLTAGE_LEVEL_TAB_FIELDS,
+    });
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     return (

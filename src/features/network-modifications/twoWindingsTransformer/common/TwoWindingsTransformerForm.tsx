@@ -6,17 +6,18 @@
  */
 
 import { Box, Stack } from '@mui/material';
+import { useFormState } from 'react-hook-form';
 import {
     TwoWindingsTransformerDialogHeader,
     TwoWindingsTransformerDialogHeaderProps,
 } from './TwoWindingsTransformerDialogHeader';
-import { useTabsWithError } from '../../hooks';
 import { TwoWindingsTransformerDialogTab, TWT_TAB_FIELDS } from './twoWindingsTransformer.utils';
 import { TwoWindingsTransformerDialogTabs } from './TwoWindingsTransformerDialogTabs';
 import {
     TwoWindingsTransformerDialogTabsContent,
     TwoWindingsTransformerDialogTabsContentProps,
 } from './TwoWindingsTransformerDialogTabsContent';
+import { useTabs } from '../../../../hooks';
 
 interface TwoWindingsTransformerFormProps
     extends
@@ -31,10 +32,16 @@ export function TwoWindingsTransformerForm({
     fetchVoltageLevelEquipments,
     isModification = false,
 }: Readonly<TwoWindingsTransformerFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<TwoWindingsTransformerDialogTab>(
-        TWT_TAB_FIELDS,
-        TwoWindingsTransformerDialogTab.CONNECTIVITY_TAB
-    );
+    const { errors } = useFormState();
+    const {
+        selectedTab: tabIndex,
+        setSelectedTab: setTabIndex,
+        tabsWithError: tabIndexesWithError,
+    } = useTabs<TwoWindingsTransformerDialogTab>({
+        defaultTab: TwoWindingsTransformerDialogTab.CONNECTIVITY_TAB,
+        errors,
+        tabFields: TWT_TAB_FIELDS,
+    });
 
     return (
         <Stack spacing={2} height="100%">

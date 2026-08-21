@@ -24,11 +24,10 @@ import {
     LIMIT_REDUCTIONS_FORM,
     PROVIDER,
     toFormValuesLimitReductions,
-    useTabs,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { updateParameter } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
@@ -171,7 +170,7 @@ export const useSecurityAnalysisParametersForm = (
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.Contingencies,
-        tabEnum: TabValues,
+        tabValues: Object.values(TabValues),
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });
