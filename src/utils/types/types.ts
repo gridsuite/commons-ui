@@ -90,6 +90,11 @@ export type UserDetail = {
     maxAllowedDynamicMargin?: number;
 };
 
+export type UserQuotaState = {
+    current: number;
+    max: number;
+}
+
 export enum AnnouncementSeverity {
     INFO = 'INFO',
     WARN = 'WARN',
