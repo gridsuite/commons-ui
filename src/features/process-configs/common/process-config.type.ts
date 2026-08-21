@@ -9,6 +9,7 @@ import { UUID } from 'node:crypto';
 export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
     LOADFLOW = 'LOADFLOW',
+    SHORT_CIRCUIT = 'SHORT_CIRCUIT',
 }
 
 // Backend types
