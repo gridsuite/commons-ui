@@ -79,4 +79,5 @@ export interface VscHvdcLineInfo {
     hvdcOperatorActivePowerRange: HvdcOperatorActivePowerRangeInfo;
     converterStation1: ConverterStationInfos;
     converterStation2: ConverterStationInfos;
+    properties: Record<string, string>;
 }

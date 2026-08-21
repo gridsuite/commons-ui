@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './vscHvdcLine.types';
 export * from './characteristics';
 export * from './converterStation';
 export * from './form';
+export * from './vscHvdcLine.types';
