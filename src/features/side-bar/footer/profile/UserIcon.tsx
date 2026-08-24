@@ -21,17 +21,15 @@ function getAbbreviationFromUserName(name: string) {
 
 export function UserAvatarIcon({ label }: Readonly<{ label: string }>) {
     return (
-        <Tooltip title={label}>
-            <Avatar
-                sx={(theme) => ({
-                    height: '24px',
-                    width: '24px',
-                    fontSize: theme.typography.pxToRem(11),
-                    textTransform: 'capitalize',
-                })}
-            >
-                {getAbbreviationFromUserName(label)}
-            </Avatar>
-        </Tooltip>
+        <Avatar
+            sx={(theme) => ({
+                height: '24px',
+                width: '24px',
+                fontSize: theme.typography.pxToRem(11),
+                textTransform: 'uppercase',
+            })}
+        >
+            {getAbbreviationFromUserName(label)}
+        </Avatar>
     );
 }
