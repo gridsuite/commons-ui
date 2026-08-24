@@ -21,9 +21,9 @@ export interface AppSideBarFooterProps {
     isDeveloperMode: boolean;
     handleChangeDeveloperMode: (newValue: boolean) => void;
     currentTheme: GsTheme;
-    setTheme: (newTheme: GsTheme) => Promise<void>;
+    setTheme: (newTheme: GsTheme) => void;
     selectedLanguage: GsLang;
-    setSelectedLanguage: (newSelectedLanguage: GsLang) => Promise<void>;
+    setSelectedLanguage: (newSelectedLanguage: GsLang) => void;
     userProfile?: UserProfile;
     appsAndUrls: Metadata[];
     onLogoutClick?: () => void;

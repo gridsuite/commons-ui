@@ -18,9 +18,9 @@ import { CustomNestedMenuItem } from '../../../../components';
 interface SettingsMenuProps {
     isMinimized: boolean;
     currentTheme: GsTheme;
-    setTheme: (newTheme: GsTheme) => Promise<void>;
+    setTheme: (newTheme: GsTheme) => void;
     selectedLanguage: GsLang;
-    setSelectedLanguage: (newSelectedLanguage: GsLang) => Promise<void>;
+    setSelectedLanguage: (newSelectedLanguage: GsLang) => void;
 }
 
 export function SettingsMenu({

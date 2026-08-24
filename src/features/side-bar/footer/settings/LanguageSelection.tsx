@@ -14,7 +14,7 @@ import { submenuFooterStyle } from '../common/submenu-footer.style';
 interface LanguageSelectionProps {
     language: GsLang;
     isSelectedLanguage: boolean;
-    setSelectedLanguage: (newLanguage: GsLang) => Promise<void>;
+    setSelectedLanguage: (newLanguage: GsLang) => void;
 }
 export function LanguageSelection({
     language,
@@ -22,7 +22,7 @@ export function LanguageSelection({
     setSelectedLanguage,
 }: Readonly<LanguageSelectionProps>) {
     const onClick = () => {
-        setSelectedLanguage(language).catch((err) => console.error(err));
+        setSelectedLanguage(language);
     };
 
     return (

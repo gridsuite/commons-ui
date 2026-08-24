@@ -14,7 +14,7 @@ import { submenuFooterStyle } from '../common/submenu-footer.style';
 
 interface DarkModeToggleProps {
     currentTheme: GsTheme;
-    setTheme: (newTheme: GsTheme) => Promise<void>;
+    setTheme: (newTheme: GsTheme) => void;
 }
 
 export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeToggleProps>) {
@@ -22,7 +22,7 @@ export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeTogg
 
     const toggleMode = (event: ChangeEvent<HTMLInputElement>) => {
         const targetModeValue = event.target.checked ? DARK_THEME : LIGHT_THEME;
-        setTheme(targetModeValue).catch((err) => console.error(err));
+        setTheme(targetModeValue);
     };
     return (
         <CustomMenuItem sx={submenuFooterStyle.subMenuChildren}>
