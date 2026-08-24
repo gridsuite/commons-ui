@@ -5,10 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Divider, Stack, Typography, IconButton, Tooltip } from '@mui/material';
+import { Box, Divider, Stack, Typography, IconButton, Tooltip, ThemeProvider } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import { ReactNode, useState } from 'react';
 import { AboutDialog, GridSuiteModule } from '../topBar';
+import { useAppSideBarTheme } from './AppSideBarThemeProvider';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
@@ -33,6 +34,7 @@ export function AppSideBarHeader({
     globalVersionPromise,
     additionalModulesPromise,
 }: Readonly<AppSideBarHeaderProps>) {
+    const { theme } = useAppSideBarTheme();
     const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
     return (
         <>
@@ -85,15 +87,17 @@ export function AppSideBarHeader({
 
                 <Divider />
             </Stack>
-            <AboutDialog
-                appLicense={appLicense}
-                appVersion={appVersion}
-                open={isAboutDialogOpen}
-                onClose={() => setIsAboutDialogOpen(false)}
-                additionalModulesPromise={additionalModulesPromise}
-                globalVersionPromise={globalVersionPromise}
-                appName={appName}
-            />
+            <ThemeProvider theme={theme}>
+                <AboutDialog
+                    appLicense={appLicense}
+                    appVersion={appVersion}
+                    open={isAboutDialogOpen}
+                    onClose={() => setIsAboutDialogOpen(false)}
+                    additionalModulesPromise={additionalModulesPromise}
+                    globalVersionPromise={globalVersionPromise}
+                    appName={appName}
+                />
+            </ThemeProvider>
         </>
     );
 }

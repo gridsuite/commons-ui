@@ -6,6 +6,7 @@
  */
 
 import { Badge, ManageAccounts } from '@mui/icons-material';
+import { ThemeProvider } from '@mui/material';
 import { UserProfile } from 'oidc-client-ts';
 import { useState } from 'react';
 import { useIntl } from 'react-intl';
@@ -16,6 +17,7 @@ import { SideBarMenuItem } from '../common/SideBarMenuItem';
 import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
 import { UserInformationDialog, UserSettingsDialog } from '../../../topBar';
+import { useAppSideBarTheme } from '../../AppSideBarThemeProvider';
 
 interface ProfileMenuProps {
     isMinimized: boolean;
@@ -31,6 +33,7 @@ export function ProfileMenu({
     handleChangeDeveloperMode,
 }: Readonly<ProfileMenuProps>) {
     const intl = useIntl();
+    const { theme } = useAppSideBarTheme();
     const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
     const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] = useState(false);
 
@@ -58,17 +61,19 @@ export function ProfileMenu({
                     onClick={openProfileSettingsDialog}
                 />
             </CustomNestedMenuItem>
-            <UserInformationDialog
-                openDialog={isProfileDialogOpen}
-                onClose={() => setIsProfileDialogOpen(false)}
-                userProfile={userProfile ?? undefined}
-            />
-            <UserSettingsDialog
-                openDialog={isProfileSettingsDialogOpen}
-                onClose={() => setIsProfileSettingsDialogOpen(false)}
-                developerMode={isDeveloperMode}
-                onDeveloperModeClick={handleChangeDeveloperMode}
-            />
+            <ThemeProvider theme={theme}>
+                <UserInformationDialog
+                    openDialog={isProfileDialogOpen}
+                    onClose={() => setIsProfileDialogOpen(false)}
+                    userProfile={userProfile ?? undefined}
+                />
+                <UserSettingsDialog
+                    openDialog={isProfileSettingsDialogOpen}
+                    onClose={() => setIsProfileSettingsDialogOpen(false)}
+                    developerMode={isDeveloperMode}
+                    onDeveloperModeClick={handleChangeDeveloperMode}
+                />
+            </ThemeProvider>
         </>
     );
 }
