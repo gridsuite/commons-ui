@@ -7,7 +7,7 @@
 
 import { UUID } from 'node:crypto';
 import { BranchModificationDto } from '../../common/branch/branchModification.types';
-import { AttributeModification, toModificationOperation } from '../../../../utils';
+import { AttributeModification } from '../../../../utils';
 import { TapChangerStepCreationDto } from '../creation/twoWindingsTransformerCreation.types';
 
 export interface TapChangerModificationDto {
@@ -48,33 +48,3 @@ export interface TwoWindingsTransformerModificationDto extends BranchModificatio
 }
 
 export type TwoWindingsTransformerModificationDtoWithId = TwoWindingsTransformerModificationDto & { uuid?: UUID };
-
-const getTapChangerEmptyModificationDto = (enabled: boolean | null | undefined): TapChangerModificationDto => ({
-    enabled: toModificationOperation(enabled),
-    regulationType: null,
-    regulationSide: null,
-    lowTapPosition: null,
-    tapPosition: null,
-    isRegulating: null,
-    targetDeadband: null,
-    terminalRefConnectableId: null,
-    terminalRefConnectableType: null,
-    terminalRefConnectableVlId: null,
-    steps: null,
-    hasLoadTapChangingCapabilities: null,
-});
-
-export const getRatioTapChangerEmptyModificationDto = (
-    enabled: boolean | null | undefined
-): RatioTapChangerModificationDto => ({
-    ...getTapChangerEmptyModificationDto(enabled),
-    targetV: null,
-});
-
-export const getPhaseTapChangerEmptyModificationDto = (
-    enabled: boolean | null | undefined
-): PhaseTapChangerModificationDto => ({
-    ...getTapChangerEmptyModificationDto(enabled),
-    regulationMode: null,
-    regulationValue: null,
-});

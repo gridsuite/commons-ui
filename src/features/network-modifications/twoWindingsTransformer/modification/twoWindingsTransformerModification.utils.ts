@@ -66,14 +66,43 @@ import {
     REGULATION_TYPES,
 } from '../../common';
 import {
-    getPhaseTapChangerEmptyModificationDto,
-    getRatioTapChangerEmptyModificationDto,
     PhaseTapChangerModificationDto,
     RatioTapChangerModificationDto,
+    TapChangerModificationDto,
     TwoWindingsTransformerModificationDto,
 } from './twoWindingsTransformerModification.types';
 import { TapChangerStep, TwoWindingsTransformerMapInfos } from '../common/twoWindingsTransformer.types';
 import { TapChangerStepCreationDto } from '../creation/twoWindingsTransformerCreation.types';
+
+const getTapChangerEmptyModificationDto = (enabled: boolean | null | undefined): TapChangerModificationDto => ({
+    enabled: toModificationOperation(enabled),
+    regulationType: null,
+    regulationSide: null,
+    lowTapPosition: null,
+    tapPosition: null,
+    isRegulating: null,
+    targetDeadband: null,
+    terminalRefConnectableId: null,
+    terminalRefConnectableType: null,
+    terminalRefConnectableVlId: null,
+    steps: null,
+    hasLoadTapChangingCapabilities: null,
+});
+
+export const getRatioTapChangerEmptyModificationDto = (
+    enabled: boolean | null | undefined
+): RatioTapChangerModificationDto => ({
+    ...getTapChangerEmptyModificationDto(enabled),
+    targetV: null,
+});
+
+export const getPhaseTapChangerEmptyModificationDto = (
+    enabled: boolean | null | undefined
+): PhaseTapChangerModificationDto => ({
+    ...getTapChangerEmptyModificationDto(enabled),
+    regulationMode: null,
+    regulationValue: null,
+});
 
 const computeRatioTapChangerRegulationMode = (ratioTapForm: RatioTapChangerModificationDto | null): string | null => {
     if (ratioTapForm?.isRegulating?.value == null) {
