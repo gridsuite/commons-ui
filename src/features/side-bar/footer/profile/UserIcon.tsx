@@ -6,9 +6,10 @@
  */
 
 import { Avatar } from '@mui/material';
+import { isEmpty } from '../../../../utils';
 
 function getAbbreviationFromUserName(name: string) {
-    if (name == null || name.trim() === '') {
+    if (isEmpty(name)) {
         return '';
     }
 
