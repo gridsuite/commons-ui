@@ -9,7 +9,7 @@ import { InferType, object, boolean, number, string } from 'yup';
 import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../../../utils';
 import { VscHvdcLineInfo } from '../vscHvdcLine.types';
 import { VscHdvLineCreationDto } from '../../creation/vscHvdcLineCreation.types';
-import { VscHdvLineModificationDto } from '../../modification';
+import { VscHdvLineModificationDto } from '../../modification/vscHvdcLineModification.types';
 
 export const getVscHvdcLineCharacteristicsCreationSchema = () =>
     object().shape(

@@ -6,7 +6,13 @@
  */
 
 import { InferType, object, string } from 'yup';
-import { DeepNullable, FieldConstants, ModificationType, sanitizeString, toModificationOperation } from '../../../../../utils';
+import {
+    DeepNullable,
+    FieldConstants,
+    ModificationType,
+    sanitizeString,
+    toModificationOperation,
+} from '../../../../../utils';
 import {
     getFilledPropertiesFromModification,
     modificationPropertiesSchema,
@@ -47,7 +53,9 @@ export const vscHvdcLineModificationEmptyFormData: DeepNullable<VscHvdcLineModif
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
 };
 
-export const vscHvdcLineModificationDtoToForm = (lineDto: VscHdvLineModificationDto): VscHvdcLineModificationFormData => {
+export const vscHvdcLineModificationDtoToForm = (
+    lineDto: VscHdvLineModificationDto
+): VscHvdcLineModificationFormData => {
     return {
         [FieldConstants.EQUIPMENT_ID]: lineDto.equipmentId,
         [FieldConstants.EQUIPMENT_NAME]: lineDto.equipmentName?.value,
@@ -58,7 +66,9 @@ export const vscHvdcLineModificationDtoToForm = (lineDto: VscHdvLineModification
     };
 };
 
-export const vscHvdcLineModificationFormToDto = (lineForm: VscHvdcLineModificationFormData): VscHdvLineModificationDto => {
+export const vscHvdcLineModificationFormToDto = (
+    lineForm: VscHvdcLineModificationFormData
+): VscHdvLineModificationDto => {
     return {
         type: ModificationType.VSC_MODIFICATION,
         equipmentId: lineForm.equipmentID,

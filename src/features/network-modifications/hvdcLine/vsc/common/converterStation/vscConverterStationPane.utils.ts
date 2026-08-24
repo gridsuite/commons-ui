@@ -32,13 +32,12 @@ import {
 } from '../../../../common/measurements/injectionActiveReactivePowerForm.utils';
 import { ConverterStationCreationDto } from '../../creation/vscHvdcLineCreation.types';
 import { ConverterStationInfos } from '../vscHvdcLine.types';
-import { ConverterStationModificationDto } from '../../modification';
-import { getFilledPropertiesFromModification } from '../../../../common';
+import { ConverterStationModificationDto } from '../../modification/vscHvdcLineModification.types';
 
 export type UpdateReactiveCapabilityCurveTableConverterStation = (
     action: string,
     index: number,
-    converterStationName: 'converterStation1' | 'converterStation2'
+    converterStationName: FieldConstants.CONVERTER_STATION_1 | FieldConstants.CONVERTER_STATION_2
 ) => void;
 
 export const getVscConverterStationCreationSchema = () =>
