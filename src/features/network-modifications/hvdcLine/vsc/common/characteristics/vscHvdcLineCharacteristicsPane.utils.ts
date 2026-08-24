@@ -9,6 +9,7 @@ import { InferType, object, boolean, number, string } from 'yup';
 import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../../../utils';
 import { VscHvdcLineInfo } from '../vscHvdcLine.types';
 import { VscHdvLineCreationDto } from '../../creation/vscHvdcLineCreation.types';
+import { VscHdvLineModificationDto } from '../../modification';
 
 export const getVscHvdcLineCharacteristicsCreationSchema = () =>
     object().shape(
@@ -96,7 +97,7 @@ export function getVscHvdcLineCharacteristicsFromCopy(
     };
 }
 
-export function getVscHvdcLineCharacteristicsDtoToForm(
+export function getVscHvdcLineCharacteristicsCreationDtoToForm(
     dto: VscHdvLineCreationDto
 ): VscHvdcLineCharacteristicsCreationFormData {
     return {
@@ -110,5 +111,24 @@ export function getVscHvdcLineCharacteristicsDtoToForm(
         [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: dto?.angleDroopActivePowerControl ?? undefined,
         [FieldConstants.P0]: dto?.p0,
         [FieldConstants.DROOP]: dto?.droop,
+    };
+}
+
+export function getVscHvdcLineCharacteristicsModificationDtoToForm(
+    dto: VscHdvLineModificationDto
+): VscHvdcLineCharacteristicsModificationFormData {
+    return {
+        [FieldConstants.NOMINAL_V]: dto.nominalV?.value ?? null,
+        [FieldConstants.R]: dto.r?.value ?? null,
+        [FieldConstants.MAX_P]: dto.maxP?.value ?? null,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]:
+            dto?.operatorActivePowerLimitFromSide2ToSide1?.value ?? null,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]:
+            dto?.operatorActivePowerLimitFromSide1ToSide2?.value ?? null,
+        [FieldConstants.CONVERTERS_MODE]: dto.convertersMode?.value ?? null,
+        [FieldConstants.ACTIVE_POWER_SET_POINT]: dto.activePowerSetpoint?.value ?? null,
+        [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: dto?.angleDroopActivePowerControl?.value ?? null,
+        [FieldConstants.P0]: dto?.p0?.value ?? null,
+        [FieldConstants.DROOP]: dto?.droop?.value ?? null,
     };
 }

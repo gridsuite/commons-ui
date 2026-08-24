@@ -10,6 +10,9 @@ import { Property } from '../../../common/properties/properties.type';
 import { ReactiveCapabilityCurvePoints } from '../../../common/reactiveLimits/reactiveLimits.type';
 
 interface InjectionCreationDto {
+    type: ModificationType;
+    equipmentId: string;
+    equipmentName: string | null;
     voltageLevelId: string;
     busOrBusbarSectionId: string;
     connectionDirection: string | null;
@@ -19,9 +22,6 @@ interface InjectionCreationDto {
 }
 
 export interface ConverterStationCreationDto extends InjectionCreationDto {
-    type: ModificationType;
-    equipmentId: string;
-    equipmentName: string | null;
     lossFactor: number | null;
     reactivePowerSetpoint: number | null;
     voltageRegulationOn?: boolean;

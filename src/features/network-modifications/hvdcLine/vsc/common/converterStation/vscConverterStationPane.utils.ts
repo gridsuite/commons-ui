@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, object, boolean, number, string } from 'yup';
+import { boolean, InferType, number, object, string } from 'yup';
 import {
-    AttributeModification,
     FieldConstants,
     ModificationType,
     MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
@@ -32,8 +31,9 @@ import {
     getInjectionActiveReactivePowerValidationSchemaProperties,
 } from '../../../../common/measurements/injectionActiveReactivePowerForm.utils';
 import { ConverterStationCreationDto } from '../../creation/vscHvdcLineCreation.types';
-import { ReactiveCapabilityCurvePoints } from '../../../../common';
 import { ConverterStationInfos } from '../vscHvdcLine.types';
+import { ConverterStationModificationDto } from '../../modification';
+import { getFilledPropertiesFromModification } from '../../../../common';
 
 export type UpdateReactiveCapabilityCurveTableConverterStation = (
     action: string,
@@ -202,46 +202,26 @@ export function converterStationCreationFromCopy(
     };
 }
 
-// cf ConverterStationModificationInfos server class
-export interface VscConverterStationModificationDto {
-    equipmentId: string;
-    equipmentName: AttributeModification<string> | null;
-    voltageLevelId: AttributeModification<string> | null;
-    busOrBusbarSectionId: AttributeModification<string> | null;
-    connectionDirection: AttributeModification<string> | null;
-    connectionName?: AttributeModification<string> | null;
-    connectionPosition?: AttributeModification<number> | null;
-    terminalConnected?: AttributeModification<boolean> | null;
-    pMeasurementValue: AttributeModification<number> | null;
-    pMeasurementValidity: AttributeModification<boolean> | null;
-    qMeasurementValue: AttributeModification<number> | null;
-    qMeasurementValidity: AttributeModification<boolean> | null;
-    lossFactor: AttributeModification<number> | null;
-    reactivePowerSetpoint: AttributeModification<number> | null;
-    voltageRegulationOn: AttributeModification<boolean> | null;
-    voltageSetpoint: AttributeModification<number> | null;
-    reactiveCapabilityCurve: AttributeModification<boolean> | null;
-    minQ: AttributeModification<number> | null;
-    maxQ: AttributeModification<number> | null;
-    reactiveCapabilityCurvePoints: ReactiveCapabilityCurvePoints[];
-}
-
 export function converterStationModificationFormToDto(
     formData: VscConverterStationModificationFormData
-): VscConverterStationModificationDto {
+): ConverterStationModificationDto {
     const reactiveLimits = formData[FieldConstants.REACTIVE_LIMITS];
     const connectivity = formData[FieldConstants.CONNECTIVITY];
     const estim = formData[FieldConstants.STATE_ESTIMATION];
     const isReactiveCapabilityCurveOn = reactiveLimits[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE] === 'CURVE';
 
     return {
+        type: ModificationType.CONVERTER_STATION_MODIFICATION,
         equipmentId: formData[FieldConstants.CONVERTER_STATION_ID] ?? '',
         equipmentName: toModificationOperation(formData[FieldConstants.CONVERTER_STATION_NAME]),
         voltageLevelId: toModificationOperation(connectivity?.[FieldConstants.VOLTAGE_LEVEL]?.[FieldConstants.ID]),
         busOrBusbarSectionId: toModificationOperation(
             connectivity?.[FieldConstants.BUS_OR_BUSBAR_SECTION]?.[FieldConstants.ID]
         ),
+        connectionName: toModificationOperation(connectivity?.[FieldConstants.CONNECTION_NAME]),
         connectionDirection: toModificationOperation(connectivity?.[FieldConstants.CONNECTION_DIRECTION]),
+        connectionPosition: toModificationOperation(connectivity?.[FieldConstants.CONNECTION_POSITION]),
+        terminalConnected: toModificationOperation(connectivity?.[FieldConstants.CONNECTED]),
         pMeasurementValue: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_P]?.value),
         pMeasurementValidity: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_P]?.validity),
         qMeasurementValue: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_Q]?.value),
@@ -264,7 +244,7 @@ export function converterStationModificationFormToDto(
 }
 
 export function converterStationModificationDtoToForm(
-    dto: VscConverterStationModificationDto
+    dto: ConverterStationModificationDto
 ): VscConverterStationModificationFormData {
     return {
         [FieldConstants.CONVERTER_STATION_ID]: dto?.equipmentId,

@@ -14,7 +14,7 @@ import {
 } from '../../../common/properties/';
 import {
     getVscHvdcLineCharacteristicsCreationSchema,
-    getVscHvdcLineCharacteristicsDtoToForm,
+    getVscHvdcLineCharacteristicsCreationDtoToForm,
     getVscHvdcLineCharacteristicsEmptyFormData,
 } from '../common/characteristics/vscHvdcLineCharacteristicsPane.utils';
 import {
@@ -51,7 +51,7 @@ export const vscHvdcLineCreationDtoToForm = (lineDto: VscHdvLineCreationDto): Vs
     return {
         [FieldConstants.EQUIPMENT_ID]: lineDto.equipmentId,
         [FieldConstants.EQUIPMENT_NAME]: lineDto.equipmentName ?? '',
-        [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsDtoToForm(lineDto),
+        [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsCreationDtoToForm(lineDto),
         [FieldConstants.CONVERTER_STATION_1]: converterStationCreationDtoToForm(lineDto.converterStation1),
         [FieldConstants.CONVERTER_STATION_2]: converterStationCreationDtoToForm(lineDto.converterStation2),
         [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(lineDto.properties),
