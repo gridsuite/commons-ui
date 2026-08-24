@@ -292,3 +292,7 @@ export const getComputedTapSide = (twt: TwoWindingsTransformerMapInfos) => {
 export const getComputedTapSideId = (twt: TwoWindingsTransformerMapInfos) => {
     return getComputedTapSide(twt)?.id || null;
 };
+
+export const computeRatioTapChangerRegulating = (ratioTapChangerFormValues: RatioTapChangerFormSchema) => {
+    return ratioTapChangerFormValues?.regulationMode === RATIO_REGULATION_MODES.VOLTAGE_REGULATION.id;
+};
