@@ -7,7 +7,7 @@
  */
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { useCallback, useMemo, useState } from 'react';
 import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import { InfoOutlined } from '@mui/icons-material';
@@ -19,6 +19,7 @@ import {
     GridItem,
     SeparatorCellRenderer,
     TextInput,
+    useCustomFormContext,
 } from '../../../../components';
 import { filledTextField, PositionDiagramPaneType } from '../../common';
 import { FeederBayDirectionCellRenderer, FeederBayPositionCellRenderer } from './feederBay';
@@ -36,26 +37,23 @@ const defaultColDef = {
 
 export interface MoveVoltageLevelFeederBaysFormProps {
     feederBaysPreviousValues: FeederBays;
-    isNodeBuilt?: boolean;
-    isUpdate: boolean;
     isReady?: boolean;
-    disableTooltip?: boolean;
     PositionDiagramPane?: PositionDiagramPaneType;
 }
 
 export function MoveVoltageLevelFeederBaysForm({
-    isNodeBuilt,
-    isUpdate,
     feederBaysPreviousValues,
     PositionDiagramPane,
     isReady = true,
-    disableTooltip = true,
 }: Readonly<MoveVoltageLevelFeederBaysFormProps>) {
     const intl = useIntl();
-    const { getValues } = useFormContext();
-    const [isDiagramPaneOpen, setIsDiagramPaneOpen] = useState(false);
-    const shouldDisableTooltip = useMemo(() => !isUpdate && isNodeBuilt, [isUpdate, isNodeBuilt]);
+    const { getValues, isUpdate, isNodeBuilt } = useCustomFormContext();
     const selectedId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
+    const shouldDisableTooltip = useMemo(
+        () => (isNodeBuilt === undefined && isUpdate === undefined ? true : !isUpdate && isNodeBuilt),
+        [isUpdate, isNodeBuilt]
+    );
+    const [isDiagramPaneOpen, setIsDiagramPaneOpen] = useState(false);
 
     // build group
     const groupedRowData = useMemo(() => {
@@ -132,9 +130,9 @@ export function MoveVoltageLevelFeederBaysForm({
                 id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
             }),
             isNodeBuilt,
-            disabledTooltip: disableTooltip ? true : shouldDisableTooltip,
+            disabledTooltip: shouldDisableTooltip,
         }),
-        [intl, isNodeBuilt, disableTooltip, shouldDisableTooltip]
+        [intl, isNodeBuilt, shouldDisableTooltip]
     );
 
     const renderEquipmentIdCell = useCallback(
