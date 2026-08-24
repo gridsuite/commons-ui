@@ -11,7 +11,7 @@ import { Box, Typography } from '@mui/material';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { DarkModeToggle } from './DarkModeToggle';
 import { LanguageSelection } from './LanguageSelection';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { GsLang, GsTheme } from '../../../../utils';
 import { CustomNestedMenuItem } from '../../../../components';
 

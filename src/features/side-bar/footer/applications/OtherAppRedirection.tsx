@@ -9,7 +9,7 @@ import { Box, Stack, Typography } from '@mui/material';
 import { OpenInNew } from '@mui/icons-material';
 import { CustomMenuItem } from '../../../../components';
 import { Metadata } from '../../../../utils';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 
 interface OtherAppRedirectionProps {
     app: Metadata;

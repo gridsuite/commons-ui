@@ -9,12 +9,12 @@ import { Divider, MenuList, Stack } from '@mui/material';
 import { KeyboardDoubleArrowLeft, KeyboardDoubleArrowRight, Logout } from '@mui/icons-material';
 import { UserProfile } from 'oidc-client-ts';
 import { ApplicationMenu } from './applications/ApplicationMenu';
-import { SidebarMenuItem } from './common/SideBarMenuItem';
+import { SideBarMenuItem } from './common/SideBarMenuItem';
 import { ProfileMenu } from './profile/ProfileMenu';
 import { SettingsMenu } from './settings/SettingsMenu';
 import { GsLang, GsTheme, Metadata } from '../../../utils';
 
-export interface AppSidebarFooterProps {
+export interface AppSideBarFooterProps {
     isMinimized: boolean;
     isSmallScreen: boolean;
     toggleSideBarMinimized: () => void;
@@ -29,7 +29,7 @@ export interface AppSidebarFooterProps {
     onLogoutClick?: () => void;
 }
 
-export function AppSidebarFooter({
+export function AppSideBarFooter({
     isMinimized,
     isSmallScreen,
     toggleSideBarMinimized,
@@ -42,7 +42,7 @@ export function AppSidebarFooter({
     userProfile,
     appsAndUrls,
     onLogoutClick,
-}: Readonly<AppSidebarFooterProps>) {
+}: Readonly<AppSideBarFooterProps>) {
     const isUserLoggedIn = !!userProfile;
     return (
         <Stack sx={{ p: 1 }}>
@@ -70,7 +70,7 @@ export function AppSidebarFooter({
                             selectedLanguage={selectedLanguage}
                             setSelectedLanguage={setSelectedLanguage}
                         />
-                        <SidebarMenuItem
+                        <SideBarMenuItem
                             label="top-bar/logout"
                             icon={<Logout />}
                             onClick={onLogoutClick}
@@ -80,7 +80,7 @@ export function AppSidebarFooter({
                 )}
                 <Divider />
 
-                <SidebarMenuItem
+                <SideBarMenuItem
                     label="top-bar/minimize"
                     icon={isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
                     onClick={toggleSideBarMinimized}

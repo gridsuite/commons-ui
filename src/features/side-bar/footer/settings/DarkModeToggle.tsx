@@ -10,7 +10,7 @@ import { ChangeEvent } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { DARK_THEME, GsTheme, LIGHT_THEME } from '../../../../utils';
 import { CustomMenuItem } from '../../../../components';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 
 interface DarkModeToggleProps {
     currentTheme: GsTheme;

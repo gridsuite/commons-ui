@@ -9,7 +9,7 @@ import { Done } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { GsLang } from '../../../../utils';
 import { CustomMenuItem } from '../../../../components';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 
 interface LanguageSelectionProps {
     language: GsLang;

@@ -8,10 +8,10 @@
 import { Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
-import { submenuFooterStyle } from './submenu-footer-style';
+import { submenuFooterStyle } from './submenu-footer.style';
 import { CustomMenuItem } from '../../../../components';
 
-interface SidebarMenuItemProps {
+interface SideBarMenuItemProps {
     label: string;
     icon?: ReactNode;
     onClick?: () => void;
@@ -19,13 +19,13 @@ interface SidebarMenuItemProps {
     disabled?: boolean;
 }
 
-export function SidebarMenuItem({
+export function SideBarMenuItem({
     label,
     icon,
     onClick,
     showLabel = true,
     disabled = false,
-}: Readonly<SidebarMenuItemProps>) {
+}: Readonly<SideBarMenuItemProps>) {
     const intl = useIntl();
     return (
         <CustomMenuItem disabled={disabled} onClick={onClick} sx={submenuFooterStyle.subMenu}>

@@ -12,8 +12,8 @@ import { useIntl } from 'react-intl';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
 import { ProfileInfos } from './ProfileInfos';
 import { UserAvatarIcon } from './UserIcon';
-import { SidebarMenuItem } from '../common/SideBarMenuItem';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { SideBarMenuItem } from '../common/SideBarMenuItem';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
 import { UserInformationDialog, UserSettingsDialog } from '../../../topBar';
 
@@ -50,9 +50,9 @@ export function ProfileMenu({
 
                 <ProfileInfos userProfile={userProfile} />
 
-                <SidebarMenuItem label="top-bar/userInformation" icon={<Badge />} onClick={openProfileDialog} />
+                <SideBarMenuItem label="top-bar/userInformation" icon={<Badge />} onClick={openProfileDialog} />
 
-                <SidebarMenuItem
+                <SideBarMenuItem
                     label="top-bar/userSettings"
                     icon={<ManageAccounts />}
                     onClick={openProfileSettingsDialog}

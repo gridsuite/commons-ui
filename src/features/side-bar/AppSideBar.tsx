@@ -8,12 +8,12 @@
 import { Box, Breakpoint, Stack, Theme, useMediaQuery } from '@mui/material';
 import { UserProfile } from 'oidc-client-ts';
 import { ReactNode, useEffect, useState } from 'react';
-import { AppSidebarHeader } from './AppSidebarHeader';
-import { AppSidebarFooter } from './footer/AppSidebarFooter';
+import { AppSideBarHeader } from './AppSideBarHeader';
+import { AppSideBarFooter } from './footer/AppSideBarFooter';
 import { GridSuiteModule } from '../topBar';
 import { GsLang, GsTheme, Metadata } from '../../utils';
 
-type SidebarProps = {
+type SideBarProps = {
     isDeveloperMode: boolean;
     smallScreenBreakpoint: number | Breakpoint;
     handleChangeDeveloperMode: (newValue: boolean) => void;
@@ -25,6 +25,7 @@ type SidebarProps = {
     appsAndUrls: Metadata[];
     onLogoutClick?: () => void;
     appName: string;
+    appNameColor: string;
     appLogo: ReactNode;
     appLicense?: string;
     appVersion?: string;
@@ -43,15 +44,16 @@ export function AppSideBar({
     userProfile,
     appsAndUrls,
     appName,
+    appNameColor,
     appLogo,
     appLicense,
     appVersion,
     globalVersionPromise,
     additionalModulesPromise,
     onLogoutClick,
-}: Readonly<SidebarProps>) {
+}: Readonly<SideBarProps>) {
     const [isMinimized, setIsMinimized] = useState(true);
-    const toggleSideBarMinimized = (): void => {
+    const toggleSideBarMinimized = () => {
         setIsMinimized((previousIsSideBarMinimized) => !previousIsSideBarMinimized);
     };
 
@@ -71,10 +73,11 @@ export function AppSideBar({
                 height: '100%',
             }}
         >
-            <AppSidebarHeader
+            <AppSideBarHeader
                 isMinimized={isMinimized}
                 isLoggedIn={!!userProfile}
                 appName={appName}
+                appNameColor={appNameColor}
                 appLogo={appLogo}
                 additionalModulesPromise={additionalModulesPromise}
                 globalVersionPromise={globalVersionPromise}
@@ -88,7 +91,7 @@ export function AppSideBar({
                 }}
             />
 
-            <AppSidebarFooter
+            <AppSideBarFooter
                 isMinimized={isMinimized}
                 isSmallScreen={isSmallScreen}
                 toggleSideBarMinimized={toggleSideBarMinimized}

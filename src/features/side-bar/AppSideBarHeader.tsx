@@ -14,6 +14,7 @@ interface AppSideBarHeaderProps {
     isMinimized: boolean;
     isLoggedIn: boolean;
     appName: string;
+    appNameColor: string;
     appLogo: ReactNode;
     appLicense?: string;
     appVersion?: string;
@@ -21,10 +22,11 @@ interface AppSideBarHeaderProps {
     additionalModulesPromise: () => Promise<GridSuiteModule[]>;
 }
 
-export function AppSidebarHeader({
+export function AppSideBarHeader({
     isMinimized,
     isLoggedIn,
     appName,
+    appNameColor,
     appLogo,
     appLicense,
     appVersion,
@@ -52,8 +54,8 @@ export function AppSidebarHeader({
                     {!isMinimized && (
                         <Typography variant="h6">
                             Grid
-                            <Box component="span" sx={{ color: '#7e57c2' }}>
-                                Monitor
+                            <Box component="span" sx={{ color: appNameColor }}>
+                                {appName}
                             </Box>
                         </Typography>
                     )}

@@ -9,7 +9,7 @@ import { Apps } from '@mui/icons-material';
 import { useIntl } from 'react-intl';
 import { OtherAppRedirection } from './OtherAppRedirection';
 import { MinimizedSubMenuHeader } from '../common/MinimizedSubMenuHeader';
-import { submenuFooterStyle } from '../common/submenu-footer-style';
+import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
 import { Metadata } from '../../../../utils';
 
