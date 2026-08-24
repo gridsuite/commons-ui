@@ -55,7 +55,7 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
                         );
                     }
 
-                    const link = `${exploreUrl}/elements/${referenceId}`;
+                    const link = new URL(`${exploreUrl}/elements/${referenceId}`, window.location.href).toString();
                     return navigator.clipboard.writeText(link).then(() => snackInfo({ headerId: 'linkCopied' }));
                 })
                 .catch((error) => snackWithFallback(snackError, error, { headerId: 'linkCopyError' }))
