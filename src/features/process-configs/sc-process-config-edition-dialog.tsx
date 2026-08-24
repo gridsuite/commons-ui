@@ -1,0 +1,113 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { useCallback, useEffect, useState } from 'react';
+import { ProcessType } from './common';
+
+import { ElementType, FieldConstants, snackWithFallback } from '../../utils';
+import { ProcessConfigEditionDialogProps } from './process-config-edition.utils';
+import { NamedElementEditionDialog } from '../../components';
+import {
+    getEmptySCProcessConfigFormData,
+    getSCProcessConfigBackendFromFormData,
+    getNamedSCProcessConfigFormData,
+    getNamedSCProcessConfigFormSchema,
+    SCProcessConfigEdition,
+    NamedSCProcessConfigFormSchema,
+} from './shortcircuit';
+import { useSnackMessage } from '../../hooks';
+
+export function SCProcessConfigEditionDialog({
+    processConfigUuid,
+    processConfigName,
+    description,
+    directory,
+    open,
+    onClose,
+    fetchProcessConfig,
+    updateProcessConfig,
+}: Readonly<ProcessConfigEditionDialogProps<ProcessType.SHORT_CIRCUIT>>) {
+    const [isLoading, setIsLoading] = useState(false);
+    const { snackError } = useSnackMessage();
+
+    const formSchema = getNamedSCProcessConfigFormSchema(processConfigName);
+
+    const formMethods = useForm({
+        defaultValues: getEmptySCProcessConfigFormData(processConfigName, description),
+        resolver: yupResolver<NamedSCProcessConfigFormSchema>(formSchema),
+    });
+
+    const { reset } = formMethods;
+
+    useEffect(() => {
+        let cancelled = false;
+        setIsLoading(true);
+
+        (async () => {
+            try {
+                const persistedProcessConfig = await fetchProcessConfig(processConfigUuid);
+                if (!cancelled && persistedProcessConfig) {
+                    const formData = await getNamedSCProcessConfigFormData(
+                        persistedProcessConfig.processConfig,
+                        processConfigName,
+                        description
+                    );
+                    if (!cancelled) {
+                        reset({ ...formData });
+                    }
+                }
+            } catch (error) {
+                if (!cancelled) {
+                    snackWithFallback(snackError, error, {
+                        headerId: 'processConfig/fetchProcessConfigError',
+                    });
+                }
+            } finally {
+                if (!cancelled) {
+                    setIsLoading(false);
+                }
+            }
+        })();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [fetchProcessConfig, processConfigUuid, processConfigName, description, reset, snackError]);
+
+    const handleUpdateProcessConfig = useCallback(
+        (formData: NamedSCProcessConfigFormSchema) => {
+            updateProcessConfig(
+                processConfigUuid,
+                formData[FieldConstants.NAME] ?? '',
+                formData[FieldConstants.DESCRIPTION] ?? '',
+                getSCProcessConfigBackendFromFormData(formData)
+            ).catch((error) => {
+                console.error(error);
+                snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
+            });
+        },
+        [updateProcessConfig, processConfigUuid, snackError]
+    );
+
+    return (
+        <NamedElementEditionDialog
+            titleId="process_config/editSCProcessConfigTitle"
+            formMethods={formMethods}
+            formSchema={formSchema}
+            open={open}
+            onClose={onClose}
+            onSave={handleUpdateProcessConfig}
+            directory={directory}
+            elementName={processConfigName}
+            elementType={ElementType.PROCESS_CONFIG}
+            isLoading={isLoading}
+        >
+            <SCProcessConfigEdition />
+        </NamedElementEditionDialog>
+    );
+}

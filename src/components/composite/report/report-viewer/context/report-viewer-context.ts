@@ -6,8 +6,8 @@
  */
 
 import { createContext, useContext } from 'react';
-import { LogsPaginationConfig, MatchPosition, PagedLogs, ReportType } from '../../report.type';
-import { FilterConfig } from '../../../customAGGrid/custom-aggrid-types';
+import { MatchPosition, PagedLogs, ReportType } from '../../report.type';
+import { FilterConfig, PaginationConfig } from '../../../customAGGrid';
 
 export interface ReportFetcherContextValue {
     fetchLogs: (
@@ -41,8 +41,8 @@ export const useReportFetcherContext = (): ReportFetcherContextValue => {
 export interface ReportFilterContextValue {
     filters: FilterConfig[] | undefined;
     updateFilters: (filters: FilterConfig[]) => void;
-    pagination: LogsPaginationConfig;
-    changePagination: (config: LogsPaginationConfig) => void;
+    pagination: PaginationConfig;
+    changePagination: (config: PaginationConfig) => void;
 }
 
 export const ReportFilterContext = createContext<ReportFilterContextValue | null>(null);

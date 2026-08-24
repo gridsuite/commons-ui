@@ -78,6 +78,7 @@ export enum FieldConstants {
     ID = 'id',
     REGULATING = 'isRegulating',
     LOADFLOW_PARAMETERS = 'loadflowParameters',
+    SHORTCIRCUIT_PARAMETERS = 'shortcircuitParameters',
     LOAD_TYPE = 'loadType',
     LOAD_TAP_CHANGING_CAPABILITIES = 'hasLoadTapChangingCapabilities',
     LOSS_FACTOR = 'lossFactor',
