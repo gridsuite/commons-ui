@@ -35,11 +35,11 @@ const defaultColDef = {
 };
 
 export interface MoveVoltageLevelFeederBaysFormProps {
-    selectedId: string;
     feederBaysPreviousValues: FeederBays;
     isNodeBuilt?: boolean;
     isUpdate: boolean;
     isReady?: boolean;
+    disableTooltip?: boolean;
     PositionDiagramPane?: PositionDiagramPaneType;
 }
 
@@ -49,6 +49,7 @@ export function MoveVoltageLevelFeederBaysForm({
     feederBaysPreviousValues,
     PositionDiagramPane,
     isReady = true,
+    disableTooltip = true,
 }: Readonly<MoveVoltageLevelFeederBaysFormProps>) {
     const intl = useIntl();
     const { getValues } = useFormContext();
@@ -131,9 +132,9 @@ export function MoveVoltageLevelFeederBaysForm({
                 id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
             }),
             isNodeBuilt,
-            disabledTooltip: shouldDisableTooltip,
+            disabledTooltip: disableTooltip ? true : shouldDisableTooltip,
         }),
-        [intl, isNodeBuilt, shouldDisableTooltip]
+        [intl, isNodeBuilt, disableTooltip, shouldDisableTooltip]
     );
 
     const renderEquipmentIdCell = useCallback(
@@ -211,6 +212,7 @@ export function MoveVoltageLevelFeederBaysForm({
                     disabled={data.isRemoved}
                     disableClearable
                     previousValue={previousValue}
+                    allowNewValue={busBarSectionIds?.length === 0}
                 />
             );
         },
@@ -313,19 +315,19 @@ export function MoveVoltageLevelFeederBaysForm({
         ]
     );
 
-    const diagramToolTip =
-        isNodeBuilt && PositionDiagramPane ? (
-            <CustomTooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: 'builtNodeTooltipForDiagram' })}>
-                <InfoOutlined color="info" fontSize="medium" />
-            </CustomTooltip>
-        ) : null;
+    const enableDiagramPane = isNodeBuilt && PositionDiagramPane;
+    const diagramToolTip = enableDiagramPane ? (
+        <CustomTooltip sx={{ paddingLeft: 1 }} title={intl.formatMessage({ id: 'builtNodeTooltipForDiagram' })}>
+            <InfoOutlined color="info" fontSize="medium" />
+        </CustomTooltip>
+    ) : null;
 
     return (
         <Stack sx={{ height: '100%', width: 'auto' }}>
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <Grid size={4}>{voltageLevelIdField}</Grid>
 
-                {isNodeBuilt && PositionDiagramPane && (
+                {enableDiagramPane && (
                     <GridItem size={3}>
                         <Button onClick={() => setIsDiagramPaneOpen(true)} variant="outlined">
                             <FormattedMessage id="CreateCouplingDeviceDiagramButton" />

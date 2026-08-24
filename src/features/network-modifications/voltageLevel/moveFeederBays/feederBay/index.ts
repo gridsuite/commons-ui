@@ -6,5 +6,5 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-export * from './PositionCellRender';
-export * from './DirectionCellRender';
+export * from './FeederBayPositionCellRender';
+export * from './FeederBayDirectionCellRender';
