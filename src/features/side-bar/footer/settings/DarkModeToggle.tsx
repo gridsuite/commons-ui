@@ -22,8 +22,7 @@ export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeTogg
 
     const toggleMode = (event: ChangeEvent<HTMLInputElement>) => {
         const targetModeValue = event.target.checked ? DARK_THEME : LIGHT_THEME;
-        setTheme(targetModeValue) // TODO: improve error handling
-            .catch((err) => console.error(err));
+        setTheme(targetModeValue).catch((err) => console.error(err));
     };
     return (
         <CustomMenuItem sx={submenuFooterStyle.subMenuChildren}>

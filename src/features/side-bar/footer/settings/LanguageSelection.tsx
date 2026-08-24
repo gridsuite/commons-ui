@@ -22,8 +22,7 @@ export function LanguageSelection({
     setSelectedLanguage,
 }: Readonly<LanguageSelectionProps>) {
     const onClick = () => {
-        setSelectedLanguage(language) // TODO: improve error handling
-            .catch((err) => console.error(err));
+        setSelectedLanguage(language).catch((err) => console.error(err));
     };
 
     return (

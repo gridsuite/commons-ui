@@ -5,18 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Avatar, Tooltip } from '@mui/material';
+import { Avatar } from '@mui/material';
 
 function getAbbreviationFromUserName(name: string) {
-    // notice : == null means null or undefined
     if (name == null || name.trim() === '') {
         return '';
     }
-    const splittedName = name.split(' ');
-    if (splittedName.length > 1) {
-        return `${splittedName[0][0]}${splittedName[splittedName.length - 1][0]}`;
+
+    const [firstName, ...otherNames] = name.split(' ');
+
+    if (otherNames.length > 0) {
+        return `${firstName[0]}${otherNames.at(-1)![0]}`;
     }
-    return `${splittedName[0][0]}`;
+
+    return firstName[0];
 }
 
 export function UserAvatarIcon({ label }: Readonly<{ label: string }>) {
