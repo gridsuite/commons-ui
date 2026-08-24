@@ -29,7 +29,7 @@ export function TwoWindingsTransformerDialogHeader({
             size="small"
             fullWidth
             label="ID"
-            value={equipmentId}
+            value={equipmentId ?? ''}
             slotProps={{
                 input: {
                     readOnly: true,
