@@ -21,7 +21,7 @@ export interface TapChangerModificationDto {
     terminalRefConnectableId: AttributeModification<string> | null;
     terminalRefConnectableType: AttributeModification<string> | null;
     terminalRefConnectableVlId: AttributeModification<string> | null;
-    steps: TapChangerStepCreationDto[] | null;
+    steps: TapChangerStepCreationDto[] | null; // In server-side we use the same DTO for both creation and modification
     hasLoadTapChangingCapabilities: AttributeModification<boolean> | null;
 }
 
