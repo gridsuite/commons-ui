@@ -78,8 +78,3 @@ export type MatchPosition = {
     page: number;
     rowIndex: number;
 };
-
-export type LogsPaginationConfig = {
-    page: number;
-    rowsPerPage: number;
-};

@@ -8,10 +8,12 @@
 export const processConfigEn = {
     'process_config/editLFProcessConfigTitle': 'Edit a loadflow process configuration',
     'process_config/editSAProcessConfigTitle': 'Edit a security analysis with contingency process configuration',
+    'process_config/editSCProcessConfigTitle': 'Edit a shortcircuit process configuration',
     'process_config/modifications': 'Modifications',
     'process_config/providersParameters': 'Providers parameters',
     'process_config/loadflow': 'Loadflow',
     'process_config/securityAnalysis': 'Security analysis',
+    'process_config/shortcircuit': 'Short circuit',
     'processConfig/fetchProcessConfigError': 'An error occured when fetching the process configuration',
     'processConfig/updateProcessConfigError': 'An error occurred while updating the process configuration',
 };
