@@ -168,8 +168,8 @@ const transformOperationalLimitsGroupsForForm = (
                 temporaryLimits:
                     currentLimits?.temporaryLimits?.map((tl) => ({
                         name: tl.name ?? '',
-                        value: (tl.value ?? '') as unknown as number,
-                        acceptableDuration: (tl.acceptableDuration ?? '') as unknown as number,
+                        value: tl.value,
+                        acceptableDuration: tl.acceptableDuration,
                     })) ?? [],
             },
         }));
