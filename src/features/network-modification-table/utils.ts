@@ -15,22 +15,48 @@ import {
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
     ReferenceModificationInfos,
+    RootNetworkRowInfo,
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
 
-// Indexes by uuid the applicability every modification of the tree carries, sub modifications included.
-export function collectApplicabilities(
-    modifications: ComposedModificationMetadata[]
+// Convert applicability by tag to applicability by root network id.
+function toApplicabilityByRootNetworkUuid(
+    applicabilityByRootNetworkTag: Record<string, boolean> | undefined,
+    uuidByTag: Map<string, UUID>
+): Record<UUID, boolean> {
+    return Object.entries(applicabilityByRootNetworkTag ?? {}).reduce((applicability, [tag, applicable]) => {
+        const rootNetworkUuid = uuidByTag.get(tag);
+        return rootNetworkUuid ? { ...applicability, [rootNetworkUuid]: applicable } : applicability;
+    }, {});
+}
+
+function collectApplicabilitiesByUuid(
+    modifications: ComposedModificationMetadata[],
+    uuidByTag: Map<string, UUID>
 ): NetworkModificationApplicabilities {
-    return modifications.reduce<NetworkModificationApplicabilities>(
+    return modifications.reduce(
         (applicabilities, modification) => ({
             ...applicabilities,
-            [modification.uuid]: modification.applicabilityByRootNetworkTag ?? {},
-            ...collectApplicabilities(modification.subModifications),
+            [modification.uuid]: toApplicabilityByRootNetworkUuid(
+                modification.applicabilityByRootNetworkTag,
+                uuidByTag
+            ),
+            ...collectApplicabilitiesByUuid(modification.subModifications, uuidByTag),
         }),
         {}
     );
+}
+
+// Indexes by uuid the applicability every modification of the tree carries, sub modifications included.
+// The modifications key it by root network tag; it is resolved here to the root network uuid.
+// A tag no root network claims is dropped.
+export function collectApplicabilities(
+    modifications: ComposedModificationMetadata[],
+    rootNetworks: RootNetworkRowInfo[] = []
+): NetworkModificationApplicabilities {
+    const uuidByTag = new Map(rootNetworks.map((rootNetwork) => [rootNetwork.tag, rootNetwork.rootNetworkUuid]));
+    return collectApplicabilitiesByUuid(modifications, uuidByTag);
 }
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node

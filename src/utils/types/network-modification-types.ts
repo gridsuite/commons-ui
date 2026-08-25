@@ -17,10 +17,10 @@ export type AttributeModification<T> = {
 };
 
 /**
- * Applicability of each network modification per root network tag, as held by the modifications themselves:
- * a tag without an entry is applicable.
+ * Applicability of each network modification per root network, keyed by root network uuid: a root network
+ * without an entry is applicable. The modifications carry it keyed by tag, which is resolved to the root network uuid.
  */
-export type NetworkModificationApplicabilities = Record<UUID, Record<string, boolean>>;
+export type NetworkModificationApplicabilities = Record<UUID, Record<UUID, boolean>>;
 
 export interface RootNetworkRowInfo {
     rootNetworkUuid: UUID;

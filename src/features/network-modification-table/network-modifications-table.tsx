@@ -97,9 +97,17 @@ export function NetworkModificationsTable({
         formatToComposedModification(modifications)
     );
 
+    // The tags are read from a ref on purpose: renaming a root network must not retrigger the collect, or the
+    // modifications in hand, still carrying the previous tag, would resolve to no root network at all and read
+    // back as applicable. The next fetch of the modifications brings both sides in step again.
+    const rootNetworksRef = useRef(rootNetworks);
+    useEffect(() => {
+        rootNetworksRef.current = rootNetworks;
+    }, [rootNetworks]);
+
     const [applicabilities, setApplicabilities] = useState<NetworkModificationApplicabilities>({});
     useEffect(() => {
-        setApplicabilities(collectApplicabilities(composedModifications));
+        setApplicabilities(collectApplicabilities(composedModifications, rootNetworksRef.current));
     }, [composedModifications]);
 
     // composedModificationsRef is used to access composedModifications data from other useEffects
