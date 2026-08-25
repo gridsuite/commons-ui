@@ -35,12 +35,12 @@ import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
-    collectLockedNestedModificationUuids,
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
     findDepth,
     formatToComposedModification,
     isCompositeModification,
+    isModificationEditLocked,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
@@ -113,19 +113,11 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    // Everything nested inside a read-only reference modification. Kept in a ref as well, so that
-    // handleRowSelected can read it without being recreated every time the tree changes.
-    const lockedNestedModificationUuids = useMemo(
-        () =>
-            readOnlyReferenceModificationUuids?.size
-                ? collectLockedNestedModificationUuids(readOnlyReferenceModificationUuids, composedModifications)
-                : undefined,
-        [readOnlyReferenceModificationUuids, composedModifications]
-    );
-    const lockedNestedModificationUuidsRef = useRef(lockedNestedModificationUuids);
+    // Kept in a ref so that handleRowSelected can read it without being recreated on every permission change.
+    const readOnlyReferenceModificationUuidsRef = useRef(readOnlyReferenceModificationUuids);
     useEffect(() => {
-        lockedNestedModificationUuidsRef.current = lockedNestedModificationUuids;
-    }, [lockedNestedModificationUuids]);
+        readOnlyReferenceModificationUuidsRef.current = readOnlyReferenceModificationUuids;
+    }, [readOnlyReferenceModificationUuids]);
 
     // refs are kept for the "event" props to prevent retriggering the associated useEffects
     const modificationToEditLabelRef = useRef(modificationToEditLabel);
@@ -147,8 +139,12 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            const containsLockedModification = selectedRows.some((row) =>
-                lockedNestedModificationUuidsRef.current?.has(row.uuid)
+            // A reference modification itself is never locked for selection purposes - only its content is:
+            // acting on the shared modification as a whole (move, delete, assemble) is always permitted.
+            const containsLockedModification = selectedRows.some(
+                (row) =>
+                    !isReferenceModification(row) &&
+                    isModificationEditLocked(row, readOnlyReferenceModificationUuidsRef.current)
             );
             onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
         },
@@ -235,7 +231,6 @@ export function NetworkModificationsTable({
             },
             permissions: {
                 readOnlyReferenceModificationUuids,
-                lockedNestedModificationUuids,
             },
             status: {
                 isImpactedByNotification,
@@ -258,7 +253,6 @@ export function NetworkModificationsTable({
             modificationToEditLabelRef,
             isRowDragDisabled,
             readOnlyReferenceModificationUuids,
-            lockedNestedModificationUuids,
             isImpactedByNotification,
             notificationMessageId,
             isFetchingModifications,
@@ -404,8 +398,9 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
-                                                isFormOpeningLocked={lockedNestedModificationUuids?.has(
-                                                    row.original.uuid
+                                                isFormOpeningLocked={isModificationEditLocked(
+                                                    row.original,
+                                                    readOnlyReferenceModificationUuids
                                                 )}
                                             />
                                         );

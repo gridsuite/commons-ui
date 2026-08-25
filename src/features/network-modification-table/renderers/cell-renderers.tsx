@@ -37,12 +37,7 @@ type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
 
 /** True when the row can't be edited because of the permissions on the shared modification behind it. */
 function isRowEditLocked({ row, table }: CCtx): boolean {
-    const permissions = table.options.meta?.permissions;
-    return isModificationEditLocked(
-        row.original.uuid,
-        permissions?.readOnlyReferenceModificationUuids,
-        permissions?.lockedNestedModificationUuids
-    );
+    return isModificationEditLocked(row.original, table.options.meta?.permissions.readOnlyReferenceModificationUuids);
 }
 
 export function DragHandleRenderer({ table }: CCtx) {

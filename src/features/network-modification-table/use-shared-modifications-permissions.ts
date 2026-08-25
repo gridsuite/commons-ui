@@ -26,20 +26,8 @@ function getReferenceIds(referenceModifications: NetworkModificationMetadata[]):
     ];
 }
 
-/**
- * @param referenceModifications the reference modifications of the current node
- * @param permissions referenceId -> whether the user has the write permission on it
- * @return the uuids of the reference modifications whose shared modification can't be written into
- */
-function buildReadOnlyReferenceModificationUuids(
-    referenceModifications: NetworkModificationMetadata[],
-    permissions: Map<UUID, boolean>
-): Set<UUID> {
-    return new Set(
-        referenceModifications
-            .filter((modification) => !!modification.referenceId && !permissions.get(modification.referenceId))
-            .map((modification) => modification.uuid)
-    );
+function buildReadOnlyReferenceIds(referenceIds: UUID[], permissions: Map<UUID, boolean>): Set<UUID> {
+    return new Set(referenceIds.filter((id) => !permissions.get(id)));
 }
 
 /**
@@ -54,11 +42,13 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
 /**
  * Resolves the write permission the current user has on the shared modifications a node points at.
  *
- * A reference modification carries the uuid of the shared modification it points at, which is also the uuid of
+ * A reference modification carries the uuid of the shared modification it points at (referenceId), which is also the uuid of
  * the corresponding element in the directory - so its permission is the one of the directory holding it.
+ * That same `referenceId` is what identifies a locked modification everywhere else in this feature
+ * (see isModificationEditLocked and the sharedReferenceId propagated to nested rows).
  *
  * @param modifications the modifications of the current node, as returned by the server
- * @return the uuids of the reference modification **rows** the user is not allowed to write into
+ * @return the referenceIds (shared modification uuids, NOT reference row uuids) the user is not allowed to write into
  */
 // TODO a permission granted through a group stays cached when the user is added to / removed from that group:
 // user-admin-server emits no notification on group membership changes, unlike directory-server on permissions.
@@ -90,8 +80,7 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     useEffect(() => {
         let aborted = false;
 
-        const referenceModifications = modifications.filter(isReferenceModification);
-        const referenceIds = getReferenceIds(referenceModifications);
+        const referenceIds = getReferenceIds(modifications.filter(isReferenceModification));
 
         const missingIds = referenceIds.filter((id) => !permissionsCache.has(id));
         if (missingIds.length === 0) {
@@ -99,7 +88,7 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
                 replaceIfChanged(
                     referenceIds.length === 0
                         ? EMPTY_UUID_SET
-                        : buildReadOnlyReferenceModificationUuids(referenceModifications, permissionsCache)
+                        : buildReadOnlyReferenceIds(referenceIds, permissionsCache)
                 )
             );
             // no fetch needed

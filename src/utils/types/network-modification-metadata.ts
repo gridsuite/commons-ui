@@ -25,7 +25,8 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
-    childFromShared?: boolean;
+    // expanded (see fetchSubModificationsForExpandedRows)
+    sharedReferenceId?: UUID;
 }
 
 export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {

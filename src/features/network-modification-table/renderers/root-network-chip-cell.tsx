@@ -85,7 +85,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const modificationUuid = data.uuid;
 
     const isReferenceModificationOrInsideOne =
-        data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
+        data.type === ModificationType.MODIFICATION_REFERENCE || data.sharedReferenceId !== undefined;
 
     const isModificationActivated = useMemo(() => {
         if (rootNetwork.isCreating) {
