@@ -48,6 +48,9 @@ export function VscConverterStationPane({
     const voltageRegulationOnWatch = useWatch({
         name: `${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`,
     });
+    const converterStationId = useWatch({
+        name: `${id}.${FieldConstants.CONVERTER_STATION_ID}`,
+    });
 
     useEffect(() => {
         if (!voltageRegulationOnWatch) {
@@ -60,7 +63,7 @@ export function VscConverterStationPane({
             size="small"
             fullWidth
             label="ID"
-            value={stationToModify?.id}
+            value={converterStationId}
             disabled
             slotProps={{
                 input: {
