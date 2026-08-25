@@ -90,6 +90,6 @@ export const vscHvdcLineModificationFormToDto = (
         p0: toModificationOperation(lineForm.hvdcLine.p0),
         droop: toModificationOperation(lineForm.hvdcLine.droop),
         converterStation1: converterStationModificationFormToDto(lineForm.converterStation1),
-        converterStation2: converterStationModificationFormToDto(lineForm.converterStation1),
+        converterStation2: converterStationModificationFormToDto(lineForm.converterStation2),
     };
 };

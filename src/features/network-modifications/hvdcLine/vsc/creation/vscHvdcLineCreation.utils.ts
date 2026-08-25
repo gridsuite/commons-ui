@@ -75,6 +75,6 @@ export const vscHvdcLineCreationFormToDto = (lineForm: VscHvdcLineCreationFormDa
         p0: lineForm.hvdcLine.p0 ?? null,
         droop: lineForm.hvdcLine.droop ?? null,
         converterStation1: converterStationCreationFormToDto(lineForm.converterStation1),
-        converterStation2: converterStationCreationFormToDto(lineForm.converterStation1),
+        converterStation2: converterStationCreationFormToDto(lineForm.converterStation2),
     };
 };
