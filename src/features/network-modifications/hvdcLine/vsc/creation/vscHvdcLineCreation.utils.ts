@@ -68,7 +68,7 @@ export const vscHvdcLineCreationFormToDto = (lineForm: VscHvdcLineCreationFormDa
         r: lineForm.hvdcLine.r,
         maxP: lineForm.hvdcLine.maxP,
         operatorActivePowerLimitFromSide1ToSide2: lineForm.hvdcLine.operatorActivePowerLimitSide1 ?? null,
-        operatorActivePowerLimitFromSide2ToSide1: lineForm.hvdcLine.operatorActivePowerLimitSide1 ?? null,
+        operatorActivePowerLimitFromSide2ToSide1: lineForm.hvdcLine.operatorActivePowerLimitSide2 ?? null,
         convertersMode: lineForm.hvdcLine.convertersMode,
         activePowerSetpoint: lineForm.hvdcLine.activePowerSetpoint,
         angleDroopActivePowerControl: lineForm.hvdcLine.angleDroopActivePowerControl ?? null,

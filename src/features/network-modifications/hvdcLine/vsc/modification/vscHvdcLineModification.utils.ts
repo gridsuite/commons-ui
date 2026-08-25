@@ -82,7 +82,7 @@ export const vscHvdcLineModificationFormToDto = (
             lineForm.hvdcLine.operatorActivePowerLimitSide1
         ),
         operatorActivePowerLimitFromSide2ToSide1: toModificationOperation(
-            lineForm.hvdcLine.operatorActivePowerLimitSide1
+            lineForm.hvdcLine.operatorActivePowerLimitSide2
         ),
         convertersMode: toModificationOperation(lineForm.hvdcLine.convertersMode),
         activePowerSetpoint: toModificationOperation(lineForm.hvdcLine.activePowerSetpoint),

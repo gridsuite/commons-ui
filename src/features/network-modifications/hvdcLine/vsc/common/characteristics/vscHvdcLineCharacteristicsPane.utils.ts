@@ -88,7 +88,7 @@ export function getVscHvdcLineCharacteristicsFromCopy(
         [FieldConstants.R]: hvdcLine?.r,
         [FieldConstants.MAX_P]: hvdcLine?.maxP,
         [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]: hvdcLine?.hvdcOperatorActivePowerRange?.oprFromCS1toCS2,
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: hvdcLine?.hvdcOperatorActivePowerRange?.oprFromCS1toCS2,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: hvdcLine?.hvdcOperatorActivePowerRange?.oprFromCS2toCS1,
         [FieldConstants.CONVERTERS_MODE]: hvdcLine?.convertersMode,
         [FieldConstants.ACTIVE_POWER_SET_POINT]: hvdcLine?.activePowerSetpoint,
         [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: hvdcLine?.hvdcAngleDroopActivePowerControl?.isEnabled,
@@ -104,8 +104,8 @@ export function getVscHvdcLineCharacteristicsCreationDtoToForm(
         [FieldConstants.NOMINAL_V]: dto.nominalV ?? 0,
         [FieldConstants.R]: dto.r ?? 0,
         [FieldConstants.MAX_P]: dto.maxP ?? 0,
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]: dto?.operatorActivePowerLimitFromSide2ToSide1,
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: dto?.operatorActivePowerLimitFromSide1ToSide2,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]: dto?.operatorActivePowerLimitFromSide1ToSide2,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]: dto?.operatorActivePowerLimitFromSide2ToSide1,
         [FieldConstants.CONVERTERS_MODE]: dto.convertersMode,
         [FieldConstants.ACTIVE_POWER_SET_POINT]: dto.activePowerSetpoint ?? 0,
         [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: dto?.angleDroopActivePowerControl ?? undefined,
@@ -122,9 +122,9 @@ export function getVscHvdcLineCharacteristicsModificationDtoToForm(
         [FieldConstants.R]: dto.r?.value ?? null,
         [FieldConstants.MAX_P]: dto.maxP?.value ?? null,
         [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE1]:
-            dto?.operatorActivePowerLimitFromSide2ToSide1?.value ?? null,
-        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]:
             dto?.operatorActivePowerLimitFromSide1ToSide2?.value ?? null,
+        [FieldConstants.OPERATOR_ACTIVE_POWER_LIMIT_SIDE2]:
+            dto?.operatorActivePowerLimitFromSide2ToSide1?.value ?? null,
         [FieldConstants.CONVERTERS_MODE]: dto.convertersMode?.value ?? null,
         [FieldConstants.ACTIVE_POWER_SET_POINT]: dto.activePowerSetpoint?.value ?? null,
         [FieldConstants.ANGLE_DROOP_ACTIVE_POWER_CONTROL]: dto?.angleDroopActivePowerControl?.value ?? null,
