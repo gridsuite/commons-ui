@@ -14,7 +14,7 @@ import {
     toModificationOperation,
 } from '../../../../../utils';
 import {
-    getFilledPropertiesFromModification,
+    getPropertiesFromModification,
     modificationPropertiesSchema,
     toModificationProperties,
 } from '../../../common/properties/';
@@ -54,7 +54,8 @@ export const vscHvdcLineModificationEmptyFormData: DeepNullable<VscHvdcLineModif
 };
 
 export const vscHvdcLineModificationDtoToForm = (
-    lineDto: VscHdvLineModificationDto
+    lineDto: VscHdvLineModificationDto,
+    includePreviousValues = true
 ): VscHvdcLineModificationFormData => {
     return {
         [FieldConstants.EQUIPMENT_ID]: lineDto.equipmentId,
@@ -62,7 +63,7 @@ export const vscHvdcLineModificationDtoToForm = (
         [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsModificationDtoToForm(lineDto),
         [FieldConstants.CONVERTER_STATION_1]: converterStationModificationDtoToForm(lineDto.converterStation1),
         [FieldConstants.CONVERTER_STATION_2]: converterStationModificationDtoToForm(lineDto.converterStation2),
-        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(lineDto.properties),
+        ...getPropertiesFromModification(lineDto?.properties, includePreviousValues),
     };
 };
 
