@@ -40,7 +40,7 @@ import {
     findDepth,
     formatToComposedModification,
     isCompositeModification,
-    isModificationEditLocked,
+    isInLockedSharedModification,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
@@ -70,7 +70,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationsToExclude?: ExcludedNetworkModifications[];
     setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
     isDisabled?: boolean;
-    readOnlyReferenceModificationUuids?: Set<UUID>;
+    readOnlySharedModificationUuids?: Set<UUID>;
 }
 
 export function NetworkModificationsTable({
@@ -91,7 +91,7 @@ export function NetworkModificationsTable({
     modificationsToExclude,
     setModificationsToExclude,
     isDisabled = false,
-    readOnlyReferenceModificationUuids,
+    readOnlySharedModificationUuids,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -114,10 +114,10 @@ export function NetworkModificationsTable({
     }, [composedModifications]);
 
     // Kept in a ref so that handleRowSelected can read it without being recreated on every permission change.
-    const readOnlyReferenceModificationUuidsRef = useRef(readOnlyReferenceModificationUuids);
+    const readOnlySharedModificationUuidsRef = useRef(readOnlySharedModificationUuids);
     useEffect(() => {
-        readOnlyReferenceModificationUuidsRef.current = readOnlyReferenceModificationUuids;
-    }, [readOnlyReferenceModificationUuids]);
+        readOnlySharedModificationUuidsRef.current = readOnlySharedModificationUuids;
+    }, [readOnlySharedModificationUuids]);
 
     // refs are kept for the "event" props to prevent retriggering the associated useEffects
     const modificationToEditLabelRef = useRef(modificationToEditLabel);
@@ -139,12 +139,11 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            // A reference modification itself is never locked for selection purposes - only its content is:
-            // acting on the shared modification as a whole (move, delete, assemble) is always permitted.
-            const containsLockedModification = selectedRows.some(
-                (row) =>
-                    !isReferenceModification(row) &&
-                    isModificationEditLocked(row, readOnlyReferenceModificationUuidsRef.current)
+            // Its own reference never locks a row for selection purposes, only the ones it sits in do: acting
+            // on a shared modification as a whole (move, delete, assemble) is always permitted. A reference
+            // nested inside a locked one is part of its content, and stays locked as such.
+            const containsLockedModification = selectedRows.some((row) =>
+                isInLockedSharedModification(row, readOnlySharedModificationUuidsRef.current)
             );
             onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
         },
@@ -230,7 +229,7 @@ export function NetworkModificationsTable({
                 modificationToEditLabel: modificationToEditLabelRef,
             },
             permissions: {
-                readOnlyReferenceModificationUuids,
+                readOnlySharedModificationUuids,
             },
             status: {
                 isImpactedByNotification,
@@ -252,7 +251,7 @@ export function NetworkModificationsTable({
             handleRowSelected,
             modificationToEditLabelRef,
             isRowDragDisabled,
-            readOnlyReferenceModificationUuids,
+            readOnlySharedModificationUuids,
             isImpactedByNotification,
             notificationMessageId,
             isFetchingModifications,
@@ -398,9 +397,9 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
-                                                isFormOpeningLocked={isModificationEditLocked(
+                                                isFormOpeningLocked={isInLockedSharedModification(
                                                     row.original,
-                                                    readOnlyReferenceModificationUuids
+                                                    readOnlySharedModificationUuids
                                                 )}
                                             />
                                         );

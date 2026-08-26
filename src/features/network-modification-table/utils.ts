@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
+    BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     NetworkModificationMetadata,
@@ -41,17 +42,34 @@ export function isReferenceModification(modification: NetworkModificationMetadat
 }
 
 /**
- * @param readOnlyReferenceIds uuids of the shared modifications the user can't write into
+ * Tells whether a modification sits inside a shared modification the user can't write into - whatever it is.
+ *
+ * @param modification the row to check
+ * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
  * (a reference modification's referenceId, not the row's own uuid)
  */
+export function isInLockedSharedModification(
+    modification: BasicComposedModificationMetadata,
+    readOnlySharedModificationUuids: Set<UUID> | undefined
+) {
+    return !!modification.ancestorSharedModificationUuids?.some((uuid) => readOnlySharedModificationUuids?.has(uuid));
+}
+
+/**
+ * Same as isInLockedSharedModification, plus the reference modifications pointing at a shared modification the
+ * user can't write into. Only for what targets the shared modification itself - renaming a reference or saving
+ * its description does, moving or deleting it doesn't.
+ */
 export function isModificationEditLocked(
-    modification: NetworkModificationMetadata & { sharedReferenceId?: UUID },
-    readOnlyReferenceIds: Set<UUID> | undefined
-): boolean {
-    const relevantReferenceId = isReferenceModification(modification)
-        ? modification.referenceId
-        : modification.sharedReferenceId;
-    return !!relevantReferenceId && !!readOnlyReferenceIds?.has(relevantReferenceId);
+    modification: BasicComposedModificationMetadata,
+    readOnlySharedModificationUuids: Set<UUID> | undefined
+) {
+    return (
+        isInLockedSharedModification(modification, readOnlySharedModificationUuids) ||
+        (isReferenceModification(modification) &&
+            !!modification.referenceId &&
+            !!readOnlySharedModificationUuids?.has(modification.referenceId))
+    );
 }
 
 function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkModificationMetadata {
@@ -63,7 +81,9 @@ function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkMod
 }
 
 export function isTargetChildOfReference(targetRow: { original: ComposedModificationMetadata }): boolean {
-    return targetRow.original.sharedReferenceId !== undefined;
+    // Structural guard, unrelated to the permissions: the content of a shared modification can't be dragged,
+    // whoever the user is.
+    return !!targetRow.original.ancestorSharedModificationUuids?.length;
 }
 
 function extractReferenceChildren(detail: ReferenceModificationInfos): NetworkModificationMetadata[] {
@@ -327,11 +347,13 @@ export async function fetchSubModificationsForExpandedRows(
                     return tree;
                 }
                 const existingMod = findModificationInTree(node.rowKey, tree);
-                // A composite nested inside a reference itself carries the ancestor reference's
-                // sharedReferenceId; propagate it to its children so they stay locked as well
-                const inheritedReferenceId = existingMod?.sharedReferenceId;
+                // A composite nested inside a reference carries the chain of its ancestor references;
+                // propagate it as-is to its children so they stay locked as well.
+                const inheritedAncestorUuids = existingMod?.ancestorSharedModificationUuids;
                 const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map((m) =>
-                    inheritedReferenceId ? { ...m, sharedReferenceId: inheritedReferenceId } : m
+                    inheritedAncestorUuids?.length
+                        ? { ...m, ancestorSharedModificationUuids: inheritedAncestorUuids }
+                        : m
                 );
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
@@ -355,9 +377,13 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ReferenceModificationInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
+                const ancestorSharedModificationUuids = [
+                    ...(node.ancestorSharedModificationUuids ?? []),
+                    ...(node.referenceId ? [node.referenceId] : []),
+                ];
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
-                    sharedReferenceId: node.referenceId,
+                    ancestorSharedModificationUuids,
                 }));
 
                 setMods((prev) => updateSubModificationsOfACompositeInTree(node.rowKey, liveModifications, prev));
