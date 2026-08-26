@@ -35,6 +35,7 @@ import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
+    collectReferenceModifications,
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
     findDepth,
@@ -47,6 +48,7 @@ import {
     removeUuidsFromTree,
 } from './utils';
 import { ModificationRow } from './row';
+import { useSharedModificationsPermissions } from './use-shared-modifications-permissions';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -70,7 +72,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationsToExclude?: ExcludedNetworkModifications[];
     setModificationsToExclude?: Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
     isDisabled?: boolean;
-    readOnlySharedModificationUuids?: Set<UUID>;
 }
 
 export function NetworkModificationsTable({
@@ -91,7 +92,6 @@ export function NetworkModificationsTable({
     modificationsToExclude,
     setModificationsToExclude,
     isDisabled = false,
-    readOnlySharedModificationUuids,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -112,6 +112,14 @@ export function NetworkModificationsTable({
     useEffect(() => {
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
+
+    // Resolved from the whole loaded tree rather than from the node's modifications: a reference nested in a
+    // composite locks its own content too, and it only ever appears once that composite has been unfolded.
+    const referenceModifications = useMemo(
+        () => collectReferenceModifications(composedModifications),
+        [composedModifications]
+    );
+    const { readOnlySharedModificationUuids } = useSharedModificationsPermissions(referenceModifications);
 
     // refs are kept for the "event" props to prevent retriggering the associated useEffects
     const modificationToEditLabelRef = useRef(modificationToEditLabel);

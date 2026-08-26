@@ -42,6 +42,18 @@ export function isReferenceModification(modification: NetworkModificationMetadat
 }
 
 /**
+ * Collects the reference modifications of the whole loaded tree, not only the ones of the current node: a
+ * composite can hold a reference, whose content has to be locked just like a top-level one's. The permissions
+ * are resolved from this list, so a reference left out of it never locks anything.
+ */
+export function collectReferenceModifications(mods: ComposedModificationMetadata[]): ComposedModificationMetadata[] {
+    return mods.flatMap((mod) => [
+        ...(isReferenceModification(mod) ? [mod] : []),
+        ...collectReferenceModifications(mod.subModifications),
+    ]);
+}
+
+/**
  * Tells whether a modification sits inside a shared modification the user can't write into - whatever it is.
  *
  * @param modification the row to check
