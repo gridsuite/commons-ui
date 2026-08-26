@@ -224,7 +224,7 @@ export const useModificationsDragAndDrop = ({
             // References are expandable too (their children are read-only, fetched from the referenced
             // object), so without the isCompositeModification guard, dropping right after an expanded
             // reference was wrongly reinterpreted as "enter it as first child" instead of "insert after
-            // it as a sibling" — the reported before/after asymmetry.
+            // it as a sibling"
             const droppingIntoExpandedComposite =
                 isDraggingDown && isCompositeModification(targetRow.original) && targetRow.getIsExpanded();
             const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
