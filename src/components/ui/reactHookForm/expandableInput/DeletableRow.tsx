@@ -15,6 +15,7 @@ export interface DeletableRowProps extends PropsWithChildren {
     onClick: () => void;
     deletionMark?: boolean | null;
     disabledDeletion?: boolean | null;
+    dataTestId?: string;
 }
 
 export function DeletableRow({
@@ -22,6 +23,7 @@ export function DeletableRow({
     onClick,
     deletionMark,
     disabledDeletion,
+    dataTestId,
     children,
 }: Readonly<DeletableRowProps>) {
     const intl = useIntl();
@@ -35,6 +37,7 @@ export function DeletableRow({
             alignItems={alignItems}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
+            data-testid={dataTestId}
         >
             {children}
             <Grid size={1}>
@@ -44,7 +47,7 @@ export function DeletableRow({
                             id: deletionMark ? 'button.restore' : 'DeleteRows',
                         })}
                     >
-                        <IconButton onClick={onClick}>
+                        <IconButton onClick={onClick} data-testid="DeleteRowButton">
                             {deletionMark ? <RestoreFromTrashIcon /> : <DeleteIcon />}
                         </IconButton>
                     </CustomTooltip>

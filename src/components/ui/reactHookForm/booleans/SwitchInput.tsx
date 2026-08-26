@@ -12,8 +12,18 @@ export interface SwitchInputProps {
     name: string;
     label?: string;
     formProps?: SwitchProps;
+    dataTestId?: string;
 }
 
-export function SwitchInput({ name, label, formProps, ...props }: SwitchInputProps) {
-    return <BooleanInput name={name} label={label} formProps={formProps} Input={Switch} {...props} />;
+export function SwitchInput({ name, label, formProps, dataTestId, ...props }: SwitchInputProps) {
+    return (
+        <BooleanInput
+            name={name}
+            label={label}
+            formProps={formProps}
+            Input={Switch}
+            dataTestId={dataTestId}
+            {...props}
+        />
+    );
 }

@@ -69,6 +69,7 @@ function EditableTableCell({
             {column.type === DndColumnType.NUMERIC && (
                 <TableNumericalInput
                     {...props}
+                    data-testid={column.dataTestId}
                     name={name}
                     previousValue={previousValue}
                     valueModified={valueModified}
@@ -81,12 +82,18 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.TEXT && (
-                <TableTextInput {...props} name={name} hideErrorMessage={column.hideErrorMessage} />
+                <TableTextInput
+                    {...props}
+                    name={name}
+                    hideErrorMessage={column.hideErrorMessage}
+                    dataTestId={column.dataTestId}
+                />
             )}
             {column.type === DndColumnType.AUTOCOMPLETE && (
                 <AutocompleteInput
                     forcePopupIcon
                     freeSolo
+                    dataTestId={column.dataTestId}
                     name={name}
                     options={column.options}
                     inputTransform={(value) => value ?? ''}
@@ -95,11 +102,19 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.SELECT && (
-                <SelectInput options={column.options} name={name} size="small" fullWidth disableClearable />
+                <SelectInput
+                    options={column.options}
+                    name={name}
+                    size="small"
+                    fullWidth
+                    disableClearable
+                    dataTestId={column.dataTestId}
+                />
             )}
             {column.type === DndColumnType.DIRECTORY_ITEMS && (
                 <DirectoryItemsInput
                     name={name}
+                    dataTestId={column.dataTestId}
                     equipmentTypes={column.equipmentTypes}
                     elementType={column.elementType}
                     titleId={column.titleId}
@@ -110,11 +125,12 @@ function EditableTableCell({
                 />
             )}
             {column.type === DndColumnType.CHIP_ITEMS && (
-                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} />
+                <ChipItemsInput name={name} hideErrorMessage={column.hideErrorMessage} dataTestId={column.dataTestId} />
             )}
             {column.type === DndColumnType.SWITCH && (
                 <SwitchInput
                     name={name}
+                    dataTestId={column.dataTestId}
                     formProps={{
                         // callback to propagate a change to parent via column config
                         onChange: (_, checked) => column.shouldHandleOnChangeCell && onChangeCell?.(checked),
@@ -145,6 +161,7 @@ export type DndTableRowProps = TableRowProps & {
     onDeleteRow: (index: number) => void;
     multiselect?: boolean;
     nextSnapshotCellWidthSx: (isDragging: boolean) => SxProps<Theme> | undefined;
+    rowDataTestId?: string;
 };
 export function DndTableRow({
     rowId,
@@ -164,6 +181,7 @@ export function DndTableRow({
     onDeleteRow,
     multiselect,
     nextSnapshotCellWidthSx,
+    rowDataTestId,
 }: Readonly<DndTableRowProps>) {
     const intl = useIntl();
 
@@ -175,6 +193,7 @@ export function DndTableRow({
                 onDeleteRow(index);
             }}
             disabledDeletion={disabledDeletion || multiselect}
+            dataTestId={rowDataTestId}
         >
             {!disableDragAndDrop && (
                 <CustomTooltip
@@ -185,6 +204,7 @@ export function DndTableRow({
                     <TableCell
                         sx={mergeSx({ textAlign: 'center' }, nextSnapshotCellWidthSx(snapshot.isDragging))}
                         {...(disabled ? {} : { ...provided.dragHandleProps })}
+                        data-testid="DragAndDropButton"
                     >
                         <DragIndicatorIcon />
                     </TableCell>

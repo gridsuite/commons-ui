@@ -21,6 +21,7 @@ export function getBranchActiveReactivePowerEmptyFormDataProperties() {
         ...getPowerWithValidityEmptyFormData(FieldConstants.MEASUREMENT_Q2),
     };
 }
+
 export function getBranchActiveReactivePowerEmptyFormData(id: string) {
     return {
         [id]: {
