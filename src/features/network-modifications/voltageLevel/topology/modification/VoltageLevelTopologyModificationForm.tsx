@@ -97,7 +97,7 @@ export function VoltageLevelTopologyModificationForm({
                         id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
                     }),
                     isNodeBuilt,
-                    disabledTooltip: !isModification && isNodeBuilt,
+                    disabledTooltip: !isPreviousStatusEnabled || !isModification && isNodeBuilt,
                 },
             },
             ...(isPreviousStatusEnabled
