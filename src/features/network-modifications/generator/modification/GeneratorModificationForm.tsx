@@ -6,17 +6,18 @@
  */
 
 import { Grid, Stack } from '@mui/material';
-import { useFormState, useWatch } from 'react-hook-form';
-import { GENERATOR_TAB_FIELDS, GeneratorDialogTab } from './generatorTabs.utils';
+import { useWatch } from 'react-hook-form';
+import { GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
 import { GeneratorDialogTabs } from './GeneratorDialogTabs';
 import { GeneratorDialogTabsContent, GeneratorDialogTabsContentProps } from './GeneratorDialogTabsContent';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabs } from '../../../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
 
 interface GeneratorModificationFormProps
     extends GeneratorDialogHeaderProps, Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+    useTabsReturn: UseTabsReturn<GeneratorDialogTab>;
 }
 
 export function GeneratorModificationForm({
@@ -26,17 +27,10 @@ export function GeneratorModificationForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
+    useTabsReturn,
 }: Readonly<GeneratorModificationFormProps>) {
-    const { errors } = useFormState();
-    const {
-        selectedTab: tabIndex,
-        setSelectedTab: setTabIndex,
-        tabsWithError: tabIndexesWithError,
-    } = useTabs<GeneratorDialogTab>({
-        defaultTab: GeneratorDialogTab.CONNECTIVITY_TAB,
-        errors,
-        tabFields: GENERATOR_TAB_FIELDS,
-    });
+    const { selectedTab: tabIndex, tabsWithError: tabIndexesWithError, onTabChange } = useTabsReturn;
+
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
@@ -48,7 +42,7 @@ export function GeneratorModificationForm({
                 <GeneratorDialogTabs
                     tabIndex={tabIndex}
                     tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
+                    onTabChange={onTabChange}
                 />
             </Grid>
             <Grid>
