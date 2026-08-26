@@ -113,12 +113,6 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    // Kept in a ref so that handleRowSelected can read it without being recreated on every permission change.
-    const readOnlySharedModificationUuidsRef = useRef(readOnlySharedModificationUuids);
-    useEffect(() => {
-        readOnlySharedModificationUuidsRef.current = readOnlySharedModificationUuids;
-    }, [readOnlySharedModificationUuids]);
-
     // refs are kept for the "event" props to prevent retriggering the associated useEffects
     const modificationToEditLabelRef = useRef(modificationToEditLabel);
     useEffect(() => {
@@ -143,11 +137,11 @@ export function NetworkModificationsTable({
             // on a shared modification as a whole (move, delete, assemble) is always permitted. A reference
             // nested inside a locked one is part of its content, and stays locked as such.
             const containsLockedModification = selectedRows.some((row) =>
-                isInLockedSharedModification(row, readOnlySharedModificationUuidsRef.current)
+                isInLockedSharedModification(row, readOnlySharedModificationUuids)
             );
             onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
         },
-        [onSelectedRowsChange, isAssemblyDepthExceeded]
+        [onSelectedRowsChange, isAssemblyDepthExceeded, readOnlySharedModificationUuids]
     );
 
     const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
