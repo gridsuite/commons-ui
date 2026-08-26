@@ -60,9 +60,6 @@ export interface ConverterStationInfos {
     reactiveCapabilityCurvePoints: ReactiveCapabilityCurvePoints[];
     minMaxReactiveLimits: MinMaxReactiveLimitsFormInfos | null;
     connectablePosition: ConnectablePositionInfos;
-    reactivePower?: number;
-    voltageRegulationOn?: boolean;
-    voltage?: number;
     measurementP?: MeasurementInfo;
     measurementQ?: MeasurementInfo;
 }

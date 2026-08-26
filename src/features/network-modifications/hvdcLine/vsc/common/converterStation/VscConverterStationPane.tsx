@@ -58,7 +58,7 @@ export function VscConverterStationPane({
         }
     }, [voltageRegulationOnWatch, trigger, id]);
 
-    const generatorIdField = isModification ? (
+    const converterStationIdField = isModification ? (
         <TextField
             size="small"
             fullWidth
@@ -75,7 +75,7 @@ export function VscConverterStationPane({
         <TextInput name={`${id}.${FieldConstants.CONVERTER_STATION_ID}`} label="converterStationId" />
     );
 
-    const generatorNameField = (
+    const converterStationNameField = (
         <TextInput
             name={`${id}.${FieldConstants.CONVERTER_STATION_NAME}`}
             label="converterStationName"
@@ -139,7 +139,7 @@ export function VscConverterStationPane({
             name={`${id}.${FieldConstants.VOLTAGE}`}
             adornment={VoltageAdornment}
             label="VoltageText"
-            previousValue={stationToModify?.voltageSetpoint || undefined}
+            previousValue={stationToModify?.voltageSetpoint ?? undefined}
         />
     );
 
@@ -147,8 +147,8 @@ export function VscConverterStationPane({
         <Grid container>
             <GridSection title={stationLabel} />
             <Grid container spacing={2} sx={{ width: '100%' }}>
-                <GridItem size={4}>{generatorIdField}</GridItem>
-                <GridItem size={4}>{generatorNameField}</GridItem>
+                <GridItem size={4}>{converterStationIdField}</GridItem>
+                <GridItem size={4}>{converterStationNameField}</GridItem>
             </Grid>
 
             {!isModification && (
