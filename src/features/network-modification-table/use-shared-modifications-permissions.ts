@@ -26,6 +26,7 @@ function getReferenceIds(referenceModifications: NetworkModificationMetadata[]):
     ];
 }
 
+/** An id the cache has no answer for yet is kept, so that a permission still being fetched reads as denied. */
 function buildReadOnlySharedModificationUuids(referenceIds: UUID[], permissions: Map<UUID, boolean>): Set<UUID> {
     return new Set(referenceIds.filter((id) => !permissions.get(id)));
 }
@@ -44,10 +45,9 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
  *
  * A reference modification carries the uuid of the shared modification it points at (its `referenceId`), which
  * is also the uuid of the corresponding element in the directory - so its permission is the one of the
- * directory holding it. That same uuid identifies a locked modification everywhere else in this feature: see
- * isModificationEditLocked and the ancestorSharedModificationUuids chain propagated to the nested rows.
+ * directory holding it.
  *
- * @param modifications the modifications of the current node, as returned by the server
+ * @param modifications a list of modifications we want to check the rights
  * @return the uuids of the **shared modifications** (not its references) the user is not allowed to write into
  */
 // TODO a permission granted through a group stays cached when the user is added to / removed from that group:
@@ -81,15 +81,20 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
 
         const referenceIds = getReferenceIds(modifications.filter(isReferenceModification));
 
+        // Published before the fetch is even started, and refreshed by the cache update it triggers. An
+        // unresolved permission counts as read-only, since buildReadOnlySharedModificationUuids keeps the
+        // ids the cache doesn't answer for: locking a modification that turns out to be writable only lasts
+        // the time of the call, whereas leaving it open breaches the very rule this hook enforces.
+        setReadOnlySharedModificationUuids(
+            replaceIfChanged(
+                referenceIds.length === 0
+                    ? EMPTY_UUID_SET
+                    : buildReadOnlySharedModificationUuids(referenceIds, permissionsCache)
+            )
+        );
+
         const missingIds = referenceIds.filter((id) => !permissionsCache.has(id));
         if (missingIds.length === 0) {
-            setReadOnlySharedModificationUuids(
-                replaceIfChanged(
-                    referenceIds.length === 0
-                        ? EMPTY_UUID_SET
-                        : buildReadOnlySharedModificationUuids(referenceIds, permissionsCache)
-                )
-            );
             // no fetch needed
             return undefined;
         }
