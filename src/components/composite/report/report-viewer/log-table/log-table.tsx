@@ -120,6 +120,7 @@ function LogTable({
     const { filters, updateFilters, pagination, changePagination } = useReportFilterContext();
 
     const { page, rowsPerPage } = pagination;
+    const rowsPerPageNumber = typeof rowsPerPage === 'number' ? rowsPerPage : rowsPerPage.value;
 
     const [selectedRowIndex, setSelectedRowIndex] = useState<number | null>(-1);
     const [rowData, setRowData] = useState<Log[] | null>(null);
@@ -158,11 +159,11 @@ function LogTable({
             setRowData([]);
             return;
         }
-        fetchLogs(selectedReport.id, severityFilter, messageFilter, selectedReport.type, page, rowsPerPage)?.then(
+        fetchLogs(selectedReport.id, severityFilter, messageFilter, selectedReport.type, page, rowsPerPageNumber)?.then(
             (pagedLogs) => {
                 const { content, totalElements, totalPages } = pagedLogs;
                 if (totalPages - 1 < page) {
-                    changePagination({ page: 0, rowsPerPage });
+                    changePagination({ page: 0, rowsPerPage: rowsPerPageNumber });
                 }
                 setCount(totalElements);
                 setSelectedRowIndex(-1);
@@ -176,7 +177,7 @@ function LogTable({
         selectedReport.type,
         messageFilter,
         page,
-        rowsPerPage,
+        rowsPerPageNumber,
         changePagination,
     ]);
 
@@ -324,12 +325,12 @@ function LogTable({
                 messageFilter,
                 selectedReport.type,
                 term,
-                rowsPerPage
+                rowsPerPageNumber
             )?.then((matchesPositions) => {
                 setSearchMatches(matchesPositions);
                 const matches = matchesPositions.map((m) => m.rowIndex);
                 if (matches.length > 0) {
-                    changePagination({ page: matchesPositions[0].page, rowsPerPage });
+                    changePagination({ page: matchesPositions[0].page, rowsPerPage: rowsPerPageNumber });
                 }
                 handleSearchResults(matches);
             });
@@ -339,7 +340,7 @@ function LogTable({
             handleSearchResults,
             messageFilter,
             resetSearch,
-            rowsPerPage,
+            rowsPerPageNumber,
             selectedReport.id,
             selectedReport.type,
             changePagination,
@@ -463,7 +464,7 @@ function LogTable({
                 component="div"
                 rowsPerPageOptions={PAGE_OPTIONS}
                 count={count}
-                rowsPerPage={rowsPerPage}
+                rowsPerPage={rowsPerPageNumber}
                 page={page}
                 onPageChange={handleChangePage}
                 onRowsPerPageChange={handleChangeRowsPerPage}

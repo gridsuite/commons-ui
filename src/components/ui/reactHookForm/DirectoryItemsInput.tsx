@@ -70,6 +70,7 @@ export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = Ove
     chipProps?: Partial<CP>;
     fullHeight?: boolean;
     fullWidth?: boolean;
+    dataTestId?: string;
 }
 
 export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
@@ -88,6 +89,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     chipProps,
     fullHeight = false,
     fullWidth = true,
+    dataTestId,
 }: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -255,6 +257,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                     </InputLabel>
                 )}
                 <Select
+                    data-testid={dataTestId}
                     value={elements}
                     multiple
                     displayEmpty

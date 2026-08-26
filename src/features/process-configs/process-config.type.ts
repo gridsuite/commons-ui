@@ -8,11 +8,13 @@ import { UUID } from 'node:crypto';
 import { SecurityAnalysisProcessConfigBackend } from './security-analysis';
 import { LoadflowProcessConfigBackend } from './loadflow';
 import { ProcessType } from './common';
+import { ShortcircuitProcessConfigBackend } from './shortcircuit';
 
 // Backend types
 type ProcessConfigBackendByProcessType = {
     [ProcessType.SECURITY_ANALYSIS]: SecurityAnalysisProcessConfigBackend;
     [ProcessType.LOADFLOW]: LoadflowProcessConfigBackend;
+    [ProcessType.SHORT_CIRCUIT]: ShortcircuitProcessConfigBackend;
 };
 export type ProcessConfigBackend<TProcessType extends ProcessType> = ProcessConfigBackendByProcessType[TProcessType];
 export type PersistedProcessConfigBackend<TProcessType extends ProcessType> = {
