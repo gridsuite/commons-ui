@@ -1,6 +1,6 @@
 import { UserProfile } from 'oidc-client-ts';
 import { GridSuiteModule, AboutDialog, UserInformationDialog, UserSettingsDialog } from '../../topBar';
-import { useAppSideBarDialogs } from './AppSideBarDialogProvider';
+import { SideBarDialogType, useAppSideBarDialogs } from './AppSideBarDialogProvider';
 
 type AppSideBarDialogsProps = {
     isDeveloperMode: boolean;
@@ -23,34 +23,27 @@ export function AppSideBarDialogs({
     isDeveloperMode,
     handleChangeDeveloperMode,
 }: Readonly<AppSideBarDialogsProps>) {
-    const {
-        isAboutDialogOpen,
-        setIsAboutDialogOpen,
-        isProfileDialogOpen,
-        setIsProfileDialogOpen,
-        isProfileSettingsDialogOpen,
-        setIsProfileSettingsDialogOpen,
-    } = useAppSideBarDialogs();
+    const { openDialog, closeDialog } = useAppSideBarDialogs();
 
     return (
         <>
             <AboutDialog
                 appLicense={appLicense}
                 appVersion={appVersion}
-                open={isAboutDialogOpen}
-                onClose={() => setIsAboutDialogOpen(false)}
+                open={openDialog === SideBarDialogType.ABOUT}
+                onClose={closeDialog}
                 additionalModulesPromise={additionalModulesPromise}
                 globalVersionPromise={globalVersionPromise}
                 appName={appName}
             />
             <UserInformationDialog
-                openDialog={isProfileDialogOpen}
-                onClose={() => setIsProfileDialogOpen(false)}
+                openDialog={openDialog === SideBarDialogType.PROFILE}
+                onClose={closeDialog}
                 userProfile={userProfile ?? undefined}
             />
             <UserSettingsDialog
-                openDialog={isProfileSettingsDialogOpen}
-                onClose={() => setIsProfileSettingsDialogOpen(false)}
+                openDialog={openDialog === SideBarDialogType.PROFILE_SETTINGS}
+                onClose={closeDialog}
                 developerMode={isDeveloperMode}
                 onDeveloperModeClick={handleChangeDeveloperMode}
             />

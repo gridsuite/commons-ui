@@ -14,7 +14,7 @@ import { UserAvatarIcon } from './UserIcon';
 import { SideBarMenuItem } from '../common/SideBarMenuItem';
 import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
-import { useAppSideBarDialogs } from '../../dialogs/AppSideBarDialogProvider';
+import { SideBarDialogType, useAppSideBarDialogs } from '../../dialogs/AppSideBarDialogProvider';
 
 interface ProfileMenuProps {
     isMinimized: boolean;
@@ -23,10 +23,10 @@ interface ProfileMenuProps {
 
 export function ProfileMenu({ isMinimized, userProfile }: Readonly<ProfileMenuProps>) {
     const intl = useIntl();
-    const { setIsProfileDialogOpen, setIsProfileSettingsDialogOpen } = useAppSideBarDialogs();
+    const { setOpenDialog } = useAppSideBarDialogs();
 
-    const openProfileDialog = () => setIsProfileDialogOpen(true);
-    const openProfileSettingsDialog = () => setIsProfileSettingsDialogOpen(true);
+    const openProfileDialog = () => setOpenDialog(SideBarDialogType.PROFILE);
+    const openProfileSettingsDialog = () => setOpenDialog(SideBarDialogType.PROFILE_SETTINGS);
 
     const profileLabel = intl.formatMessage({ id: 'user-information-dialog/profile' });
 

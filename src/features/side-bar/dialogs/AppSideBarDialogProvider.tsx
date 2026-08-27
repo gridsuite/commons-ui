@@ -5,34 +5,36 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { createContext, Dispatch, PropsWithChildren, SetStateAction, useContext, useMemo, useState } from 'react';
+import { createContext, PropsWithChildren, useCallback, useContext, useMemo, useState } from 'react';
+
+export enum SideBarDialogType {
+    ABOUT = 'ABOUT',
+    PROFILE = 'PROFILE',
+    PROFILE_SETTINGS = 'PROFILE_SETTINGS',
+}
 
 type AppSideBarDialogContextValue = {
-    isAboutDialogOpen: boolean;
-    setIsAboutDialogOpen: Dispatch<SetStateAction<boolean>>;
-    isProfileDialogOpen: boolean;
-    setIsProfileDialogOpen: Dispatch<SetStateAction<boolean>>;
-    isProfileSettingsDialogOpen: boolean;
-    setIsProfileSettingsDialogOpen: Dispatch<SetStateAction<boolean>>;
+    openDialog: SideBarDialogType | null;
+    setOpenDialog: (dialog: SideBarDialogType) => void;
+    closeDialog: () => void;
 };
 
 const AppSideBarDialogContext = createContext<AppSideBarDialogContextValue | undefined>(undefined);
 
 export function AppSideBarDialogProvider({ children }: Readonly<PropsWithChildren>) {
-    const [isAboutDialogOpen, setIsAboutDialogOpen] = useState(false);
-    const [isProfileDialogOpen, setIsProfileDialogOpen] = useState(false);
-    const [isProfileSettingsDialogOpen, setIsProfileSettingsDialogOpen] = useState(false);
+    const [openDialog, setOpenDialog] = useState<SideBarDialogType | null>(null);
+
+    const closeDialog = useCallback(() => {
+        setOpenDialog(null);
+    }, []);
 
     const contextValue = useMemo(
         () => ({
-            isAboutDialogOpen,
-            setIsAboutDialogOpen,
-            isProfileDialogOpen,
-            setIsProfileDialogOpen,
-            isProfileSettingsDialogOpen,
-            setIsProfileSettingsDialogOpen,
+            openDialog,
+            setOpenDialog,
+            closeDialog,
         }),
-        [isAboutDialogOpen, isProfileDialogOpen, isProfileSettingsDialogOpen]
+        [closeDialog, openDialog]
     );
 
     return <AppSideBarDialogContext.Provider value={contextValue}>{children}</AppSideBarDialogContext.Provider>;

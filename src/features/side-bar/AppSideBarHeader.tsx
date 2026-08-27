@@ -8,7 +8,7 @@
 import { Box, Divider, Stack, Typography, IconButton, Tooltip } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import { ReactNode } from 'react';
-import { useAppSideBarDialogs } from './dialogs/AppSideBarDialogProvider';
+import { SideBarDialogType, useAppSideBarDialogs } from './dialogs/AppSideBarDialogProvider';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
@@ -27,7 +27,7 @@ export function AppSideBarHeader({
     appLogo,
     appVersion,
 }: Readonly<AppSideBarHeaderProps>) {
-    const { setIsAboutDialogOpen } = useAppSideBarDialogs();
+    const { setOpenDialog } = useAppSideBarDialogs();
 
     return (
         <Stack
@@ -59,7 +59,7 @@ export function AppSideBarHeader({
                 <>
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
                     <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
-                        <IconButton sx={{ padding: 0 }} onClick={() => setIsAboutDialogOpen(true)}>
+                        <IconButton sx={{ padding: 0 }} onClick={() => setOpenDialog(SideBarDialogType.ABOUT)}>
                             <Info fontSize="small" color="disabled" />
                         </IconButton>
                     </Tooltip>
