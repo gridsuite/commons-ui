@@ -313,7 +313,9 @@ export const networkModificationsFr = {
     unlimited: 'Illimité',
     forbidden: 'Interdit',
     Applicability: 'Applicable sur',
-    disableOLGedition: 'Les données saisies pour les jeux de limites ne seront pas conservées. Voulez-vous continuer ?',
+    disableOLGeditionByReplace:
+        'Les données saisies pour les jeux de limites seront perdues pour afficher leurs valeurs courantes. Voulez-vous continuer ?',
+    disableOLGedition: 'Les données saisies pour les jeux de limites seront perdues. Voulez-vous continuer ?',
     Edit: 'Édition',
     View: 'Visualisation',
     TemporaryCurrentLimitsText: "Limites d'intensité temporaires",
