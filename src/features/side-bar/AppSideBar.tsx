@@ -12,9 +12,11 @@ import { AppSideBarHeader } from './AppSideBarHeader';
 import { AppSideBarFooter } from './footer/AppSideBarFooter';
 import { GridSuiteModule } from '../topBar';
 import { GsLang, GsTheme, Metadata } from '../../utils';
-import { useAppSideBarTheme } from './AppSideBarThemeProvider';
+import { AppSideBarDialogProvider } from './dialogs/AppSideBarDialogProvider';
+import { AppSideBarDialogs } from './dialogs/AppSideBarDialogs';
 
 type SideBarProps = {
+    invertedTheme: Theme;
     isDeveloperMode: boolean;
     smallScreenBreakpoint: number | Breakpoint;
     handleChangeDeveloperMode: (newValue: boolean) => void;
@@ -35,6 +37,7 @@ type SideBarProps = {
 };
 
 export function AppSideBar({
+    invertedTheme,
     isDeveloperMode,
     smallScreenBreakpoint,
     handleChangeDeveloperMode,
@@ -53,8 +56,6 @@ export function AppSideBar({
     additionalModulesPromise,
     onLogoutClick,
 }: Readonly<SideBarProps>) {
-    const { invertedTheme } = useAppSideBarTheme();
-
     const [isMinimized, setIsMinimized] = useState(true);
     const toggleSideBarMinimized = () => {
         setIsMinimized((previousIsSideBarMinimized) => !previousIsSideBarMinimized);
@@ -69,49 +70,56 @@ export function AppSideBar({
     }, [isSmallScreen]);
 
     return (
-        <ThemeProvider theme={invertedTheme}>
-            <ScopedCssBaseline>
-                <Stack
-                    component="aside"
-                    sx={{
-                        width: isMinimized ? 64 : 224,
-                        height: '100%',
-                    }}
-                >
-                    <AppSideBarHeader
-                        isMinimized={isMinimized}
-                        isLoggedIn={!!userProfile}
-                        appName={appName}
-                        appNameColor={appNameColor}
-                        appLogo={appLogo}
-                        additionalModulesPromise={additionalModulesPromise}
-                        globalVersionPromise={globalVersionPromise}
-                        appLicense={appLicense}
-                        appVersion={appVersion}
-                    />
-
-                    <Box
+        <AppSideBarDialogProvider>
+            <AppSideBarDialogs
+                appLicense={appLicense}
+                appVersion={appVersion}
+                additionalModulesPromise={additionalModulesPromise}
+                globalVersionPromise={globalVersionPromise}
+                appName={appName}
+                userProfile={userProfile}
+                isDeveloperMode={isDeveloperMode}
+                handleChangeDeveloperMode={handleChangeDeveloperMode}
+            />
+            <ThemeProvider theme={invertedTheme}>
+                <ScopedCssBaseline>
+                    <Stack
+                        component="aside"
                         sx={{
-                            flex: 1,
+                            width: isMinimized ? 64 : 224,
+                            height: '100%',
                         }}
-                    />
+                    >
+                        <AppSideBarHeader
+                            isMinimized={isMinimized}
+                            isLoggedIn={!!userProfile}
+                            appName={appName}
+                            appNameColor={appNameColor}
+                            appLogo={appLogo}
+                            appVersion={appVersion}
+                        />
 
-                    <AppSideBarFooter
-                        isMinimized={isMinimized}
-                        isSmallScreen={isSmallScreen}
-                        toggleSideBarMinimized={toggleSideBarMinimized}
-                        currentTheme={currentTheme}
-                        setTheme={setTheme}
-                        selectedLanguage={selectedLanguage}
-                        setSelectedLanguage={setSelectedLanguage}
-                        isDeveloperMode={isDeveloperMode}
-                        handleChangeDeveloperMode={handleChangeDeveloperMode}
-                        userProfile={userProfile}
-                        appsAndUrls={appsAndUrls}
-                        onLogoutClick={onLogoutClick}
-                    />
-                </Stack>
-            </ScopedCssBaseline>
-        </ThemeProvider>
+                        <Box
+                            sx={{
+                                flex: 1,
+                            }}
+                        />
+
+                        <AppSideBarFooter
+                            isMinimized={isMinimized}
+                            isSmallScreen={isSmallScreen}
+                            toggleSideBarMinimized={toggleSideBarMinimized}
+                            currentTheme={currentTheme}
+                            setTheme={setTheme}
+                            selectedLanguage={selectedLanguage}
+                            setSelectedLanguage={setSelectedLanguage}
+                            userProfile={userProfile}
+                            appsAndUrls={appsAndUrls}
+                            onLogoutClick={onLogoutClick}
+                        />
+                    </Stack>
+                </ScopedCssBaseline>
+            </ThemeProvider>
+        </AppSideBarDialogProvider>
     );
 }

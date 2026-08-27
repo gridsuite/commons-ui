@@ -6,4 +6,3 @@
  */
 
 export * from './AppSideBar';
-export * from './AppSideBarThemeProvider';

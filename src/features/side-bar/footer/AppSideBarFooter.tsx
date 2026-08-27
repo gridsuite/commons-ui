@@ -18,8 +18,6 @@ export interface AppSideBarFooterProps {
     isMinimized: boolean;
     isSmallScreen: boolean;
     toggleSideBarMinimized: () => void;
-    isDeveloperMode: boolean;
-    handleChangeDeveloperMode: (newValue: boolean) => void;
     currentTheme: GsTheme;
     setTheme: (newTheme: GsTheme) => void;
     selectedLanguage: GsLang;
@@ -33,8 +31,6 @@ export function AppSideBarFooter({
     isMinimized,
     isSmallScreen,
     toggleSideBarMinimized,
-    isDeveloperMode,
-    handleChangeDeveloperMode,
     currentTheme,
     setTheme,
     selectedLanguage,
@@ -50,12 +46,7 @@ export function AppSideBarFooter({
                 {isUserLoggedIn && (
                     <>
                         <ApplicationMenu isMinimized={isMinimized} appsAndUrls={appsAndUrls} />
-                        <ProfileMenu
-                            isMinimized={isMinimized}
-                            isDeveloperMode={isDeveloperMode}
-                            handleChangeDeveloperMode={handleChangeDeveloperMode}
-                            userProfile={userProfile}
-                        />
+                        <ProfileMenu isMinimized={isMinimized} userProfile={userProfile} />
                         <SettingsMenu
                             isMinimized={isMinimized}
                             currentTheme={currentTheme}
