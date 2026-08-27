@@ -38,7 +38,6 @@ export interface ReferencedCompositeModifications extends NetworkModificationMet
 }
 
 export interface ReferenceModificationInfos extends NetworkModificationMetadata {
-    referenceId?: UUID;
     referenceType?: string;
     referenceInfos?: BasicComposedModificationMetadata;
 }

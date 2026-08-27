@@ -113,8 +113,7 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
-    // Resolved from the whole loaded tree rather than from the node's modifications: a reference nested in a
-    // composite locks its own content too, and it only ever appears once that composite has been unfolded.
+    // Resolved from the whole loaded tree rather than from the node's modifications, so we get all nested references
     const referenceModifications = useMemo(
         () => collectReferenceModifications(composedModifications),
         [composedModifications]
@@ -141,9 +140,6 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            // Its own reference never locks a row for selection purposes, only the ones it sits in do: acting
-            // on a shared modification as a whole (move, delete, assemble) is always permitted. A reference
-            // nested inside a locked one is part of its content, and stays locked as such.
             const containsLockedModification = selectedRows.some((row) =>
                 isInLockedSharedModification(row, readOnlySharedModificationUuids)
             );

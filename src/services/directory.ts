@@ -65,11 +65,22 @@ export enum PermissionType {
     MANAGE = 'MANAGE',
 }
 
-export function hasElementPermission(elementUuid: UUID, permission: PermissionType) {
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${elementUuid}?permission=${permission}`;
+/**
+ * Asks which of the given elements the user has the permission on, in a single call. A directory is checked
+ * on itself, any other element on its parent directory.
+ *
+ * @return the uuids the user has the permission on, the forbidden and the unknown ones being left out
+ */
+export function getAccessibleElements(elementUuids: UUID[], permission: PermissionType): Promise<UUID[]> {
+    const params = new URLSearchParams({ ids: elementUuids.join(','), accessType: permission });
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/permission?${params.toString()}`;
     console.debug(url);
-    return backendFetch(url, { method: 'get' })
-        .then((response) => response.status === 200)
+    return backendFetchJson(url);
+}
+
+export function hasElementPermission(elementUuid: UUID, permission: PermissionType): Promise<boolean> {
+    return getAccessibleElements([elementUuid], permission)
+        .then((accessibleUuids) => accessibleUuids.includes(elementUuid))
         .catch(() => {
             console.info(`${permission} permission denied for element or directory ${elementUuid}`);
             return false;

@@ -41,11 +41,6 @@ export function isReferenceModification(modification: NetworkModificationMetadat
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
-/**
- * Collects the reference modifications of the whole loaded tree, not only the ones of the current node: a
- * composite can hold a reference, whose content has to be locked just like a top-level one's. The permissions
- * are resolved from this list, so a reference left out of it never locks anything.
- */
 export function collectReferenceModifications(mods: ComposedModificationMetadata[]): ComposedModificationMetadata[] {
     return mods.flatMap((mod) => [
         ...(isReferenceModification(mod) ? [mod] : []),
@@ -93,8 +88,6 @@ function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkMod
 }
 
 export function isTargetChildOfReference(targetRow: { original: ComposedModificationMetadata }): boolean {
-    // Structural guard, unrelated to the permissions: the content of a shared modification can't be dragged,
-    // whoever the user is.
     return !!targetRow.original.ancestorSharedModificationUuids?.length;
 }
 

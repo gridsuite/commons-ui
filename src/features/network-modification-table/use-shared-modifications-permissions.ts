@@ -7,7 +7,7 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import type { UUID } from 'node:crypto';
-import { hasElementPermission, PermissionType } from '../../services';
+import { getAccessibleElements, PermissionType } from '../../services';
 import { equalsArrayAnyOrder, NetworkModificationMetadata } from '../../utils';
 import { DirectoriesNotificationType, NotificationsUrlKeys } from '../../utils/constants/notificationsProvider';
 import { useNotificationsListener } from '../notifications/hooks/useNotificationsListener';
@@ -19,22 +19,17 @@ const EMPTY_UUID_SET: Set<UUID> = new Set();
 function getReferenceIds(referenceModifications: NetworkModificationMetadata[]): UUID[] {
     return [
         ...new Set(
-            referenceModifications
-                .map((modification) => modification.referenceId)
-                .filter((id): id is UUID => id !== undefined)
+            referenceModifications.map((modification) => modification.referenceId).filter((id) => id !== undefined)
         ),
     ];
 }
 
-/** An id the cache has no answer for yet is kept, so that a permission still being fetched reads as denied. */
+/** A shared modification is read-only if it does not explicitly have the write permission. */
 function buildReadOnlySharedModificationUuids(referenceIds: UUID[], permissions: Map<UUID, boolean>): Set<UUID> {
     return new Set(referenceIds.filter((id) => !permissions.get(id)));
 }
 
-/**
- * State updater keeping the previous Set when the new one has the same content. The answer rarely changes
- * from one resolution to the next, and an unchanged reference spares the consumers a tree walk and a re-render.
- */
+/** State updater keeping the previous Set when the new one has the same content. */
 function replaceIfChanged(nextUuids: Set<UUID>) {
     return (previousUuids: Set<UUID>) =>
         equalsArrayAnyOrder([...previousUuids], [...nextUuids]) ? previousUuids : nextUuids;
@@ -52,7 +47,7 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
  */
 // TODO a permission granted through a group stays cached when the user is added to / removed from that group:
 // user-admin-server emits no notification on group membership changes, unlike directory-server on permissions.
-// Also consider deleting this hook and using Redux instead if we start using permissions at several places.
+// Also consider deleting this hook and using Redux instead if we start using this hook at several places.
 export function useSharedModificationsPermissions(modifications: NetworkModificationMetadata[]): {
     readOnlySharedModificationUuids: Set<UUID>;
 } {
@@ -99,17 +94,23 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
             return undefined;
         }
 
-        // TODO batch endpoint
-        Promise.all(missingIds.map((id) => hasElementPermission(id, PermissionType.WRITE))).then((permissions) => {
-            if (aborted) {
-                return;
-            }
-            setPermissionsCache((previousCache) => {
-                const nextCache = new Map(previousCache);
-                missingIds.forEach((id, index) => nextCache.set(id, permissions[index]));
-                return nextCache;
+        getAccessibleElements(missingIds, PermissionType.WRITE)
+            .catch((error) => {
+                console.error('Failed to resolve the permissions on the shared modifications', error);
+                // Denying them all is what the cache already reports while they are unresolved
+                return [];
+            })
+            .then((accessibleIds) => {
+                if (aborted) {
+                    return;
+                }
+                const accessible = new Set(accessibleIds);
+                setPermissionsCache((previousCache) => {
+                    const nextCache = new Map(previousCache);
+                    missingIds.forEach((id) => nextCache.set(id, accessible.has(id)));
+                    return nextCache;
+                });
             });
-        });
 
         return () => {
             aborted = true;
