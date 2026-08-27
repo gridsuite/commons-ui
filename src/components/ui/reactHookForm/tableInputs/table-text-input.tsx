@@ -13,9 +13,16 @@ interface TableTextInputProps {
     name: string;
     hideErrorMessage?: boolean;
     inputProps?: InputBaseComponentProps;
+    dataTestId?: string;
 }
 
-export function TableTextInput({ name, hideErrorMessage, inputProps }: Readonly<TableTextInputProps>) {
+export function TableTextInput({
+    name,
+    hideErrorMessage,
+    inputProps,
+    dataTestId,
+    ...props
+}: Readonly<TableTextInputProps>) {
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -31,6 +38,7 @@ export function TableTextInput({ name, hideErrorMessage, inputProps }: Readonly<
 
     return (
         <TextField
+            data-testid={dataTestId}
             value={value}
             onChange={handleInputChange}
             error={!!error?.message}
@@ -49,6 +57,7 @@ export function TableTextInput({ name, hideErrorMessage, inputProps }: Readonly<
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
+            {...props}
         />
     );
 }
