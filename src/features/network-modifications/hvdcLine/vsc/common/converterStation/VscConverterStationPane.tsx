@@ -6,7 +6,7 @@
  */
 
 import { useEffect } from 'react';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 import {
@@ -48,9 +48,6 @@ export function VscConverterStationPane({
     const voltageRegulationOnWatch = useWatch({
         name: `${id}.${FieldConstants.VOLTAGE_REGULATION_ON}`,
     });
-    const converterStationId = useWatch({
-        name: `${id}.${FieldConstants.CONVERTER_STATION_ID}`,
-    });
 
     useEffect(() => {
         if (!voltageRegulationOnWatch) {
@@ -58,21 +55,12 @@ export function VscConverterStationPane({
         }
     }, [voltageRegulationOnWatch, trigger, id]);
 
-    const converterStationIdField = isModification ? (
-        <TextField
-            size="small"
-            fullWidth
-            label="ID"
-            value={converterStationId}
-            disabled
-            slotProps={{
-                input: {
-                    readOnly: true,
-                },
-            }}
+    const converterStationIdField = (
+        <TextInput
+            name={`${id}.${FieldConstants.CONVERTER_STATION_ID}`}
+            label="converterStationId"
+            disabled={isModification}
         />
-    ) : (
-        <TextInput name={`${id}.${FieldConstants.CONVERTER_STATION_ID}`} label="converterStationId" />
     );
 
     const converterStationNameField = (
