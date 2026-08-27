@@ -230,6 +230,14 @@ export function ElementSaveDialog({
         initializeDestinationFolder();
     }, [open, isCreateMode, initializeDestinationFolder]);
 
+    // The shared creation may become unavailable while the dialog is open, its availability depending on a
+    // selection refreshed in the background : fall back on the standard creation
+    useEffect(() => {
+        if (createSharedDisabled && operationType === OperationType.CREATE_SHARED) {
+            setValue(FieldConstants.OPERATION_TYPE, OperationType.CREATE);
+        }
+    }, [createSharedDisabled, operationType, setValue]);
+
     // Open selector dialog
     const handleChangeFolder = useCallback(() => {
         setDirectorySelectorOpen(true);
