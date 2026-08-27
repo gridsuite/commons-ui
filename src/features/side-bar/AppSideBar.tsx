@@ -16,7 +16,7 @@ import { AppSideBarDialogProvider } from './dialogs/AppSideBarDialogProvider';
 import { AppSideBarDialogs } from './dialogs/AppSideBarDialogs';
 
 type SideBarProps = {
-    invertedTheme: Theme;
+    sideBarTheme: Theme;
     isDeveloperMode: boolean;
     smallScreenBreakpoint: number | Breakpoint;
     handleChangeDeveloperMode: (newValue: boolean) => void;
@@ -37,7 +37,7 @@ type SideBarProps = {
 };
 
 export function AppSideBar({
-    invertedTheme,
+    sideBarTheme,
     isDeveloperMode,
     smallScreenBreakpoint,
     handleChangeDeveloperMode,
@@ -81,7 +81,7 @@ export function AppSideBar({
                 isDeveloperMode={isDeveloperMode}
                 handleChangeDeveloperMode={handleChangeDeveloperMode}
             />
-            <ThemeProvider theme={invertedTheme}>
+            <ThemeProvider theme={sideBarTheme}>
                 <ScopedCssBaseline>
                     <Stack
                         component="aside"
