@@ -60,7 +60,12 @@ import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialog
 import { BuildStatus } from '../../node';
 import { CONTINGENCIES, PROVIDER } from '../common/constants';
 import { ACTIVATED } from '../common/parameter-table-field';
-import { SensiTabValues, SensiBranchesTabValues, SENSI_TAB_FIELDS, SENSI_BRANCHES_TAB_FIELDS } from './columns-definitions';
+import {
+    SensiTabValues,
+    SensiBranchesTabValues,
+    SENSI_TAB_FIELDS,
+    SENSI_BRANCHES_TAB_FIELDS,
+} from './columns-definitions';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
