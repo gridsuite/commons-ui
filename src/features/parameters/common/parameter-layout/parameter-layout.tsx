@@ -46,7 +46,8 @@ const styles = {
         height: '100%',
     },
     title: {
-        paddingBottom: 0,
+        padding: 2,
+        paddingLeft: 0,
     },
     content: {
         flexGrow: 1,
@@ -91,7 +92,7 @@ export function ParameterLayout<T extends FieldValues>({
         <Stack sx={styles.stack}>
             {(title || selectParameterHandler || resetHandler) && (
                 <Stack sx={styles.title}>
-                    <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }} paddingBottom={1}>
+                    <Grid container sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
                         <Grid size="auto">
                             {title && !isXsScreen && (
                                 <Typography variant="h6">
@@ -122,9 +123,9 @@ export function ParameterLayout<T extends FieldValues>({
                             </ButtonGroup>
                         </Grid>
                     </Grid>
-                    <LineSeparator />
                 </Stack>
             )}
+            <LineSeparator />
             <Box sx={styles.content}>{isLoading ? <LinearProgress /> : children}</Box>
             <Stack spacing={1}>
                 <LineSeparator />
