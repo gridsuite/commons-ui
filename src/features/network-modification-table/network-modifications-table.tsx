@@ -37,6 +37,7 @@ import { useModificationsSelection } from './use-modifications-selection';
 import {
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
+    findAllLoadedReferenceModifications,
     findDepth,
     formatToComposedModification,
     isCompositeModification,
@@ -155,19 +156,19 @@ export function NetworkModificationsTable({
         );
         setComposedModifications(nextMods);
 
-        // Re-fetch authoritative children for every composite that already had loaded children,
-        // correcting anything stale that was temporarily preserved above.
+        // Re-fetch authoritative children for every composite AND reference that already had
+        // loaded children, correcting anything stale that was temporarily preserved above.
+        // References matter here because a shared-element update changes the referenced
+        // composite's content while the reference row stays expanded.
         // Source of truth: prevMods — nextMods children may have been filtered just above.
         // The rowKeys collected here are still valid in nextMods since the merge above preserved them.
         const loadedComposites: ComposedModificationMetadata[] = [];
         findAllLoadedCompositeModifications(prevMods, loadedComposites);
-        if (loadedComposites.length > 0) {
-            fetchSubModificationsForExpandedRows(
-                loadedComposites.map((m) => m.rowKey),
-                nextMods,
-                setComposedModifications,
-                true
-            );
+        const loadedReferences: ComposedModificationMetadata[] = [];
+        findAllLoadedReferenceModifications(prevMods, loadedReferences);
+        const expandedRowKeysToRefresh = [...loadedComposites, ...loadedReferences].map((m) => m.rowKey);
+        if (expandedRowKeysToRefresh.length > 0) {
+            fetchSubModificationsForExpandedRows(expandedRowKeysToRefresh, nextMods, setComposedModifications, true);
         }
     }, [modifications]);
 
