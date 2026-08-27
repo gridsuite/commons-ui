@@ -11,3 +11,5 @@ export enum TabValues {
     TAB_NETWORK = 'TAB_NETWORK',
     TAB_CURVE = 'TAB_CURVE',
 }
+
+export const TAB_VALUES = Object.values(TabValues);

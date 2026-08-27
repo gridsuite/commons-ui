@@ -16,3 +16,5 @@ export enum TabValues {
     Aggravation = 'Aggravation',
     LimitReductions = 'LimitReductions',
 }
+
+export const TAB_VALUES = Object.values(TabValues);

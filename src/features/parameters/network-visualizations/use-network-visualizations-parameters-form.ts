@@ -24,6 +24,7 @@ import {
     NetworkVisualizationTabValues as TabValues,
     PARAM_NAD_POSITIONS_GENERATION_MODE,
     PARAM_STATE_ESTIMATION,
+    NV_TAB_VALUES,
 } from './constants';
 import {
     getNetworkVisualizationsParameters,
@@ -135,7 +136,7 @@ export const useNetworkVisualizationParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.MAP,
-        tabValues: Object.values(TabValues),
+        tabValues: NV_TAB_VALUES,
         errors: formMethods.formState.errors,
     });
 

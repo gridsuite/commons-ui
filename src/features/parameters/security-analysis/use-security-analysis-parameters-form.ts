@@ -40,6 +40,7 @@ import {
     LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     TabValues,
+    TAB_VALUES,
 } from './constants';
 
 export interface UseSecurityAnalysisParametersFormReturn {
@@ -170,7 +171,7 @@ export const useSecurityAnalysisParametersForm = (
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.Contingencies,
-        tabValues: Object.values(TabValues),
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

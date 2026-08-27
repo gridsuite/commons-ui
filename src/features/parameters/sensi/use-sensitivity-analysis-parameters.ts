@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useForm, UseFormReturn } from 'react-hook-form';
+import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { type ObjectSchema } from 'yup';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -55,11 +55,12 @@ import {
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
 import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useSnackMessage, useTabs, UseTabsReturn } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { BuildStatus } from '../../node';
 import { CONTINGENCIES, PROVIDER } from '../common/constants';
 import { ACTIVATED } from '../common/parameter-table-field';
+import { SensiTabValues, SensiBranchesTabValues, SENSI_TAB_FIELDS, SENSI_BRANCHES_TAB_FIELDS } from './columns-definitions';
 
 export interface UseSensitivityAnalysisParametersReturn {
     formMethods: UseFormReturn<any>;
@@ -79,6 +80,13 @@ export interface UseSensitivityAnalysisParametersReturn {
     emptyFormData: Record<string, unknown>;
     factorsCount: FactorsCount;
     resetFactorsCount: () => void;
+    onValidationError: (errors: FieldErrors) => void;
+    useSensiTabsReturn: UseSensiTabsReturn;
+}
+
+export interface UseSensiTabsReturn {
+    useTabsReturn: UseTabsReturn<SensiTabValues>;
+    useSubTabsReturn: UseTabsReturn<SensiBranchesTabValues>;
 }
 
 type UseSensitivityAnalysisParametersFormProps =
@@ -152,6 +160,26 @@ export const useSensitivityAnalysisParametersForm = ({
     });
 
     const { reset, getValues } = formMethods;
+
+    const useTabsReturn = useTabs<SensiTabValues>({
+        defaultTab: SensiTabValues.SensitivityBranches,
+        errors: formMethods.formState.errors,
+        tabFields: SENSI_TAB_FIELDS,
+    });
+
+    const useSubTabsReturn = useTabs<SensiBranchesTabValues>({
+        defaultTab: SensiBranchesTabValues.SensiInjectionsSet,
+        errors: formMethods.formState.errors,
+        tabFields: SENSI_BRANCHES_TAB_FIELDS,
+    });
+
+    const onError = useCallback(
+        (errors: FieldErrors) => {
+            useTabsReturn.onError(errors);
+            useSubTabsReturn.onError(errors);
+        },
+        [useTabsReturn, useSubTabsReturn]
+    );
 
     const formattedProviders = Object.keys(providers).map((key) => ({
         id: key,
@@ -494,5 +522,10 @@ export const useSensitivityAnalysisParametersForm = ({
         emptyFormData,
         factorsCount,
         resetFactorsCount,
+        onValidationError: onError,
+        useSensiTabsReturn: {
+            useTabsReturn,
+            useSubTabsReturn,
+        },
     };
 };

@@ -17,6 +17,7 @@ import {
     setLimitReductions,
     splitCommonParameters,
     TAB_FIELDS,
+    TAB_VALUES,
     TabValues,
 } from './load-flow-parameters-utils';
 import { LoadFlowParametersInfos } from './load-flow-parameters-type';
@@ -235,7 +236,7 @@ export const useLoadFlowParametersForm = (
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.GENERAL,
-        tabValues: Object.values(TabValues),
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

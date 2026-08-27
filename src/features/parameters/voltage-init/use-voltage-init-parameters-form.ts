@@ -31,6 +31,7 @@ import {
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
     VoltageInitTabValues as TabValues,
+    VOLTAGE_INIT_TAB_VALUES as TAB_VALUES,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useTabs, useSnackMessage } from '../../../hooks';
@@ -203,7 +204,7 @@ export const useVoltageInitParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.GENERAL,
-        tabValues: Object.values(TabValues),
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

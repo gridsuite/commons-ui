@@ -24,7 +24,7 @@ import {
     toParamsEnriched,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
-import { TabValues } from './dynamic-simulation.type';
+import { TAB_VALUES, TabValues } from './dynamic-simulation.type';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
 import { ExpertFilter, IdentifiableAttributes } from '../../../components/composite/filter';
@@ -66,7 +66,7 @@ export function DynamicSimulationInline({
 
     const useTabsReturn = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
-        tabValues: Object.values(TabValues),
+        tabValues: TAB_VALUES,
         errors: formState.errors,
     });
 

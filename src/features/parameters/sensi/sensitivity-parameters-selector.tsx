@@ -8,7 +8,6 @@
 import { useCallback, useEffect, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, Card, CardContent, Grid, Tab, Tabs } from '@mui/material';
-import { useFormContext, FieldErrors } from 'react-hook-form';
 
 import {
     COLUMNS_DEFINITIONS_HVDCS,
@@ -37,7 +36,7 @@ import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn } from '../../../components/composite/dnd-table';
 import { parametersStyles } from '../parameters-style';
 
-import { useTabs } from '../../../hooks';
+import { UseSensiTabsReturn } from './use-sensitivity-analysis-parameters';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -80,6 +79,7 @@ interface SensitivityParametersSelectorProps {
     isStudyLinked: boolean;
     isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
+    useSensiTabsReturn: UseSensiTabsReturn;
 }
 
 interface TabInfo {
@@ -95,54 +95,22 @@ function SensitivityParametersSelector({
     isStudyLinked,
     isRootNode,
     globalBuildStatus,
+    useSensiTabsReturn,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
-    const {
-        formState: { errors, dirtyFields },
-    } = useFormContext();
-
-    const dirtyErrors = useMemo((): FieldErrors => {
-        if (!Object.keys(dirtyFields).length) {
-            return {};
-        }
-        return Object.fromEntries(
-            Object.entries(errors).filter(([key]) => !!dirtyFields[key as keyof typeof dirtyFields])
-        ) as FieldErrors;
-    }, [errors, dirtyFields]);
 
     const {
         selectedTab: tabValue,
         setSelectedTab: setTabValue,
         tabsWithError,
         onTabChange: handleTabChange,
-    } = useTabs<SensiTabValues>({
-        defaultTab: SensiTabValues.SensitivityBranches,
-        errors: dirtyErrors,
-        tabFields: {
-            [SensiTabValues.SensitivityBranches]: [
-                PARAMETER_SENSI_INJECTIONS_SET,
-                PARAMETER_SENSI_INJECTION,
-                PARAMETER_SENSI_HVDC,
-                PARAMETER_SENSI_PST,
-            ],
-            [SensiTabValues.SensitivityNodes]: [PARAMETER_SENSI_NODES],
-        },
-    });
+    } = useSensiTabsReturn.useTabsReturn;
 
     const {
         selectedTab: subTabValue,
         tabsWithError: subTabsWithError,
         onTabChange: handleSubTabChange,
-    } = useTabs<SensiBranchesTabValues>({
-        defaultTab: SensiBranchesTabValues.SensiInjectionsSet,
-        errors: dirtyErrors,
-        tabFields: {
-            [SensiBranchesTabValues.SensiInjectionsSet]: [PARAMETER_SENSI_INJECTIONS_SET],
-            [SensiBranchesTabValues.SensiInjection]: [PARAMETER_SENSI_INJECTION],
-            [SensiBranchesTabValues.SensiHVDC]: [PARAMETER_SENSI_HVDC],
-            [SensiBranchesTabValues.SensiPST]: [PARAMETER_SENSI_PST],
-        },
-    });
+    } = useSensiTabsReturn.useSubTabsReturn;
 
     const tabInfo: TabInfo[] = [
         {

@@ -41,6 +41,7 @@ import {
     getSpecificShortCircuitParametersFormSchema,
     ShortCircuitParametersTabValues,
     TAB_FIELDS,
+    TAB_VALUES,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
@@ -241,7 +242,7 @@ export const useShortCircuitParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: ShortCircuitParametersTabValues.GENERAL,
-        tabValues: Object.values(ShortCircuitParametersTabValues),
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });
