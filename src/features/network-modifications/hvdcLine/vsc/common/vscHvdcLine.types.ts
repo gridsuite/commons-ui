@@ -12,12 +12,12 @@ import {
     ReactiveCapabilityCurvePoints,
 } from '../../../common';
 
-enum VscConverterMode {
+export enum VscConverterMode {
     SIDE_1_RECTIFIER_SIDE_2_INVERTER = 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
     SIDE_1_INVERTER_SIDE_2_RECTIFIER = 'SIDE_1_INVERTER_SIDE_2_RECTIFIER',
 }
 
-interface VscConverterModeValue {
+export interface VscConverterModeValue {
     id: string;
     label: string;
 }
