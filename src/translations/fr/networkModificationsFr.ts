@@ -448,4 +448,17 @@ export const networkModificationsFr = {
     allOptionHelperText: "Tous les jeux de barres n'ont pas les mêmes sections (index et nombre)",
     areSwitchesOpen: 'Ouverts',
     areSwitchesClosed: 'Fermés',
+    DuplicatedPositionsWarning: 'Numéro en doublon',
+    moveFeederBaysSections: 'Les départs déplacés sont préparés sur la section de barre sélectionnée',
+    MoveVoltageLevelFeederBays: 'Déplacer les départs',
+    MoveVoltageLevelFeederBaysError: 'Erreur lors du déplacement des départs',
+    Feeders: 'Départs',
+    equipmentID: "ID de l'ouvrage",
+    connectionDirection: 'Sens départ',
+    connectionPosition: 'Position départ',
+    MissingConnectionsInVoltageLevel: 'Départs absents du poste (Départs supprimés de la liste à la validation)',
+    builtNodeTooltipVlTopoModif: 'Liste des organes de coupure tenant compte de toutes les modifications réalisées',
+    notBuiltNodeTooltipVlTopoModif:
+        "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
+    Undefined: 'Non défini',
 };
