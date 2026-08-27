@@ -303,7 +303,9 @@ export const networkModificationsEn = {
     unlimited: 'Unlimited',
     forbidden: 'Forbidden',
     Applicability: 'Applicability',
-    disableOLGedition: 'Entered limit sets data will be lost. Do you wish to continue?',
+    disableOLGeditionByReplace:
+        'Entered limit sets data will be lost to display their current values. Do you wish to continue ?',
+    disableOLGedition: 'Entered limit sets data will be lost. Do you wish to continue ?',
     Edit: 'Edit',
     View: 'View',
     TemporaryCurrentLimitsText: 'Temporary current limits',
