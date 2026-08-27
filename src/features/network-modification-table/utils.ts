@@ -40,19 +40,24 @@ export function isReferenceModification(modification: ComposedModificationMetada
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
+// Only inspects already-loaded subModifications (children fetched on row expansion), so a
+// reference nested under a not-yet-expanded composite won't be detected. Same limitation as the
+// rest of the drag-and-drop forbidden-drop checks, which all reason over the currently loaded tree.
+export function containsReferenceModification(modification: ComposedModificationMetadata | undefined): boolean {
+    if (!modification) {
+        return false;
+    }
+    return modification.subModifications.some(
+        (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
+}
+
 function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkModificationMetadata {
     return {
         ...child,
         messageType: child.messageType ?? child.type,
         messageValues: child.messageValues ?? '{}',
     };
-}
-
-export function isTargetChildOfReference(targetRow: { original: ComposedModificationMetadata }): boolean {
-    if (targetRow.original.childFromShared === true) {
-        return true;
-    }
-    return false;
 }
 
 function extractReferenceChildren(detail: ReferenceModificationInfos): NetworkModificationMetadata[] {
