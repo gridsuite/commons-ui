@@ -43,15 +43,9 @@ export function AppSideBarHeader({
                     px: 1.5,
                     pt: 3,
                 }}
+                spacing={1}
             >
-                <Stack
-                    direction="row"
-                    sx={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: isMinimized ? 'center' : 'normal',
-                    }}
-                >
+                <Stack direction="row" alignItems="center" justifyContent={isMinimized ? 'center' : 'flex-start'}>
                     {appLogo}
                     {!isMinimized && (
                         <Typography variant="h6">
@@ -64,13 +58,8 @@ export function AppSideBarHeader({
                 </Stack>
 
                 <Stack
-                    width="100%"
                     direction="row"
-                    sx={{
-                        alignSelf: 'flex-end',
-                        marginY: 1,
-                        visibility: isLoggedIn ? 'inherit' : 'hidden',
-                    }}
+                    visibility={isLoggedIn ? 'inherit' : 'hidden'}
                     alignItems="center"
                     justifyContent={isMinimized ? 'center' : 'end'}
                     spacing={1}

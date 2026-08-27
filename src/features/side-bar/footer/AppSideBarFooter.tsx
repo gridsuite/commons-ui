@@ -45,15 +45,8 @@ export function AppSideBarFooter({
 }: Readonly<AppSideBarFooterProps>) {
     const isUserLoggedIn = !!userProfile;
     return (
-        <Stack sx={{ p: 1 }}>
-            <MenuList
-                disablePadding
-                sx={{
-                    '& .MuiDivider-root': {
-                        my: 0,
-                    },
-                }}
-            >
+        <Stack p={1}>
+            <MenuList disablePadding>
                 {isUserLoggedIn && (
                     <>
                         <ApplicationMenu isMinimized={isMinimized} appsAndUrls={appsAndUrls} />
