@@ -186,11 +186,7 @@ export function TreeViewSearchBar<T extends SearchBarItem>({
         (params: AutocompleteRenderInputParams) => (
             <TextField
                 {...params}
-                placeholder={
-                    disabled
-                        ? intl.formatMessage({ id: 'element_search/searchDisabled' })
-                        : (placeholder ?? intl.formatMessage({ id: 'directoryItemSelector/search/placeholder' }))
-                }
+                placeholder={placeholder ?? intl.formatMessage({ id: 'directoryItemSelector/search/placeholder' })}
                 variant="outlined"
                 slotProps={{
                     input: {
@@ -205,7 +201,7 @@ export function TreeViewSearchBar<T extends SearchBarItem>({
                 }}
             />
         ),
-        [intl, placeholder, disabled]
+        [intl, placeholder]
     );
 
     const paperComponent = useCallback(
