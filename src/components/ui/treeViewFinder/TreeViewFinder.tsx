@@ -318,7 +318,9 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
                             .map((value: any) => value.id)
                     );
 
-                    // Remove deleted elements
+                    // Get name and remove deleted elements
+                    // TODO later : we can avoid storing name and path in the parameter value
+                    // as we get the name here from the id (we can also get the full path from the id)
                     const elementNamesPromise =
                         allUuids.size === 0 ? Promise.resolve(null) : fetchElementNames(allUuids);
                     elementNamesPromise.then((elementNames) => {
