@@ -12,7 +12,6 @@ import { Box, Button, Grid, Stack, TextField } from '@mui/material';
 import { PublishedWithChanges } from '@mui/icons-material';
 import { ICellRendererParams } from 'ag-grid-community';
 import { CustomAGGrid, SeparatorCellRenderer, useCustomFormContext } from '../../../../../components';
-import { HeaderWithTooltip } from './HeaderWithTooltip';
 import { ConnectionCellRenderer } from './ConnectionCellRender';
 import { filledTextField } from '../../../common';
 import { CURRENT_CONNECTION_STATUS, PREV_CONNECTION_STATUS, SWITCH_ID, TOPOLOGY_MODIFICATION_TABLE } from './constants';
@@ -22,6 +21,7 @@ import {
     TopologyVoltageLevelModificationDto,
 } from './voltageLevelTopologyModification.types';
 import { FieldConstants } from '../../../../../utils';
+import { HeaderWithTooltip } from '../../common';
 
 interface VoltageLevelTopologyModificationFormProps {
     voltageLevelToModify: TopologyVoltageLevelModificationDto | null | undefined;
@@ -85,7 +85,7 @@ export function VoltageLevelTopologyModificationForm({
                     if (!data) return null;
                     if (data.type === SEPARATOR_TYPE) {
                         return SeparatorCellRenderer({
-                            children: data.title,
+                            value: data.title ?? '',
                         });
                     }
                     return data[SWITCH_ID];
@@ -97,7 +97,7 @@ export function VoltageLevelTopologyModificationForm({
                         id: isNodeBuilt ? 'builtNodeTooltipVlTopoModif' : 'notBuiltNodeTooltipVlTopoModif',
                     }),
                     isNodeBuilt,
-                    disabledTooltip: !isPreviousStatusEnabled || !isModification && isNodeBuilt,
+                    disabledTooltip: !isPreviousStatusEnabled || (!isModification && isNodeBuilt),
                 },
             },
             ...(isPreviousStatusEnabled

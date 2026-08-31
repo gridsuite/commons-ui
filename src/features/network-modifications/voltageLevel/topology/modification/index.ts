@@ -8,5 +8,4 @@
 export * from './voltageLevelTopologyModification.utils';
 export * from './VoltageLevelTopologyModificationForm';
 export * from './voltageLevelTopologyModification.types';
-export * from './HeaderWithTooltip';
 export * from './constants';
