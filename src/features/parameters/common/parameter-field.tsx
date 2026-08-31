@@ -119,5 +119,3 @@ export function ParameterField({
         </Grid>
     );
 }
-
-export default ParameterField;

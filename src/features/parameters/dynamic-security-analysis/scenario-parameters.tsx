@@ -8,7 +8,7 @@
 import { Grid } from '@mui/material';
 import { SCENARIO_DURATION } from './constants';
 import { ParameterType, SpecificParameterInfos } from '../../../utils';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 
 const params: SpecificParameterInfos[] = [
     {
