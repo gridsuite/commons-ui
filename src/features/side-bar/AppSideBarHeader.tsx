@@ -40,8 +40,10 @@ export function AppSideBarHeader({
             <Stack direction="row" alignItems="center" justifyContent={isMinimized ? 'center' : 'flex-start'}>
                 {appLogo}
                 {!isMinimized && (
-                    <Typography variant="h6">
-                        Grid
+                    <Typography fontSize={18}>
+                        <Box component="span" style={{ fontWeight: 'bold' }}>
+                            Grid
+                        </Box>
                         <Box component="span" sx={{ color: appNameColor }}>
                             {appName}
                         </Box>
@@ -60,7 +62,7 @@ export function AppSideBarHeader({
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
                     <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
                         <IconButton sx={{ padding: 0 }} onClick={() => setOpenDialog(SideBarDialogType.ABOUT)}>
-                            <Info fontSize="small" color="disabled" />
+                            <Info fontSize="small" sx={{ color: 'text.secondary' }} />
                         </IconButton>
                     </Tooltip>
                 </>

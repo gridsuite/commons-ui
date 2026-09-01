@@ -15,6 +15,7 @@ import { SideBarMenuItem } from '../common/SideBarMenuItem';
 import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
 import { SideBarDialogType, useAppSideBarDialogs } from '../../dialogs/AppSideBarDialogProvider';
+import { mergeSx } from '../../../../utils';
 
 interface ProfileMenuProps {
     isMinimized: boolean;
@@ -33,7 +34,7 @@ export function ProfileMenu({ isMinimized, userProfile }: Readonly<ProfileMenuPr
     return (
         <CustomNestedMenuItem
             label={!isMinimized ? profileLabel : ''}
-            leftIcon={<UserAvatarIcon label={userProfile?.name ?? ''} />}
+            leftIcon={<UserAvatarIcon sx={{ backgroundColor: 'text.secondary' }} label={userProfile?.name ?? ''} />}
             sx={submenuFooterStyle.subMenu}
         >
             {isMinimized && <MinimizedSubMenuHeader label={profileLabel} />}
