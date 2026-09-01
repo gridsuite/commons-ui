@@ -20,7 +20,7 @@ import {
     SpecificParameterInfos,
     YUP_REQUIRED,
 } from '../../../utils';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 import { ACTIVE, NAME } from '../../../components/ui';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn, DndColumnType } from '../../../components/composite/dnd-table';

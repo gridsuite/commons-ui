@@ -6,7 +6,7 @@
  */
 
 import { memo } from 'react';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 import {
     DC_POWER_FACTOR,
     DC_USE_TRANSFORMER_RATIO,

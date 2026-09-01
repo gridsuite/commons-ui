@@ -6,7 +6,7 @@
  */
 
 import { memo } from 'react';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 import { SpecificParameterInfos } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from '../common';
 
