@@ -10,13 +10,14 @@ import { useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
-import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
+import { BatteryDialogTab } from './batteryTabs.utils';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+    useTabsReturn: UseTabsReturn<BatteryDialogTab>;
 }
 
 export function BatteryModificationForm({
@@ -26,11 +27,10 @@ export function BatteryModificationForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
+    useTabsReturn,
 }: Readonly<BatteryModificationFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<BatteryDialogTab>(
-        BATTERY_TAB_FIELDS,
-        BatteryDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
+
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
@@ -40,14 +40,14 @@ export function BatteryModificationForm({
             </Grid>
             <Grid>
                 <BatteryDialogTabs
-                    tabIndex={tabIndex}
-                    tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
+                    tabIndex={selectedTab}
+                    tabIndexesWithError={tabsWithError}
+                    onTabChange={onTabChange}
                 />
             </Grid>
             <Grid>
                 <BatteryDialogTabsContent
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                     batteryToModify={batteryToModify}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}

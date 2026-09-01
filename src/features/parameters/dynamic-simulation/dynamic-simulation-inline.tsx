@@ -17,15 +17,14 @@ import {
 import { UseParametersBackendReturnProps } from '../../../utils/types/parameters.type';
 import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
-import { useTabs } from '../common/hook/use-tabs';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import {
     toFormValues,
     toParamsEnriched,
     useDynamicSimulationParametersForm,
 } from './use-dynamic-simulation-parameters-form';
-import { TabValues } from './dynamic-simulation.type';
+import { TAB_VALUES, TabValues } from './dynamic-simulation.type';
 import { DynamicSimulationForm } from './dynamic-simulation-parameters-form';
 import { fetchDynamicSimulationParameters } from '../../../services/dynamic-simulation';
 import { ExpertFilter, IdentifiableAttributes } from '../../../components/composite/filter';
@@ -67,7 +66,7 @@ export function DynamicSimulationInline({
 
     const useTabsReturn = useTabs({
         defaultTab: TabValues.TAB_TIME_DELAY,
-        tabEnum: TabValues,
+        tabValues: TAB_VALUES,
         errors: formState.errors,
     });
 

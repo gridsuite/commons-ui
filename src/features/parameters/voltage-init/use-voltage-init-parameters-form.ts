@@ -31,9 +31,10 @@ import {
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
     VoltageInitTabValues as TabValues,
+    VOLTAGE_INIT_TAB_VALUES as TAB_VALUES,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { ElementType, isBlankOrEmpty, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, YUP_REQUIRED } from '../../../utils';
 import {
     getNameElementEditorEmptyFormData,
@@ -49,7 +50,6 @@ import {
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
-import { useTabs } from '../common';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -204,7 +204,7 @@ export const useVoltageInitParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.GENERAL,
-        tabEnum: TabValues,
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });
