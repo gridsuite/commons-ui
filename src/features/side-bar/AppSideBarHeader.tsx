@@ -5,10 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Divider, Stack, Typography, IconButton, Tooltip } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { SideBarDialogType, useAppSideBarDialogs } from './dialogs/AppSideBarDialogProvider';
+import { Environment, fetchEnv } from '../../services';
+import { EnvironmentChip } from './EnvironmentChip';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
@@ -28,6 +30,11 @@ export function AppSideBarHeader({
     appVersion,
 }: Readonly<AppSideBarHeaderProps>) {
     const { setOpenDialog } = useAppSideBarDialogs();
+    const [environment, setEnvironment] = useState<Environment | ''>('');
+
+    useEffect(() => {
+        fetchEnv().then((env) => setEnvironment(env?.environment ?? ''));
+    }, []);
 
     return (
         <Stack
@@ -38,14 +45,23 @@ export function AppSideBarHeader({
             spacing={1}
         >
             <Stack direction="row" alignItems="center" justifyContent={isMinimized ? 'center' : 'flex-start'}>
-                {appLogo}
+                <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                    {appLogo}
+
+                    {isMinimized && <EnvironmentChip environment={environment} variant="minimized" />}
+                </Box>
+
                 {!isMinimized && (
-                    <Typography variant="h6">
-                        Grid
-                        <Box component="span" sx={{ color: appNameColor }}>
-                            {appName}
-                        </Box>
-                    </Typography>
+                    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+                        <Typography variant="h6">
+                            Grid
+                            <Box component="span" sx={{ color: appNameColor }}>
+                                {appName}
+                            </Box>
+                        </Typography>
+
+                        <EnvironmentChip environment={environment} variant="expanded" />
+                    </Box>
                 )}
             </Stack>
 
@@ -58,6 +74,7 @@ export function AppSideBarHeader({
             >
                 <>
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
+
                     <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
                         <IconButton sx={{ padding: 0 }} onClick={() => setOpenDialog(SideBarDialogType.ABOUT)}>
                             <Info fontSize="small" color="disabled" />
