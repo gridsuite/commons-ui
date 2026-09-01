@@ -14,6 +14,7 @@ import {
     FieldConstants,
     getCsvDelimiter,
     MODIFICATIONS_REQUIRED_TAB_ERROR,
+    PredefinedProperties,
 } from '../../../utils';
 import { createPropertyModification, Property, ReactiveCapabilityCurvePoints } from '../common';
 import {
@@ -199,7 +200,7 @@ export const isFieldTypeOk = (value: any, fieldDefinition: { type?: string; opti
             break;
 
         case TABULAR_NUMBER: {
-            const parsedNumber = parseFloat(value);
+            const parsedNumber = Number.parseFloat(value);
             if (Number.isNaN(parsedNumber)) {
                 return false;
             }
@@ -247,6 +248,27 @@ interface CommentLinesConfig {
     predefinedEquipmentProperties?: PredefinedEquipmentProperties;
 }
 
+/**
+ * Completes the skeleton comment line with the possible values of each selected property.
+ * When there is no skeleton comment, an empty line is built first so that the property values
+ * land under their own column.
+ */
+const appendPredefinedPropertyValues = (
+    skeletonComment: string,
+    predefinedProperties: PredefinedProperties,
+    selectedProperties: string[],
+    separator: string,
+    columnCount: number
+): string => {
+    let commentLine =
+        skeletonComment.length === 0 ? separator.repeat(columnCount - 1 - selectedProperties.length) : skeletonComment;
+    selectedProperties.forEach((propertyName) => {
+        const possibleValues = predefinedProperties[propertyName]?.toSorted((a, b) => a.localeCompare(b)) ?? [];
+        commentLine += separator + possibleValues.join(' | ');
+    });
+    return commentLine;
+};
+
 export const generateCommentLines = ({
     fields,
     selectedProperties,
@@ -256,47 +278,40 @@ export const generateCommentLines = ({
     formType,
     predefinedEquipmentProperties,
 }: CommentLinesConfig): string[][] => {
-    const commentData: string[][] = [];
-
     const csvTranslatedColumns = fields
         ?.map((field: TabularField) => intl.formatMessage({ id: field.id }) + (field.required ? ' (*)' : ''))
         ?.concat(selectedProperties);
+    if (!csvTranslatedColumns) {
+        return [];
+    }
 
-    if (csvTranslatedColumns) {
-        const separator = getCsvDelimiter(language);
-        // First comment line contains header translation
-        commentData.push(csvTranslatedColumns.map((column, index) => (index === 0 ? `#${column}` : column)));
+    const separator = getCsvDelimiter(language);
+    // First comment line contains header translation
+    const commentData: string[][] = [
+        csvTranslatedColumns.map((column, index) => (index === 0 ? `#${column}` : column)),
+    ];
 
-        // Check for optional second comment line from the translation file
-        let secondCommentLine: string = '';
-        const formTypeKeyPart = formType === TabularModificationType.CREATION ? 'Creation' : 'Modification';
-        const commentKey = `Tabular${formTypeKeyPart}SkeletonComment.${equipmentType}`;
-        if (intl.messages[commentKey]) {
-            secondCommentLine = intl.formatMessage({ id: commentKey });
-        }
-        if (selectedProperties.length) {
-            const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType as EquipmentType);
-            if (networkEquipmentType && predefinedEquipmentProperties?.[networkEquipmentType]) {
-                if (secondCommentLine.length === 0) {
-                    // create an empty row without property columns
-                    const nbSeparator = csvTranslatedColumns.length - 1 - selectedProperties.length;
-                    secondCommentLine = separator.repeat(nbSeparator);
-                }
-                selectedProperties.forEach((propertyName) => {
-                    const possibleValues =
-                        predefinedEquipmentProperties[networkEquipmentType]?.[propertyName]?.toSorted((a, b) =>
-                            a.localeCompare(b)
-                        ) ?? [];
-                    secondCommentLine += separator;
-                    if (possibleValues.length > 0) {
-                        secondCommentLine += possibleValues.join(' | ');
-                    }
-                });
-            }
-        }
-        if (secondCommentLine.length > 0 && secondCommentLine.replaceAll(separator, '').length > 0) {
-            commentData.push(secondCommentLine.split(separator));
-        }
+    // Check for optional second comment line from the translation file
+    const formTypeKeyPart = formType === TabularModificationType.CREATION ? 'Creation' : 'Modification';
+    const commentKey = `Tabular${formTypeKeyPart}SkeletonComment.${equipmentType}`;
+    let secondCommentLine = intl.messages[commentKey] ? intl.formatMessage({ id: commentKey }) : '';
+
+    const networkEquipmentType = equipmentTypesForPredefinedPropertiesMapper(equipmentType as EquipmentType);
+    const predefinedProperties = networkEquipmentType
+        ? predefinedEquipmentProperties?.[networkEquipmentType]
+        : undefined;
+    if (selectedProperties.length && predefinedProperties) {
+        secondCommentLine = appendPredefinedPropertyValues(
+            secondCommentLine,
+            predefinedProperties,
+            selectedProperties,
+            separator,
+            csvTranslatedColumns.length
+        );
+    }
+
+    if (secondCommentLine.replaceAll(separator, '').length > 0) {
+        commentData.push(secondCommentLine.split(separator));
     }
     return commentData;
 };
