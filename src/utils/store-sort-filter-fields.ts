@@ -56,3 +56,6 @@ export const STATEESTIMATION_RESULT = 'stateEstimationResult';
 export const PCCMIN_ANALYSIS_RESULT_SORT_STORE = 'pccminAnalysisResult';
 export const PCCMIN_ANALYSIS_PAGINATION_STORE_FIELD = 'pccminAnalysisPagination';
 export const PCCMIN_RESULT = 'pccMinResults';
+
+// process result store fields
+export const PROCESS_LAUNCH_HISTORY_SORT_STORE = 'processLaunchHistory';

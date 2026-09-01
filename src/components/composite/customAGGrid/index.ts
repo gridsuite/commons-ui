@@ -18,3 +18,5 @@ export * from './custom-aggrid-menu';
 export * from './custom-aggrid-sort';
 export * from './display-rounding';
 export * from './utils';
+export * from './user-avatar';
+export * from './user-cell-renderer';
