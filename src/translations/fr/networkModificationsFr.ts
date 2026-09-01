@@ -559,6 +559,7 @@ export const networkModificationsFr = {
 
     // Voltage level modification
     ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",
+    VoltageLevelTopologyModificationError: 'Erreur lors de la modification de la topologie de poste',
     switchId: "ID de l'organe de coupure",
     Open: 'Ouvert',
     Closed: 'Fermé',

@@ -552,6 +552,7 @@ export const networkModificationsEn = {
 
     // Voltage level modification
     ModifyVoltageLevelTopology: 'Modify voltage level topology',
+    VoltageLevelTopologyModificationError: 'Voltage level topology modification error',
     switchId: 'Switch ID',
     Open: 'Open',
     Closed: 'Closed',
