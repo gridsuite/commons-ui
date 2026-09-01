@@ -178,6 +178,14 @@ export const useSensitivityAnalysisParametersForm = ({
         tabFields: SENSI_BRANCHES_TAB_FIELDS,
     });
 
+    const useSensiTabsReturn = useMemo(
+        () => ({
+            useTabsReturn,
+            useSubTabsReturn,
+        }),
+        [useTabsReturn, useSubTabsReturn]
+    );
+
     const onError = useCallback(
         (errors: FieldErrors) => {
             useTabsReturn.onError(errors);
@@ -528,9 +536,6 @@ export const useSensitivityAnalysisParametersForm = ({
         factorsCount,
         resetFactorsCount,
         onValidationError: onError,
-        useSensiTabsReturn: {
-            useTabsReturn,
-            useSubTabsReturn,
-        },
+        useSensiTabsReturn,
     };
 };
