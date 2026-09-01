@@ -455,4 +455,110 @@ export const networkModificationsEn = {
     builtNodeTooltipVlTopoModif: 'Switches list taking into account all applied modifications',
     notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
     Undefined: 'Undefined',
+
+    // Tabular creation / modification - dialog
+    TabularCreation: 'Tabular creation',
+    TabularModification: 'Tabular modification',
+    TabularCreationError: 'Error while creating tabular creation',
+    TabularModificationError: 'Error while creating tabular modification',
+    DefinePropertiesButton: 'Define properties',
+    DefinePropertiesTitle: 'Additional properties',
+
+    // Tabular creation / modification - CSV validation
+    ModificationsRequiredTabError: 'At least one modification must be imported',
+    FieldRequired: 'At least one value is missing for required field : "{requiredFieldNameInError}"',
+    DependantFieldMissing: '"{requiredField}" is required if the following field is set : "{dependantField}"',
+    WrongFieldType: '"{field}" should be of type {type}',
+    WrongEnumValue: 'At least one value is unexpected for field : "{field}", expected values : {expectedValues}',
+    WrongBooleanValueWarning:
+        'At least one invalid value for boolean field : "{field}" was automatically replaced by false.',
+    'fieldType.boolean': 'boolean (true/false)',
+    'fieldType.number': 'numerical',
+    TabularCreationShuntWarning:
+        'Both maximum reactive power (and/or type) and maximum susceptance have been submitted for the same shunt compensator. Maximum susceptance will thus be ignored.',
+    TabularModificationShuntWarning:
+        'Both maximum reactive power (and/or type) and maximum susceptance have been submitted for the same shunt compensator. Maximum susceptance will thus be ignored.',
+
+    // Tabular creation / modification - CSV columns
+    equipmentId: 'ID',
+    equipmentName: 'Name',
+    voltageLevelId: 'Voltage level ID',
+    busOrBusbarSectionId: 'Bus bar section / bus',
+    terminalConnected: 'Connected',
+    connectionName: 'Connection name',
+    connectionName1: 'Connection name 1',
+    connectionDirection1: 'Connection direction 1',
+    connectionPosition1: 'Connection position 1',
+    connectionName2: 'Connection name 2',
+    connectionDirection2: 'Connection direction 2',
+    connectionPosition2: 'Connection position 2',
+    minQ: 'Q min',
+    maxQ: 'Q max',
+    reactiveCapabilityCurve: 'Reactive capability curve',
+    reactiveCapabilityCurvePmin: 'Pmin',
+    reactiveCapabilityCurveQminPmin: 'QminPmin',
+    reactiveCapabilityCurveQmaxPmin: 'QmaxPmin',
+    reactiveCapabilityCurveP0: 'P0',
+    reactiveCapabilityCurveQminP0: 'QminP0',
+    reactiveCapabilityCurveQmaxP0: 'QmaxP0',
+    reactiveCapabilityCurvePmax: 'Pmax',
+    reactiveCapabilityCurveQminPmax: 'QminPmax',
+    reactiveCapabilityCurveQmaxPmax: 'QmaxPmax',
+    regulatingTerminalId: 'Regulated equipment',
+    regulatingTerminalType: 'Regulated equipment type',
+    regulatingTerminalVlId: 'Regulated voltage level',
+    qPercent: 'Reactive percentage',
+    participate: 'Active power regulation',
+    droop: 'Droop',
+    directTransX: 'Transient reactance (Ω)',
+    stepUpTransformerX: 'Transformer reactance (Ω)',
+    plannedActivePowerSetPoint: 'Planning P (MW)',
+    nominalV: 'Nominal voltage (kV)',
+    ipMin: 'ISC min (kA)',
+    ipMax: 'ISC max (kA)',
+    r: 'Series resistance (Ω)',
+    x: 'Series reactance (Ω)',
+    g: 'Magnetizing conductance (μS)',
+    b: 'Magnetizing susceptance (μS)',
+    g1: 'Shunt conductance 1 (μS)',
+    g2: 'Shunt conductance 2 (μS)',
+    b1: 'Shunt susceptance 1 (μS)',
+    b2: 'Shunt susceptance 2 (μS)',
+    ratedU1: 'Rated voltage 1 (kV)',
+    ratedU2: 'Rated voltage 2 (kV)',
+    ratioTapChangerLoadTapChangingCapabilities: 'Ratio tap changer on-load',
+    ratioTapChangerRegulationSide: 'Ratio tap changer regulated side',
+
+    // Tabular creation / modification - CSV template comments
+    'TabularCreationSkeletonComment.GENERATOR':
+        '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,,,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
+    'TabularCreationSkeletonComment.BATTERY':
+        '#,,,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+    'TabularCreationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,,,true | false,,TOP | BOTTOM,,,',
+    'TabularCreationSkeletonComment.SHUNT_COMPENSATOR':
+        '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR | required if maxQAtNominalV is set,,',
+    'TabularModificationSkeletonComment.SUBSTATION':
+        '#,,2-letter code from ISO 3166-1 standard (FR ES PT IT CH DE BE LU NL GB ...)',
+    'TabularModificationSkeletonComment.LINE': '#,,,,,,,,true | false,,TOP | BOTTOM,,true | false,,TOP | BOTTOM,',
+    'TabularModificationSkeletonComment.TWO_WINDINGS_TRANSFORMER':
+        '#,,,,,,,,,true | false,,TOP | BOTTOM,,true | false,,TOP | BOTTOM,,true | false,SIDE1 | SIDE2',
+    'TabularModificationSkeletonComment.GENERATOR':
+        '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
+    'TabularModificationSkeletonComment.BATTERY':
+        '#,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+    'TabularModificationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,true | false,,TOP | BOTTOM,,,',
+    'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
+        '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
+
+    // Voltage level modification
+    ModifyVoltageLevelTopology: 'Modify voltage level topology',
+    VoltageLevelTopologyModificationError: 'Voltage level topology modification error',
+    switchId: 'Switch ID',
+    Open: 'Open',
+    Closed: 'Closed',
+    previousStatus: 'Previous status',
+    currentStatus: 'Modified status',
+    copyPreviousTopologyStatus: 'Fill with previous status',
+    modifiedSwitchesSeparatorTitle: 'Modification',
+    unModifiedSwitchesSeparatorTitle: 'No-modification',
 };
