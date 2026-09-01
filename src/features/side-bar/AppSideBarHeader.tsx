@@ -5,11 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Divider, Stack, Typography, IconButton, Tooltip, Chip } from '@mui/material';
+import { Box, Divider, IconButton, Stack, Tooltip, Typography } from '@mui/material';
 import { Info } from '@mui/icons-material';
-import { ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { SideBarDialogType, useAppSideBarDialogs } from './dialogs/AppSideBarDialogProvider';
 import { Environment, fetchEnv } from '../../services';
+import { EnvironmentChip } from './EnvironmentChip';
 
 interface AppSideBarHeaderProps {
     isMinimized: boolean;
@@ -19,14 +20,6 @@ interface AppSideBarHeaderProps {
     appLogo: ReactNode;
     appVersion?: string;
 }
-
-const envColors: Record<Environment, string> = {
-    REC: '#304FFE',
-    DEV: '#DD2C00',
-    PRE: '#AA00FF',
-    PRO: '#DD2C00',
-    DCH: '#2E7D32',
-};
 
 export function AppSideBarHeader({
     isMinimized,
@@ -43,31 +36,6 @@ export function AppSideBarHeader({
         fetchEnv().then((env) => setEnvironment(env?.environment ?? ''));
     }, []);
 
-    const chip = useMemo(() => {
-        if (!(environment in envColors)) {
-            return null;
-        }
-        return (
-            <Chip
-                label={environment}
-                size="small"
-                sx={{
-                    position: 'absolute',
-                    top: 0,
-                    right: 5,
-                    transform: isMinimized ? 'translate(40%, -10%)' : 'translate(120%, -10%)',
-                    fontSize: '0.5rem',
-                    backgroundColor: envColors[environment as Environment],
-                    color: '#ffffff',
-                    height: isMinimized ? '12px' : '15px',
-                    '& .MuiChip-label': {
-                        padding: '0 4px',
-                    },
-                }}
-            />
-        );
-    }, [environment, isMinimized]);
-
     return (
         <Stack
             sx={{
@@ -79,7 +47,8 @@ export function AppSideBarHeader({
             <Stack direction="row" alignItems="center" justifyContent={isMinimized ? 'center' : 'flex-start'}>
                 <Box sx={{ position: 'relative', display: 'inline-block' }}>
                     {appLogo}
-                    {isMinimized && chip}
+
+                    {isMinimized && <EnvironmentChip environment={environment} variant="minimized" />}
                 </Box>
 
                 {!isMinimized && (
@@ -90,7 +59,8 @@ export function AppSideBarHeader({
                                 {appName}
                             </Box>
                         </Typography>
-                        {chip}
+
+                        <EnvironmentChip environment={environment} variant="expanded" />
                     </Box>
                 )}
             </Stack>
@@ -104,6 +74,7 @@ export function AppSideBarHeader({
             >
                 <>
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}
+
                     <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
                         <IconButton sx={{ padding: 0 }} onClick={() => setOpenDialog(SideBarDialogType.ABOUT)}>
                             <Info fontSize="small" color="disabled" />
