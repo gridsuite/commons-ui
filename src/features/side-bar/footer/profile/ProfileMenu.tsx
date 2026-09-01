@@ -15,7 +15,6 @@ import { SideBarMenuItem } from '../common/SideBarMenuItem';
 import { submenuFooterStyle } from '../common/submenu-footer.style';
 import { CustomNestedMenuItem } from '../../../../components';
 import { SideBarDialogType, useAppSideBarDialogs } from '../../dialogs/AppSideBarDialogProvider';
-import { mergeSx } from '../../../../utils';
 
 interface ProfileMenuProps {
     isMinimized: boolean;
