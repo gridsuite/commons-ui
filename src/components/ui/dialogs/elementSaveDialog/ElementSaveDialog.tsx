@@ -29,6 +29,7 @@ import { DirectoryInitConfig, initializeDirectory } from './utils';
 // Define operation types
 enum OperationType {
     CREATE = 'CREATE',
+    CREATE_SHARED = 'CREATE_SHARED',
     UPDATE = 'UPDATE',
 }
 
@@ -59,6 +60,10 @@ export type ElementSaveDialogProps = {
     titleId: string;
     onSave: (data: IElementCreationDialog) => void;
     OnUpdate?: (data: IElementUpdateDialog) => void;
+    /** when provided, an extra operation is offered to save the element as a shared one */
+    onSaveShared?: (data: IElementCreationDialog) => void;
+    createSharedLabelId?: string;
+    createSharedDisabled?: boolean;
     prefixIdForGeneratedName?: string;
     defaultName?: string | null;
     initialOperation?: OperationType;
@@ -117,6 +122,9 @@ export function ElementSaveDialog({
     open,
     onSave,
     OnUpdate,
+    onSaveShared,
+    createSharedLabelId,
+    createSharedDisabled = false,
     onClose,
     type,
     titleId,
@@ -159,7 +167,7 @@ export function ElementSaveDialog({
 
     // Force create mode if in legacy mode
     const operationType = createOnlyMode ? OperationType.CREATE : watch(FieldConstants.OPERATION_TYPE);
-    const isCreateMode = operationType === OperationType.CREATE;
+    const isCreateMode = operationType !== OperationType.UPDATE;
 
     const disableSave =
         Object.keys(errors).length > 0 || (isCreateMode && !destinationFolder) || (!isCreateMode && !selectedItem);
@@ -222,6 +230,14 @@ export function ElementSaveDialog({
         initializeDestinationFolder();
     }, [open, isCreateMode, initializeDestinationFolder]);
 
+    // The shared creation may become unavailable while the dialog is open, its availability depending on a
+    // selection refreshed in the background : fall back on the standard creation
+    useEffect(() => {
+        if (createSharedDisabled && operationType === OperationType.CREATE_SHARED) {
+            setValue(FieldConstants.OPERATION_TYPE, OperationType.CREATE);
+        }
+    }, [createSharedDisabled, operationType, setValue]);
+
     // Open selector dialog
     const handleChangeFolder = useCallback(() => {
         setDirectorySelectorOpen(true);
@@ -263,7 +279,7 @@ export function ElementSaveDialog({
     // Form submission handler
     const onSubmit = useCallback<SubmitHandler<SchemaType>>(
         (values) => {
-            if (isCreateMode && destinationFolder && onSave) {
+            if (isCreateMode && destinationFolder) {
                 // Handle creation
                 const creationData: IElementCreationDialog = {
                     [FieldConstants.NAME]: values.name,
@@ -271,7 +287,11 @@ export function ElementSaveDialog({
                     [FieldConstants.FOLDER_NAME]: destinationFolder.name ?? '',
                     [FieldConstants.FOLDER_ID]: destinationFolder.id,
                 };
-                onSave(creationData);
+                if (values.type === OperationType.CREATE_SHARED && onSaveShared) {
+                    onSaveShared(creationData);
+                } else if (onSave) {
+                    onSave(creationData);
+                }
             } else if (!isCreateMode && selectedItem && OnUpdate) {
                 // Handle update
                 const updateData: IElementUpdateDialog = {
@@ -284,7 +304,7 @@ export function ElementSaveDialog({
                 OnUpdate(updateData);
             }
         },
-        [isCreateMode, onSave, OnUpdate, destinationFolder, selectedItem]
+        [isCreateMode, onSave, onSaveShared, OnUpdate, destinationFolder, selectedItem]
     );
 
     // Render folder/item chooser
@@ -335,12 +355,21 @@ export function ElementSaveDialog({
                             name={FieldConstants.OPERATION_TYPE}
                             options={[
                                 { id: OperationType.CREATE, label: createLabelId ?? 'createLabelId' },
+                                ...(onSaveShared
+                                    ? [
+                                          {
+                                              id: OperationType.CREATE_SHARED,
+                                              label: createSharedLabelId ?? 'createSharedLabelId',
+                                              disabled: createSharedDisabled,
+                                          },
+                                      ]
+                                    : []),
                                 { id: OperationType.UPDATE, label: updateLabelId ?? 'updateLabelId' },
                             ]}
                             formProps={{
                                 sx: {
                                     '& .MuiFormControlLabel-root': {
-                                        marginRight: 15,
+                                        marginRight: onSaveShared ? 4 : 15,
                                     },
                                 },
                             }}

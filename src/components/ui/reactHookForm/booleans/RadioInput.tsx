@@ -13,6 +13,7 @@ import { FieldLabel } from '../utils/FieldLabel';
 type RadioOptions = Array<{
     id: string;
     label: string;
+    disabled?: boolean;
 }>;
 
 export interface RadioInputProps {
@@ -45,6 +46,7 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                         value={option.id}
                         key={option.id}
                         label={<FieldLabel label={option.label} />}
+                        disabled={option.disabled}
                     />
                 ))}
             </RadioGroup>
