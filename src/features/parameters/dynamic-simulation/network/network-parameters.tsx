@@ -7,7 +7,7 @@
 import { Grid } from '@mui/material';
 import { Network } from './network-parameters-constants';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils';
-import ParameterField from '../../common/parameter-field';
+import { ParameterField } from '../../common/parameter-field';
 
 const params = [
     {

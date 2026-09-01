@@ -20,6 +20,7 @@ export const DESCRIPTION_LIMIT_ERROR = 'descriptionLimitError';
 export const SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO =
     'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero';
 export const NAME_EMPTY = 'nameEmpty';
+export const MODIFICATIONS_REQUIRED_TAB_ERROR = 'ModificationsRequiredTabError';
 
 export const ACTIVE_LIMITS_MIN_MAX_INVALID = 'ActiveLimitsMinMaxInvalid';
 export const REACTIVE_LIMITS_MIN_MAX_INVALID = 'ReactiveLimitsMinMaxInvalid';
