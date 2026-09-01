@@ -303,7 +303,9 @@ export const networkModificationsEn = {
     unlimited: 'Unlimited',
     forbidden: 'Forbidden',
     Applicability: 'Applicability',
-    disableOLGedition: 'Entered limit sets data will be lost. Do you wish to continue?',
+    disableOLGeditionByReplace:
+        'Entered limit sets data will be lost to display their current values. Do you wish to continue ?',
+    disableOLGedition: 'Entered limit sets data will be lost. Do you wish to continue ?',
     Edit: 'Edit',
     View: 'View',
     TemporaryCurrentLimitsText: 'Temporary current limits',
@@ -440,4 +442,17 @@ export const networkModificationsEn = {
     allOptionHelperText: 'Busbars have different sections (number or index)',
     areSwitchesOpen: 'Open',
     areSwitchesClosed: 'Closed',
+    DuplicatedPositionsWarning: 'Duplicated number',
+    moveFeederBaysSections: 'Feeder bay will be connected onto the selected busbar section',
+    MoveVoltageLevelFeederBays: 'Move connections',
+    MoveVoltageLevelFeederBaysError: 'Error while moving feeder bays',
+    Feeders: 'Feeder',
+    equipmentID: 'Equipment ID',
+    connectionDirection: 'Connection direction',
+    connectionPosition: 'Connection position',
+    MissingConnectionsInVoltageLevel:
+        'Missing connections in voltage level (Connections removed from list on validation)',
+    builtNodeTooltipVlTopoModif: 'Switches list taking into account all applied modifications',
+    notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
+    Undefined: 'Undefined',
 };
