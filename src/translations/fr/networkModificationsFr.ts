@@ -556,4 +556,16 @@ export const networkModificationsFr = {
     'TabularModificationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;true | false;;TOP | BOTTOM;;;',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR;;',
+
+    // Voltage level modification
+    ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",
+    VoltageLevelTopologyModificationError: 'Erreur lors de la modification de la topologie de poste',
+    switchId: "ID de l'organe de coupure",
+    Open: 'Ouvert',
+    Closed: 'Fermé',
+    previousStatus: 'État précédent',
+    currentStatus: 'État modifié',
+    copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
+    modifiedSwitchesSeparatorTitle: 'OC modifiés',
+    unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
 };
