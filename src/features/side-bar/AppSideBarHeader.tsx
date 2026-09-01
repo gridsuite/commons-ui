@@ -37,7 +37,7 @@ export function AppSideBarHeader({
     appVersion,
 }: Readonly<AppSideBarHeaderProps>) {
     const { setOpenDialog } = useAppSideBarDialogs();
-    const [environment, setEnvironment] = useState<Environment | string>('');
+    const [environment, setEnvironment] = useState<Environment | ''>('');
 
     useEffect(() => {
         fetchEnv().then((env) => setEnvironment(env?.environment ?? ''));
