@@ -549,4 +549,16 @@ export const networkModificationsEn = {
     'TabularModificationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,true | false,,TOP | BOTTOM,,,',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
+
+    // Voltage level modification
+    ModifyVoltageLevelTopology: 'Modify voltage level topology',
+    VoltageLevelTopologyModificationError: 'Voltage level topology modification error',
+    switchId: 'Switch ID',
+    Open: 'Open',
+    Closed: 'Closed',
+    previousStatus: 'Previous status',
+    currentStatus: 'Modified status',
+    copyPreviousTopologyStatus: 'Fill with previous status',
+    modifiedSwitchesSeparatorTitle: 'Modification',
+    unModifiedSwitchesSeparatorTitle: 'No-modification',
 };
