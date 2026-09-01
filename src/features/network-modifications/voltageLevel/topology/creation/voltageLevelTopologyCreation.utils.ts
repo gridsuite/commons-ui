@@ -6,8 +6,8 @@
  */
 import * as yup from 'yup';
 import { IntlShape } from 'react-intl';
-import { DeepNullable, FieldConstants, ModificationType } from '../../../../utils';
-import { MAX_SECTIONS_COUNT } from '../creation/voltageLevel.constants';
+import { DeepNullable, FieldConstants, ModificationType } from '../../../../../utils';
+import { MAX_SECTIONS_COUNT } from '../../creation/voltageLevel.constants';
 import { CreateVoltageLevelTopologyDto } from './voltageLevelTopologyCreation.types';
 
 export const createVoltageLevelTopologyFormSchema = yup

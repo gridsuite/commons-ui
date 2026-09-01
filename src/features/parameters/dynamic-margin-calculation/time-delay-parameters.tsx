@@ -15,7 +15,7 @@ import {
     STOP_TIME,
 } from './constants';
 import { ParameterType, SpecificParameterInfos } from '../../../utils';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 
 export const formSchema = yup.object().shape({
     [START_TIME]: yup.number().required(),

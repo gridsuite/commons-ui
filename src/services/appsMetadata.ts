@@ -11,10 +11,13 @@ import { BaseVoltage, ExploreMetadata, Metadata, StudyMetadata } from '../utils'
 export type UrlString = `${string}://${string}` | `/${string}` | `./${string}`;
 export type Url = UrlString | URL;
 
+export type Environment = 'DEV' | 'DCH' | 'REC' | 'PRE' | 'PRO';
+
 export type Env = {
     appsMetadataServerUrl?: Url;
     mapBoxToken?: string;
     confidentialityMessageKey?: string;
+    environment?: Environment;
     // https://github.com/gridsuite/deployment/blob/main/docker-compose/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-dev/env.json
     // https://github.com/gridsuite/deployment/blob/main/k8s/live/azure-integ/env.json

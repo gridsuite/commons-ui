@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { SyntheticEvent } from 'react';
 import { Grid, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { getTabStyle } from '../../../parameters/parameters-style';
@@ -13,17 +14,17 @@ import { StaticVarCompensatorDialogTab } from './static-var-compensator-tab-util
 export interface StaticVarCompensatorCreationDialogTabsProps {
     tabIndex: number;
     tabIndexesWithError: StaticVarCompensatorDialogTab[];
-    setTabIndex: (newValue: StaticVarCompensatorDialogTab) => void;
+    onTabChange: (event: SyntheticEvent<Element, Event>, newValue: number) => void;
 }
 
 export function StaticVarCompensatorDialogTabs({
     tabIndex,
     tabIndexesWithError,
-    setTabIndex,
+    onTabChange,
 }: StaticVarCompensatorCreationDialogTabsProps) {
     return (
         <Grid container sx={{ width: '100%' }}>
-            <Tabs value={tabIndex} onChange={(event, newValue) => setTabIndex(newValue)}>
+            <Tabs value={tabIndex} onChange={onTabChange}>
                 <Tab
                     label={<FormattedMessage id="ConnectivityTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.CONNECTIVITY_TAB)}
