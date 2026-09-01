@@ -6,7 +6,7 @@
  */
 import { Grid } from '@mui/material';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils';
-import ParameterField from '../../common/parameter-field';
+import { ParameterField } from '../../common/parameter-field';
 import { TimeDelay } from './time-delay-parameters-constants';
 
 const params: SpecificParameterInfos[] = [
