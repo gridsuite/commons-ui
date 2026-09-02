@@ -9,15 +9,16 @@ import { Box, Stack } from '@mui/material';
 import { VscHvdcLineDialogHeader, VscHvdcLineDialogHeaderProps } from './VscHvdcLineDialogHeader';
 import { VscHvdcLineDialogTabs } from './VscHvdcLineDialogTabs';
 import { VscHvdcLineDialogTabsContent, VscHvdcLineDialogTabsContentProps } from './VscHvdcLineDialogTabsContent';
-import { HVDC_LINE_TAB_FIELDS, VscHvdcLineDialogTab } from './vscHvdcLine.utils';
-import { useTabsWithError } from '../../../../hooks/useTabsWithError';
+import { VscHvdcLineDialogTab } from './vscHvdcLine.utils';
 import { UpdateReactiveCapabilityCurveTableConverterStation } from '../converterStation/vscConverterStationPane.utils';
+import { UseTabsReturn } from '../../../../../../hooks';
 
 interface VscHvdcLineFormProps
     extends
         VscHvdcLineDialogHeaderProps,
         Omit<VscHvdcLineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'hvdcLineToModify'> {
     updatePreviousReactiveCapabilityCurveTableConverterStation?: UpdateReactiveCapabilityCurveTableConverterStation;
+    useTabsReturn: UseTabsReturn<VscHvdcLineDialogTab>;
 }
 
 export function VscHvdcLineForm({
@@ -27,24 +28,22 @@ export function VscHvdcLineForm({
     PositionDiagramPane,
     updatePreviousReactiveCapabilityCurveTableConverterStation,
     isModification = false,
+    useTabsReturn,
 }: Readonly<VscHvdcLineFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<VscHvdcLineDialogTab>(
-        HVDC_LINE_TAB_FIELDS,
-        VscHvdcLineDialogTab.HVDC_LINE_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
         <Stack spacing={2} height="100%">
             <VscHvdcLineDialogHeader hvdcLineToModify={hvdcLineToModify} isModification={isModification} />
             <VscHvdcLineDialogTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
+                tabIndex={selectedTab}
+                tabIndexesWithError={tabsWithError}
+                onTabChange={onTabChange}
                 isModification={isModification}
             />
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
                 <VscHvdcLineDialogTabsContent
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                     isModification={isModification}
                     hvdcLineToModify={hvdcLineToModify}
                     voltageLevelOptions={voltageLevelOptions}
