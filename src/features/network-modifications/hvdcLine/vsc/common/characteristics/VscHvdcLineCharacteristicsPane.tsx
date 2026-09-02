@@ -126,10 +126,12 @@ export function VscHvdcLineCharacteristicsPane({
     );
 
     const previousAngleDropPowerControl = () => {
-        if (hvdcLineToModify?.hvdcAngleDroopActivePowerControl?.isEnabled === true) {
+        if (!hvdcLineToModify) {
+            return undefined;
+        }
+        if (hvdcLineToModify.hvdcAngleDroopActivePowerControl?.isEnabled) {
             return intl.formatMessage({ id: 'On' });
         }
-
         return intl.formatMessage({ id: 'Off' });
     };
 

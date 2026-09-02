@@ -106,6 +106,9 @@ export function VscConverterStationPane({
     );
 
     const previousVoltageRegulatorOn = () => {
+        if (!stationToModify) {
+            return undefined;
+        }
         return intl.formatMessage({
             id: stationToModify?.voltageRegulatorOn ? 'On' : 'Off',
         });

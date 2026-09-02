@@ -47,7 +47,7 @@ export function VscHvdcLineDialogHeader({
             label="Name"
             formProps={filledTextField}
             previousValue={hvdcLineToModify?.name ?? undefined}
-            clearable
+            clearable={isModification}
         />
     );
 
