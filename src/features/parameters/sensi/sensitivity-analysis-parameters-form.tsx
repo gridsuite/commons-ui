@@ -44,6 +44,7 @@ export function SensitivityAnalysisParametersForm({
                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
                     isRootNode={isRootNode}
                     globalBuildStatus={globalBuildStatus}
+                    useSensiTabsReturn={sensitivityAnalysisMethods.useSensiTabsReturn}
                 />
             </Stack>
         </Stack>
