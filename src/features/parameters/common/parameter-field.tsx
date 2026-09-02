@@ -33,7 +33,7 @@ interface ParameterFieldProps {
     sx?: SxProps;
 }
 
-function ParameterField({
+export function ParameterField({
     id,
     name,
     type,
@@ -119,5 +119,3 @@ function ParameterField({
         </Grid>
     );
 }
-
-export default ParameterField;

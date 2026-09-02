@@ -10,6 +10,7 @@ export * from './computing-type';
 export * from './constants';
 export * from './parameters-edition-dialog-props';
 export * from './line-separator';
+export * from './parameter-field';
 export * from './parameters';
 export * from './parameters-creation-dialog';
 export * from './provider-param';

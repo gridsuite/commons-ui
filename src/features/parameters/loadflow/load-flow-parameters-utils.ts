@@ -47,6 +47,8 @@ export enum TabValues {
     PROVIDER_SPECIFIC = 'ProviderSpecific',
 }
 
+export const TAB_VALUES = Object.values(TabValues);
+
 export const TAB_FIELDS: Record<TabValues, string[]> = {
     [TabValues.GENERAL]: [COMMON_PARAMETERS],
     [TabValues.PROVIDER_SPECIFIC]: [SPECIFIC_PARAMETERS],

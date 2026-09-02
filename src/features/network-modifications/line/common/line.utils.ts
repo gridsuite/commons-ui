@@ -12,7 +12,7 @@ export interface LineDialogOptions {
     withConnectivity?: boolean;
 }
 
-export const enum LineDialogTab {
+export enum LineDialogTab {
     CONNECTIVITY_TAB = 0,
     CHARACTERISTICS_TAB = 1,
     LIMITS_TAB = 2,

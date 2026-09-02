@@ -7,7 +7,6 @@
 
 export * from './common';
 export * from './equipmentDeletion';
-export * from './hooks';
 export * from './substation';
 export * from './voltageLevel';
 export * from './load';
@@ -18,3 +17,4 @@ export * from './shunt-compensator';
 export * from './line';
 export * from './twoWindingsTransformer';
 export * from './static-var-compensator';
+export * from './tabular';

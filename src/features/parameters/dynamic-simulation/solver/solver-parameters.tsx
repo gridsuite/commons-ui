@@ -8,7 +8,7 @@ import { Grid, SxProps } from '@mui/material';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { SolverType } from '../../../../utils/types/dynamic-simulation.type';
-import ParameterField from '../../common/parameter-field';
+import { ParameterField } from '../../common/parameter-field';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils/types/parameters.type';
 import { Solver } from './solver-parameters-constants';
 import { IdaSolverParameters } from './ida-solver';

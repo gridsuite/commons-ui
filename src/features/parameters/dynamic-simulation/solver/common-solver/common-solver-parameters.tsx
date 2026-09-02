@@ -6,7 +6,7 @@
  */
 import { ParameterType, SpecificParameterInfos } from '../../../../../utils';
 import { CommonSolver } from './common-solver-parameters-constants';
-import ParameterField from '../../../common/parameter-field';
+import { ParameterField } from '../../../common/parameter-field';
 
 const params: SpecificParameterInfos[] = [
     {
