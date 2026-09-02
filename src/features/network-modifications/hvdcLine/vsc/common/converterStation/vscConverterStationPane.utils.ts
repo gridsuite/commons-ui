@@ -26,9 +26,8 @@ import {
     getConnectivityWithPositionSchema,
 } from '../../../../common/connectivity/connectivityForm.utils';
 import {
-    getInjectionActiveReactivePowerEditDataProperties,
     getInjectionActiveReactivePowerEmptyFormDataProperties,
-    getInjectionActiveReactivePowerValidationSchemaProperties,
+    InjectionActiveReactivePowerFormData,
 } from '../../../../common/measurements/injectionActiveReactivePowerForm.utils';
 import { ConverterStationCreationDto } from '../../creation/vscHvdcLineCreation.types';
 import { ConverterStationInfos } from '../vscHvdcLine.types';
@@ -80,7 +79,6 @@ export const getVscConverterStationModificationSchema = () =>
         [FieldConstants.REACTIVE_POWER]: number().nullable(),
         [FieldConstants.VOLTAGE]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
-        [FieldConstants.STATE_ESTIMATION]: getInjectionActiveReactivePowerValidationSchemaProperties(),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(true),
     });
 
@@ -202,11 +200,11 @@ export function converterStationCreationFromCopy(
 }
 
 export function converterStationModificationFormToDto(
-    formData: VscConverterStationModificationFormData
+    formData: VscConverterStationModificationFormData,
+    measurementData: InjectionActiveReactivePowerFormData
 ): ConverterStationModificationDto {
     const reactiveLimits = formData[FieldConstants.REACTIVE_LIMITS];
     const connectivity = formData[FieldConstants.CONNECTIVITY];
-    const estim = formData[FieldConstants.STATE_ESTIMATION];
     const isReactiveCapabilityCurveOn = reactiveLimits[FieldConstants.REACTIVE_CAPABILITY_CURVE_CHOICE] === 'CURVE';
 
     return {
@@ -221,10 +219,10 @@ export function converterStationModificationFormToDto(
         connectionDirection: toModificationOperation(connectivity?.[FieldConstants.CONNECTION_DIRECTION]),
         connectionPosition: toModificationOperation(connectivity?.[FieldConstants.CONNECTION_POSITION]),
         terminalConnected: toModificationOperation(connectivity?.[FieldConstants.CONNECTED]),
-        pMeasurementValue: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_P]?.value),
-        pMeasurementValidity: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_P]?.validity),
-        qMeasurementValue: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_Q]?.value),
-        qMeasurementValidity: toModificationOperation(estim?.[FieldConstants.MEASUREMENT_Q]?.validity),
+        pMeasurementValue: toModificationOperation(measurementData?.[FieldConstants.MEASUREMENT_P]?.value),
+        pMeasurementValidity: toModificationOperation(measurementData?.[FieldConstants.MEASUREMENT_P]?.validity),
+        qMeasurementValue: toModificationOperation(measurementData?.[FieldConstants.MEASUREMENT_Q]?.value),
+        qMeasurementValidity: toModificationOperation(measurementData?.[FieldConstants.MEASUREMENT_Q]?.validity),
         lossFactor: toModificationOperation(formData[FieldConstants.LOSS_FACTOR]),
         reactivePowerSetpoint: toModificationOperation(formData[FieldConstants.REACTIVE_POWER]),
         voltageRegulationOn: toModificationOperation(formData[FieldConstants.VOLTAGE_REGULATION_ON]),
@@ -267,6 +265,5 @@ export function converterStationModificationDtoToForm(
             minimumReactivePower: dto?.minQ?.value ?? null,
             reactiveCapabilityCurvePoints: dto?.reactiveCapabilityCurvePoints ?? null,
         }),
-        [FieldConstants.STATE_ESTIMATION]: getInjectionActiveReactivePowerEditDataProperties(dto),
     };
 }

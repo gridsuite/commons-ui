@@ -30,6 +30,15 @@ import {
     getVscConverterStationModificationSchema,
 } from '../common/converterStation/vscConverterStationPane.utils';
 import { VscHdvLineModificationDto } from './vscHvdcLineModification.types';
+import {
+    getInjectionActiveReactivePowerEditDataProperties,
+    getInjectionActiveReactivePowerValidationSchemaProperties,
+} from '../../../common';
+
+export const vscHvdcLineEstimationFormSchema = object().shape({
+    [FieldConstants.CONVERTER_STATION_1]: getInjectionActiveReactivePowerValidationSchemaProperties(),
+    [FieldConstants.CONVERTER_STATION_2]: getInjectionActiveReactivePowerValidationSchemaProperties(),
+});
 
 export const vscHvdcLineModificationFormSchema = object()
     .shape({
@@ -38,6 +47,7 @@ export const vscHvdcLineModificationFormSchema = object()
         [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsModificationSchema(),
         [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationModificationSchema(),
         [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationModificationSchema(),
+        [FieldConstants.STATE_ESTIMATION]: vscHvdcLineEstimationFormSchema,
     })
     .concat(modificationPropertiesSchema)
     .required();
@@ -51,6 +61,7 @@ export const vscHvdcLineModificationEmptyFormData: DeepNullable<VscHvdcLineModif
     [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationEmptyFormData(true),
     [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationEmptyFormData(true),
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
+    [FieldConstants.STATE_ESTIMATION]: null,
 };
 
 export const vscHvdcLineModificationDtoToForm = (
@@ -63,6 +74,14 @@ export const vscHvdcLineModificationDtoToForm = (
         [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsModificationDtoToForm(lineDto),
         [FieldConstants.CONVERTER_STATION_1]: converterStationModificationDtoToForm(lineDto.converterStation1),
         [FieldConstants.CONVERTER_STATION_2]: converterStationModificationDtoToForm(lineDto.converterStation2),
+        [FieldConstants.STATE_ESTIMATION]: {
+            [FieldConstants.CONVERTER_STATION_1]: getInjectionActiveReactivePowerEditDataProperties(
+                lineDto.converterStation1
+            ),
+            [FieldConstants.CONVERTER_STATION_2]: getInjectionActiveReactivePowerEditDataProperties(
+                lineDto.converterStation2
+            ),
+        },
         ...getPropertiesFromModification(lineDto?.properties, includePreviousValues),
     };
 };
@@ -89,7 +108,13 @@ export const vscHvdcLineModificationFormToDto = (
         angleDroopActivePowerControl: toModificationOperation(lineForm.hvdcLine.angleDroopActivePowerControl),
         p0: toModificationOperation(lineForm.hvdcLine.p0),
         droop: toModificationOperation(lineForm.hvdcLine.droop),
-        converterStation1: converterStationModificationFormToDto(lineForm.converterStation1),
-        converterStation2: converterStationModificationFormToDto(lineForm.converterStation2),
+        converterStation1: converterStationModificationFormToDto(
+            lineForm.converterStation1,
+            lineForm.stateEstimation.converterStation1
+        ),
+        converterStation2: converterStationModificationFormToDto(
+            lineForm.converterStation2,
+            lineForm.stateEstimation.converterStation2
+        ),
     };
 };

@@ -80,13 +80,13 @@ export function VscHvdcLineDialogTabsContent({
                     <PowerMeasurementsForm
                         activePowerMeasurement={hvdcLineToModify?.converterStation1?.measurementP}
                         reactivePowerMeasurement={hvdcLineToModify?.converterStation1?.measurementQ}
-                        idPrefix={FieldConstants.CONVERTER_STATION_1}
+                        idPrefix={`${FieldConstants.STATE_ESTIMATION}.${FieldConstants.CONVERTER_STATION_1}`}
                     />
                     <GridSection title="converterStation2" />
                     <PowerMeasurementsForm
                         activePowerMeasurement={hvdcLineToModify?.converterStation2?.measurementP}
                         reactivePowerMeasurement={hvdcLineToModify?.converterStation2?.measurementQ}
-                        idPrefix={FieldConstants.CONVERTER_STATION_2}
+                        idPrefix={`${FieldConstants.STATE_ESTIMATION}.${FieldConstants.CONVERTER_STATION_2}`}
                     />
                 </Box>
             )}

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { object } from 'yup';
+import { InferType, object } from 'yup';
 import {
     getPowerWithValidityEditData,
     getPowerWithValidityEmptyFormData,
@@ -32,6 +32,10 @@ export const getInjectionActiveReactivePowerValidationSchemaProperties = () =>
         ...getPowerWithValidityValidationSchema(FieldConstants.MEASUREMENT_P),
         ...getPowerWithValidityValidationSchema(FieldConstants.MEASUREMENT_Q),
     });
+
+export type InjectionActiveReactivePowerFormData = InferType<
+    ReturnType<typeof getInjectionActiveReactivePowerValidationSchemaProperties>
+>;
 
 export const getInjectionActiveReactivePowerValidationSchema = (id: string) => ({
     [id]: getInjectionActiveReactivePowerValidationSchemaProperties(),
