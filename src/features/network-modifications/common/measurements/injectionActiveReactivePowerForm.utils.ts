@@ -12,6 +12,7 @@ import {
     getPowerWithValidityValidationSchema,
 } from './powerWithValidity.utils';
 import { FieldConstants } from '../../../../utils';
+import { InjectionMeasurementsEditData } from './measurement.type';
 
 export function getInjectionActiveReactivePowerEmptyFormDataProperties() {
     return {
@@ -41,7 +42,7 @@ export const getInjectionActiveReactivePowerValidationSchema = (id: string) => (
     [id]: getInjectionActiveReactivePowerValidationSchemaProperties(),
 });
 
-export function getInjectionActiveReactivePowerEditDataProperties(injectionData: any) {
+export function getInjectionActiveReactivePowerEditDataProperties(injectionData: InjectionMeasurementsEditData) {
     return {
         ...getPowerWithValidityEditData(FieldConstants.MEASUREMENT_P, {
             value: injectionData?.pMeasurementValue?.value,
