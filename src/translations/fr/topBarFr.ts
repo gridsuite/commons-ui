@@ -26,6 +26,7 @@ export const topBarFr = {
         'Mode développeur : Certaines fonctionnalités ne sont pas complètes et peuvent ne pas fonctionner comme prévu.',
     'top-bar/settings': 'Réglages',
     'top-bar/minimize': 'Réduire le menu',
+    'top-bar/expand': 'Développer le menu',
 
     'about-dialog/title': 'À propos',
     'about-dialog/version': 'Version {version}',

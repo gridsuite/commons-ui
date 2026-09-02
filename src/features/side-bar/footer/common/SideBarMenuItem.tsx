@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Typography } from '@mui/material';
+import { Tooltip, Typography } from '@mui/material';
 import { ReactNode } from 'react';
 import { useIntl } from 'react-intl';
 import { submenuFooterStyle } from './submenu-footer.style';
@@ -17,19 +17,23 @@ interface SideBarMenuItemProps {
     onClick?: () => void;
     showLabel?: boolean;
     disabled?: boolean;
+    tooltip?: string;
 }
 
 export function SideBarMenuItem({
     label,
     icon,
     onClick,
+    tooltip = '',
     showLabel = true,
     disabled = false,
 }: Readonly<SideBarMenuItemProps>) {
     const intl = useIntl();
     return (
-        <CustomMenuItem disabled={disabled} onClick={onClick} sx={submenuFooterStyle.subMenu}>
-            {icon} {showLabel && <Typography px={1}>{intl.formatMessage({ id: label })}</Typography>}
-        </CustomMenuItem>
+        <Tooltip placement="right-start" title={tooltip && intl.formatMessage({ id: tooltip })}>
+            <CustomMenuItem disabled={disabled} onClick={onClick} sx={submenuFooterStyle.subMenu}>
+                {icon} {showLabel && <Typography px={1}>{intl.formatMessage({ id: label })}</Typography>}
+            </CustomMenuItem>
+        </Tooltip>
     );
 }

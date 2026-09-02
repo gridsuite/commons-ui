@@ -53,8 +53,10 @@ export function AppSideBarHeader({
 
                 {!isMinimized && (
                     <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                        <Typography variant="h6">
-                            Grid
+                        <Typography fontSize={18}>
+                            <Box component="span" style={{ fontWeight: 'bold' }}>
+                                Grid
+                            </Box>
                             <Box component="span" sx={{ color: appNameColor }}>
                                 {appName}
                             </Box>
@@ -77,7 +79,7 @@ export function AppSideBarHeader({
 
                     <Tooltip title={`V${appVersion}`} disableHoverListener={!isMinimized}>
                         <IconButton sx={{ padding: 0 }} onClick={() => setOpenDialog(SideBarDialogType.ABOUT)}>
-                            <Info fontSize="small" color="disabled" />
+                            <Info fontSize="small" sx={{ color: 'text.secondary' }} />
                         </IconButton>
                     </Tooltip>
                 </>
