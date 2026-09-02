@@ -4,4 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-export * from './useTabsWithError';
+import { ModificationType } from '../../../../../utils';
+
+export interface CreateVoltageLevelTopologyDto {
+    type: ModificationType;
+    uuid?: string;
+    voltageLevelId: string;
+    sectionCount?: number | null;
+    switchKinds?: string[] | null;
+}

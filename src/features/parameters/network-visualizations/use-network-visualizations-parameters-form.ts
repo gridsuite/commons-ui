@@ -24,13 +24,14 @@ import {
     NetworkVisualizationTabValues as TabValues,
     PARAM_NAD_POSITIONS_GENERATION_MODE,
     PARAM_STATE_ESTIMATION,
+    NV_TAB_VALUES,
 } from './constants';
 import {
     getNetworkVisualizationsParameters,
     setStudyNetworkVisualizationParameters,
     updateParameter,
 } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
 import {
@@ -38,7 +39,6 @@ import {
     getNameElementEditorSchema,
 } from '../../../components/ui/dialogs/name-element-editor';
 import { snackWithFallback } from '../../../utils/error';
-import { useTabs } from '../common';
 
 export interface UseNetworkVisualizationParametersFormReturn {
     formMethods: UseFormReturn;
@@ -136,7 +136,7 @@ export const useNetworkVisualizationParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.MAP,
-        tabEnum: TabValues,
+        tabValues: NV_TAB_VALUES,
         errors: formMethods.formState.errors,
     });
 

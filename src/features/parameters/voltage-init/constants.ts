@@ -11,6 +11,8 @@ export enum VoltageInitTabValues {
     EQUIPMENTS_SELECTION = 'equipmentSelection',
 }
 
+export const VOLTAGE_INIT_TAB_VALUES = Object.values(VoltageInitTabValues);
+
 export const GENERAL = 'GENERAL';
 export const GENERAL_APPLY_MODIFICATIONS = 'GENERAL_APPLY_MODIFICATIONS';
 export const DEFAULT_GENERAL_APPLY_MODIFICATIONS = true;

@@ -24,7 +24,8 @@ export const topBarEn = {
     'top-bar/language/sys': 'Browser',
     'top-bar/developerModeWarning': 'Developer mode: Some features are incomplete and may not work as expected.',
     'top-bar/settings': 'Settings',
-    'top-bar/minimize': 'Minimize',
+    'top-bar/minimize': 'Collapse menu',
+    'top-bar/expand': 'Expand menu',
 
     'about-dialog/title': 'About',
     'about-dialog/version': 'Version {version}',

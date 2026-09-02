@@ -11,6 +11,11 @@ import {
     HVDC_LINES,
     INJECTIONS,
     MONITORED_BRANCHES,
+    PARAMETER_SENSI_HVDC,
+    PARAMETER_SENSI_INJECTION,
+    PARAMETER_SENSI_INJECTIONS_SET,
+    PARAMETER_SENSI_NODES,
+    PARAMETER_SENSI_PST,
     PSTS,
     SENSITIVITY_TYPE,
     SUPERVISED_VOLTAGE_LEVELS,
@@ -305,9 +310,26 @@ export enum SensiTabValues {
     SensitivityNodes = 1,
 }
 
+export const SENSI_TAB_FIELDS: Partial<Record<SensiTabValues, string[]>> = {
+    [SensiTabValues.SensitivityBranches]: [
+        PARAMETER_SENSI_INJECTIONS_SET,
+        PARAMETER_SENSI_INJECTION,
+        PARAMETER_SENSI_HVDC,
+        PARAMETER_SENSI_PST,
+    ],
+    [SensiTabValues.SensitivityNodes]: [PARAMETER_SENSI_NODES],
+};
+
 export enum SensiBranchesTabValues {
     SensiInjectionsSet = 0,
     SensiInjection = 1,
     SensiHVDC = 2,
     SensiPST = 3,
 }
+
+export const SENSI_BRANCHES_TAB_FIELDS: Partial<Record<SensiBranchesTabValues, string[]>> = {
+    [SensiBranchesTabValues.SensiInjectionsSet]: [PARAMETER_SENSI_INJECTIONS_SET],
+    [SensiBranchesTabValues.SensiInjection]: [PARAMETER_SENSI_INJECTION],
+    [SensiBranchesTabValues.SensiHVDC]: [PARAMETER_SENSI_HVDC],
+    [SensiBranchesTabValues.SensiPST]: [PARAMETER_SENSI_PST],
+};
