@@ -6,7 +6,7 @@
  */
 import { FieldConstants } from '../../../../../../utils';
 
-export const enum VscHvdcLineDialogTab {
+export enum VscHvdcLineDialogTab {
     HVDC_LINE_TAB = 0,
     CONVERTER_STATION_1_TAB = 1,
     CONVERTER_STATION_2_TAB = 2,
