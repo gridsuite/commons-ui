@@ -43,7 +43,8 @@ type SingleLineDiagramParameters = {
     centerLabel: boolean;
     substationLayout: string;
     componentLibrary: string;
-    stateEstimation: boolean;
+    measurements: boolean;
+    observability: boolean;
 };
 
 type NetworkAreaDiagramParameters = {
