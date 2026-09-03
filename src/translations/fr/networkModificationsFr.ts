@@ -448,4 +448,124 @@ export const networkModificationsFr = {
     allOptionHelperText: "Tous les jeux de barres n'ont pas les mêmes sections (index et nombre)",
     areSwitchesOpen: 'Ouverts',
     areSwitchesClosed: 'Fermés',
+    DuplicatedPositionsWarning: 'Numéro en doublon',
+    moveFeederBaysSections: 'Les départs déplacés sont préparés sur la section de barre sélectionnée',
+    MoveVoltageLevelFeederBays: 'Déplacer les départs',
+    MoveVoltageLevelFeederBaysError: 'Erreur lors du déplacement des départs',
+    Feeders: 'Départs',
+    equipmentID: "ID de l'ouvrage",
+    connectionDirection: 'Sens départ',
+    connectionPosition: 'Position départ',
+    MissingConnectionsInVoltageLevel: 'Départs absents du poste (Départs supprimés de la liste à la validation)',
+    builtNodeTooltipVlTopoModif: 'Liste des organes de coupure tenant compte de toutes les modifications réalisées',
+    notBuiltNodeTooltipVlTopoModif:
+        "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
+    Undefined: 'Non défini',
+
+    // Tabular creation / modification - dialog
+    TabularCreation: 'Création tabulaire',
+    TabularModification: 'Modification tabulaire',
+    TabularCreationError: 'Erreur lors de la création tabulaire',
+    TabularModificationError: 'Erreur lors de la modification tabulaire',
+    DefinePropertiesButton: 'Définir propriétés',
+    DefinePropertiesTitle: 'Propriétés complémentaires',
+
+    // Tabular creation / modification - CSV validation
+    ModificationsRequiredTabError: 'Au moins une modification doit être importée',
+    FieldRequired: 'Au moins une valeur est manquante pour le champ requis : "{requiredFieldNameInError}"',
+    DependantFieldMissing: 'Le champ "{requiredField}" est requis si le champ suivant est défini : "{dependantField}"',
+    WrongFieldType: '"{field}" doit être de type {type}',
+    WrongEnumValue:
+        'Au moins une valeur est inattendue pour le champ : "{field}", valeurs attendues : {expectedValues}',
+    WrongBooleanValueWarning:
+        'Au moins une valeur invalide pour le champ booléen : "{field}" a été automatiquement remplacée par false.',
+    'fieldType.boolean': 'booléen (true/false)',
+    'fieldType.number': 'numérique',
+    TabularCreationShuntWarning:
+        "La création tabulaire contient des valeurs pour la puissance réactive installée (et/ou le type) et la susceptance installée d'un même MCS. La susceptance installée sera donc ignorée.",
+    TabularModificationShuntWarning:
+        "La modification tabulaire contient des valeurs pour la puissance réactive installée (et/ou le type) et la susceptance installée d'un même MCS. La susceptance installée sera donc ignorée.",
+
+    // Tabular creation / modification - CSV columns
+    equipmentId: 'ID',
+    equipmentName: 'Nom',
+    voltageLevelId: 'ID Poste',
+    busOrBusbarSectionId: 'SJB / nœud',
+    terminalConnected: 'Connecté',
+    connectionName: 'Nom départ',
+    connectionName1: 'Nom départ 1',
+    connectionDirection1: 'Sens départ 1',
+    connectionPosition1: 'Position départ 1',
+    connectionName2: 'Nom départ 2',
+    connectionDirection2: 'Sens départ 2',
+    connectionPosition2: 'Position départ 2',
+    minQ: 'Q min',
+    maxQ: 'Q max',
+    reactiveCapabilityCurve: 'Limites de réactif par diagramme',
+    reactiveCapabilityCurvePmin: 'Pmin',
+    reactiveCapabilityCurveQminPmin: 'QminPmin',
+    reactiveCapabilityCurveQmaxPmin: 'QmaxPmin',
+    reactiveCapabilityCurveP0: 'P0',
+    reactiveCapabilityCurveQminP0: 'QminP0',
+    reactiveCapabilityCurveQmaxP0: 'QmaxP0',
+    reactiveCapabilityCurvePmax: 'Pmax',
+    reactiveCapabilityCurveQminPmax: 'QminPmax',
+    reactiveCapabilityCurveQmaxPmax: 'QmaxPmax',
+    regulatingTerminalId: 'Ouvrage réglé',
+    regulatingTerminalType: "Type d'ouvrage réglé",
+    regulatingTerminalVlId: 'Poste réglé',
+    qPercent: 'Cœfficient de participation',
+    participate: 'Compensation',
+    droop: 'Participation',
+    directTransX: 'Réactance transitoire (Ω)',
+    stepUpTransformerX: 'Réactance du transformateur (Ω)',
+    plannedActivePowerSetPoint: 'P imposée (MW)',
+    nominalV: 'Tension nominale (kV)',
+    ipMin: 'ICC min (kA)',
+    ipMax: 'ICC max (kA)',
+    r: 'Résistance série (Ω)',
+    x: 'Réactance série (Ω)',
+    g: 'Conductance magnétisante (μS)',
+    b: 'Susceptance magnétisante (μS)',
+    g1: 'Conductance parallèle 1 (μS)',
+    g2: 'Conductance parallèle 2 (μS)',
+    b1: 'Susceptance parallèle 1 (μS)',
+    b2: 'Susceptance parallèle 2 (μS)',
+    ratedU1: "Tension d'enroulement 1 (kV)",
+    ratedU2: "Tension d'enroulement 2 (kV)",
+    ratioTapChangerLoadTapChangingCapabilities: 'Régleur en charge',
+    ratioTapChangerRegulationSide: 'Côté réglé régleur',
+
+    // Tabular creation / modification - CSV template comments
+    'TabularCreationSkeletonComment.GENERATOR':
+        '#;;HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER;;;true | false;;TOP | BOTTOM;;;;;;;true | false;;;;;;;;;;;;true | false;required if voltageRegulationOn is true;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;;;true | false;;;;;;;',
+    'TabularCreationSkeletonComment.BATTERY':
+        '#;;;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;',
+    'TabularCreationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;;;true | false;;TOP | BOTTOM;;;',
+    'TabularCreationSkeletonComment.SHUNT_COMPENSATOR':
+        '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR | requis si maxQAtNominalV est défini;;',
+    'TabularModificationSkeletonComment.SUBSTATION':
+        '#;;Code à 2 lettres de la norme ISO 3166-1 (FR ES PT IT CH DE BE LU NL GB ...)',
+    'TabularModificationSkeletonComment.LINE': '#;;;;;;;;true | false;;TOP | BOTTOM;;true | false;;TOP | BOTTOM;',
+    'TabularModificationSkeletonComment.TWO_WINDINGS_TRANSFORMER':
+        '#;;;;;;;;;true | false;;TOP | BOTTOM;;true | false;;TOP | BOTTOM;;true | false;SIDE1 | SIDE2',
+    'TabularModificationSkeletonComment.GENERATOR':
+        '#;;HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER;true | false;;TOP | BOTTOM;;;;;;;true | false;;;;;;;;;;;;true | false;;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;;;true | false;;;;;;;',
+    'TabularModificationSkeletonComment.BATTERY':
+        '#;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;',
+    'TabularModificationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;true | false;;TOP | BOTTOM;;;',
+    'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
+        '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR;;',
+
+    // Voltage level modification
+    ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",
+    VoltageLevelTopologyModificationError: 'Erreur lors de la modification de la topologie de poste',
+    switchId: "ID de l'organe de coupure",
+    Open: 'Ouvert',
+    Closed: 'Fermé',
+    previousStatus: 'État précédent',
+    currentStatus: 'État modifié',
+    copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
+    modifiedSwitchesSeparatorTitle: 'OC modifiés',
+    unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
 };

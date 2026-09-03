@@ -17,10 +17,10 @@ import {
     DROP_INDICATOR_TOP,
 } from './network-modification-table-styles';
 import {
+    containsReferenceModification,
     findModificationInTree,
     isCompositeModification,
     isReferenceModification,
-    isTargetChildOfReference,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -107,7 +107,7 @@ export const useModificationsDragAndDrop = ({
     const { snackError } = useSnackMessage();
     const { rows } = table.getRowModel();
 
-    const computeTargetDepth = useCallback(
+    const computeIsDraggingDown = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>) => {
             const sourceRowIndex = table.getRowModel().flatRows.findIndex((row) => {
                 return row.id === sourceRow.id;
@@ -115,44 +115,60 @@ export const useModificationsDragAndDrop = ({
             const targetRowIndex = table.getRowModel().flatRows.findIndex((row) => {
                 return row.id === targetRow.id;
             });
-            const isDraggingDown = sourceRowIndex < targetRowIndex;
+            return sourceRowIndex < targetRowIndex;
+        },
+        [table]
+    );
+
+    const computeTargetDepth = useCallback(
+        (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>) => {
+            const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
 
             return isCompositeModification(targetRow.original) && targetRow.getIsExpanded() && isDraggingDown
                 ? targetRow.depth + 1
                 : targetRow.depth;
         },
-        [table]
+        [computeIsDraggingDown]
     );
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
-            if (isCompositeModification(sourceRow.original)) {
-                if (isReferenceModification(targetRow.original) || isTargetChildOfReference(targetRow)) {
-                    return true;
-                }
-                const targetDepth = computeTargetDepth(sourceRow, targetRow);
-                return (
-                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
-                    !!(
-                        isCompositeModification(sourceRow.original) &&
-                        findModificationInTree(targetRow.id as UUID, [sourceRow.original])
-                    )
-                );
-            }
-            // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
-            if (
-                isReferenceModification(sourceRow.original) ||
-                isReferenceModification(targetRow.original) ||
-                isTargetChildOfReference(targetRow)
-            ) {
-                return true;
-            }
+            const sourceIsCompositeOrReference =
+                isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
 
+            if (sourceIsCompositeOrReference) {
+                const targetDepth = computeTargetDepth(sourceRow, targetRow);
+                const exceedsNestingLimit =
+                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH;
+                const isSelfDrop = !!findModificationInTree(targetRow.id as UUID, [sourceRow.original]);
+
+                // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
+                // into another shared modification, nor into one of its descendants (expanded children
+                // of the referenced composite).
+                const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
+                const entersTargetRowItself =
+                    (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
+                    targetRow.getIsExpanded() &&
+                    isDraggingDown;
+                const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
+                // A reference, or a composite carrying a reference among its (loaded) descendants,
+                // would end up nested under another reference — same forbidden shape either way.
+                const sourceCarriesReference =
+                    isReferenceModification(sourceRow.original) || containsReferenceModification(sourceRow.original);
+                // A composite nested under a reference (directly or transitively) carries that
+                // reference in its ancestors, same as the reference's own children — so this also
+                // forbids dropping into such a composite, not just into the reference itself.
+                const enteringSharedSubtree =
+                    isReferenceModification(enteringParent) ||
+                    !!enteringParent?.ancestorSharedModificationUuids?.length;
+                const isReferenceIntoReference = sourceCarriesReference && enteringSharedSubtree;
+
+                return exceedsNestingLimit || isSelfDrop || isReferenceIntoReference;
+            }
             return false;
         },
-        [computeTargetDepth]
+        [computeTargetDepth, computeIsDraggingDown]
     );
-
     const handleDragUpdate = useCallback(
         (update: DragUpdate) => {
             clearRowDragIndicators(containerRef.current);
@@ -205,7 +221,13 @@ export const useModificationsDragAndDrop = ({
             const sourceContainerId = sourceParent?.original.uuid ?? null;
 
             const isDraggingDown = destination.index > source.index;
-            const droppingIntoExpandedComposite = isDraggingDown && targetRow.getIsExpanded();
+            // Only composites can be entered via this "drag down onto an expanded row" gesture.
+            // References are expandable too (their children are read-only, fetched from the referenced
+            // object), so without the isCompositeModification guard, dropping right after an expanded
+            // reference was wrongly reinterpreted as "enter it as first child" instead of "insert after
+            // it as a sibling"
+            const droppingIntoExpandedComposite =
+                isDraggingDown && isCompositeModification(targetRow.original) && targetRow.getIsExpanded();
             const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
 
             const targetComposite = resolveTargetComposite(droppingIntoExpandedComposite, targetRow);

@@ -19,7 +19,7 @@ import {
     createRowSx,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
-import { isCompositeModification, isReferenceModification, isTargetChildOfReference } from '../utils';
+import { isCompositeModification, isReferenceModification } from '../utils';
 import { ComposedModificationMetadata, mergeSx } from '../../../utils';
 
 interface ModificationRowProps {
@@ -55,11 +55,7 @@ export function ModificationRow({
     );
 
     return (
-        <Draggable
-            draggableId={row.id}
-            index={virtualRow.index}
-            isDragDisabled={isRowDragDisabled || isTargetChildOfReference(row)}
-        >
+        <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
                 const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
                 return (

@@ -116,7 +116,10 @@ export function SensitivityAnalysisParametersInline({
                 }}
                 selectParameterHandler={handleSensibilityParameter}
                 resetHandler={clear}
-                validateHandler={handleSubmit(sensitivityAnalysisMethods.onSaveInline)}
+                validateHandler={handleSubmit(
+                    sensitivityAnalysisMethods.onSaveInline,
+                    sensitivityAnalysisMethods.onValidationError
+                )}
                 validateDisabled={
                     sensitivityAnalysisMethods.isLoading ||
                     sensitivityAnalysisMethods.isMaxResultsReached ||

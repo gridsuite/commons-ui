@@ -25,14 +25,14 @@ import {
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
 import { updateParameter } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import {
     getNameElementEditorEmptyFormData,
     getNameElementEditorSchema,
 } from '../../../components/ui/dialogs/name-element-editor';
 import { ShortCircuitParametersInfos } from './short-circuit-parameters.type';
-import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, useTabs, VERSION_PARAMETER } from '../common';
+import { COMMON_PARAMETERS, PROVIDER, SPECIFIC_PARAMETERS, VERSION_PARAMETER } from '../common';
 import {
     formatShortCircuitSpecificParameters,
     getCommonShortCircuitParametersFormSchema,
@@ -41,6 +41,7 @@ import {
     getSpecificShortCircuitParametersFormSchema,
     ShortCircuitParametersTabValues,
     TAB_FIELDS,
+    TAB_VALUES,
 } from './short-circuit-parameters-utils';
 import { snackWithFallback } from '../../../utils/error';
 
@@ -241,7 +242,7 @@ export const useShortCircuitParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: ShortCircuitParametersTabValues.GENERAL,
-        tabEnum: ShortCircuitParametersTabValues,
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

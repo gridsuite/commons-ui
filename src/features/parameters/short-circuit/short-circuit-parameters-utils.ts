@@ -55,6 +55,8 @@ export enum ShortCircuitParametersTabValues {
     POWER_ELECTRONICS = 'PowerElectronics',
 }
 
+export const TAB_VALUES = Object.values(ShortCircuitParametersTabValues);
+
 export const TAB_FIELDS: Record<ShortCircuitParametersTabValues, string[]> = {
     [ShortCircuitParametersTabValues.GENERAL]: [PROVIDER, SHORT_CIRCUIT_PREDEFINED_PARAMS, COMMON_PARAMETERS],
     [ShortCircuitParametersTabValues.STUDY_AREA]: [
