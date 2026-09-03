@@ -20,7 +20,10 @@ import {
     containsReferenceModification,
     findModificationInTree,
     isCompositeModification,
+    isInLockedSharedModification,
+    isModificationEditLocked,
     isReferenceModification,
+    isReferenceModificationOrInsideOne,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -37,6 +40,8 @@ interface UseModificationsDragAndDropParams {
     onDragEnd: () => void;
     studyUuid: UUID | null;
     currentNodeUuid?: UUID;
+    // uuids of the shared modifications the user can't write into
+    readOnlySharedModificationUuids?: Set<UUID>;
 }
 
 interface UseModificationsDragAndDropReturn {
@@ -103,6 +108,7 @@ export const useModificationsDragAndDrop = ({
     onDragEnd,
     studyUuid = null,
     currentNodeUuid = undefined,
+    readOnlySharedModificationUuids,
 }: UseModificationsDragAndDropParams): UseModificationsDragAndDropReturn => {
     const { snackError } = useSnackMessage();
     const { rows } = table.getRowModel();
@@ -133,6 +139,23 @@ export const useModificationsDragAndDrop = ({
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
+            const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
+            const entersTargetRowItself =
+                (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
+                targetRow.getIsExpanded() &&
+                isDraggingDown;
+            const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
+
+            // Without write rights on a shared modification, its content is frozen: nothing can be taken
+            // out of it, moved around inside it, nor dropped into it. The shared modification taken as a
+            // whole stays movable, hence a source tested on its ancestors only.
+            const movesLockedContent =
+                isInLockedSharedModification(sourceRow.original, readOnlySharedModificationUuids) ||
+                (!!enteringParent && isModificationEditLocked(enteringParent, readOnlySharedModificationUuids));
+            if (movesLockedContent) {
+                return true;
+            }
+
             const sourceIsCompositeOrReference =
                 isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
 
@@ -145,12 +168,6 @@ export const useModificationsDragAndDrop = ({
                 // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
                 // into another shared modification, nor into one of its descendants (expanded children
                 // of the referenced composite).
-                const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
-                const entersTargetRowItself =
-                    (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
-                    targetRow.getIsExpanded() &&
-                    isDraggingDown;
-                const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
                 // A reference, or a composite carrying a reference among its (loaded) descendants,
                 // would end up nested under another reference — same forbidden shape either way.
                 const sourceCarriesReference =
@@ -158,16 +175,14 @@ export const useModificationsDragAndDrop = ({
                 // A composite nested under a reference (directly or transitively) carries that
                 // reference in its ancestors, same as the reference's own children — so this also
                 // forbids dropping into such a composite, not just into the reference itself.
-                const enteringSharedSubtree =
-                    isReferenceModification(enteringParent) ||
-                    !!enteringParent?.ancestorSharedModificationUuids?.length;
-                const isReferenceIntoReference = sourceCarriesReference && enteringSharedSubtree;
+                const isReferenceIntoReference =
+                    sourceCarriesReference && isReferenceModificationOrInsideOne(enteringParent);
 
                 return exceedsNestingLimit || isSelfDrop || isReferenceIntoReference;
             }
             return false;
         },
-        [computeTargetDepth, computeIsDraggingDown]
+        [computeTargetDepth, computeIsDraggingDown, readOnlySharedModificationUuids]
     );
     const handleDragUpdate = useCallback(
         (update: DragUpdate) => {

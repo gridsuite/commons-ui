@@ -297,6 +297,7 @@ export function NetworkModificationsTable({
         onDragEnd: onRowDragEnd,
         studyUuid,
         currentNodeUuid: currentNodeId,
+        readOnlySharedModificationUuids,
     });
 
     // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications

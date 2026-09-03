@@ -60,6 +60,12 @@ export function containsReferenceModification(modification: ComposedModification
     );
 }
 
+export function isReferenceModificationOrInsideOne(
+    modification: BasicComposedModificationMetadata | undefined
+): boolean {
+    return isReferenceModification(modification) || !!modification?.ancestorSharedModificationUuids?.length;
+}
+
 /**
  * Tells whether a modification sits inside a shared modification the user can't write into - whatever it is.
  *
