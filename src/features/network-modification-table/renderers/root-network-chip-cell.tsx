@@ -30,16 +30,16 @@ function isApplicableOn(
     return applicabilities[modificationUuid]?.[rootNetworkUuid] ?? true;
 }
 
-function withApplicability(
-    applicabilities: NetworkModificationApplicabilities,
+function setApplicability(
+    prevApplicabilities: NetworkModificationApplicabilities,
     modificationUuid: UUID,
     rootNetworkUuid: UUID,
     applicable: boolean
 ): NetworkModificationApplicabilities {
     return {
-        ...applicabilities,
+        ...prevApplicabilities,
         [modificationUuid]: {
-            ...applicabilities[modificationUuid],
+            ...prevApplicabilities[modificationUuid],
             [rootNetworkUuid]: applicable,
         },
     };
@@ -72,7 +72,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const isReferenceModificationOrInsideOne =
         data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
 
-    const isModificationActivated = useMemo(() => {
+    const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
     }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
 
@@ -84,11 +84,11 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         setIsLoading(true);
 
         // toggle the current applicability
-        const newApplicability = !isModificationActivated;
+        const newApplicability = !isModificationApplicable;
 
         // Apply optimistic update
         setApplicabilities((prev) =>
-            withApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, newApplicability)
+            setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, newApplicability)
         );
 
         // Perform backend call
@@ -102,7 +102,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             .catch((error) => {
                 // Rollback on failure to the value shown when the user clicked
                 setApplicabilities((prev) =>
-                    withApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, isModificationActivated)
+                    setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, isModificationApplicable)
                 );
                 snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
             })
@@ -113,7 +113,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         modificationUuid,
         studyUuid,
         currentNodeId,
-        isModificationActivated,
+        isModificationApplicable,
         rootNetwork.rootNetworkUuid,
         setApplicabilities,
         snackError,
@@ -123,7 +123,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         <ActivableChip
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
-            isActivated={isModificationActivated}
+            isActivated={isModificationApplicable}
             isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne || rootNetwork.isCreating}
             onClick={handleModificationActivationByRootNetwork}
         />
