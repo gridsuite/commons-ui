@@ -13,14 +13,16 @@ import {
     COMPONENT_LIBRARY,
     DIAGONAL_LABEL,
     INTL_SUBSTATION_LAYOUT_OPTIONS,
+    MEASUREMENTS_LABEL,
+    NetworkVisualizationTabValues as TabValues,
+    OBSERVABILITY_LABEL,
+    PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
+    PARAM_DIAGONAL_LABEL,
+    PARAM_MEASUREMENTS,
+    PARAM_OBSERVABILITY,
     PARAM_SUBSTATION_LAYOUT,
     SUBSTATION_LAYOUT,
-    NetworkVisualizationTabValues as TabValues,
-    PARAM_DIAGONAL_LABEL,
-    PARAM_CENTER_LABEL,
-    PARAM_STATE_ESTIMATION,
-    CUSTOM_REAL_TIME_STATE_ESTIMATION,
 } from './constants';
 import { MuiSelectInput, SwitchInput } from '../../../components/ui';
 import { parametersStyles } from '../parameters-style';
@@ -96,7 +98,8 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
             {labelPosition(PARAM_CENTER_LABEL, CENTER_LABEL)}
             {substationLineDropDown}
             {componentLineDropDown}
-            {labelPosition(PARAM_STATE_ESTIMATION, CUSTOM_REAL_TIME_STATE_ESTIMATION)}
+            {labelPosition(PARAM_MEASUREMENTS, MEASUREMENTS_LABEL)}
+            {labelPosition(PARAM_OBSERVABILITY, OBSERVABILITY_LABEL)}
         </Grid>
     );
 }

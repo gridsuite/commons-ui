@@ -12,6 +12,8 @@ import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
+    NetworkVisualizationTabValues as TabValues,
+    NV_TAB_VALUES,
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
     PARAM_DIAGONAL_LABEL,
@@ -20,18 +22,17 @@ import {
     PARAM_LINE_PARALLEL_PATH,
     PARAM_MAP_BASEMAP,
     PARAM_MAP_MANUAL_REFRESH,
-    PARAM_SUBSTATION_LAYOUT,
-    NetworkVisualizationTabValues as TabValues,
+    PARAM_MEASUREMENTS,
     PARAM_NAD_POSITIONS_GENERATION_MODE,
-    PARAM_STATE_ESTIMATION,
-    NV_TAB_VALUES,
+    PARAM_OBSERVABILITY,
+    PARAM_SUBSTATION_LAYOUT,
 } from './constants';
 import {
     getNetworkVisualizationsParameters,
     setStudyNetworkVisualizationParameters,
     updateParameter,
 } from '../../../services';
-import { useTabs, useSnackMessage } from '../../../hooks';
+import { useSnackMessage, useTabs } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
 import {
@@ -94,7 +95,8 @@ export const useNetworkVisualizationParametersForm = ({
                     [PARAM_CENTER_LABEL]: yup.boolean(),
                     [PARAM_SUBSTATION_LAYOUT]: yup.string(),
                     [PARAM_COMPONENT_LIBRARY]: yup.string(),
-                    [PARAM_STATE_ESTIMATION]: yup.boolean(),
+                    [PARAM_MEASUREMENTS]: yup.boolean(),
+                    [PARAM_OBSERVABILITY]: yup.boolean(),
                 }),
                 [TabValues.NETWORK_AREA_DIAGRAM]: yup.object().shape({
                     [PARAM_NAD_POSITIONS_GENERATION_MODE]: yup.string(),
@@ -118,7 +120,8 @@ export const useNetworkVisualizationParametersForm = ({
                 [PARAM_CENTER_LABEL]: false,
                 [PARAM_SUBSTATION_LAYOUT]: '',
                 [PARAM_COMPONENT_LIBRARY]: '',
-                [PARAM_STATE_ESTIMATION]: false,
+                [PARAM_MEASUREMENTS]: false,
+                [PARAM_OBSERVABILITY]: false,
             },
             [TabValues.NETWORK_AREA_DIAGRAM]: {
                 [PARAM_NAD_POSITIONS_GENERATION_MODE]: '',
