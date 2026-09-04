@@ -9,6 +9,7 @@ import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
+    BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     NetworkModificationMetadata,
@@ -31,13 +32,20 @@ export const formatToComposedModification = (
     }));
 };
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
-export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
+}
+
+export function collectReferenceModifications(mods: ComposedModificationMetadata[]): ComposedModificationMetadata[] {
+    return mods.flatMap((mod) => [
+        ...(isReferenceModification(mod) ? [mod] : []),
+        ...collectReferenceModifications(mod.subModifications),
+    ]);
 }
 
 // Only inspects already-loaded subModifications (children fetched on row expansion), so a
@@ -49,6 +57,43 @@ export function containsReferenceModification(modification: ComposedModification
     }
     return modification.subModifications.some(
         (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
+}
+
+export function isReferenceModificationOrInsideOne(
+    modification: BasicComposedModificationMetadata | undefined
+): boolean {
+    return isReferenceModification(modification) || !!modification?.ancestorSharedModificationUuids?.length;
+}
+
+/**
+ * Tells whether a modification sits inside a shared modification the user can't write into - whatever it is.
+ *
+ * @param modification the row to check
+ * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
+ * (a reference modification's referenceId, not the row's own uuid)
+ */
+export function isInLockedSharedModification(
+    modification: BasicComposedModificationMetadata,
+    readOnlySharedModificationUuids: Set<UUID> | undefined
+) {
+    return !!modification.ancestorSharedModificationUuids?.some((uuid) => readOnlySharedModificationUuids?.has(uuid));
+}
+
+/**
+ * Same as isInLockedSharedModification, plus the reference modifications pointing at a shared modification the
+ * user can't write into. Only for what targets the shared modification itself - renaming a reference or saving
+ * its description does, moving or deleting it doesn't.
+ */
+export function isModificationEditLocked(
+    modification: BasicComposedModificationMetadata,
+    readOnlySharedModificationUuids: Set<UUID> | undefined
+) {
+    return (
+        isInLockedSharedModification(modification, readOnlySharedModificationUuids) ||
+        (isReferenceModification(modification) &&
+            !!modification.referenceId &&
+            !!readOnlySharedModificationUuids?.has(modification.referenceId))
     );
 }
 
@@ -321,11 +366,13 @@ export async function fetchSubModificationsForExpandedRows(
                     return tree;
                 }
                 const existingMod = findModificationInTree(node.rowKey, tree);
-                // A composite nested inside a reference is itself flagged childFromShared;
-                // propagate the flag to its children so they stay non-clickable as well.
-                const inheritsReference = existingMod?.childFromShared === true;
+                // A composite nested inside a reference carries the chain of its ancestor references;
+                // propagate it as-is to its children so they stay locked as well.
+                const inheritedAncestorUuids = existingMod?.ancestorSharedModificationUuids;
                 const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map((m) =>
-                    inheritsReference ? { ...m, childFromShared: true } : m
+                    inheritedAncestorUuids?.length
+                        ? { ...m, ancestorSharedModificationUuids: inheritedAncestorUuids }
+                        : m
                 );
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
@@ -349,9 +396,13 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ReferenceModificationInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
+                const ancestorSharedModificationUuids = [
+                    ...(node.ancestorSharedModificationUuids ?? []),
+                    ...(node.referenceId ? [node.referenceId] : []),
+                ];
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
-                    childFromShared: true,
+                    ancestorSharedModificationUuids,
                 }));
 
                 setMods((prev) => updateSubModificationsOfACompositeInTree(node.rowKey, liveModifications, prev));
