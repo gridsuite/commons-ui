@@ -116,6 +116,28 @@ export function findAllLoadedCompositeModifications(
     });
 }
 
+/**
+ * Collects every reference modification whose children are already loaded, at any depth
+ * (a reference can be nested inside an expanded composite). Unlike
+ * {@link findAllLoadedCompositeModifications}, recursion does not stop on non-matching
+ * nodes since a reference's ancestors are usually composites.
+ * @param modifications source where the reference modifications are looked for
+ * @param references result : all the loaded reference modifications found
+ */
+export function findAllLoadedReferenceModifications(
+    modifications: ComposedModificationMetadata[],
+    references: ComposedModificationMetadata[]
+) {
+    modifications.forEach((modification) => {
+        if (modification.subModifications.length > 0) {
+            if (isReferenceModification(modification)) {
+                references.push(modification);
+            }
+            findAllLoadedReferenceModifications(modification.subModifications, references);
+        }
+    });
+}
+
 export function findModificationInTree(
     rowKey: UUID,
     mods: ComposedModificationMetadata[]
