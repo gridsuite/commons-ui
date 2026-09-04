@@ -5,13 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { object } from 'yup';
+import { InferType, object } from 'yup';
 import {
     getPowerWithValidityEditData,
     getPowerWithValidityEmptyFormData,
     getPowerWithValidityValidationSchema,
 } from './powerWithValidity.utils';
 import { FieldConstants } from '../../../../utils';
+import { InjectionMeasurementsEditData } from './measurement.type';
 
 export function getInjectionActiveReactivePowerEmptyFormDataProperties() {
     return {
@@ -33,11 +34,15 @@ export const getInjectionActiveReactivePowerValidationSchemaProperties = () =>
         ...getPowerWithValidityValidationSchema(FieldConstants.MEASUREMENT_Q),
     });
 
+export type InjectionActiveReactivePowerFormData = InferType<
+    ReturnType<typeof getInjectionActiveReactivePowerValidationSchemaProperties>
+>;
+
 export const getInjectionActiveReactivePowerValidationSchema = (id: string) => ({
     [id]: getInjectionActiveReactivePowerValidationSchemaProperties(),
 });
 
-export function getInjectionActiveReactivePowerEditDataProperties(injectionData: any) {
+export function getInjectionActiveReactivePowerEditDataProperties(injectionData: InjectionMeasurementsEditData) {
     return {
         ...getPowerWithValidityEditData(FieldConstants.MEASUREMENT_P, {
             value: injectionData?.pMeasurementValue?.value,

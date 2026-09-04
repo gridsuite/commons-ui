@@ -37,7 +37,7 @@ export function HelperPreviousValue({
     }
 
     return (
-        <FormHelperText error={false} sx={{ marginLeft: 0 }}>
+        <FormHelperText component="div" error={false} sx={{ marginLeft: 0 }}>
             {!disabledTooltip ? (
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                     <CustomTooltip

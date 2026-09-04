@@ -14,6 +14,7 @@ export * from './by-filter';
 export * from './generator';
 export * from './battery';
 export * from './shunt-compensator';
+export * from './hvdcLine';
 export * from './line';
 export * from './twoWindingsTransformer';
 export * from './static-var-compensator';
