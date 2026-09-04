@@ -11,12 +11,53 @@ import { fetchNetworkModification, getNetworkModificationsFromComposite } from '
 import {
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
+    NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
     ReferenceModificationInfos,
+    RootNetworkRowInfo,
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
+// Convert applicability by tag to applicability by root network id.
+function toApplicabilityByRootNetworkUuid(
+    applicabilityByRootNetworkTag: Record<string, boolean> | undefined,
+    uuidByTag: Map<string, UUID>
+): Record<UUID, boolean> {
+    return Object.entries(applicabilityByRootNetworkTag ?? {}).reduce((applicability, [tag, applicable]) => {
+        const rootNetworkUuid = uuidByTag.get(tag);
+        return rootNetworkUuid ? { ...applicability, [rootNetworkUuid]: applicable } : applicability;
+    }, {});
+}
+
+function collectApplicabilitiesByUuid(
+    modifications: ComposedModificationMetadata[],
+    uuidByTag: Map<string, UUID>
+): NetworkModificationApplicabilities {
+    return modifications.reduce(
+        (applicabilities, modification) => ({
+            ...applicabilities,
+            [modification.uuid]: toApplicabilityByRootNetworkUuid(
+                modification.applicabilityByRootNetworkTag,
+                uuidByTag
+            ),
+            ...collectApplicabilitiesByUuid(modification.subModifications, uuidByTag),
+        }),
+        {}
+    );
+}
+
+// Indexes by uuid the applicability every modification of the tree carries, sub modifications included.
+// The modifications key it by root network tag; it is resolved here to the root network uuid.
+// A tag no root network claims is dropped.
+export function collectApplicabilities(
+    modifications: ComposedModificationMetadata[],
+    rootNetworks: RootNetworkRowInfo[] = []
+): NetworkModificationApplicabilities {
+    const uuidByTag = new Map(rootNetworks.map((rootNetwork) => [rootNetwork.tag, rootNetwork.rootNetworkUuid]));
+    return collectApplicabilitiesByUuid(modifications, uuidByTag);
+}
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
@@ -30,6 +71,12 @@ export const formatToComposedModification = (
         rowKey: crypto.randomUUID(),
     }));
 };
+
+// Remove the applicabilities
+export function toMessageValues(modification: NetworkModificationMetadata) {
+    const { applicabilityByRootNetworkTag, ...messageValues } = modification;
+    return messageValues;
+}
 
 export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;

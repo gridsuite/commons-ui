@@ -12,51 +12,36 @@ import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
-    ExcludedNetworkModifications,
     ModificationType,
+    NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
 
-function getUpdatedExcludedModifications(
-    prev: ExcludedNetworkModifications[],
+/**
+ * A modification is applicable on a root network unless its applicability for it is explicitly false:
+ * a root network without an entry is applicable.
+ */
+function isApplicableOn(
+    applicabilities: NetworkModificationApplicabilities,
+    modificationUuid: UUID,
+    rootNetworkUuid: UUID
+) {
+    return applicabilities[modificationUuid]?.[rootNetworkUuid] ?? true;
+}
+
+function setApplicability(
+    prevApplicabilities: NetworkModificationApplicabilities,
+    modificationUuid: UUID,
     rootNetworkUuid: UUID,
-    modificationUuid: UUID
-): { nextExcluded: ExcludedNetworkModifications[]; newStatus: boolean } {
-    const exists = prev.some((item) => item.rootNetworkUuid === rootNetworkUuid);
-
-    if (exists) {
-        let newStatus = false;
-        const nextExcluded = prev.map((modif) => {
-            if (modif.rootNetworkUuid !== rootNetworkUuid) {
-                return modif;
-            }
-
-            const isExcluded = modif.modificationUuidsToExclude.includes(modificationUuid);
-            const newModificationUuidsToExclude = isExcluded
-                ? modif.modificationUuidsToExclude.filter((id) => id !== modificationUuid)
-                : [...modif.modificationUuidsToExclude, modificationUuid];
-
-            // If previously excluded, now it is activated (true), else deactivated (false)
-            newStatus = isExcluded;
-
-            return {
-                ...modif,
-                modificationUuidsToExclude: newModificationUuidsToExclude,
-            };
-        });
-
-        return { nextExcluded, newStatus };
-    }
+    applicable: boolean
+): NetworkModificationApplicabilities {
     return {
-        nextExcluded: [
-            ...prev,
-            {
-                rootNetworkUuid,
-                modificationUuidsToExclude: [modificationUuid],
-            },
-        ],
-        newStatus: false,
+        ...prevApplicabilities,
+        [modificationUuid]: {
+            ...prevApplicabilities[modificationUuid],
+            [rootNetworkUuid]: applicable,
+        },
     };
 }
 
@@ -65,8 +50,8 @@ export interface RootNetworkChipCellProps {
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     rootNetwork: RootNetworkRowInfo;
-    modificationsToExclude: ExcludedNetworkModifications[];
-    setModificationsToExclude: React.Dispatch<SetStateAction<ExcludedNetworkModifications[]>>;
+    applicabilities: NetworkModificationApplicabilities;
+    setApplicabilities: React.Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
 }
 
@@ -76,8 +61,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         studyUuid,
         currentNodeId,
         rootNetwork,
-        modificationsToExclude,
-        setModificationsToExclude,
+        applicabilities,
+        setApplicabilities,
         isDisabled = false,
     } = props;
     const [isLoading, setIsLoading] = useState(false);
@@ -87,18 +72,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const isReferenceModificationOrInsideOne =
         data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
 
-    const isModificationActivated = useMemo(() => {
-        if (rootNetwork.isCreating) {
-            return true;
-        }
-
-        const excludedSet = new Set(
-            modificationsToExclude.find((item) => item.rootNetworkUuid === rootNetwork.rootNetworkUuid)
-                ?.modificationUuidsToExclude || []
-        );
-
-        return !excludedSet.has(modificationUuid);
-    }, [modificationUuid, modificationsToExclude, rootNetwork.rootNetworkUuid, rootNetwork.isCreating]);
+    const isModificationApplicable = useMemo(() => {
+        return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
+    }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
 
     const handleModificationActivationByRootNetwork = useCallback(() => {
         if (!studyUuid || !currentNodeId) {
@@ -107,15 +83,13 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
 
         setIsLoading(true);
 
-        // Compute next state (pure, no side effects)
-        const { nextExcluded, newStatus } = getUpdatedExcludedModifications(
-            modificationsToExclude,
-            rootNetwork.rootNetworkUuid,
-            modificationUuid
-        );
+        // toggle the current applicability
+        const newApplicability = !isModificationApplicable;
 
         // Apply optimistic update
-        setModificationsToExclude(nextExcluded);
+        setApplicabilities((prev) =>
+            setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, newApplicability)
+        );
 
         // Perform backend call
         updateModificationStatusByRootNetwork(
@@ -123,14 +97,12 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             currentNodeId,
             rootNetwork.rootNetworkUuid,
             modificationUuid,
-            newStatus
+            newApplicability
         )
             .catch((error) => {
-                // Rollback on failure by toggling back
-                setModificationsToExclude(
-                    (prev) =>
-                        getUpdatedExcludedModifications(prev, rootNetwork.rootNetworkUuid, modificationUuid)
-                            .nextExcluded
+                // Rollback on failure to the value shown when the user clicked
+                setApplicabilities((prev) =>
+                    setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, isModificationApplicable)
                 );
                 snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
             })
@@ -141,9 +113,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         modificationUuid,
         studyUuid,
         currentNodeId,
-        modificationsToExclude,
+        isModificationApplicable,
         rootNetwork.rootNetworkUuid,
-        setModificationsToExclude,
+        setApplicabilities,
         snackError,
     ]);
 
@@ -151,8 +123,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         <ActivableChip
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
-            isActivated={isModificationActivated}
-            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne}
+            isActivated={isModificationApplicable}
+            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne || rootNetwork.isCreating}
             onClick={handleModificationActivationByRootNetwork}
         />
     );

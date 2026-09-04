@@ -154,10 +154,10 @@ export function updateModificationStatusByRootNetwork(
     nodeUuid: UUID,
     rootNetworkUuid: UUID,
     modificationUuid: UUID,
-    activated: boolean
+    applicable: boolean
 ) {
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('activated', String(activated));
+    urlSearchParams.append('applicable', String(applicable));
     urlSearchParams.append('uuids', String([modificationUuid]));
     const url = `${getStudyUrlWithNodeUuidAndRootNetworkUuid(studyUuid, nodeUuid, rootNetworkUuid)}/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
