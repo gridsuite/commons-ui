@@ -9,11 +9,40 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
-import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import cssInjectedByJs from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
 import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+const shouldBundle = (id: string) => {
+    const [filePath] = id.split('?');
+
+    return (
+        // Vite transforms SVG React components imported with ?react.
+        // They must not remain as external Node imports in the published library.
+        filePath.endsWith('.svg') ||
+        // CSS is bundled and injected into the generated JavaScript.
+        // This avoids Node/Vitest trying to load CSS from an externalized dependency.
+        filePath.endsWith('.css') ||
+        // These packages use extensionless or directory imports that are not
+        // resolvable by Node's ESM loader when commons-ui is externalized.
+        filePath.startsWith('localized-countries/data/') ||
+        // mui-nested-menu does not expose NestedMenuItem as a compatible runtime
+        // ESM named export in every consumer environment. Bundle it so Rollup
+        // resolves the actual implementation during the commons-ui build.
+        filePath === 'autosuggest-highlight/match' ||
+        filePath === 'autosuggest-highlight/parse' ||
+        filePath === 'mui-nested-menu'
+    );
+};
+
+const require = createRequire(import.meta.url);
+
+const autosuggestMatchPath = require.resolve('autosuggest-highlight/match');
+const autosuggestParsePath = require.resolve('autosuggest-highlight/parse');
+const muiNestedMenuPath = require.resolve('mui-nested-menu');
 
 export default defineConfig((_config) => ({
     plugins: [
@@ -43,19 +72,51 @@ export default defineConfig((_config) => ({
                 // failure on errors, we use the 'prebuild' script instead (runs before 'npm run build').
                 enableBuild: false,
             }),
-        svgr(), // works on every import with the pattern "**/*.svg?react"
-        libInjectCss(),
+        svgr({
+            include: '**/*.svg?react',
+        }), // works on every import with the pattern "**/*.svg?react"
+        cssInjectedByJs(),
         dts({
             tsconfigPath: './tsconfig.build.json',
         }),
     ],
+    resolve: {
+        alias: [
+            // Resolve the package to an absolute file path. Using a bare
+            // replacement would allow Rollup to externalize it again.
+            {
+                find: /^autosuggest-highlight\/match$/,
+                replacement: autosuggestMatchPath,
+            },
+            {
+                find: /^autosuggest-highlight\/parse$/,
+                replacement: autosuggestParsePath,
+            },
+            {
+                find: /^mui-nested-menu$/,
+                replacement: muiNestedMenuPath,
+            },
+        ],
+    },
     build: {
+        // Preserve compatibility between mui-nested-menu (CommonJS) and external MUI
+        // ESM modules by generating namespace imports for external dependencies.
+        commonjsOptions: {
+            esmExternals: true,
+        },
         lib: {
             entry: path.resolve(__dirname, 'src/index.ts'),
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
+            external: (id: string) => {
+                if (shouldBundle(id)) {
+                    return false;
+                }
+
+                return !id.startsWith('.') && !path.isAbsolute(id);
+            },
+
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
