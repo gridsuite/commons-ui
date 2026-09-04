@@ -95,11 +95,6 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
         }
 
         getAccessibleElements(missingIds, PermissionType.WRITE)
-            .catch((error) => {
-                console.error('Failed to resolve the permissions on the shared modifications', error);
-                // Denying them all is what the cache already reports while they are unresolved
-                return [];
-            })
             .then((accessibleIds) => {
                 if (aborted) {
                     return;
@@ -110,7 +105,8 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
                     missingIds.forEach((id) => nextCache.set(id, accessible.has(id)));
                     return nextCache;
                 });
-            });
+            })
+            .catch((error) => console.error('Failed to resolve the permissions on the shared modifications', error));
 
         return () => {
             aborted = true;
