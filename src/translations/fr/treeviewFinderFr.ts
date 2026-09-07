@@ -18,4 +18,10 @@ export const treeviewFinderFr = {
         '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Ajouter cet élément} other {Ajouter # éléments}}',
     'treeview_finder/replaceElementsValidation':
         '{nbElements, plural, =0 {Veuillez sélectionner un élément} =1 {Remplacer par cet élément} other {Remplacer par # éléments}}',
+    'directoryItemSelector/tab/favorites': 'Favoris',
+    'directoryItemSelector/tab/recents': 'Récents',
+    'directoryItemSelector/tab/browse': 'Parcourir',
+    'directoryItemSelector/search/placeholder': 'Rechercher...',
+    'directoryItemSelector/table/name': 'Nom',
+    'directoryItemSelector/table/directory': 'Répertoire',
 };
