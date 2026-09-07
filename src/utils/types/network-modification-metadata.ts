@@ -19,6 +19,7 @@ export interface NetworkModificationMetadata {
     messageValues: string;
     // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
     referenceId?: UUID;
+    applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
 export interface BasicComposedModificationMetadata extends NetworkModificationMetadata {
