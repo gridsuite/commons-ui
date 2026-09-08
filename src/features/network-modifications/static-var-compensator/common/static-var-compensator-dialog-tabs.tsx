@@ -26,11 +26,11 @@ export function StaticVarCompensatorDialogTabs({
         <Grid container sx={{ width: '100%' }}>
             <Tabs value={tabIndex} onChange={onTabChange}>
                 <Tab
-                    label={<FormattedMessage id="StaticVarCompensatorConnectivityTab" />}
+                    label={<FormattedMessage id="ConnectivityTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.CONNECTIVITY_TAB)}
                 />
                 <Tab
-                    label={<FormattedMessage id="StaticVarCompensatorSetPointsAndLimitsTab" />}
+                    label={<FormattedMessage id="SetpointsAndLimitsTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.SET_POINTS_LIMITS_TAB)}
                 />
                 <Tab
@@ -38,7 +38,7 @@ export function StaticVarCompensatorDialogTabs({
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.AUTOMATON_TAB)}
                 />
                 <Tab
-                    label={<FormattedMessage id="StaticVarCompensatorAdditionalInfosTab" />}
+                    label={<FormattedMessage id="AdditionalInformationTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB)}
                 />
             </Tabs>

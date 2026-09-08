@@ -27,7 +27,7 @@ export function getPowerWithValidityValidationSchema(id: string) {
     };
 }
 
-export function getPowerWithValidityEditData(id: string, measurement: MeasurementInfo) {
+export function getPowerWithValidityEditData(id: string, measurement?: Partial<MeasurementInfo>) {
     return {
         [id]: {
             [FieldConstants.VALUE]: measurement?.value ?? null,
