@@ -41,7 +41,7 @@ export function VscHvdcLineForm({
                 onTabChange={onTabChange}
                 isModification={isModification}
             />
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
+            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingLeft: 1.5, paddingRight: 3 }}>
                 <VscHvdcLineDialogTabsContent
                     tabIndex={selectedTab}
                     isModification={isModification}
