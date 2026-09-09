@@ -9,11 +9,32 @@ import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import checker from 'vite-plugin-checker';
 import svgr from 'vite-plugin-svgr';
-import { libInjectCss } from 'vite-plugin-lib-inject-css';
+import cssInjectedByJs from 'vite-plugin-css-injected-by-js';
 import dts from 'vite-plugin-dts';
 import { globSync } from 'glob';
 import * as path from 'node:path';
 import * as url from 'node:url';
+
+const shouldBundle = (id: string) => {
+    const [filePath] = id.split('?');
+
+    return (
+        // Internal project source files
+        id.startsWith('.') ||
+        path.isAbsolute(id) ||
+        // Asset files: Node cannot load raw SVG or CSS imports directly in ESM, so bundle them
+        // to allow plugins (SVGR and cssInjectedByJs) to inline them properly
+        filePath.endsWith('.svg') ||
+        filePath.endsWith('.css') ||
+        // Extensionless subpath imports: Node's ESM resolver cannot resolve subpaths without file extensions
+        filePath.startsWith('localized-countries/data/') ||
+        // CommonJS packages: bundled to prevent CJS/ESM interop issues when consumed in Node/Vitest
+        filePath === 'mui-nested-menu' ||
+        // Deep subpath imports without extensions: bundled to avoid Node ESM module resolution failures
+        filePath === 'autosuggest-highlight/match' ||
+        filePath === 'autosuggest-highlight/parse'
+    );
+};
 
 export default defineConfig((_config) => ({
     plugins: [
@@ -44,7 +65,7 @@ export default defineConfig((_config) => ({
                 enableBuild: false,
             }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
-        libInjectCss(),
+        cssInjectedByJs(),
         dts({
             tsconfigPath: './tsconfig.build.json',
         }),
@@ -55,7 +76,7 @@ export default defineConfig((_config) => ({
             formats: ['es'],
         },
         rollupOptions: {
-            external: (id: string) => !id.startsWith('.') && !path.isAbsolute(id),
+            external: (id: string) => !shouldBundle(id),
             // We do this to keep the same folder structure
             // from https://rollupjs.org/configuration-options/#input
             input: Object.fromEntries(
