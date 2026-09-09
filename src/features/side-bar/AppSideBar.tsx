@@ -88,6 +88,7 @@ export function AppSideBar({
                         sx={{
                             width: isMinimized ? 64 : 224,
                             height: '100%',
+                            overflow: 'hidden',
                         }}
                     >
                         <AppSideBarHeader

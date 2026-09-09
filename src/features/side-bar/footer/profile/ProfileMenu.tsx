@@ -33,7 +33,7 @@ export function ProfileMenu({ isMinimized, userProfile }: Readonly<ProfileMenuPr
     return (
         <CustomNestedMenuItem
             label={!isMinimized ? profileLabel : ''}
-            leftIcon={<UserAvatarIcon label={userProfile?.name ?? ''} />}
+            leftIcon={<UserAvatarIcon sx={{ backgroundColor: 'text.secondary' }} label={userProfile?.name ?? ''} />}
             sx={submenuFooterStyle.subMenu}
         >
             {isMinimized && <MinimizedSubMenuHeader label={profileLabel} />}

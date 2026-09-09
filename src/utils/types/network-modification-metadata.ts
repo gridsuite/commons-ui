@@ -17,6 +17,7 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
 export interface BasicComposedModificationMetadata extends NetworkModificationMetadata {

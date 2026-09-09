@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { FieldType } from '../../../../utils';
+import { AttributeModification, FieldType } from '../../../../utils';
 
 export interface BranchActiveReactivePowerMeasurementsFormProps {
     equipmentToModify: any;
@@ -26,3 +26,10 @@ export type BbsMeasurementItem = {
     value: number | null;
     validity: boolean | null;
 };
+
+export interface InjectionMeasurementsEditData {
+    pMeasurementValue?: AttributeModification<number> | null;
+    pMeasurementValidity?: AttributeModification<boolean> | null;
+    qMeasurementValue: AttributeModification<number> | null;
+    qMeasurementValidity: AttributeModification<boolean> | null;
+}
