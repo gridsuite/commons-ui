@@ -18,6 +18,7 @@ import {
     ReactiveLimitsForm,
     SetPointsForm,
     ShortCircuitForm,
+    UpdateReactiveCapabilityCurveTable,
     VoltageRegulationForm,
 } from '../../common';
 import { GeneratorFormInfos } from '../generatorDialog.type';
@@ -34,7 +35,7 @@ import { GridItem } from '../../../../components/composite/grid/grid-item';
 
 export interface GeneratorDialogTabsContentProps extends ConnectivityNetworkProps {
     generatorToModify?: GeneratorFormInfos | null;
-    updatePreviousReactiveCapabilityCurveTable: (action: string, index: number) => void;
+    updatePreviousReactiveCapabilityCurveTable: UpdateReactiveCapabilityCurveTable;
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     tabIndex: number;
 }
