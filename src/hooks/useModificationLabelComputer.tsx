@@ -23,7 +23,11 @@ const getOperatingStatusModificationValues = (modification: ModificationValues, 
     return {
         action: modification.action,
         energizedEnd: modification.energizedVoltageLevelId,
-        computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+        computedLabel: formatBold ? (
+            <strong key="computedLabel">{modification.equipmentId}</strong>
+        ) : (
+            modification.equipmentId
+        ),
     };
 };
 
@@ -31,19 +35,23 @@ const getEquipmentAttributeModificationValues = (modification: ModificationValue
     return {
         equipmentAttributeName: modification.equipmentAttributeName,
         equipmentAttributeValue: modification.equipmentAttributeValue,
-        computedLabel: formatBold ? <strong>{modification.equipmentId}</strong> : modification.equipmentId,
+        computedLabel: formatBold ? (
+            <strong key="computedLabel">{modification.equipmentId}</strong>
+        ) : (
+            modification.equipmentId
+        ),
     };
 };
 
 const getVoltageLevelWithSubstationModificationValues = (modification: ModificationValues, formatBold: boolean) => {
     return {
         voltageLevelEquipmentId: formatBold ? (
-            <strong>{modification.voltageLevelEquipmentId}</strong>
+            <strong key="voltageLevelEquipmentId">{modification.voltageLevelEquipmentId}</strong>
         ) : (
             modification.voltageLevelEquipmentId
         ),
         substationEquipmentId: formatBold ? (
-            <strong>{modification.substationEquipmentId}</strong>
+            <strong key="substationEquipmentId">{modification.substationEquipmentId}</strong>
         ) : (
             modification.substationEquipmentId
         ),
@@ -125,7 +133,13 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 default:
-                    return { computedLabel: formatBold ? <strong>{getLabel(modif)}</strong> : getLabel(modif) };
+                    return {
+                        computedLabel: formatBold ? (
+                            <strong key="computedLabel">{getLabel(modif)}</strong>
+                        ) : (
+                            getLabel(modif)
+                        ),
+                    };
             }
         },
         [getLabel]
