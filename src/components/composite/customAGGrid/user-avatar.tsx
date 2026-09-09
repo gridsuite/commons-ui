@@ -50,15 +50,15 @@ const styles = {
 
 export type UserAvatarSize = 'small' | 'medium';
 
-export type UserAvatarProps = { label: string; size?: UserAvatarSize };
+export type UserAvatarProps = { label: string; size?: UserAvatarSize; backgroundColor?: string };
 
 /** Colored initials avatar for a user. */
-export function UserAvatar({ label, size = 'medium' }: Readonly<UserAvatarProps>) {
+export function UserAvatar({ label, size = 'medium', backgroundColor }: Readonly<UserAvatarProps>) {
     return (
         <Tooltip title={label}>
             <Avatar
                 sx={mergeSx(size === 'small' ? styles.avatarSmall : styles.avatar, (theme) => ({
-                    backgroundColor: label ? stringToColor(label) : (theme.row.hover as string),
+                    backgroundColor: backgroundColor ?? (label ? stringToColor(label) : (theme.row.hover as string)),
                 }))}
             >
                 {getAbbreviationFromUserName(label)}
