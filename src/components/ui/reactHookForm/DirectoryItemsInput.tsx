@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select, Typography } from '@mui/material';
 import { DriveFolderUpload } from '@mui/icons-material';
 import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
@@ -71,6 +71,7 @@ export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = Ove
     fullHeight?: boolean;
     fullWidth?: boolean;
     dataTestId?: string;
+    showPlaceHolder?: boolean;
 }
 
 export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
@@ -90,6 +91,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     fullHeight = false,
     fullWidth = true,
     dataTestId,
+    showPlaceHolder = false,
 }: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -282,6 +284,18 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                     </IconButton>
                                 </span>
                             </CustomTooltip>
+
+                            {showPlaceHolder && (!directoryElements || directoryElements.length === 0) && (
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    {intl.formatMessage({ id: 'importElements' })}
+                                </Typography>
+                            )}
                             {directoryElements?.map((item, index) => {
                                 const elementName =
                                     watchedElements?.[index]?.[NAME] ??

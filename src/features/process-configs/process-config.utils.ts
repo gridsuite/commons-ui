@@ -5,7 +5,23 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ProcessType } from './common';
+import { getNamedLFProcessConfigFormData } from './loadflow';
+import { getNamedSAProcessConfigFormData } from './security-analysis';
+import { getNamedSCProcessConfigFormData } from './shortcircuit';
 
 export function isProcessType(type: string): type is ProcessType {
     return Object.values(ProcessType).includes(type as ProcessType);
+}
+
+export async function getNamedProcessConfigFormData(processConfig: any, name: string, description: string | null) {
+    switch (processConfig.processType) {
+        case ProcessType.LOADFLOW:
+            return getNamedLFProcessConfigFormData(processConfig, name, description);
+        case ProcessType.SECURITY_ANALYSIS:
+            return getNamedSAProcessConfigFormData(processConfig, name, description);
+        case ProcessType.SHORT_CIRCUIT:
+            return getNamedSCProcessConfigFormData(processConfig, name, description);
+        default:
+            throw new Error(`Unsupported process type: ${processConfig.processType}`);
+    }
 }
