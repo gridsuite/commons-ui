@@ -82,7 +82,7 @@ export enum PermissionType {
  */
 export function getAccessibleElements(elementUuids: UUID[], permission: PermissionType): Promise<UUID[]> {
     const params = new URLSearchParams({ ids: elementUuids.join(','), accessType: permission });
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/permission?${params.toString()}`;
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/accessible?${params.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
 }
