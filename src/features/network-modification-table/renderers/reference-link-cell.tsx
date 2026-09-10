@@ -10,7 +10,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { useSnackMessage } from '../../../hooks';
 import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
-import { ComposedModificationMetadata, ReferenceModificationInfos, snackWithFallback } from '../../../utils';
+import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
 import { CustomMenuItem, CustomTooltip } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
@@ -42,21 +42,21 @@ export function ReferenceLinkCell({ data, disabled = false }: Readonly<Reference
             setAnchorEl(null);
             setIsLoading(true);
             Promise.all([
-                fetchNetworkModification(data.uuid).then((res) => res.json()) as Promise<ReferenceModificationInfos>,
+                fetchNetworkModification(data.uuid).then((res) => res.json()) as Promise<ModificationReferenceInfos>,
                 fetchAppsMetadata(),
             ])
                 .then(([referenceInfos, metadata]) => {
-                    const referenceId = referenceInfos?.referenceId;
+                    const referencedId = referenceInfos?.referencedId;
                     const exploreUrl = metadata?.find(isExploreMetadata)?.url;
 
-                    if (!referenceId || !exploreUrl) {
+                    if (!referencedId || !exploreUrl) {
                         throw new Error(
-                            `Cannot build reference link: ${!referenceId ? 'referenceId' : 'exploreUrl'} is missing`
+                            `Cannot build reference link: ${!referencedId ? 'referencedId' : 'exploreUrl'} is missing`
                         );
                     }
 
                     const link = new URL(
-                        `${exploreUrl}/elements/${referenceId}`,
+                        `${exploreUrl}/elements/${referencedId}`,
                         globalThis.location.origin
                     ).toString();
                     return navigator.clipboard.writeText(link).then(() => snackInfo({ headerId: 'linkCopied' }));
