@@ -176,6 +176,7 @@ export const parametersEn = {
     VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Update bus voltage',
     VoltageInitParametersEquipmentsSelectionAlert:
         'Static var compensators and VSC converter stations are always considered variable',
+    VoltageInitParametersBatteriesAlert: 'Batteries are considered variable when their voltage control is activated',
     VoltageLimits: 'Voltage limits',
     VoltageLevelFilter: 'Voltage level filter',
     LowVoltageLimitDefault: 'Low voltage limit default value',
