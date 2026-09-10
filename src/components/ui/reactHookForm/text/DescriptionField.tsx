@@ -20,7 +20,6 @@ export interface DescriptionFieldProps {
     maxCharactersNumber?: number;
     rows?: number;
     buttonLabel?: string;
-    TextfieldLabel?: string;
     buttonSx?: SxStyle;
 }
 
@@ -29,7 +28,6 @@ export function DescriptionField({
     maxCharactersNumber = MAX_CHAR_DESCRIPTION,
     rows = 3,
     buttonLabel,
-    TextfieldLabel,
     buttonSx,
 }: Readonly<DescriptionFieldProps>) {
     const { setValue, getValues } = useFormContext();
@@ -62,7 +60,7 @@ export function DescriptionField({
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
             <ExpandingTextField
                 name={FieldConstants.DESCRIPTION}
-                label={TextfieldLabel || 'descriptionProperty'}
+                label="descriptionProperty"
                 minRows={rows}
                 rows={rows}
                 sx={expandingTextSx}

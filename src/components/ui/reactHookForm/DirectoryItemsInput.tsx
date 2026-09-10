@@ -285,7 +285,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                 </span>
                             </CustomTooltip>
 
-                            {showPlaceHolder && (!directoryElements || directoryElements.length === 0) && (
+                            {showPlaceHolder && !directoryElements?.length && (
                                 <Typography
                                     variant="body2"
                                     color="text.secondary"
