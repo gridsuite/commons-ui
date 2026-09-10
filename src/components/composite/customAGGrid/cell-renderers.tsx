@@ -47,9 +47,7 @@ export function BooleanCellRenderer({ value }: Readonly<any>) {
     const isChecked = value;
     return (
         <div>
-            {value !== undefined && (
-                <Checkbox style={{ padding: 0 }} color="default" checked={isChecked} disableRipple />
-            )}
+            {value != null && <Checkbox style={{ padding: 0 }} color="default" checked={isChecked} disableRipple />}
         </div>
     );
 }
@@ -78,10 +76,6 @@ const formatNumericCell = (value: number, fractionDigits?: number) => {
 const formatCell = (props: any) => {
     let value = props?.valueFormatted || props.value;
     let tooltipValue;
-    // we use valueGetter only if value is not defined
-    if (!value && props.colDef.valueGetter) {
-        props.colDef.valueGetter(props);
-    }
     if (value != null && props.colDef.context?.numeric && props.colDef.context?.fractionDigits) {
         // only numeric rounded cells have a tooltip (their raw numeric value)
         tooltipValue = value;
