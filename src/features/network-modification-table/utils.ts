@@ -12,10 +12,10 @@ import {
     BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
+    ModificationReferenceInfos,
     NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
-    ReferenceModificationInfos,
     RootNetworkRowInfo,
 } from '../../utils';
 
@@ -152,8 +152,8 @@ function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkMod
     };
 }
 
-function extractReferenceChildren(detail: ReferenceModificationInfos): NetworkModificationMetadata[] {
-    const referenceInfos = detail?.referenceInfos;
+function extractReferenceChildren(detail: ModificationReferenceInfos): NetworkModificationMetadata[] {
+    const referenceInfos = detail?.referencedInfos;
     if (!referenceInfos) {
         return [];
     }
@@ -440,7 +440,7 @@ export async function fetchSubModificationsForExpandedRows(
         referenceNodesToFetch.map(async (node) => {
             try {
                 const res = await fetchNetworkModification(node.uuid as UUID);
-                const detail: ReferenceModificationInfos = await res.json();
+                const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
                 const ancestorSharedModificationUuids = [
