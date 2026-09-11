@@ -6,6 +6,7 @@
  */
 import { Avatar, Box, Theme, Tooltip } from '@mui/material';
 import { mergeSx, MuiStyles } from '../../../utils';
+import { getAbbreviationFromUserName } from '../../../utils/user-utils';
 
 const FERMAT_PRIME = 65537;
 // This function is a copy/paste of the MUI demo sample here :
@@ -21,18 +22,6 @@ function stringToColor(string: string) {
     }, 0);
     /* eslint-enable no-bitwise */
     return `hsl(${stringUniqueHash % 360}, 50%, 50%)`;
-}
-
-function getAbbreviationFromUserName(name: string) {
-    // notice : == null means null or undefined
-    if (name == null || name.trim() === '') {
-        return '';
-    }
-    const splittedName = name.split(' ');
-    if (splittedName.length > 1) {
-        return `${splittedName[0][0]}${splittedName[splittedName.length - 1][0]}`;
-    }
-    return `${splittedName[0][0]}`;
 }
 
 const styles = {
