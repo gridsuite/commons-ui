@@ -10,7 +10,7 @@ import {
     DYNAMIC_SIMULATION_RESULT_SORT_STORE,
     LOADFLOW_RESULT_SORT_STORE,
     PCCMIN_ANALYSIS_RESULT_SORT_STORE,
-    PROCESS_LAUNCH_HISTORY_SORT_STORE,
+    PROCESS_EXECUTION_HISTORY_SORT_STORE,
     SECURITY_ANALYSIS_RESULT_SORT_STORE,
     SENSITIVITY_ANALYSIS_RESULT_SORT_STORE,
     SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
@@ -29,7 +29,7 @@ export enum TableType {
     StateEstimation = 'StateEstimation',
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
-    ProcessLaunchHistory = 'ProcessLaunchHistory',
+    ProcessExecutionHistory = 'ProcessExecutionHistory',
 }
 
 export enum FilterDataTypes {
@@ -111,7 +111,7 @@ export type TableSort = {
     [SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
     [STATEESTIMATION_RESULT_SORT_STORE]: TableSortConfig;
     [PCCMIN_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [PROCESS_LAUNCH_HISTORY_SORT_STORE]: TableSortConfig;
+    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: TableSortConfig;
 };
 export type TableSortKeysType = keyof TableSort;
 
