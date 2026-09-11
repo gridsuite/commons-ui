@@ -17,6 +17,7 @@ import {
     setShowAuthenticationRouterLogin,
     setSignInCallbackError,
 } from '../../../redux/actions/authActions';
+import { isSplitTokenDisabled } from '../../../services/utils';
 
 type IdpSettingsGetter = () => Promise<IdpSettings>;
 
@@ -36,10 +37,35 @@ type CustomUserManager = UserManager & {
     };
 };
 
+/**
+ * Same hack as CustomUserManager above, applied to the User object instead: lets us stash the
+ * split-token shares right on the user, next to the token itself. dispatchUser below is
+ * the only place that sets it (always, before dispatch, whenever the user carries an id_token),
+ * which makes it the actual source of truth: setupAuthenticatedUrl (see
+ * ../../../services/utils.ts) reads it straight off getUser() rather than keeping its own cache,
+ * since it's already guaranteed to be there by the time a token is available to split.
+ */
+export type CustomUser = User & {
+    /**
+     * The token's two XOR shares, already base64url-encoded (see generateAccessTokenShares
+     * below): index 0 is a cryptographically random share (goes to a transient cookie), index 1
+     * is `token XOR random` (goes in the request url). Encoding both here, once, before dispatch
+     * means setupAuthenticatedUrl (see ../../../services/utils.ts) only ever has to use them
+     * as-is, with no XOR-ing or encoding left to do at request time.
+     */
+    accessTokenShares?: [string, string];
+};
+
 const hackAuthorityKey = 'oidc.hack.authority';
 const oidcHackReloadedKey = 'gridsuite-oidc-hack-reloaded';
 const pathKey = 'powsybl-gridsuite-current-path';
+const accessTokenSharesKey = 'gridsuite-access-token-shares';
 const accessTokenExpiringNotificationTimeInSeconds = 60;
+
+type StoredAccessTokenShares = {
+    idToken: string;
+    shares: [string, string];
+};
 
 function isIssuerError(error: Error) {
     return error.message.includes('Invalid issuer in token');
@@ -65,6 +91,92 @@ function reloadTimerOnExpiresIn(user: User, userManager: UserManager, expiresIn:
     userManager.storeUser(user).then(() => {
         userManager.getUser();
     });
+}
+
+/**
+ * Base64url-encodes (no padding) a byte array: the wire format the gateway decodes with Java's
+ * `Base64.getUrlDecoder()` (which tolerates missing padding).
+ */
+function base64UrlEncode(bytes: Uint8Array): string {
+    let binary = '';
+    bytes.forEach((byte) => {
+        binary += String.fromCharCode(byte);
+    });
+    return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+}
+
+/**
+ * Generates the split-token auth mechanism's two fresh shares for `token` (see
+ * setupAuthenticatedUrl in ../../../services/utils.ts): a cryptographically random share, and
+ * `token XOR random`, the same byte length as `token` so they line up 1-for-1. Both are
+ * base64url-encoded here already, so setupAuthenticatedUrl never has to touch raw bytes. Not
+ * exported: every caller must go through getOrCreateAccessTokenShares below, which is the only
+ * thing that decides when a fresh pair is actually needed.
+ */
+function generateAccessTokenShares(token: string): [string, string] {
+    const tokenBytes = new TextEncoder().encode(token);
+    const random = new Uint8Array(tokenBytes.length);
+    // crypto.getRandomValues (unlike crypto.subtle) doesn't require a secure context, so this
+    // works unchanged on plain-HTTP local dev too.
+    crypto.getRandomValues(random);
+    // eslint-disable-next-line no-bitwise -- XOR is the actual algorithm here, not a `||` typo
+    const xored = tokenBytes.map((byte, i) => byte ^ random[i]);
+    return [base64UrlEncode(random), base64UrlEncode(xored)];
+}
+
+function isStoredAccessTokenShares(value: unknown): value is StoredAccessTokenShares {
+    const candidate = value as Partial<StoredAccessTokenShares> | null;
+    return (
+        typeof candidate?.idToken === 'string' &&
+        Array.isArray(candidate.shares) &&
+        candidate.shares.length === 2 &&
+        candidate.shares.every((share) => typeof share === 'string')
+    );
+}
+
+/**
+ * Returns `token`'s two XOR shares (see generateAccessTokenShares above), reusing whatever
+ * shares were already computed for this exact token - by this tab on an earlier call, or by
+ * another tab of the same origin - via localStorage, generating and persisting a fresh pair
+ * only the first time this exact token is seen anywhere.
+ *
+ * This matters because the AccessTokenShare cookie (see setupAuthenticatedUrl in
+ * ../../../services/utils.ts) is a single resource shared by the browser across every tab of
+ * the same origin, but generateAccessTokenShares's own randomness is not: without this cache,
+ * two tabs holding the same token at once (a common case - e.g. a same-origin link opened in a
+ * new tab inherits a copy of the opener's sessionStorage, or two tabs' independent silent
+ * renewals happen to land on the same refreshed token) would each compute their own independent
+ * random share, and whichever tab last overwrote the cookie would silently break every other
+ * tab's in-flight requests (their url's query share would no longer XOR with the cookie into a
+ * valid token) - a near-constant race instead of the harmless no-op it's meant to be when the
+ * token hasn't actually changed.
+ *
+ * Fails safe if localStorage is unavailable or throws (e.g. some private-browsing modes): falls
+ * back to a fresh, unpersisted pair, i.e. back to the race above rather than breaking the app.
+ */
+function getOrCreateAccessTokenShares(token: string): [string, string] {
+    try {
+        const stored = localStorage.getItem(accessTokenSharesKey);
+        if (stored) {
+            const parsed: unknown = JSON.parse(stored);
+            if (isStoredAccessTokenShares(parsed) && parsed.idToken === token) {
+                return parsed.shares;
+            }
+        }
+    } catch (error) {
+        console.warn('Could not read persisted access token shares, generating a fresh pair.', error);
+    }
+
+    const shares = generateAccessTokenShares(token);
+    try {
+        localStorage.setItem(
+            accessTokenSharesKey,
+            JSON.stringify({ idToken: token, shares } satisfies StoredAccessTokenShares)
+        );
+    } catch (error) {
+        console.warn('Could not persist access token shares for other tabs to reuse.', error);
+    }
+    return shares;
 }
 
 function getIdTokenExpiresIn(user: User) {
@@ -133,6 +245,11 @@ export function login(location: Location, userManagerInstance: UserManager | nul
 export function logout(dispatch: Dispatch<AuthenticationActions>, userManagerInstance: UserManager | null) {
     sessionStorage.removeItem(hackAuthorityKey); // To remove when hack is removed
     sessionStorage.removeItem(oidcHackReloadedKey);
+    try {
+        localStorage.removeItem(accessTokenSharesKey);
+    } catch (error) {
+        console.warn('Could not clear persisted access token shares on logout.', error);
+    }
     return userManagerInstance?.getUser().then((user) => {
         if (user) {
             // We don't need to check if token is valid at this point
@@ -175,6 +292,21 @@ export function dispatchUser(dispatch: Dispatch<AuthenticationActions>, userMana
                 userManagerInstance,
                 computeMinExpiresIn(user.expires_in ?? 0, user.id_token, userManagerInstance.idpSettings?.maxExpiresIn)
             );
+            // Hack to enrich User object (see CustomUser above): attach split-token shares to
+            // the user right as the token itself gets stored, before dispatch - must happen
+            // here, since Immer freezes state.user once it's in the store, and this is the only
+            // place setupAuthenticatedUrl's shares ever come from (no separate cache of its
+            // own). getOrCreateAccessTokenShares (not generateAccessTokenShares directly) is
+            // used here so that multiple tabs holding the same token converge on the same
+            // shares instead of racing each other on the shared AccessTokenShare cookie - see
+            // its doc comment above. Skipped entirely when the split-token mechanism is
+            // disabled via rollback config (see isSplitTokenDisabled in
+            // ../../../services/utils.ts): setupAuthenticatedUrl checks the same flag
+            // independently anyway, so this only avoids the wasted work and avoids keeping
+            // token-derived material in redux state for no reason.
+            if (user.id_token && !isSplitTokenDisabled()) {
+                (user as CustomUser).accessTokenShares = getOrCreateAccessTokenShares(user.id_token); // eslint-disable-line no-param-reassign
+            }
             return dispatch(setLoggedUser(user));
         }
         console.debug('You are not logged in.');
