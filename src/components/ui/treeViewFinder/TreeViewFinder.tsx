@@ -71,7 +71,7 @@ const defaultStyles = {
         display: 'flex',
         alignContent: 'center',
         alignItems: 'center',
-        marginLeft: '4px',
+        marginLeft: '12px',
         fontSize: '18px',
         flexShrink: 0,
     },
