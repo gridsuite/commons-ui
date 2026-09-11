@@ -57,6 +57,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onSelectedRowsChange: (selectedRows: ComposedModificationMetadata[], isAssemblyDepthExceeded: boolean) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
+    onHighlightConsumed: () => void;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
     studyUuid: UUID | null;
@@ -75,6 +76,7 @@ export function NetworkModificationsTable({
     onSelectedRowsChange,
     columns,
     highlightedModificationUuid,
+    onHighlightConsumed,
     modificationToEditLabel,
     modificationUuidsToReset,
     studyUuid = null,
@@ -122,10 +124,6 @@ export function NetworkModificationsTable({
     useEffect(() => {
         modificationToEditLabelRef.current = modificationToEditLabel;
     }, [modificationToEditLabel]);
-    const highlightedModificationUuidRef = useRef(highlightedModificationUuid);
-    useEffect(() => {
-        highlightedModificationUuidRef.current = highlightedModificationUuid;
-    }, [highlightedModificationUuid]);
 
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
@@ -219,6 +217,7 @@ export function NetworkModificationsTable({
                 onRowSelected: handleRowSelected,
                 isRowDragDisabled,
                 modificationToEditLabel: modificationToEditLabelRef,
+                onHighlightConsumed,
             },
             status: {
                 isImpactedByNotification,
@@ -238,6 +237,7 @@ export function NetworkModificationsTable({
             setApplicabilities,
             lastClickedRowId,
             handleRowSelected,
+            onHighlightConsumed,
             modificationToEditLabelRef,
             isRowDragDisabled,
             isImpactedByNotification,
@@ -331,14 +331,13 @@ export function NetworkModificationsTable({
     }, [lastClickedRowId, table, currentNodeId]);
 
     useEffect(() => {
-        if (highlightedModificationUuidRef.current && containerRef.current) {
-            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuidRef.current);
+        if (highlightedModificationUuid && containerRef.current) {
+            const rowIndex = rows.findIndex((row) => row.original.uuid === highlightedModificationUuid);
             if (rowIndex !== -1) {
                 virtualizer.scrollToIndex(rowIndex, { align: 'center', behavior: 'auto' });
-                highlightedModificationUuidRef.current = null;
             }
         }
-    }, [highlightedModificationUuidRef, rows, virtualizer]);
+    }, [highlightedModificationUuid, rows, virtualizer]);
 
     return (
         <DragDropContext onDragEnd={handleDragEnd} onDragStart={onRowDragStart} onDragUpdate={handleDragUpdate}>
