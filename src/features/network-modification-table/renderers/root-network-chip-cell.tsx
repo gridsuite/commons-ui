@@ -12,11 +12,11 @@ import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
-    ModificationType,
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
+import { isReferenceModificationOrInsideOne } from '../utils';
 
 /**
  * A modification is applicable on a root network unless its applicability for it is explicitly false:
@@ -69,8 +69,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const { snackError } = useSnackMessage();
     const modificationUuid = data.uuid;
 
-    const isReferenceModificationOrInsideOne =
-        data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
+    const isSharedContent = isReferenceModificationOrInsideOne(data);
 
     const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
@@ -124,7 +123,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
             isActivated={isModificationApplicable}
-            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne || rootNetwork.isCreating}
+            isDisabled={isLoading || isDisabled || isSharedContent || rootNetwork.isCreating}
             onClick={handleModificationActivationByRootNetwork}
         />
     );

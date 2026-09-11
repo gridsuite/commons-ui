@@ -17,6 +17,8 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
+    referenceId?: UUID;
     applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
@@ -24,7 +26,9 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
-    childFromShared?: boolean;
+    // The uuids of the shared modifications it sits inside (if it does), outermost first.
+    // A modification nested under several reference modifications carries them all.
+    ancestorSharedModificationUuids?: UUID[];
 }
 
 export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {
