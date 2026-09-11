@@ -182,6 +182,8 @@ export const parametersFr = {
     VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Mettre à jour tension des nœuds électriques',
     VoltageInitParametersEquipmentsSelectionAlert:
         'Les consignes des CSPR et des stations VSC sont toujours considérées comme variables',
+    VoltageInitParametersBatteriesAlert:
+        'Les consignes des batteries sont variables si leur réglage de tension est activé',
     VoltageLimits: 'Limites de tension',
     VoltageLevelFilter: 'Filtre poste',
     LowVoltageLimitDefault: 'Valeur par défaut limite basse',

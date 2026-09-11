@@ -51,6 +51,9 @@ export function EquipmentSelectionParameters() {
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
+            <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
+                <FormattedMessage id="VoltageInitParametersBatteriesAlert" />
+            </Alert>
             <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
                 <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
