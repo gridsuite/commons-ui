@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
@@ -13,6 +13,7 @@ import { GeneratorDialogTabs } from './GeneratorDialogTabs';
 import { GeneratorDialogTabsContent, GeneratorDialogTabsContentProps } from './GeneratorDialogTabsContent';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface GeneratorModificationFormProps
     extends GeneratorDialogHeaderProps, Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
@@ -34,7 +35,7 @@ export function GeneratorModificationForm({
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <GeneratorDialogHeader generatorToModify={generatorToModify} equipmentId={equipmentId} />
             </Grid>
@@ -45,7 +46,7 @@ export function GeneratorModificationForm({
                     onTabChange={onTabChange}
                 />
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <GeneratorDialogTabsContent
                     tabIndex={tabIndex}
                     generatorToModify={generatorToModify}
@@ -55,7 +56,7 @@ export function GeneratorModificationForm({
                     updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTable}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }

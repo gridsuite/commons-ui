@@ -7,6 +7,7 @@
 
 export * from './branch';
 export * from './form.utils';
+export * from './tabbedForm.styles';
 export * from './properties';
 export * from './measurements';
 export * from './setpoints';
