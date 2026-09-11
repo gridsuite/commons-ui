@@ -587,4 +587,5 @@ export const networkModificationsFr = {
     copyPreviousTopologyStatus: 'Compléter avec la topologie précédente',
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
+    SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
 };
