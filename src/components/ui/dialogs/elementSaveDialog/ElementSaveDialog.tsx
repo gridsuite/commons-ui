@@ -232,7 +232,7 @@ export function ElementSaveDialog({
             },
             { keepDefaultValues: true }
         );
-    }, [prefixIdForGeneratedName, intl, reset, isCreateMode, defaultName]);
+    }, [prefixIdForGeneratedName, intl, reset, isCreateMode, defaultName, defaultDescription]);
 
     // Destination folder initialization for create mode
     useEffect(() => {

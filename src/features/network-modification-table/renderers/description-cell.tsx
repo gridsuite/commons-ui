@@ -52,9 +52,10 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const handleModifyDescription = useCallback(() => {
         setOpenDescModificationDialog(true);
     }, []);
-    const finalDescription = useMemo(() => isReferenceModification(data)
-        ? JSON.parse(data.messageValues)?.description
-        : data.description, [data]);
+    const finalDescription = useMemo(
+        () => (isReferenceModification(data) ? JSON.parse(data.messageValues)?.description : data.description),
+        [data]
+    );
 
     return (
         <>
