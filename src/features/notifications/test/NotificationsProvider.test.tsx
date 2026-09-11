@@ -48,7 +48,27 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toHaveBeenCalled();
+        // the token must never be appended to the URL: it is now sent as the first websocket message instead
+        expect(ReconnectingWebSocket).toHaveBeenCalledWith('test', [], expect.anything());
+    });
+
+    test('sends the current token as the first message once the websocket connects', () => {
+        const root = createRoot(container);
+
+        const sendMock = jest.fn();
+        const reconnectingWebSocketClass = {
+            send: sendMock,
+        } as Partial<ReconnectingWebSocket> as jest.Mocked<ReconnectingWebSocket>;
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+
+        act(() => {
+            root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
+        });
+        act(() => {
+            reconnectingWebSocketClass.onopen?.({} as Event);
+        });
+
+        expect(sendMock).toHaveBeenCalledWith('fake-token');
     });
 
     test('renders NotificationsProvider children component ', () => {
