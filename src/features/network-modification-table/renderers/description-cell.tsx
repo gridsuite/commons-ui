@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
@@ -14,6 +14,7 @@ import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationMetadata } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
+import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
     data: ComposedModificationMetadata;
@@ -51,13 +52,16 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const handleModifyDescription = useCallback(() => {
         setOpenDescModificationDialog(true);
     }, []);
+    const finalDescription = useMemo(() => isReferenceModification(data)
+        ? JSON.parse(data.messageValues)?.description
+        : data.description, [data]);
 
     return (
         <>
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={description ?? ''}
+                    description={finalDescription ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                 />
@@ -67,7 +71,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(data.description)}
+                        sx={createEditDescriptionStyle(finalDescription)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>

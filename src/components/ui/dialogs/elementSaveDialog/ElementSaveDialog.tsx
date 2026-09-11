@@ -66,6 +66,7 @@ export type ElementSaveDialogProps = {
     createSharedDisabled?: boolean;
     prefixIdForGeneratedName?: string;
     defaultName?: string | null;
+    defaultDescription?: string | null;
     initialOperation?: OperationType;
     selectorTitleId?: string;
     createLabelId?: string;
@@ -132,6 +133,7 @@ export function ElementSaveDialog({
     titleId,
     prefixIdForGeneratedName,
     defaultName,
+    defaultDescription,
     studyUuid,
     initDirectory,
     initialOperation = OperationType.CREATE,
@@ -222,7 +224,14 @@ export function ElementSaveDialog({
         }
         const name =
             defaultName ?? `${intl.formatMessage({ id: prefixIdForGeneratedName })}-${new Date().toISOString()}`;
-        reset({ ...emptyFormData, [FieldConstants.NAME]: name }, { keepDefaultValues: true });
+        reset(
+            {
+                ...emptyFormData,
+                [FieldConstants.NAME]: name,
+                [FieldConstants.DESCRIPTION]: defaultDescription == null ? undefined : defaultDescription,
+            },
+            { keepDefaultValues: true }
+        );
     }, [prefixIdForGeneratedName, intl, reset, isCreateMode, defaultName]);
 
     // Destination folder initialization for create mode
