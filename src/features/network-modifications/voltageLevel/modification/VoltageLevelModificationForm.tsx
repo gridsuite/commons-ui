@@ -10,7 +10,7 @@ import { Box, Grid, Tab, Tabs, TextField, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../utils';
-import { filledTextField, PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm, tabbedFormStyles } from '../../common';
 import { VoltageLevelDto } from './voltageLevelModification.types';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 import {
@@ -39,7 +39,7 @@ export function VoltageLevelModificationForm({
     const [tabIndex, setTabIndex] = useState(VoltageLevelModificationTab.CHARACTERISTICS_TAB);
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -108,7 +108,7 @@ export function VoltageLevelModificationForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <Box hidden={tabIndex !== VoltageLevelModificationTab.CHARACTERISTICS_TAB}>
                     <Grid>
                         <GridSection title="VoltageText" />
@@ -169,7 +169,7 @@ export function VoltageLevelModificationForm({
                     <GridSection title="MeasurementsSection" />
                     <BusbarSectionVoltageMeasurementsForm busbarSections={busbarSections} />
                 </Box>
-            </Grid>
+            </Box>
         </Stack>
     );
 }

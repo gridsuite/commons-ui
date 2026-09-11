@@ -17,6 +17,7 @@ import {
     TwoWindingsTransformerDialogTabsContentProps,
 } from './TwoWindingsTransformerDialogTabsContent';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface TwoWindingsTransformerFormProps
     extends
@@ -38,7 +39,7 @@ export function TwoWindingsTransformerForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2} height="100%">
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <TwoWindingsTransformerDialogHeader twtToModify={twtToModify} isModification={isModification} />
             <TwoWindingsTransformerDialogTabs
                 tabIndex={selectedTab}
@@ -46,7 +47,7 @@ export function TwoWindingsTransformerForm({
                 onTabChange={onTabChange}
                 isModification={isModification}
             />
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <TwoWindingsTransformerDialogTabsContent
                     tabIndex={selectedTab}
                     twtToModify={twtToModify}

@@ -12,6 +12,8 @@ import { VscHvdcLineDialogTabsContent, VscHvdcLineDialogTabsContentProps } from 
 import { VscHvdcLineDialogTab } from './vscHvdcLine.utils';
 import { UpdateReactiveCapabilityCurveTableConverterStation } from '../converterStation/vscConverterStationPane.utils';
 import { UseTabsReturn } from '../../../../../../hooks';
+import { tabbedFormStyles } from '../../../../common';
+import { mergeSx } from '../../../../../../utils/styles';
 
 interface VscHvdcLineFormProps
     extends
@@ -33,7 +35,7 @@ export function VscHvdcLineForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2} height="100%">
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <VscHvdcLineDialogHeader hvdcLineToModify={hvdcLineToModify} isModification={isModification} />
             <VscHvdcLineDialogTabs
                 tabIndex={selectedTab}
@@ -41,7 +43,7 @@ export function VscHvdcLineForm({
                 onTabChange={onTabChange}
                 isModification={isModification}
             />
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingLeft: 1.5, paddingRight: 3 }}>
+            <Box sx={mergeSx(tabbedFormStyles.scrollableContent, { paddingLeft: 1.5 })}>
                 <VscHvdcLineDialogTabsContent
                     tabIndex={selectedTab}
                     isModification={isModification}
