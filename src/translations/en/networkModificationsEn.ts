@@ -580,4 +580,5 @@ export const networkModificationsEn = {
     copyPreviousTopologyStatus: 'Fill with previous status',
     modifiedSwitchesSeparatorTitle: 'Modification',
     unModifiedSwitchesSeparatorTitle: 'No-modification',
+    SharedModificationsSavedAsCopy: 'Shared modifications will be saved as copy only',
 };
