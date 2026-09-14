@@ -6,7 +6,7 @@
  */
 import { Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
+import { ProviderParam, TabPanel } from '../common';
 
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { VoltageLevelInfos } from '../../../utils/types/equipmentType';
@@ -18,6 +18,8 @@ import { NetworkParameters } from './network';
 import CurveParameters from './curve/curve-parameters';
 import { ExpertFilter, IdentifiableAttributes } from '../../../components/composite/filter';
 import { UseComputationParametersFormReturn } from '../common/utils';
+
+import { UseTabsReturn } from '../../../hooks';
 
 type DynamicSimulationFormProps = {
     dynamicSimulationMethods: UseComputationParametersFormReturn;

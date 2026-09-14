@@ -6,16 +6,18 @@
  */
 
 import { Box, Stack } from '@mui/material';
-import { LINE_TAB_FIELDS, LineDialogTab } from './line.utils';
+import { LineDialogTab } from './line.utils';
 import { LineDialogHeader, LineDialogHeaderProps } from './LineDialogHeader';
 import { LineDialogTabs } from './LineDialogTabs';
 import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogTabsContent';
-import { useTabsWithError } from '../../hooks';
 import { useCustomFormContext } from '../../../../components';
 import { ReadOnlyBoundary } from '../../../../components/ui/reactHookForm/provider/ReadOnlyBoundary';
+import { UseTabsReturn } from '../../../../hooks';
 
 interface LineFormProps
-    extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {}
+    extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {
+    useTabsReturn: UseTabsReturn<LineDialogTab>;
+}
 
 export function LineForm({
     lineToModify,
@@ -24,27 +26,25 @@ export function LineForm({
     PositionDiagramPane,
     isModification = false,
     withConnectivity = true,
+    useTabsReturn,
 }: Readonly<LineFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LineDialogTab>(
-        LINE_TAB_FIELDS,
-        withConnectivity ? LineDialogTab.CONNECTIVITY_TAB : LineDialogTab.CHARACTERISTICS_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
     const { readOnly } = useCustomFormContext();
 
     return (
         <Stack spacing={2} height="100%">
             <LineDialogHeader lineToModify={lineToModify} isModification={isModification} />
             <LineDialogTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
+                tabIndex={selectedTab}
+                tabIndexesWithError={tabsWithError}
+                onTabChange={onTabChange}
                 isModification={isModification}
                 withConnectivity={withConnectivity}
             />
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
                 <ReadOnlyBoundary readOnly={readOnly}>
                     <LineDialogTabsContent
-                        tabIndex={tabIndex}
+                        tabIndex={selectedTab}
                         lineToModify={lineToModify}
                         voltageLevelOptions={voltageLevelOptions}
                         fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}

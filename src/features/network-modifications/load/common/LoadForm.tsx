@@ -6,14 +6,16 @@
  */
 
 import { Grid, Stack } from '@mui/material';
-import { LOAD_TAB_FIELDS, LoadDialogTab } from './load.utils';
+import { LoadDialogTab } from './load.utils';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
 import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogTabsContent';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
 
 interface LoadFormProps
-    extends LoadDialogHeaderProps, Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {}
+    extends LoadDialogHeaderProps, Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {
+    useTabsReturn: UseTabsReturn<LoadDialogTab>;
+}
 
 export function LoadForm({
     loadToModify,
@@ -21,11 +23,9 @@ export function LoadForm({
     voltageLevelOptions,
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
+    useTabsReturn,
 }: Readonly<LoadFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<LoadDialogTab>(
-        LOAD_TAB_FIELDS,
-        LoadDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
         <Stack spacing={2}>
@@ -34,15 +34,15 @@ export function LoadForm({
             </Grid>
             <Grid>
                 <LoadDialogTabs
-                    tabIndex={tabIndex}
-                    tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
+                    tabIndex={selectedTab}
+                    tabIndexesWithError={tabsWithError}
+                    onTabChange={onTabChange}
                     isModification={isModification}
                 />
             </Grid>
             <Grid>
                 <LoadDialogTabsContent
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                     loadToModify={loadToModify}
                     isModification={isModification}
                     voltageLevelOptions={voltageLevelOptions}

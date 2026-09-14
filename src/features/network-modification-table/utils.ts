@@ -11,12 +11,53 @@ import { fetchNetworkModification, getNetworkModificationsFromComposite } from '
 import {
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
+    ModificationReferenceInfos,
+    NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
-    ReferenceModificationInfos,
+    RootNetworkRowInfo,
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
+// Convert applicability by tag to applicability by root network id.
+function toApplicabilityByRootNetworkUuid(
+    applicabilityByRootNetworkTag: Record<string, boolean> | undefined,
+    uuidByTag: Map<string, UUID>
+): Record<UUID, boolean> {
+    return Object.entries(applicabilityByRootNetworkTag ?? {}).reduce((applicability, [tag, applicable]) => {
+        const rootNetworkUuid = uuidByTag.get(tag);
+        return rootNetworkUuid ? { ...applicability, [rootNetworkUuid]: applicable } : applicability;
+    }, {});
+}
+
+function collectApplicabilitiesByUuid(
+    modifications: ComposedModificationMetadata[],
+    uuidByTag: Map<string, UUID>
+): NetworkModificationApplicabilities {
+    return modifications.reduce(
+        (applicabilities, modification) => ({
+            ...applicabilities,
+            [modification.uuid]: toApplicabilityByRootNetworkUuid(
+                modification.applicabilityByRootNetworkTag,
+                uuidByTag
+            ),
+            ...collectApplicabilitiesByUuid(modification.subModifications, uuidByTag),
+        }),
+        {}
+    );
+}
+
+// Indexes by uuid the applicability every modification of the tree carries, sub modifications included.
+// The modifications key it by root network tag; it is resolved here to the root network uuid.
+// A tag no root network claims is dropped.
+export function collectApplicabilities(
+    modifications: ComposedModificationMetadata[],
+    rootNetworks: RootNetworkRowInfo[] = []
+): NetworkModificationApplicabilities {
+    const uuidByTag = new Map(rootNetworks.map((rootNetwork) => [rootNetwork.tag, rootNetwork.rootNetworkUuid]));
+    return collectApplicabilitiesByUuid(modifications, uuidByTag);
+}
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
@@ -31,6 +72,12 @@ export const formatToComposedModification = (
     }));
 };
 
+// Remove the applicabilities
+export function toMessageValues(modification: NetworkModificationMetadata) {
+    const { applicabilityByRootNetworkTag, ...messageValues } = modification;
+    return messageValues;
+}
+
 export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
@@ -38,6 +85,18 @@ export function isCompositeModification(modification: ComposedModificationMetada
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
 export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
+}
+
+// Only inspects already-loaded subModifications (children fetched on row expansion), so a
+// reference nested under a not-yet-expanded composite won't be detected. Same limitation as the
+// rest of the drag-and-drop forbidden-drop checks, which all reason over the currently loaded tree.
+export function containsReferenceModification(modification: ComposedModificationMetadata | undefined): boolean {
+    if (!modification) {
+        return false;
+    }
+    return modification.subModifications.some(
+        (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
 }
 
 function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkModificationMetadata {
@@ -48,15 +107,8 @@ function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkMod
     };
 }
 
-export function isTargetChildOfReference(targetRow: { original: ComposedModificationMetadata }): boolean {
-    if (targetRow.original.childFromShared === true) {
-        return true;
-    }
-    return false;
-}
-
-function extractReferenceChildren(detail: ReferenceModificationInfos): NetworkModificationMetadata[] {
-    const referenceInfos = detail?.referenceInfos;
+function extractReferenceChildren(detail: ModificationReferenceInfos): NetworkModificationMetadata[] {
+    const referenceInfos = detail?.referencedInfos;
     if (!referenceInfos) {
         return [];
     }
@@ -341,7 +393,7 @@ export async function fetchSubModificationsForExpandedRows(
         referenceNodesToFetch.map(async (node) => {
             try {
                 const res = await fetchNetworkModification(node.uuid as UUID);
-                const detail: ReferenceModificationInfos = await res.json();
+                const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
                 const liveModifications = formatToComposedModification(children).map((m) => ({

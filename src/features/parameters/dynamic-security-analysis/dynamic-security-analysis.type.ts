@@ -8,3 +8,5 @@ export enum TabValues {
     SCENARIO = 'scenario',
     CONTINGENCY = 'contingency',
 }
+
+export const TAB_VALUES = Object.values(TabValues);

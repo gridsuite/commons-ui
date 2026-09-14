@@ -8,3 +8,5 @@ export enum TabValues {
     TAB_TIME_DELAY = 'TAB_TIME_DELAY',
     TAB_LOADS_VARIATIONS = 'TAB_LOADS_VARIATIONS',
 }
+
+export const TAB_VALUES = Object.values(TabValues);

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { ParameterType, SpecificParameterInfos } from '../../../../../utils';
-import ParameterField from '../../../common/parameter-field';
+import { ParameterField } from '../../../common/parameter-field';
 import { SimplifiedSolver } from './simplified-solver-parameters-constant';
 import { CommonSolverParameters } from '../common-solver';
 

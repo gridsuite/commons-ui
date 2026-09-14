@@ -21,3 +21,7 @@ export type Property = {
 export type Properties = {
     [FieldConstants.ADDITIONAL_PROPERTIES]?: Property[];
 };
+
+export type FilledProperties = {
+    [FieldConstants.ADDITIONAL_PROPERTIES]: FilledProperty[];
+};

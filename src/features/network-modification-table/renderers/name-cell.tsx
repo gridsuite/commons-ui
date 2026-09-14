@@ -17,7 +17,7 @@ import {
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
-import { isCompositeModification } from '../utils';
+import { isCompositeModification, toMessageValues } from '../utils';
 import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
 
@@ -54,7 +54,10 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
             return intl.formatMessage(
                 { id: `network_modifications.${modification.messageType}` },
-                { ...(modification as NetworkModificationMetadata), ...computeLabel(modification, formatBold) }
+                {
+                    ...toMessageValues(modification as NetworkModificationMetadata),
+                    ...computeLabel(modification, formatBold),
+                }
             );
         },
         [computeLabel, intl]

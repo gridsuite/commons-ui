@@ -10,18 +10,20 @@ import {
     TwoWindingsTransformerDialogHeader,
     TwoWindingsTransformerDialogHeaderProps,
 } from './TwoWindingsTransformerDialogHeader';
-import { useTabsWithError } from '../../hooks';
-import { TwoWindingsTransformerDialogTab, TWT_TAB_FIELDS } from './twoWindingsTransformer.utils';
+import { TwoWindingsTransformerDialogTab } from './twoWindingsTransformer.utils';
 import { TwoWindingsTransformerDialogTabs } from './TwoWindingsTransformerDialogTabs';
 import {
     TwoWindingsTransformerDialogTabsContent,
     TwoWindingsTransformerDialogTabsContentProps,
 } from './TwoWindingsTransformerDialogTabsContent';
+import { UseTabsReturn } from '../../../../hooks';
 
 interface TwoWindingsTransformerFormProps
     extends
         TwoWindingsTransformerDialogHeaderProps,
-        Omit<TwoWindingsTransformerDialogTabsContentProps, 'tabIndex' | 'isModification' | 'twtToModify'> {}
+        Omit<TwoWindingsTransformerDialogTabsContentProps, 'tabIndex' | 'isModification' | 'twtToModify'> {
+    useTabsReturn: UseTabsReturn<TwoWindingsTransformerDialogTab>;
+}
 
 export function TwoWindingsTransformerForm({
     twtToModify,
@@ -31,24 +33,22 @@ export function TwoWindingsTransformerForm({
     fetchVoltageLevelEquipments,
     editData,
     isModification = false,
+    useTabsReturn,
 }: Readonly<TwoWindingsTransformerFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<TwoWindingsTransformerDialogTab>(
-        TWT_TAB_FIELDS,
-        TwoWindingsTransformerDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
         <Stack spacing={2} height="100%">
             <TwoWindingsTransformerDialogHeader twtToModify={twtToModify} isModification={isModification} />
             <TwoWindingsTransformerDialogTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
+                tabIndex={selectedTab}
+                tabIndexesWithError={tabsWithError}
+                onTabChange={onTabChange}
                 isModification={isModification}
             />
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
                 <TwoWindingsTransformerDialogTabsContent
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                     twtToModify={twtToModify}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}

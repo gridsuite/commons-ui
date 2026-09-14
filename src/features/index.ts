@@ -9,6 +9,7 @@ export * from './authentication';
 export * from './cardErrorBoundary';
 export * from './notifications';
 export * from './topBar';
+export * from './side-bar';
 export * from './parameters';
 export * from './network-modifications';
 export * from './node';

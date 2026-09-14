@@ -7,17 +7,15 @@
 
 import { Box, Stack } from '@mui/material';
 import { ConnectivityNetworkProps } from '../../common';
-import {
-    STATIC_VAR_COMPENSATOR_TAB_FIELDS,
-    StaticVarCompensatorDialogTab,
-} from '../common/static-var-compensator-tab-utils';
+import { StaticVarCompensatorDialogTab } from '../common/static-var-compensator-tab-utils';
 import { StaticVarCompensatorDialogHeader, StaticVarCompensatorDialogTabs } from '../common';
 import { StaticVarCompensatorTabsContent } from '../common/static-var-compensator-tabs-content';
 import { EquipmentType, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
 
 export interface StaticVarCompensatorCreationFormProps extends ConnectivityNetworkProps {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+    useTabsReturn: UseTabsReturn<StaticVarCompensatorDialogTab>;
 }
 
 export function StaticVarCompensatorCreationForm({
@@ -25,18 +23,17 @@ export function StaticVarCompensatorCreationForm({
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
     fetchVoltageLevelEquipments,
+    useTabsReturn,
 }: StaticVarCompensatorCreationFormProps) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<StaticVarCompensatorDialogTab>(
-        STATIC_VAR_COMPENSATOR_TAB_FIELDS,
-        StaticVarCompensatorDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
+
     return (
         <Stack spacing={2}>
             <StaticVarCompensatorDialogHeader />
             <StaticVarCompensatorDialogTabs
-                tabIndex={tabIndex}
-                tabIndexesWithError={tabIndexesWithError}
-                setTabIndex={setTabIndex}
+                tabIndex={selectedTab}
+                tabIndexesWithError={tabsWithError}
+                onTabChange={onTabChange}
             />
             <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
                 <StaticVarCompensatorTabsContent
@@ -44,7 +41,7 @@ export function StaticVarCompensatorCreationForm({
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                 />
             </Box>
         </Stack>

@@ -30,6 +30,9 @@ export enum NetworkVisualizationTabValues {
     SINGLE_LINE_DIAGRAM = 'singleLineDiagramParameters',
     NETWORK_AREA_DIAGRAM = 'networkAreaDiagramParameters',
 }
+
+export const NV_TAB_VALUES = Object.values(NetworkVisualizationTabValues);
+
 export const MAP_MANUAL_REFRESH = 'MapManualRefresh';
 export const LINE_FLOW_MODE = 'LineFlowMode';
 export const MAP_BASE_MAP = 'MapBaseMap';

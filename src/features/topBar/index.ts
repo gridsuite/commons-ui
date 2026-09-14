@@ -8,3 +8,5 @@ export * from './AboutDialog';
 export * from './GridLogo';
 export * from './DevModeBanner';
 export * from './TopBar';
+export { default as UserInformationDialog } from './UserInformationDialog';
+export { default as UserSettingsDialog } from './UserSettingsDialog';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { type AnnouncementDto, type UserDetail } from '../utils/types/types';
+import { type AnnouncementDto, type UserDetail, type UserQuotaState } from '../utils';
 import { backendFetchJson } from './utils';
 
 const PREFIX_USER_ADMIN_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/user-admin/v1`;
@@ -23,5 +23,13 @@ export function fetchCurrentAnnouncement(): Promise<AnnouncementDto | null> {
     const url = `${PREFIX_USER_ADMIN_QUERIES}/announcements/current`;
     return backendFetchJson(url, {
         method: 'get',
+    });
+}
+
+export function fetchUserQuotaState(user: string): Promise<Record<string, UserQuotaState>> {
+    console.info('get user quota state');
+    return backendFetchJson(`${PREFIX_USER_ADMIN_QUERIES}/users/${user}/quota/state`, {
+        method: 'get',
+        headers: { 'Content-Type': 'application/json' },
     });
 }

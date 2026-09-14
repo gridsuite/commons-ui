@@ -6,7 +6,7 @@
  */
 import { CommonSolverParameters } from '../common-solver';
 import { ParameterType, SpecificParameterInfos } from '../../../../../utils';
-import ParameterField from '../../../common/parameter-field';
+import { ParameterField } from '../../../common/parameter-field';
 import { IdaSolver } from './ida-solver-parameters-constants';
 
 const params: SpecificParameterInfos[] = [

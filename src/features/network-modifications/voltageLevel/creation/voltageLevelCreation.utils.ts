@@ -8,8 +8,7 @@ import { IntlShape } from 'react-intl';
 import { array, boolean, InferType, number, object, ref, string } from 'yup';
 import {
     creationPropertiesSchema,
-    emptyProperties,
-    getPropertiesFromModification,
+    getFilledPropertiesFromModification,
     toModificationProperties,
 } from '../../common/properties/propertyUtils';
 import {
@@ -253,11 +252,13 @@ export const voltageLevelCreationDtoToForm = (
     voltageLevelDto: VoltageLevelCreationDto,
     intl?: IntlShape,
     includePreviousValue: boolean = true
-) => {
+): VoltageLevelCreationFormData => {
     const isSubstationCreation = voltageLevelDto.substationCreation?.equipmentId != null;
-    const substationProperties = isSubstationCreation
-        ? getPropertiesFromModification(voltageLevelDto.substationCreation?.properties, includePreviousValue)
-        : emptyProperties;
+    const substationProperties = {
+        [FieldConstants.ADDITIONAL_PROPERTIES]: isSubstationCreation
+            ? getFilledPropertiesFromModification(voltageLevelDto.substationCreation?.properties, includePreviousValue)
+            : [],
+    };
 
     return {
         [FieldConstants.EQUIPMENT_ID]: voltageLevelDto.equipmentId,
@@ -293,6 +294,9 @@ export const voltageLevelCreationDtoToForm = (
         [FieldConstants.SUBSTATION_CREATION]: substationProperties,
         [FieldConstants.HIDE_NOMINAL_VOLTAGE]: false,
         [FieldConstants.HIDE_BUS_BAR_SECTION]: false,
-        ...getPropertiesFromModification(voltageLevelDto.properties, includePreviousValue),
+        [FieldConstants.ADDITIONAL_PROPERTIES]: getFilledPropertiesFromModification(
+            voltageLevelDto.properties,
+            includePreviousValue
+        ),
     };
 };

@@ -105,6 +105,8 @@ export const businessErrorsEn = {
     'modification.container.badType':
         'Modification container type of {containerId} is invalid : actual type {containerType} -> expected type {expectedContainerType}',
     'modification.container.type.notFound': 'Modification container type of {modificationId} not found',
+    'modification.badType':
+        'Modification type of {modificationId} is invalid : actual type {modificationType} -> expected type {expectedModificationType}',
     'modification.notFound': 'Modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',

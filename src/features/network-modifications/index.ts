@@ -7,7 +7,6 @@
 
 export * from './common';
 export * from './equipmentDeletion';
-export * from './hooks';
 export * from './substation';
 export * from './voltageLevel';
 export * from './load';
@@ -15,6 +14,8 @@ export * from './by-filter';
 export * from './generator';
 export * from './battery';
 export * from './shunt-compensator';
+export * from './hvdcLine';
 export * from './line';
 export * from './twoWindingsTransformer';
 export * from './static-var-compensator';
+export * from './tabular';
