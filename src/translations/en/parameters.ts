@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 export const parametersEn = {
     descLfVoltageInitMode: 'Voltage initialisation mode',
     descLfUseReactiveLimits: 'Take the reactive limits of generators into account',
@@ -25,7 +24,6 @@ export const parametersEn = {
     showSelectParameterDialog: 'Choose parameters',
     createParameterLabel: 'Create new parameters',
     updateParameterLabel: 'Replace existing parameters',
-    nameAlreadyUsed: 'This name is already used',
     tagAlreadyUsed: 'This tag is already used',
     studyDirectoryFetchingError: 'An error occurred while fetching study directory',
     AddDescription: 'Add a description (optional)',
@@ -52,7 +50,6 @@ export const parametersEn = {
     descLfCountriesToBalance: 'Balancing countries',
     inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
-    RealPercentage: 'This value must be between 0 and 1',
 
     General: 'General',
     LimitReductions: 'Limit reductions',
@@ -227,7 +224,7 @@ export const parametersEn = {
     flowVoltageSensitivityValueThreshold: 'ΔkV / kV',
 
     ContingencyListsSelection: 'Contingency lists selection',
-    contingencyLists: 'Contingency lists',
+    ContingenciesList: 'Contingencies list',
     Execute: 'Execute',
     AddContingencyList: 'Add',
     DeleteContingencyList: 'Delete',

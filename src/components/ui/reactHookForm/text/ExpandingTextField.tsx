@@ -47,30 +47,35 @@ export function ExpandingTextField({
 
     const rowsToDisplay = isFocused ? rows : minRows;
 
+    const { slotProps, ...otherProps } = textFieldFormProps ?? {};
+
     const formProps: TextInputProps['formProps'] = {
         size: 'medium',
         multiline: true,
         onFocus: handleFocus,
         onBlur: handleBlur,
-        InputProps: {
-            style: {
-                textOverflow: 'ellipsis',
-                overflow: 'hidden', // disable scrolling
-                whiteSpace: 'pre',
-                resize: 'none', // or 'horizontal' for horizontal resizing
-            },
-            inputProps: { 'data-testid': 'DescriptionInputField' },
-        },
         helperText: <Typography variant="caption">{descriptionCounter}</Typography>,
-        FormHelperTextProps: {
-            sx: {
-                ml: 'auto',
-                color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+        slotProps: {
+            input: {
+                style: {
+                    textOverflow: 'ellipsis',
+                    overflow: 'hidden', // disable scrolling
+                    whiteSpace: 'pre',
+                    resize: 'none', // or 'horizontal' for horizontal resizing
+                },
+                inputProps: { 'data-testid': 'DescriptionInputField' },
             },
+            formHelperText: {
+                sx: {
+                    ml: 'auto',
+                    color: (theme) => (isOverTheLimit ? theme.palette.error.main : theme.palette.text.secondary),
+                },
+            },
+            ...slotProps,
         },
         ...(rowsToDisplay && { rows: rowsToDisplay }),
         ...(sx && { sx }),
-        ...textFieldFormProps,
+        ...otherProps,
     };
     return <TextInput name={name} label={label} formProps={formProps} {...otherTexFieldProps} />;
 }

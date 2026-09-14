@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { MouseEventHandler } from 'react';
-import { Badge, Grid2 as Grid, IconButton } from '@mui/material';
+import { Badge, Grid, IconButton } from '@mui/material';
 import { FilterAlt } from '@mui/icons-material';
 import { isNonEmptyStringOrArray, MuiStyles } from '../../../../utils';
 import { FilterTextComparators } from '../custom-aggrid-types';

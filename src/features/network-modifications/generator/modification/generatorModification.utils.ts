@@ -9,7 +9,10 @@ import { InferType, number, object, ref, string } from 'yup';
 import {
     DeepNullable,
     FieldConstants,
+    MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
     ModificationType,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    REAL_PERCENTAGE,
     sanitizeString,
     toModificationOperation,
 } from '../../../../utils';
@@ -55,16 +58,16 @@ export const generatorModificationFormSchema = object()
                 then: (schema) =>
                     schema.max(
                         ref(FieldConstants.MAXIMUM_ACTIVE_POWER),
-                        'MinActivePowerMustBeLessOrEqualToMaxActivePower'
+                        MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER
                     ),
             }),
-        [FieldConstants.RATED_NOMINAL_POWER]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.RATED_NOMINAL_POWER]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         ...getShortCircuitFormSchema(),
         [FieldConstants.PLANNED_ACTIVE_POWER_SET_POINT]: number().nullable(),
         [FieldConstants.MARGINAL_COST]: number().nullable(),
 
-        [FieldConstants.PLANNED_OUTAGE_RATE]: number().nullable().min(0, 'RealPercentage').max(1, 'RealPercentage'),
-        [FieldConstants.FORCED_OUTAGE_RATE]: number().nullable().min(0, 'RealPercentage').max(1, 'RealPercentage'),
+        [FieldConstants.PLANNED_OUTAGE_RATE]: number().nullable().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE),
+        [FieldConstants.FORCED_OUTAGE_RATE]: number().nullable().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(true),
         ...getSetPointsSchema(true),

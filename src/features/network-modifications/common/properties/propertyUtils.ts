@@ -7,7 +7,7 @@
 import { array, boolean, object, string } from 'yup';
 import { DUPLICATED_PROPS_ERROR, FieldConstants, isBlankOrEmpty, PredefinedProperties } from '../../../../utils';
 import { fetchStudyMetadata } from '../../../../services';
-import { FilledProperty, Properties, Property } from './properties.type';
+import { FilledProperties, FilledProperty, Properties, Property } from './properties.type';
 
 export type EquipmentWithProperties = {
     properties?: Record<string, string>;
@@ -41,13 +41,16 @@ const isFilledProperty = (property: Property): property is FilledProperty => {
     return property.value != null;
 };
 
-export const getFilledPropertiesFromModification = (properties: Property[] | undefined | null): FilledProperty[] => {
+export const getFilledPropertiesFromModification = (
+    properties: Property[] | undefined | null,
+    includePreviousValue = true
+): FilledProperty[] => {
     return (
         properties?.filter(isFilledProperty).map((p) => {
             return {
                 [FieldConstants.NAME]: p[FieldConstants.NAME],
                 [FieldConstants.VALUE]: p[FieldConstants.VALUE],
-                [FieldConstants.PREVIOUS_VALUE]: p[FieldConstants.PREVIOUS_VALUE],
+                [FieldConstants.PREVIOUS_VALUE]: includePreviousValue ? p[FieldConstants.PREVIOUS_VALUE] : undefined,
                 [FieldConstants.ADDED]: p[FieldConstants.ADDED],
                 [FieldConstants.DELETION_MARK]: p[FieldConstants.DELETION_MARK],
             };
@@ -76,7 +79,7 @@ export const getPropertiesFromModification = (
     };
 };
 
-export const copyEquipmentPropertiesForCreation = (equipmentInfos: EquipmentWithProperties): Properties => {
+export const copyEquipmentPropertiesForCreation = (equipmentInfos: EquipmentWithProperties): FilledProperties => {
     return {
         [FieldConstants.ADDITIONAL_PROPERTIES]: equipmentInfos.properties
             ? Object.entries(equipmentInfos.properties).map(([name, value]) => {

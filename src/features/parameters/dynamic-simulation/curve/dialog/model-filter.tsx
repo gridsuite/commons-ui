@@ -6,7 +6,7 @@
  */
 import { FormattedMessage, IntlShape, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { Box, Grid2 as Grid, Stack, Typography } from '@mui/material';
+import { Box, Grid, Stack, Typography } from '@mui/material';
 import CheckboxSelect from '../common/checkbox-select';
 import CheckboxTreeview, { CheckboxTreeviewApi } from '../common/checkbox-treeview';
 import { DynamicSimulationModelInfos } from '../../../../../utils/types/dynamic-simulation.type';

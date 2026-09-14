@@ -6,7 +6,12 @@
  */
 
 import { number, ref, string } from 'yup';
-import { FieldConstants } from '../../../../utils';
+import {
+    FieldConstants,
+    MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
+    SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
+    SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO,
+} from '../../../../utils';
 import { CHARACTERISTICS_CHOICES, computeSwitchedOnValue, SHUNT_COMPENSATOR_TYPES } from './shuntCompensator.utils';
 
 const getCharacteristicsCreateFormValidationSchema = () => ({
@@ -15,7 +20,7 @@ const getCharacteristicsCreateFormValidationSchema = () => ({
         .default(null)
         .when([FieldConstants.CHARACTERISTICS_CHOICE], {
             is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
-            then: (schema) => schema.min(0, 'ShuntCompensatorErrorQAtNominalVoltageLessThanZero').required(),
+            then: (schema) => schema.min(0, SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO).required(),
         }),
     [FieldConstants.MAX_SUSCEPTANCE]: number()
         .nullable()
@@ -24,27 +29,29 @@ const getCharacteristicsCreateFormValidationSchema = () => ({
             is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
             then: (schema) => schema.required(),
         }),
-    [FieldConstants.MAXIMUM_SECTION_COUNT]: number().required().min(1, 'MaximumSectionCountMustBeGreaterOrEqualToOne'),
+    [FieldConstants.MAXIMUM_SECTION_COUNT]: number()
+        .required()
+        .min(1, MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE),
     [FieldConstants.SECTION_COUNT]: number()
         .required()
-        .min(0, 'SectionCountMustBeBetweenZeroAndMaximumSectionCount')
-        .max(ref(FieldConstants.MAXIMUM_SECTION_COUNT), 'SectionCountMustBeBetweenZeroAndMaximumSectionCount'),
+        .min(0, SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT)
+        .max(ref(FieldConstants.MAXIMUM_SECTION_COUNT), SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT),
     [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().notRequired(),
     [FieldConstants.SWITCHED_ON_SUSCEPTANCE]: number().notRequired(),
 });
 
 const getCharacteristicsModificationFormValidationSchema = () => ({
     [FieldConstants.MAX_Q_AT_NOMINAL_V]: number()
-        .min(0, 'ShuntCompensatorErrorQAtNominalVoltageLessThanZero')
+        .min(0, SHUNT_COMPENSATOR_ERROR_Q_AT_NOMINAL_VOLTAGE_LESS_THAN_ZERO)
         .nullable()
         .default(null),
     [FieldConstants.MAX_SUSCEPTANCE]: number().nullable().default(null),
     [FieldConstants.MAXIMUM_SECTION_COUNT]: number()
-        .min(1, 'MaximumSectionCountMustBeGreaterOrEqualToOne')
+        .min(1, MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE)
         .nullable()
         .default(null),
     [FieldConstants.SECTION_COUNT]: number()
-        .min(0, 'SectionCountMustBeBetweenZeroAndMaximumSectionCount')
+        .min(0, SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT)
         .nullable()
         .default(null),
     [FieldConstants.SWITCHED_ON_Q_AT_NOMINAL_V]: number().nullable(),

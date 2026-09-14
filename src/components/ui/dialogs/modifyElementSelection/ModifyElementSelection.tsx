@@ -6,7 +6,7 @@
  */
 
 import { useEffect, useState } from 'react';
-import { Box, Button, Grid2 as Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
 import type { UUID } from 'node:crypto';

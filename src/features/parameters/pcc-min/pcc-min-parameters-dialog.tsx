@@ -5,10 +5,10 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
@@ -49,9 +49,11 @@ export function PccMinParametersEditionDialog({
             }}
             titleId={titleId}
             disabledSave={isDisabledValidationButton(errors)}
-            PaperProps={{
-                sx: {
-                    height: '90vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '90vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

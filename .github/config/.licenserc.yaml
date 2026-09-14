@@ -13,6 +13,7 @@ header:
     - '**/*.md'
     - 'LICENSE'
     - 'NOTICE'
+    - 'CODEOWNERS'
     - '**/.*'
     - '**/*.txt'
     - '**/*.json'

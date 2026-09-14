@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 as Grid, Typography, useTheme, Stack } from '@mui/material';
+import { Box, Grid, Typography, useTheme, Stack } from '@mui/material';
 import { useCallback, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { useFieldArray, useFormContext } from 'react-hook-form';

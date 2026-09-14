@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, IconButton, lighten } from '@mui/material';
+import { Box, Grid, IconButton } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
 import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
@@ -28,7 +28,7 @@ const limitsStyles = {
         backgroundColor:
             theme.palette.mode === 'light'
                 ? theme.palette.background.paper
-                : lighten(theme.palette.background.paper, 0.2),
+                : theme.lighten(theme.palette.background.paper, 0.2),
         height: '100%',
         position: 'relative',
         padding: 0,
@@ -69,7 +69,7 @@ export function LimitsPane({
         name: operationalLimitsGroupsFormName,
     });
 
-    const isAModification: boolean = useMemo(() => !!equipmentToModify, [equipmentToModify]);
+    const equipmentPresent: boolean = useMemo(() => !!equipmentToModify, [equipmentToModify]);
 
     const getCurrentLimits = (equipment: any, operationalLimitsGroupId: string): CurrentLimitsData | null => {
         if (equipment?.currentLimits) {
@@ -121,7 +121,7 @@ export function LimitsPane({
     const addNewLimitSet = useCallback(() => {
         let name = 'DEFAULT';
 
-        // Try to generate unique name (we relie on watched table because name can be changed without using useFieldArray functions)
+        // Try to generate unique name (we rely on watched table because name can be changed without using useFieldArray functions)
         if (watchedOperationalLimitsGroups?.length > 0) {
             const ids: string[] = watchedOperationalLimitsGroups.map((l) => l.name);
             name = generateUniqueId('DEFAULT', ids);
@@ -145,14 +145,14 @@ export function LimitsPane({
                     }}
                 >
                     {/* if the user wants to switch off the modification a modal asks him to confirm */}
-                    {isAModification && (
+                    {isModification && (
                         <InputWithPopupConfirmation
                             Input={SwitchInput}
                             name={`${id}.${FieldConstants.ENABLE_OLG_MODIFICATION}`}
                             label={olgEditable ? 'Edit' : 'View'}
                             shouldOpenPopup={() => olgEditable}
                             onValueChange={resetOLGs}
-                            message="disableOLGedition"
+                            message={equipmentPresent ? 'disableOLGeditionByReplace' : 'disableOLGedition'}
                             validateButtonLabel="validate"
                         />
                     )}

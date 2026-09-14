@@ -6,8 +6,6 @@
  */
 
 export const useUniqueNameValidationEn = {
-    'use-unique-name-validation/nameAlreadyUsed': 'This name is already used',
     'use-unique-name-validation/nameValidityCheckErrorMsg': 'Error while checking name validity',
     'use-unique-name-validation/cantSubmitWhileValidating': 'Impossible to submit the form while validating a field',
-    'use-unique-name-validation/nameEmpty': 'The name is empty',
 };

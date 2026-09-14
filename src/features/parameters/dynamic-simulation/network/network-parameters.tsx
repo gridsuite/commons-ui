@@ -4,10 +4,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { Network } from './network-parameters-constants';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils';
-import ParameterField from '../../common/parameter-field';
+import { ParameterField } from '../../common/parameter-field';
 
 const params = [
     {

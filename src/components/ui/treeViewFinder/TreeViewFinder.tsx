@@ -5,6 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/**
+ * WARNING: THIS COMPONENT NEEDS REFACTORING.
+ * DO NOT ADD NEW FEATURES OR FUNCTIONAL CHANGES WITHOUT REFACTORING THIS COMPONENT FIRST.
+ */
+
 import React, { FunctionComponent, ReactElement, useCallback, useEffect, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import {

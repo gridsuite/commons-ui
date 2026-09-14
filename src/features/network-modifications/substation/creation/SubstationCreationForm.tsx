@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { TextInput } from '../../../../components/ui';
 import { CountrySelectionInput } from '../../../../components/ui/reactHookForm/CountrySelectionInput';
 import { FieldConstants } from '../../../../utils';

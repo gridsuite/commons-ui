@@ -66,7 +66,7 @@ export const getRegulatingTerminalFormData = ({
     voltageLevelNominalVoltage,
     voltageLevelSubstationId,
     voltageLevelTopologyKind,
-    equipmentId = null,
+    equipmentID = null,
     equipmentName,
     equipmentType,
 }: {
@@ -75,7 +75,7 @@ export const getRegulatingTerminalFormData = ({
     voltageLevelSubstationId?: string;
     voltageLevelNominalVoltage?: string;
     voltageLevelTopologyKind?: string;
-    equipmentId?: string | null;
+    equipmentID?: string | null;
     equipmentName?: string | null;
     equipmentType?: string;
 }) => ({
@@ -87,7 +87,7 @@ export const getRegulatingTerminalFormData = ({
         voltageLevelTopologyKind,
     }),
     [FieldConstants.EQUIPMENT]: getRegulatingTerminalEquipmentData({
-        equipmentId,
+        equipmentId: equipmentID,
         equipmentName,
         equipmentType,
     }),

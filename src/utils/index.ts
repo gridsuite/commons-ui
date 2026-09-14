@@ -20,3 +20,4 @@ export * from './types';
 export * from './ts-utils';
 export * from './validation-functions';
 export * from './directory-utils';
+export * from './running-status';

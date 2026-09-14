@@ -12,7 +12,6 @@ import {
     Box,
     Button,
     ClickAwayListener,
-    darken,
     IconButton,
     ListItemIcon,
     ListItemText,
@@ -75,7 +74,7 @@ const getStyles = (dense: boolean = false) => {
             color: 'inherit',
         },
         name: (theme) => ({
-            backgroundColor: darken(theme.palette.background.paper, 0.1),
+            backgroundColor: theme.darken(theme.palette.background.paper, 0.1),
             paddingTop: theme.spacing(dense ? 0.625 : 1.25),
             borderRadius: '100%',
             fontWeight: '400',
@@ -484,14 +483,14 @@ export function TopBar({
                                                     aria-label={LIGHT_THEME}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    <WbSunnyIcon fontSize="small" />
+                                                    <WbSunnyIcon fontSize="small" data-testid="WbSunnyIcon" />
                                                 </ToggleButton>
                                                 <ToggleButton
                                                     value={DARK_THEME}
                                                     aria-label={DARK_THEME}
                                                     sx={styles.toggleButton}
                                                 >
-                                                    <Brightness3Icon fontSize="small" />
+                                                    <Brightness3Icon fontSize="small" data-testid="Brightness3Icon" />
                                                 </ToggleButton>
                                             </ToggleButtonGroup>
                                         </StyledMenuItem>

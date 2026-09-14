@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
+import { Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ProviderParam, UseTabsReturn } from '../common';
+import { ProviderParam } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabPanel } from '../common/parameters';
 import TimeDelayParameters from './time-delay-parameters';
@@ -15,6 +15,8 @@ import LoadsVariationsParameters from './loads-variations-parameters';
 
 import { TabValues } from './dynamic-margin-calculation.type';
 import { UseComputationParametersFormReturn } from '../common/utils';
+
+import { UseTabsReturn } from '../../../hooks';
 
 type DynamicMarginCalculationFormProps = {
     dynamicMarginCalculationMethods: UseComputationParametersFormReturn;

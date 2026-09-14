@@ -29,6 +29,7 @@ export interface AutocompleteInputProps extends Omit<
     formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
     disabledTooltip?: boolean;
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
+    dataTestId?: string;
 }
 
 export function AutocompleteInput({
@@ -44,6 +45,7 @@ export function AutocompleteInput({
     formProps,
     disabledTooltip,
     onCheckNewValue,
+    dataTestId,
     ...props
 }: AutocompleteInputProps) {
     const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
@@ -84,6 +86,7 @@ export function AutocompleteInput({
 
     return (
         <Autocomplete
+            data-testid={dataTestId}
             value={selectedValues ?? null} // Ensure null instead of undefined otherwise it switches to uncontrolled mode
             onChange={(_, data) => handleChange(data as Option)}
             {...(allowNewValue && {
@@ -108,7 +111,9 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
-                    inputProps={{ ...inputProps, readOnly }}
+                    slotProps={{
+                        htmlInput: { ...inputProps, readOnly },
+                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue

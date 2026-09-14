@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import React from 'react';
 import { UseSensitivityAnalysisParametersReturn } from './use-sensitivity-analysis-parameters';
 import { parametersStyles } from '../parameters-style';
@@ -44,6 +44,7 @@ export function SensitivityAnalysisParametersForm({
                     isStudyLinked={sensitivityAnalysisMethods.isStudyLinked}
                     isRootNode={isRootNode}
                     globalBuildStatus={globalBuildStatus}
+                    useSensiTabsReturn={sensitivityAnalysisMethods.useSensiTabsReturn}
                 />
             </Stack>
         </Stack>

@@ -10,6 +10,8 @@ import {
     DeepNullable,
     FieldConstants,
     ModificationType,
+    MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    REAL_PERCENTAGE,
     sanitizeString,
     UNDEFINED_CONNECTION_DIRECTION,
 } from '../../../../utils';
@@ -54,7 +56,7 @@ export const generatorCreationFormSchema = object()
             .nullable()
             .max(ref(FieldConstants.MAXIMUM_ACTIVE_POWER), 'generatorMinimumActivePowerMaxValueError')
             .required(),
-        [FieldConstants.RATED_NOMINAL_POWER]: number().nullable().min(0, 'mustBeGreaterOrEqualToZero'),
+        [FieldConstants.RATED_NOMINAL_POWER]: number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
         ...getShortCircuitFormSchema(),
         [FieldConstants.PLANNED_ACTIVE_POWER_SET_POINT]: number()
             .nullable()
@@ -65,8 +67,8 @@ export const generatorCreationFormSchema = object()
                 testValueWithinPowerInterval
             ),
         [FieldConstants.MARGINAL_COST]: number().nullable(),
-        [FieldConstants.PLANNED_OUTAGE_RATE]: number().nullable().min(0, 'RealPercentage').max(1, 'RealPercentage'),
-        [FieldConstants.FORCED_OUTAGE_RATE]: number().nullable().min(0, 'RealPercentage').max(1, 'RealPercentage'),
+        [FieldConstants.PLANNED_OUTAGE_RATE]: number().nullable().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE),
+        [FieldConstants.FORCED_OUTAGE_RATE]: number().nullable().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(),
         ...getSetPointsSchema(),
         [FieldConstants.REACTIVE_LIMITS]: getReactiveLimitsValidationSchema(),

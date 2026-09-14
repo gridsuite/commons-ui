@@ -41,9 +41,10 @@ interface ChipItemsInputProps {
     label?: string;
     name: string;
     hideErrorMessage?: boolean;
+    dataTestId?: string;
 }
 
-export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipItemsInputProps>) {
+export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Readonly<ChipItemsInputProps>) {
     const [textEntered, setTextEntered] = useState('');
     const { snackError } = useSnackMessage();
 
@@ -129,19 +130,22 @@ export function ChipItemsInput({ label, name, hideErrorMessage }: Readonly<ChipI
                 )}
 
                 <TextField
+                    data-testid={dataTestId}
                     variant="standard"
-                    InputProps={{
-                        disableUnderline: true,
-                        style: {
-                            marginTop: '5px',
-                            height: '30px',
-                            marginLeft: '10px',
-                        },
-                    }}
                     value={textEntered}
                     onKeyDown={keyPress}
                     onChange={handleChange}
                     onBlur={onBlur}
+                    slotProps={{
+                        input: {
+                            disableUnderline: true,
+                            style: {
+                                marginTop: '5px',
+                                height: '30px',
+                                marginLeft: '10px',
+                            },
+                        },
+                    }}
                 />
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}

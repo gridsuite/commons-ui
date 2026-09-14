@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { FieldConstants } from '../../../../utils';
 import { CheckboxInput, ReadOnlyInput } from '../../../../components/ui';
 import { GridSection } from '../../../../components/composite/grid/grid-section';

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { FieldConstants, YUP_REQUIRED } from '../../../../../utils';
+import { FieldConstants, NUMERIC_VALUE_OR_EMPTY_FIELD, YUP_REQUIRED } from '../../../../../utils';
 import { Assignment, DataType, FieldOptionType, FieldValue } from './assignment.type';
 import { FIELD_OPTIONS } from './assignment-constants';
 
@@ -28,7 +28,7 @@ function getValueSchema(emptyValueStr: string, dataType?: DataType, settable_to_
     switch (dataType) {
         case DataType.DOUBLE:
             schema = settable_to_none
-                ? yup.string().test('is-number-or-none', 'NumericValueOrEmptyField', (value) => {
+                ? yup.string().test('is-number-or-none', NUMERIC_VALUE_OR_EMPTY_FIELD, (value) => {
                       return value === emptyValueStr || !Number.isNaN(Number(value));
                   })
                 : yup.number();

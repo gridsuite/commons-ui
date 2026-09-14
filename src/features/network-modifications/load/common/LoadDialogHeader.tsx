@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { LoadFormInfos } from './load.types';
@@ -28,8 +28,10 @@ export function LoadDialogHeader({ loadToModify, isModification = false }: Reado
             fullWidth
             label="ID"
             value={equipmentId ?? ''}
-            InputProps={{
-                readOnly: true,
+            slotProps={{
+                input: {
+                    readOnly: true,
+                },
             }}
             disabled
             {...filledTextField}

@@ -23,11 +23,20 @@ export function fetchRootFolders(types: string[]): Promise<ElementAttributes[]> 
     });
 }
 
-export function fetchDirectoryContent(directoryUuid: UUID, types?: string[]): Promise<ElementAttributes[]> {
+export function fetchDirectoryContent(
+    directoryUuid: UUID,
+    types?: string[],
+    recursive?: boolean
+): Promise<ElementAttributes[]> {
     console.info("Fetching Folder content '%s'", directoryUuid);
 
     // Add params to Url
-    const urlSearchParams = getRequestParamFromList('elementTypes', types).toString();
+    const searchParams = getRequestParamFromList('elementTypes', types);
+    if (recursive) {
+        // the whole content of the directory, at any depth
+        searchParams.append('recursive', 'true');
+    }
+    const urlSearchParams = searchParams.toString();
 
     const fetchDirectoryContentUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/directories/${directoryUuid}/elements${
         urlSearchParams ? `?${urlSearchParams}` : ''

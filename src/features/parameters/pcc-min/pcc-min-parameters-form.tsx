@@ -5,7 +5,7 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { ParameterLineDirectoryItemsInput } from '../common/widget/parameter-line-directory-items-input.js';
 import { ElementType, EquipmentType } from '../../../utils';
 import { FILTERS } from '../../../utils/constants/filterConstant';

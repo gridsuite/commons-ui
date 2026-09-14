@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack } from '@mui/material';
+import { Grid, Stack } from '@mui/material';
 import { PowerWithValidityForm } from './PowerWithValidityForm';
 import { MeasurementInfo } from './measurement.type';
 import { FieldConstants, FieldType } from '../../../../utils';
@@ -22,7 +22,7 @@ export function PowerMeasurementsForm({
     side,
     activePowerMeasurement,
     reactivePowerMeasurement,
-    idPrefix = '',
+    idPrefix = FieldConstants.STATE_ESTIMATION,
     reactivePowerOnly = false,
 }: Readonly<PowerMeasurementsFormProps>) {
     const getActiveMeasurementType = (whichSide: number | null | undefined) => {
@@ -39,20 +39,12 @@ export function PowerMeasurementsForm({
         return whichSide === 1 ? FieldConstants.MEASUREMENT_Q1 : FieldConstants.MEASUREMENT_Q2;
     };
 
-    let activePowerId = `${FieldConstants.STATE_ESTIMATION}.${getActiveMeasurementType(side)}`;
-    let reactivePowerId = `${FieldConstants.STATE_ESTIMATION}.${getReactiveMeasurementType(side)}`;
-
-    if (idPrefix) {
-        activePowerId = `${idPrefix}.${activePowerId}`;
-        reactivePowerId = `${idPrefix}.${reactivePowerId}`;
-    }
-
     return (
         <Stack spacing={2}>
             {!reactivePowerOnly && (
                 <Grid>
                     <PowerWithValidityForm
-                        id={activePowerId}
+                        id={`${idPrefix}.${getActiveMeasurementType(side)}`}
                         field={FieldType.ACTIVE_POWER}
                         measurement={activePowerMeasurement}
                     />
@@ -60,7 +52,7 @@ export function PowerMeasurementsForm({
             )}
             <Grid>
                 <PowerWithValidityForm
-                    id={reactivePowerId}
+                    id={`${idPrefix}.${getReactiveMeasurementType(side)}`}
                     field={FieldType.REACTIVE_POWER}
                     measurement={reactivePowerMeasurement}
                 />

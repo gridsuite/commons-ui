@@ -5,9 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { array, number, ref, object, TestContext, ValidationError } from 'yup';
-import { FieldValues, UseFormSetValue } from 'react-hook-form';
 import { ReactiveCapabilityCurve } from '../reactiveLimits.type';
-import { FieldConstants, toNumber, validateValueIsANumber } from '../../../../../utils';
+import { FieldConstants, toNumber, validateValueIsANumber, YUP_REQUIRED } from '../../../../../utils';
 import type { GeneratorCreationFormData } from '../../../generator/creation/generatorCreation.utils';
 import type { GeneratorCreationDto } from '../../../generator/creation/generatorCreation.types';
 import type { GeneratorModificationDto } from '../../../generator/modification/generatorModification.types';
@@ -39,7 +38,7 @@ function getNotNullPFromArray(values: ReactiveCapabilityCurve) {
         ?.map((element) => {
             const pValue = element[FieldConstants.P];
 
-            // Note : convertion toNumber is necessary here to prevent corner cases like if
+            // Note : conversion toNumber is necessary here to prevent corner cases like if
             // two values are "-0" and "0", which would be considered different by the Set below.
             return validateValueIsANumber(pValue) ? toNumber(pValue) : null;
         })
@@ -85,7 +84,7 @@ function ifOneFieldThenAllFields(values: ReactiveCapabilityCurve, context: TestC
                 errors.push(
                     context.createError({
                         path: `${FieldConstants.REACTIVE_LIMITS}.${FieldConstants.REACTIVE_CAPABILITY_CURVE_TABLE}[${index}].${field}`,
-                        message: 'YupRequired',
+                        message: YUP_REQUIRED,
                     })
                 );
             }
@@ -139,22 +138,6 @@ export const getReactiveCapabilityCurveValidationSchema = (
     [id]: getReactiveCapabilityCurveValidationSchemaArray(positiveAndNegativePExist),
 });
 
-export function setSelectedReactiveLimits(
-    id: string,
-    minMaxReactiveLimits: number,
-    setValue: UseFormSetValue<FieldValues>
-) {
-    setValue(id, minMaxReactiveLimits ? 'MINMAX' : 'CURVE');
-}
-
-export function setCurrentReactiveCapabilityCurveTable(
-    previousReactiveCapabilityCurveTable: ReactiveCapabilityCurve,
-    fieldKey: string,
-    setValue: UseFormSetValue<FieldValues>
-) {
-    setValue(fieldKey, previousReactiveCapabilityCurveTable);
-}
-
 function handleReactiveCapabilityCurveChoice(
     previousChoice: string | null | undefined,
     currentReactiveLimits: ReactiveLimitsFormData
@@ -195,7 +178,7 @@ export function toReactiveCapabilityCurveChoiceForGeneratorCreation(
     return handleReactiveCapabilityCurveChoice(previousChoice, form.reactiveLimits);
 }
 
-// In case the user has changed the choice of the reactive capability curve, but not the values, we keep the original choice, or the network equipement value
+// In case the user has changed the choice of the reactive capability curve, but not the values, we keep the original choice, or the network equipment value
 export function toReactiveCapabilityCurveChoiceForGeneratorModification(
     form: GeneratorModificationFormData,
     generatorToModify: GeneratorFormInfos | undefined,

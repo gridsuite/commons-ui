@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { GeneratorDialogTab } from './generatorTabs.utils';
@@ -18,6 +18,7 @@ import {
     ReactiveLimitsForm,
     SetPointsForm,
     ShortCircuitForm,
+    UpdateReactiveCapabilityCurveTable,
     VoltageRegulationForm,
 } from '../../common';
 import { GeneratorFormInfos } from '../generatorDialog.type';
@@ -34,7 +35,7 @@ import { GridItem } from '../../../../components/composite/grid/grid-item';
 
 export interface GeneratorDialogTabsContentProps extends ConnectivityNetworkProps {
     generatorToModify?: GeneratorFormInfos | null;
-    updatePreviousReactiveCapabilityCurveTable: (action: string, index: number) => void;
+    updatePreviousReactiveCapabilityCurveTable: UpdateReactiveCapabilityCurveTable;
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     tabIndex: number;
 }

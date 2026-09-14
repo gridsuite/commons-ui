@@ -5,6 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+/**
+ * WARNING: THIS NEEDS REFACTORING.
+ * DO NOT ADD NEW FEATURES OR FUNCTIONAL CHANGES WITHOUT REFACTORING THIS COMPONENT FIRST.
+ */
+
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import type { MuiStyles } from '../../../utils';

@@ -12,6 +12,7 @@ export type SuccessCountType = {
     success: true;
     nbContingencies: number;
     notFoundElements: number;
+    NotFoundElementsData: NotFoundElementsData[];
 };
 
 export type FailureCountType = {
@@ -20,6 +21,12 @@ export type FailureCountType = {
 };
 
 export type SimulatedContingencyCountType = SuccessCountType | FailureCountType;
+
+export type NotFoundElementsData = {
+    list: string;
+    contingency: string;
+    element: string;
+};
 
 export function mapSimulatedContingencyList(
     contingencyCount: ContingencyCount,
@@ -34,6 +41,7 @@ export function mapSimulatedContingencyList(
 
     let total = 0;
     let totalNotFound = 0;
+    const rows: NotFoundElementsData[] = [];
 
     // eslint-disable-next-line no-restricted-syntax
     for (const [uuid, countByList] of Object.entries(contingencyCount.countByContingencyList)) {
@@ -49,11 +57,23 @@ export function mapSimulatedContingencyList(
         if (countByList.notFoundElements !== null) {
             totalNotFound += Object.entries(countByList.notFoundElements).length;
         }
+        if (countByList.notFoundElements && Object.keys(countByList.notFoundElements).length > 0) {
+            Object.entries(countByList.notFoundElements).forEach(([contingency, elements]) => {
+                elements.forEach((element) => {
+                    rows.push({
+                        list: listName,
+                        contingency,
+                        element,
+                    });
+                });
+            });
+        }
     }
 
     return {
         success: true,
         nbContingencies: total,
         notFoundElements: totalNotFound,
+        NotFoundElementsData: rows,
     };
 }

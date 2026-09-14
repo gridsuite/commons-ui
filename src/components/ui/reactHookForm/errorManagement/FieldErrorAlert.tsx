@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Alert, Grid2 as Grid } from '@mui/material';
+import { Alert, Grid } from '@mui/material';
 import React from 'react';
 
 export interface FieldErrorAlertProps {

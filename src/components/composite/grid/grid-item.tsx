@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { PropsWithChildren, ReactNode } from 'react';
-import { Grid2 as Grid, Grid2Props } from '@mui/material';
+import { Grid, GridProps } from '@mui/material';
 import { CustomTooltip } from '../../ui/tooltip';
 import { mergeSx } from '../../../utils';
 
 export interface GridItemProps extends PropsWithChildren {
-    size?: Grid2Props['size'];
-    offset?: Grid2Props['offset'];
+    size?: GridProps['size'];
+    offset?: GridProps['offset'];
     alignItem?: string;
     tooltip?: ReactNode;
-    sx?: Grid2Props['sx'];
+    sx?: GridProps['sx'];
 }
 
 export function GridItem({

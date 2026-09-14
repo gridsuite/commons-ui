@@ -36,6 +36,10 @@ export const BASE_MODIFICATION_TABLE_COLUMNS = {
         id: 'switch',
         autoExtensible: false,
     },
+    SHARED: {
+        id: 'shared',
+        autoExtensible: false,
+    },
 };
 
 export const AUTO_EXTENSIBLE_COLUMNS = Object.values(BASE_MODIFICATION_TABLE_COLUMNS)

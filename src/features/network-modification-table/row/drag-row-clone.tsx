@@ -13,6 +13,7 @@ import { useIntl } from 'react-intl';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
 import { useModificationLabelComputer } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata } from '../../../utils';
+import { toMessageValues } from '../utils';
 
 interface DragCloneRowProps {
     row: Row<ComposedModificationMetadata>;
@@ -26,7 +27,10 @@ export function DragCloneRow({ row }: Readonly<DragCloneRowProps>) {
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
             return intl.formatMessage(
                 { id: `network_modifications.${modification.messageType}` },
-                { ...(modification as NetworkModificationMetadata), ...computeLabel(modification, formatBold) }
+                {
+                    ...toMessageValues(modification as NetworkModificationMetadata),
+                    ...computeLabel(modification, formatBold),
+                }
             );
         },
         [computeLabel, intl]

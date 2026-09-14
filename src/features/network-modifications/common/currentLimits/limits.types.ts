@@ -37,6 +37,7 @@ export interface CurrentLimitsData {
     limitsProperties?: LimitsProperty[];
     permanentLimit: number;
     temporaryLimits: TemporaryLimitsData[];
+    temporaryLimitsByName?: Record<string, TemporaryLimitsData>;
 }
 
 export interface Limit {

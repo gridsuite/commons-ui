@@ -30,9 +30,9 @@ import { CustomReactQueryBuilder } from '../../reactQueryBuilder/CustomReactQuer
 import { unscrollableDialogStyles } from '../../../ui/dialogs';
 import { FieldType } from '../../../../utils/types/fieldType';
 import { useFormatLabelWithUnit } from '../../../../hooks/useFormatLabelWithUnit';
-import { filterStyles } from '../HeaderFilterForm';
 import { EquipmentType } from '../../../../utils';
 import { useCustomFormContext } from '../../../ui';
+import { elementEditionStyles } from '../../../ui/dialogs/name-element-editor';
 
 function isSupportedEquipmentType(equipmentType: EquipmentType): boolean {
     return Object.values(EXPERT_FILTER_EQUIPMENTS)
@@ -118,7 +118,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
                     onValueChange={resetOnTypeChange}
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
-                    sx={filterStyles.textField}
+                    sx={elementEditionStyles.textField}
                     data-testid="EquipmentTypeSelector"
                 />
             </Box>

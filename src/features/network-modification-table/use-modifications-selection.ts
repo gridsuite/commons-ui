@@ -21,15 +21,15 @@ function normalizeCompositeSelection(
     const visit = (node: ComposedModificationMetadata): boolean => {
         const children = node.subModifications;
         if (!children || children.length === 0) {
-            return next[node.uuid];
+            return next[node.rowKey];
         }
         // Recurse first so nested composites are resolved bottom-up.
         const everyChildSelected = children.map((child) => visit(child)).every(Boolean);
         if (everyChildSelected) {
-            next[node.uuid] = true;
+            next[node.rowKey] = true;
         } else {
             // Some or none of the children are selected: the composite must not be marked as fully selected.
-            delete next[node.uuid];
+            delete next[node.rowKey];
         }
         return everyChildSelected;
     };
@@ -73,13 +73,13 @@ function propagateSelectionToLoadedDescendants(
     let mutated = false;
 
     const visit = (node: ComposedModificationMetadata, ancestorSelected: boolean) => {
-        const effectiveSelected = ancestorSelected || next[node.uuid];
-        if (effectiveSelected && !next[node.uuid]) {
+        const effectiveSelected = ancestorSelected || next[node.rowKey];
+        if (effectiveSelected && !next[node.rowKey]) {
             if (!mutated) {
                 next = { ...selection };
                 mutated = true;
             }
-            next[node.uuid] = true;
+            next[node.rowKey] = true;
         }
         node.subModifications?.forEach((child) => visit(child, effectiveSelected));
     };
@@ -89,27 +89,27 @@ function propagateSelectionToLoadedDescendants(
 }
 
 /**
- * Collects every uuid present anywhere in the tree (root + all nested levels).
+ * Collects every rowKey present anywhere in the tree (root + all nested levels).
  */
-function collectAllUuids(mods: ComposedModificationMetadata[]): Set<string> {
-    const uuids = new Set<string>();
+function collectAllRowKeys(mods: ComposedModificationMetadata[]): Set<string> {
+    const rowKeys = new Set<string>();
     const visit = (nodes: ComposedModificationMetadata[]) =>
         nodes.forEach((m) => {
-            uuids.add(m.uuid);
+            rowKeys.add(m.rowKey);
             visit(m.subModifications);
         });
     visit(mods);
-    return uuids;
+    return rowKeys;
 }
 
 /**
- * Removes selection entries whose uuid is no longer present anywhere in the tree.
+ * Removes selection entries whose rowKey is no longer present anywhere in the tree.
  * This keeps the selection in sync after a move (cut/paste), delete, or restore
  * operation that changes which modifications exist in the current node.
  * Returns the same reference when nothing changed to avoid unnecessary re-renders.
  */
-function pruneStaleSelection(selection: RowSelectionState, allUuids: Set<string>): RowSelectionState {
-    const pruned = Object.fromEntries(Object.entries(selection).filter(([uuid]) => allUuids.has(uuid)));
+function pruneStaleSelection(selection: RowSelectionState, allRowKeys: Set<string>): RowSelectionState {
+    const pruned = Object.fromEntries(Object.entries(selection).filter(([rowKey]) => allRowKeys.has(rowKey)));
     return Object.keys(pruned).length === Object.keys(selection).length ? selection : pruned;
 }
 
@@ -152,8 +152,8 @@ export function useModificationsSelection({
     useEffect(() => {
         setRowSelection((prev) => {
             const propagated = propagateSelectionToLoadedDescendants(prev, modifications);
-            const allUuids = collectAllUuids(modifications);
-            return pruneStaleSelection(propagated, allUuids);
+            const allRowKeys = collectAllRowKeys(modifications);
+            return pruneStaleSelection(propagated, allRowKeys);
         });
     }, [modifications]);
 

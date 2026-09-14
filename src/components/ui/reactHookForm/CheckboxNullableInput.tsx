@@ -56,6 +56,8 @@ export function CheckboxNullableInput({
     // Get the current label based on value
     const currentLabel = typeof label === 'function' ? label(value) : label;
 
+    const { slotProps, ...otherFormProps } = formProps ?? {};
+
     return (
         <FormControl fullWidth size="small">
             <FormControlLabel
@@ -66,10 +68,13 @@ export function CheckboxNullableInput({
                         indeterminate={nullDisabled ? undefined : value === null}
                         onChange={handleChangeValue}
                         value="checked"
-                        inputProps={{
-                            'aria-label': 'primary checkbox',
+                        slotProps={{
+                            input: {
+                                'aria-label': 'primary checkbox',
+                            },
+                            ...slotProps,
                         }}
-                        {...formProps}
+                        {...otherFormProps}
                     />
                 }
                 label={

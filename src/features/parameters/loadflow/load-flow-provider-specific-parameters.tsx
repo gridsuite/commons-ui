@@ -6,7 +6,7 @@
  */
 
 import { memo } from 'react';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 import { SpecificParameterInfos } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from '../common';
 
@@ -18,7 +18,13 @@ function LoadFlowProviderSpecificParameters({ specificParameters }: Readonly<Loa
     return (
         <>
             {specificParameters?.map((item) => (
-                <ParameterField id={SPECIFIC_PARAMETERS} {...item} key={item.name} />
+                <ParameterField
+                    id={SPECIFIC_PARAMETERS}
+                    {...item}
+                    label={item.name}
+                    description={`${item.description} (${item.name})`}
+                    key={item.name}
+                />
             ))}
         </>
     );

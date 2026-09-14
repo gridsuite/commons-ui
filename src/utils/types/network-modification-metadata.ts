@@ -17,10 +17,25 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
-export interface ComposedModificationMetadata extends NetworkModificationMetadata {
+export interface BasicComposedModificationMetadata extends NetworkModificationMetadata {
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
+    childFromShared?: boolean;
+}
+
+export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {
+    rowKey: UUID;
+}
+export interface ReferencedCompositeModifications extends NetworkModificationMetadata {
+    modificationsInfos?: NetworkModificationMetadata[];
+}
+
+export interface ModificationReferenceInfos extends NetworkModificationMetadata {
+    referencedId?: UUID;
+    referenceType?: string;
+    referencedInfos?: BasicComposedModificationMetadata;
 }

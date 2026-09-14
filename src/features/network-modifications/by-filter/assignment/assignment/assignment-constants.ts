@@ -72,7 +72,7 @@ export const FIELD_OPTIONS: Record<string, FieldOptionType> = {
     },
     VOLTAGE_SET_POINT: {
         id: FieldType.VOLTAGE_SET_POINT,
-        label: 'GeneratorTargetV',
+        label: 'TargetV',
         unit: KILO_VOLT,
         dataType: DataType.DOUBLE,
     },
@@ -400,6 +400,8 @@ export const EQUIPMENTS_FIELDS = {
     ],
     [EquipmentType.BATTERY]: [
         FIELD_OPTIONS.PROPERTY,
+        FIELD_OPTIONS.VOLTAGE_REGULATOR_ON,
+        FIELD_OPTIONS.VOLTAGE_SET_POINT,
         FIELD_OPTIONS.MINIMUM_ACTIVE_POWER,
         FIELD_OPTIONS.MAXIMUM_ACTIVE_POWER,
         FIELD_OPTIONS.ACTIVE_POWER_SET_POINT,

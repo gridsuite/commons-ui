@@ -7,7 +7,7 @@
 
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useEffect } from 'react';
-import { Grid2 as Grid, IconButton } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import { Delete as DeleteIcon, ControlPoint as AddIcon } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { INSERT, REMOVE } from './reactiveCapability.utils';

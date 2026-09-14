@@ -7,17 +7,7 @@
 
 import { useState, MouseEvent, useCallback } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import {
-    Box,
-    Grid2 as Grid,
-    IconButton,
-    Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,
-} from '@mui/material';
+import { Box, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@mui/material';
 import { AddCircle as AddCircleIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import { MuiStyles } from '../../../../../utils';
 import {

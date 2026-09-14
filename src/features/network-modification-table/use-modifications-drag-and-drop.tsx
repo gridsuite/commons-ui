@@ -17,9 +17,10 @@ import {
     DROP_INDICATOR_TOP,
 } from './network-modification-table-styles';
 import {
+    containsReferenceModification,
     findModificationInTree,
     isCompositeModification,
-    isSharedModification,
+    isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -61,18 +62,29 @@ const clearRowDragIndicators = (container: HTMLDivElement | null): void => {
     container?.querySelectorAll<HTMLElement>(`[${CHIP_ATTR}]`).forEach((chip) => chip.remove());
 };
 
-// When entering an expanded composite from outside, the target composite is the
-// composite row itself; otherwise derive it from the target row's parent as usual.
-function getTargetCompositeUuid(droppingIntoExpandedComposite: boolean, targetRow: Row<ComposedModificationMetadata>) {
+// The target composite is resolved as BOTH a rowKey and a uuid from the same Row object, on
+// purpose: `rowKey` is what tree-mutation functions (moveSubModificationInTree, sibling lookup)
+// must use to stay unambiguous — including when the same uuid appears twice in the tree (a
+// composite present live in one branch and also reachable through a shared reference elsewhere).
+// `uuid` is what the backend moveModification call needs. Deriving both from the same Row/parent
+// Row keeps them from ever drifting apart.
+function resolveTargetComposite(
+    droppingIntoExpandedComposite: boolean,
+    targetRow: Row<ComposedModificationMetadata>
+): { rowKey: UUID | null; uuid: UUID | null } {
     if (droppingIntoExpandedComposite) {
-        return targetRow.original.uuid;
+        return { rowKey: targetRow.id as UUID, uuid: targetRow.original.uuid };
     }
-    return targetRow.depth > 0 ? (targetRow.getParentRow()?.original.uuid ?? null) : null;
+    if (targetRow.depth > 0) {
+        const parent = targetRow.getParentRow();
+        return { rowKey: (parent?.id as UUID | undefined) ?? null, uuid: parent?.original.uuid ?? null };
+    }
+    return { rowKey: null, uuid: null };
 }
 
-function getTargetSiblings(targetCompositeUuid: UUID | null, rows: Row<ComposedModificationMetadata>[]) {
-    return targetCompositeUuid
-        ? rows.filter((r) => r.depth > 0 && r.getParentRow()?.original.uuid === targetCompositeUuid)
+function getTargetSiblings(targetCompositeRowKey: UUID | null, rows: Row<ComposedModificationMetadata>[]) {
+    return targetCompositeRowKey
+        ? rows.filter((r) => r.depth > 0 && r.getParentRow()?.id === targetCompositeRowKey)
         : rows.filter((r) => r.depth === 0);
 }
 
@@ -95,7 +107,7 @@ export const useModificationsDragAndDrop = ({
     const { snackError } = useSnackMessage();
     const { rows } = table.getRowModel();
 
-    const computeTargetDepth = useCallback(
+    const computeIsDraggingDown = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>) => {
             const sourceRowIndex = table.getRowModel().flatRows.findIndex((row) => {
                 return row.id === sourceRow.id;
@@ -103,35 +115,59 @@ export const useModificationsDragAndDrop = ({
             const targetRowIndex = table.getRowModel().flatRows.findIndex((row) => {
                 return row.id === targetRow.id;
             });
-            const isDraggingDown = sourceRowIndex < targetRowIndex;
+            return sourceRowIndex < targetRowIndex;
+        },
+        [table]
+    );
+
+    const computeTargetDepth = useCallback(
+        (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>) => {
+            const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
 
             return isCompositeModification(targetRow.original) && targetRow.getIsExpanded() && isDraggingDown
                 ? targetRow.depth + 1
                 : targetRow.depth;
         },
-        [table]
+        [computeIsDraggingDown]
     );
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
-            if (isCompositeModification(sourceRow.original)) {
-                const targetDepth = computeTargetDepth(sourceRow, targetRow);
-                return (
-                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH ||
-                    !!(
-                        isCompositeModification(sourceRow.original) &&
-                        findModificationInTree(targetRow.original.uuid, [sourceRow.original])
-                    )
-                );
-            }
-            // TODO GRD-4785 : this is temporary, until drag and drop is done for the shared modifications :
-            if (isSharedModification(sourceRow.original)) return true;
+            const sourceIsCompositeOrReference =
+                isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
 
+            if (sourceIsCompositeOrReference) {
+                const targetDepth = computeTargetDepth(sourceRow, targetRow);
+                const exceedsNestingLimit =
+                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH;
+                const isSelfDrop = !!findModificationInTree(targetRow.id as UUID, [sourceRow.original]);
+
+                // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
+                // into another shared modification, nor into one of its descendants (expanded children
+                // of the referenced composite).
+                const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
+                const entersTargetRowItself =
+                    (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
+                    targetRow.getIsExpanded() &&
+                    isDraggingDown;
+                const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
+                // A reference, or a composite carrying a reference among its (loaded) descendants,
+                // would end up nested under another reference — same forbidden shape either way.
+                const sourceCarriesReference =
+                    isReferenceModification(sourceRow.original) || containsReferenceModification(sourceRow.original);
+                // A composite nested under a reference (directly or transitively) is flagged
+                // childFromShared, same as the reference's own children — so this also forbids
+                // dropping into such a composite, not just into the reference itself.
+                const enteringSharedSubtree =
+                    isReferenceModification(enteringParent) || enteringParent?.childFromShared === true;
+                const isReferenceIntoReference = sourceCarriesReference && enteringSharedSubtree;
+
+                return exceedsNestingLimit || isSelfDrop || isReferenceIntoReference;
+            }
             return false;
         },
-        [computeTargetDepth]
+        [computeTargetDepth, computeIsDraggingDown]
     );
-
     const handleDragUpdate = useCallback(
         (update: DragUpdate) => {
             clearRowDragIndicators(containerRef.current);
@@ -143,7 +179,7 @@ export const useModificationsDragAndDrop = ({
 
             const sourceRow = rows[source.index];
             const targetRow = rows[destination.index];
-            const el = containerRef.current?.querySelector<HTMLElement>(`[data-row-id="${targetRow?.original.uuid}"]`);
+            const el = containerRef.current?.querySelector<HTMLElement>(`[data-row-id="${targetRow?.id}"]`);
 
             if (!el) {
                 return;
@@ -177,38 +213,54 @@ export const useModificationsDragAndDrop = ({
                 return;
             }
 
+            const movingRowKey = sourceRow.id as UUID;
             const movingUuid = sourceRow.original.uuid;
-            const sourceCompositeUuid = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
+            const sourceParent = sourceRow.depth > 0 ? sourceRow.getParentRow() : undefined;
+            const sourceCompositeRowKey = (sourceParent?.id as UUID | undefined) ?? null;
+            const sourceContainerId = sourceParent?.original.uuid ?? null;
 
             const isDraggingDown = destination.index > source.index;
-            const droppingIntoExpandedComposite = isDraggingDown && targetRow.getIsExpanded();
+            // Only composites can be entered via this "drag down onto an expanded row" gesture.
+            // References are expandable too (their children are read-only, fetched from the referenced
+            // object), so without the isCompositeModification guard, dropping right after an expanded
+            // reference was wrongly reinterpreted as "enter it as first child" instead of "insert after
+            // it as a sibling"
+            const droppingIntoExpandedComposite =
+                isDraggingDown && isCompositeModification(targetRow.original) && targetRow.getIsExpanded();
             const isSubRowInvolved = sourceRow.depth > 0 || targetRow.depth > 0;
 
-            const targetCompositeUuid: UUID | null = getTargetCompositeUuid(droppingIntoExpandedComposite, targetRow);
-            const sourceContainerId = sourceRow.depth > 0 ? (sourceRow.getParentRow()?.original.uuid ?? null) : null;
-            const targetContainerId = targetCompositeUuid;
+            const targetComposite = resolveTargetComposite(droppingIntoExpandedComposite, targetRow);
+            const targetContainerId = targetComposite.uuid;
 
             const previousModifications = [...composedModifications];
 
             let beforeUuid: UUID | null;
             if (droppingIntoExpandedComposite || isSubRowInvolved) {
-                const targetSiblings = getTargetSiblings(targetCompositeUuid, rows);
+                const targetSiblings = getTargetSiblings(targetComposite.rowKey, rows);
+                let landingSibling: Row<ComposedModificationMetadata> | undefined;
                 if (droppingIntoExpandedComposite) {
                     // Landing on an expanded composite header: enter it at first position
-                    beforeUuid = targetSiblings[0]?.original.uuid ?? null;
+                    [landingSibling] = targetSiblings;
                 } else {
-                    const landingIndexInSiblings = targetSiblings.findIndex(
-                        (r) => r.original.uuid === targetRow.original.uuid
-                    );
+                    const landingIndexInSiblings = targetSiblings.findIndex((r) => r.id === targetRow.id);
                     const beforeSiblingIndex = isDraggingDown ? landingIndexInSiblings + 1 : landingIndexInSiblings;
-                    beforeUuid = targetSiblings[beforeSiblingIndex]?.original.uuid ?? null;
+                    landingSibling = targetSiblings[beforeSiblingIndex];
                 }
+                const beforeRowKey: UUID | null = (landingSibling?.id as UUID | undefined) ?? null;
+                beforeUuid = landingSibling?.original.uuid ?? null;
+
                 setComposedModifications((prev) =>
-                    moveSubModificationInTree(movingUuid, sourceCompositeUuid, targetCompositeUuid, beforeUuid, prev)
+                    moveSubModificationInTree(
+                        movingRowKey,
+                        sourceCompositeRowKey,
+                        targetComposite.rowKey,
+                        beforeRowKey,
+                        prev
+                    )
                 );
             } else {
-                const oldPosition = composedModifications.findIndex((m) => m.uuid === sourceRow.original.uuid);
-                const newPosition = composedModifications.findIndex((m) => m.uuid === targetRow.original.uuid);
+                const oldPosition = composedModifications.findIndex((m) => m.rowKey === sourceRow.id);
+                const newPosition = composedModifications.findIndex((m) => m.rowKey === targetRow.id);
 
                 if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
                     return;

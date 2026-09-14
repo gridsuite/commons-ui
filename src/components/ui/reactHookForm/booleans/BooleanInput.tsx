@@ -18,6 +18,7 @@ export type BooleanInputProps<TInput extends InputTypes> = {
     label?: string;
     formProps?: InputProps<TInput>;
     Input: TInput;
+    dataTestId?: string;
 };
 
 export function BooleanInput<TInput extends InputTypes>({
@@ -25,9 +26,10 @@ export function BooleanInput<TInput extends InputTypes>({
     label,
     formProps,
     Input,
+    dataTestId,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
-    const { onChange, ...otherFormProps } = formProps ?? { onChange: undefined };
+    const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
@@ -44,10 +46,11 @@ export function BooleanInput<TInput extends InputTypes>({
 
     const CustomInput = (
         <Input
-            checked={value}
+            checked={value ?? false} // Prevents component from switching to uncontrolled mode
             onChange={handleChangeValue}
             inputRef={ref}
-            inputProps={{ 'aria-label': 'primary checkbox' }}
+            slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
+            data-testid={dataTestId}
             {...(otherFormProps as any)}
             {...props}
         />

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select } from '@mui/material';
+import { Box, FormControl, IconButton, InputLabel, OutlinedInput, Select, Typography } from '@mui/material';
 import { DriveFolderUpload } from '@mui/icons-material';
 import { ComponentType, useCallback, useEffect, useMemo, useState } from 'react';
 import { FieldValues, useController, useFieldArray, useWatch } from 'react-hook-form';
@@ -70,6 +70,8 @@ export interface DirectoryItemsInputProps<CP extends OverflowableChipProps = Ove
     chipProps?: Partial<CP>;
     fullHeight?: boolean;
     fullWidth?: boolean;
+    dataTestId?: string;
+    showPlaceHolder?: boolean;
 }
 
 export function DirectoryItemsInput<CP extends OverflowableChipProps = OverflowableChipProps>({
@@ -88,6 +90,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     chipProps,
     fullHeight = false,
     fullWidth = true,
+    dataTestId,
+    showPlaceHolder = false,
 }: Readonly<DirectoryItemsInputProps<CP>>) {
     const { snackError } = useSnackMessage();
     const intl = useIntl();
@@ -255,6 +259,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                     </InputLabel>
                 )}
                 <Select
+                    data-testid={dataTestId}
                     value={elements}
                     multiple
                     displayEmpty
@@ -275,10 +280,22 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                             <CustomTooltip title={intl.formatMessage({ id: titleId })}>
                                 <span>
                                     <IconButton size="small" disabled={disable}>
-                                        <DriveFolderUpload />
+                                        <DriveFolderUpload data-testid="DriveFolderUploadIcon" />
                                     </IconButton>
                                 </span>
                             </CustomTooltip>
+
+                            {showPlaceHolder && !directoryElements?.length && (
+                                <Typography
+                                    variant="body2"
+                                    color="text.secondary"
+                                    sx={{
+                                        whiteSpace: 'nowrap',
+                                    }}
+                                >
+                                    {intl.formatMessage({ id: 'importElements' })}
+                                </Typography>
+                            )}
                             {directoryElements?.map((item, index) => {
                                 const elementName =
                                     watchedElements?.[index]?.[NAME] ??

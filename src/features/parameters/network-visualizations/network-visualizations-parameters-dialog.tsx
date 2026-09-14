@@ -5,12 +5,12 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, LinearProgress } from '@mui/material';
+import { Grid, LinearProgress } from '@mui/material';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParametersForm } from './network-visualizations-form';
 import { useNetworkVisualizationParametersForm } from './use-network-visualizations-parameters-form';
-import { NameElementEditorForm } from '../common/name-element-editor';
+import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
 import { ParametersEditionDialogProps } from '../common';
 import { isDisabledValidationButton } from '../../../utils/form-utils';
 
@@ -51,9 +51,11 @@ export function NetworkVisualizationsParametersEditionDialog({
             }}
             titleId={titleId}
             disabledSave={isDisabledValidationButton(errors)}
-            PaperProps={{
-                sx: {
-                    height: '65vh', // we want the dialog height to be fixed even when switching tabs
+            slotProps={{
+                paper: {
+                    sx: {
+                        height: '65vh', // we want the dialog height to be fixed even when switching tabs
+                    },
                 },
             }}
         >

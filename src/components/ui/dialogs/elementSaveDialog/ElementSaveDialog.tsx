@@ -8,7 +8,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid2 as Grid, Box, Button, CircularProgress, Typography, Stack } from '@mui/material';
+import { Grid, Box, Button, CircularProgress, Typography, Stack, AlertColor, Alert } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -16,13 +16,20 @@ import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 import { DescriptionField, RadioInput, UniqueNameInput } from '../../../ui/reactHookForm';
 import { DirectoryItemSelector } from '../../directoryItemSelector';
 import { CustomMuiDialog } from '../customMuiDialog/CustomMuiDialog';
-import { ElementAttributes, ElementType, FieldConstants, MAX_CHAR_DESCRIPTION } from '../../../../utils';
+import {
+    DESCRIPTION_LIMIT_ERROR,
+    ElementAttributes,
+    ElementType,
+    FieldConstants,
+    MAX_CHAR_DESCRIPTION,
+} from '../../../../utils';
 import { useSnackMessage } from '../../../../hooks';
 import { DirectoryInitConfig, initializeDirectory } from './utils';
 
 // Define operation types
 enum OperationType {
     CREATE = 'CREATE',
+    CREATE_SHARED = 'CREATE_SHARED',
     UPDATE = 'UPDATE',
 }
 
@@ -53,6 +60,10 @@ export type ElementSaveDialogProps = {
     titleId: string;
     onSave: (data: IElementCreationDialog) => void;
     OnUpdate?: (data: IElementUpdateDialog) => void;
+    /** when provided, an extra operation is offered to save the element as a shared one */
+    onSaveShared?: (data: IElementCreationDialog) => void;
+    createSharedLabelId?: string;
+    createSharedDisabled?: boolean;
     prefixIdForGeneratedName?: string;
     defaultName?: string | null;
     initialOperation?: OperationType;
@@ -60,6 +71,8 @@ export type ElementSaveDialogProps = {
     createLabelId?: string;
     updateLabelId?: string;
     createOnlyMode?: boolean;
+    alertMessageId?: string;
+    alertSeverity?: AlertColor;
 } & (
     | {
           /** createOnlyMode uses only CREATE operation */
@@ -94,7 +107,7 @@ const schema = yup
     .object()
     .shape({
         [FieldConstants.NAME]: yup.string().trim().required(),
-        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, 'descriptionLimitError'),
+        [FieldConstants.DESCRIPTION]: yup.string().optional().max(MAX_CHAR_DESCRIPTION, DESCRIPTION_LIMIT_ERROR),
         [FieldConstants.OPERATION_TYPE]: yup.string().oneOf(Object.values(OperationType)).required(),
     })
     .required();
@@ -111,6 +124,9 @@ export function ElementSaveDialog({
     open,
     onSave,
     OnUpdate,
+    onSaveShared,
+    createSharedLabelId,
+    createSharedDisabled = false,
     onClose,
     type,
     titleId,
@@ -123,6 +139,8 @@ export function ElementSaveDialog({
     createLabelId,
     updateLabelId,
     createOnlyMode = false,
+    alertMessageId,
+    alertSeverity = 'warning',
 }: Readonly<ElementSaveDialogProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
@@ -153,7 +171,7 @@ export function ElementSaveDialog({
 
     // Force create mode if in legacy mode
     const operationType = createOnlyMode ? OperationType.CREATE : watch(FieldConstants.OPERATION_TYPE);
-    const isCreateMode = operationType === OperationType.CREATE;
+    const isCreateMode = operationType !== OperationType.UPDATE;
 
     const disableSave =
         Object.keys(errors).length > 0 || (isCreateMode && !destinationFolder) || (!isCreateMode && !selectedItem);
@@ -216,6 +234,14 @@ export function ElementSaveDialog({
         initializeDestinationFolder();
     }, [open, isCreateMode, initializeDestinationFolder]);
 
+    // The shared creation may become unavailable while the dialog is open, its availability depending on a
+    // selection refreshed in the background : fall back on the standard creation
+    useEffect(() => {
+        if (createSharedDisabled && operationType === OperationType.CREATE_SHARED) {
+            setValue(FieldConstants.OPERATION_TYPE, OperationType.CREATE);
+        }
+    }, [createSharedDisabled, operationType, setValue]);
+
     // Open selector dialog
     const handleChangeFolder = useCallback(() => {
         setDirectorySelectorOpen(true);
@@ -257,7 +283,7 @@ export function ElementSaveDialog({
     // Form submission handler
     const onSubmit = useCallback<SubmitHandler<SchemaType>>(
         (values) => {
-            if (isCreateMode && destinationFolder && onSave) {
+            if (isCreateMode && destinationFolder) {
                 // Handle creation
                 const creationData: IElementCreationDialog = {
                     [FieldConstants.NAME]: values.name,
@@ -265,7 +291,11 @@ export function ElementSaveDialog({
                     [FieldConstants.FOLDER_NAME]: destinationFolder.name ?? '',
                     [FieldConstants.FOLDER_ID]: destinationFolder.id,
                 };
-                onSave(creationData);
+                if (values.type === OperationType.CREATE_SHARED && onSaveShared) {
+                    onSaveShared(creationData);
+                } else if (onSave) {
+                    onSave(creationData);
+                }
             } else if (!isCreateMode && selectedItem && OnUpdate) {
                 // Handle update
                 const updateData: IElementUpdateDialog = {
@@ -278,7 +308,7 @@ export function ElementSaveDialog({
                 OnUpdate(updateData);
             }
         },
-        [isCreateMode, onSave, OnUpdate, destinationFolder, selectedItem]
+        [isCreateMode, onSave, onSaveShared, OnUpdate, destinationFolder, selectedItem]
     );
 
     // Render folder/item chooser
@@ -329,12 +359,21 @@ export function ElementSaveDialog({
                             name={FieldConstants.OPERATION_TYPE}
                             options={[
                                 { id: OperationType.CREATE, label: createLabelId ?? 'createLabelId' },
+                                ...(onSaveShared
+                                    ? [
+                                          {
+                                              id: OperationType.CREATE_SHARED,
+                                              label: createSharedLabelId ?? 'createSharedLabelId',
+                                              disabled: createSharedDisabled,
+                                          },
+                                      ]
+                                    : []),
                                 { id: OperationType.UPDATE, label: updateLabelId ?? 'updateLabelId' },
                             ]}
                             formProps={{
                                 sx: {
                                     '& .MuiFormControlLabel-root': {
-                                        marginRight: 15,
+                                        marginRight: onSaveShared ? 4 : 15,
                                     },
                                 },
                             }}
@@ -371,6 +410,11 @@ export function ElementSaveDialog({
                     id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId,
                 })}
             />
+            {alertMessageId && (
+                <Alert severity={alertSeverity}>
+                    <FormattedMessage id={alertMessageId} />
+                </Alert>
+            )}
         </CustomMuiDialog>
     );
 }

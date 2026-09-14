@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, SxProps } from '@mui/material';
+import { Grid, SxProps } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { LineSeparator } from './line-separator';
 import { parametersStyles } from '../parameters-style';

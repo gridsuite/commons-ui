@@ -31,11 +31,15 @@ import {
     VOLTAGE_LIMITS_DEFAULT,
     VOLTAGE_LIMITS_MODIFICATION,
     VoltageInitTabValues as TabValues,
+    VOLTAGE_INIT_TAB_VALUES as TAB_VALUES,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
-import { ElementType, isBlankOrEmpty, YUP_REQUIRED } from '../../../utils';
-import { getNameElementEditorEmptyFormData, getNameElementEditorSchema } from '../common/name-element-editor';
+import { useTabs, useSnackMessage } from '../../../hooks';
+import { ElementType, isBlankOrEmpty, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, YUP_REQUIRED } from '../../../utils';
+import {
+    getNameElementEditorEmptyFormData,
+    getNameElementEditorSchema,
+} from '../../../components/ui/dialogs/name-element-editor';
 import { EquipmentsSelectionType, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     fromStudyVoltageInitParamsDataToFormValues,
@@ -46,7 +50,6 @@ import {
 import { SELECTED } from '../../../components/composite/dnd-table';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { snackWithFallback } from '../../../utils/error';
-import { useTabs } from '../common';
 
 export interface UseVoltageInitParametersFormReturn {
     formMethods: UseFormReturn;
@@ -132,14 +135,14 @@ export const useVoltageInitParametersForm = ({
                             .min(1, YUP_REQUIRED),
                         [LOW_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0, 'mustBeGreaterOrEqualToZero')
+                            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[HIGH_VOLTAGE_LIMIT]);
                             }),
                         [HIGH_VOLTAGE_LIMIT]: yup
                             .number()
-                            .min(0, 'mustBeGreaterOrEqualToZero')
+                            .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
                             .nullable()
                             .test((value, context) => {
                                 return !isBlankOrEmpty(value) || !isBlankOrEmpty(context.parent[LOW_VOLTAGE_LIMIT]);
@@ -201,7 +204,7 @@ export const useVoltageInitParametersForm = ({
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.GENERAL,
-        tabEnum: TabValues,
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

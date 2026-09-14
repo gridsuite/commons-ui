@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, createFilterOptions, Grid2 as Grid, GridDirection, Popper, PopperProps } from '@mui/material';
+import { Box, createFilterOptions, Grid, GridDirection, Popper, PopperProps } from '@mui/material';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { AutocompleteInput } from '../../../../components/ui';

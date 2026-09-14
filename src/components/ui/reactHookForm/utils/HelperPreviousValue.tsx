@@ -37,20 +37,22 @@ export function HelperPreviousValue({
     }
 
     return (
-        <FormHelperText error={false} sx={{ marginLeft: 0 }}>
+        <FormHelperText component="div" error={false} sx={{ marginLeft: 0 }}>
             {!disabledTooltip ? (
                 <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
                     <CustomTooltip
                         title={intl.formatMessage({ id: isNodeBuilt ? 'builtNodeTooltip' : 'notBuiltNodeTooltip' })}
-                        PopperProps={{
-                            modifiers: [
-                                {
-                                    name: 'offset',
-                                    options: {
-                                        offset: [0, -10],
+                        slotProps={{
+                            popper: {
+                                modifiers: [
+                                    {
+                                        name: 'offset',
+                                        options: {
+                                            offset: [0, -10],
+                                        },
                                     },
-                                },
-                            ],
+                                ],
+                            },
                         }}
                     >
                         {isNodeBuilt ? (

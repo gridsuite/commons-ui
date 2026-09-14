@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Box, Grid2 as Grid, MenuItem, Select, type SelectChangeEvent, Stack, Typography } from '@mui/material';
+import { Box, Grid, MenuItem, Select, type SelectChangeEvent, Stack, Typography } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useMemo, useRef, useState } from 'react';
 

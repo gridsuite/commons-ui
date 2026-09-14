@@ -7,7 +7,7 @@
 
 import { useEffect } from 'react';
 import { useFormContext } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { AutocompleteInput } from '../../../../../../../components/ui/reactHookForm/autocompleteInputs/AutocompleteInput';
 import { Option } from '../../../../../../../utils/types/types';
 import { FieldConstants } from '../../../../../../../utils';

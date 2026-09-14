@@ -1,0 +1,259 @@
+/**
+ * Copyright (c) 2022, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { Grid } from '@mui/material';
+import { useCallback, useEffect, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { useIntl } from 'react-intl';
+import { RatioTapChangerPaneSteps } from './RatioTapChangerPaneSteps';
+import {
+    getComputedPreviousRatioRegulationType,
+    getComputedRegulationModeId,
+    getComputedRegulationTypeId,
+    getComputedTapSideId,
+} from './ratioTapChanger.utils';
+import { RegulatedTerminalSection } from '../RegulatedTerminalSection';
+import { TapChangerMapInfos, TapChangerPaneProps } from '../../common/twoWindingsTransformer.types';
+import { FieldConstants, RATIO_REGULATION_MODES, VoltageAdornment } from '../../../../../utils';
+import {
+    CheckboxNullableInput,
+    FloatInput,
+    GridItem,
+    GridSection,
+    SelectInput,
+    SwitchInput,
+} from '../../../../../components';
+
+export function RatioTapChangerPane({
+    id = FieldConstants.RATIO_TAP_CHANGER,
+    voltageLevelOptions = [],
+    previousValues,
+    editData,
+    fetchVoltageLevelEquipments,
+    isModification = false,
+}: Readonly<TapChangerPaneProps>) {
+    const { trigger, setValue, getValues } = useFormContext();
+    const intl = useIntl();
+
+    const previousRegulation = () => {
+        if (previousValues?.ratioTapChanger?.hasLoadTapChangingCapabilities) {
+            return intl.formatMessage({ id: 'On' });
+        }
+        if (previousValues?.ratioTapChanger?.hasLoadTapChangingCapabilities === false) {
+            return intl.formatMessage({ id: 'Off' });
+        }
+        return undefined;
+    };
+
+    const getRatioTapChangerRegulationModeLabel = (ratioTapChangerFormValues?: TapChangerMapInfos | null) => {
+        if (!ratioTapChangerFormValues) {
+            return undefined;
+        }
+        if (ratioTapChangerFormValues?.isRegulating) {
+            return intl.formatMessage({
+                id: RATIO_REGULATION_MODES.VOLTAGE_REGULATION.label,
+            });
+        }
+        return intl.formatMessage({
+            id: RATIO_REGULATION_MODES.FIXED_RATIO.label,
+        });
+    };
+
+    const ratioTapChangerEnabledWatcher = useWatch({
+        name: `${id}.${FieldConstants.ENABLED}`,
+    });
+
+    const ratioTapLoadTapChangingCapabilitiesWatcher = useWatch({
+        name: `${id}.${FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES}`,
+    });
+
+    const isRatioTapLoadTapChangingCapabilitiesOff =
+        !ratioTapLoadTapChangingCapabilitiesWatcher || ratioTapLoadTapChangingCapabilitiesWatcher === null;
+
+    const regulationModeWatch = useWatch({
+        name: `${id}.${FieldConstants.REGULATION_MODE}`,
+    });
+
+    const regulationTypeWatch = useWatch({
+        name: `${id}.${FieldConstants.REGULATION_TYPE}`,
+    });
+
+    const regulationType = useMemo(() => {
+        return (
+            regulationTypeWatch || (previousValues ? getComputedPreviousRatioRegulationType(previousValues) : undefined)
+        );
+    }, [previousValues, regulationTypeWatch]);
+
+    const findAndSetVoltageLevelFromPrevious = useCallback(() => {
+        const prevVl = voltageLevelOptions.find(
+            (vl) => vl.id === previousValues?.ratioTapChanger?.regulatingTerminalVlId
+        );
+        if (prevVl) {
+            const newVlValue = {
+                id: prevVl.id,
+                label: prevVl.name ?? '',
+            };
+            setValue(`${id}.${FieldConstants.VOLTAGE_LEVEL}`, newVlValue);
+        } else {
+            // not supposed to happen, but if it does, we want to log it and keep the form as it is
+            console.error('Voltage level not found:', prevVl);
+        }
+    }, [setValue, id, voltageLevelOptions, previousValues]);
+
+    const setEquipmentFromPrevious = useCallback(() => {
+        const prevEquipmentId = previousValues?.ratioTapChanger?.regulatingTerminalConnectableId;
+        if (prevEquipmentId) {
+            const prevEquipmentType = previousValues?.ratioTapChanger?.regulatingTerminalConnectableType;
+            const newEquipment = {
+                id: prevEquipmentId,
+                label: prevEquipmentType,
+                type: prevEquipmentType,
+            };
+            setValue(`${id}.${FieldConstants.EQUIPMENT}`, newEquipment);
+        }
+    }, [setValue, id, previousValues]);
+
+    const setValueIfNull = useCallback(
+        (curRatioTapChanger: Record<string, unknown>, field: string, value: unknown) => {
+            if (curRatioTapChanger[field] === null) {
+                setValue(`${id}.${field}`, value);
+            }
+        },
+        [setValue, id]
+    );
+
+    // we want to fill the empty fields with the previous values when 'on load' is enabled
+    const fillRatioTapChangerRegulationAttributesWithPreviousValues = useCallback(
+        (newOnLoad: boolean | null) => {
+            if (newOnLoad !== true || !previousValues) {
+                return;
+            }
+            const curRatioTapChanger = getValues(id);
+
+            setValueIfNull(
+                curRatioTapChanger,
+                FieldConstants.REGULATION_MODE,
+                getComputedRegulationModeId(previousValues)
+            );
+            setValueIfNull(curRatioTapChanger, FieldConstants.TARGET_V, previousValues?.ratioTapChanger?.targetV);
+            setValueIfNull(
+                curRatioTapChanger,
+                FieldConstants.TARGET_DEADBAND,
+                previousValues?.ratioTapChanger?.targetDeadband
+            );
+            setValueIfNull(
+                curRatioTapChanger,
+                FieldConstants.REGULATION_TYPE,
+                getComputedRegulationTypeId(previousValues)
+            );
+            setValueIfNull(curRatioTapChanger, FieldConstants.REGULATION_SIDE, getComputedTapSideId(previousValues));
+
+            if (curRatioTapChanger[FieldConstants.VOLTAGE_LEVEL] === null) {
+                findAndSetVoltageLevelFromPrevious();
+            }
+            if (curRatioTapChanger[FieldConstants.EQUIPMENT] === null) {
+                setEquipmentFromPrevious();
+            }
+        },
+        [id, previousValues, getValues, setValueIfNull, findAndSetVoltageLevelFromPrevious, setEquipmentFromPrevious]
+    );
+
+    // we want to update the validation of these fields when they become optionals to remove the red alert
+    useEffect(() => {
+        if (regulationModeWatch === RATIO_REGULATION_MODES.FIXED_RATIO.id) {
+            trigger(`${id}.${FieldConstants.REGULATION_TYPE}`).then();
+            trigger(`${id}.${FieldConstants.REGULATION_SIDE}`).then();
+            trigger(`${id}.${FieldConstants.TARGET_V}`).then();
+        }
+    }, [regulationModeWatch, trigger, id]);
+
+    const ratioTapLoadTapChangingCapabilitiesField = isModification ? (
+        <CheckboxNullableInput
+            name={`${id}.${FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES}`}
+            label="OnLoad"
+            formProps={{
+                disabled: !ratioTapChangerEnabledWatcher,
+            }}
+            previousValue={previousRegulation()}
+            onChange={fillRatioTapChangerRegulationAttributesWithPreviousValues}
+        />
+    ) : (
+        <SwitchInput
+            name={`${id}.${FieldConstants.LOAD_TAP_CHANGING_CAPABILITIES}`}
+            label="OnLoad"
+            formProps={{
+                disabled: !ratioTapChangerEnabledWatcher,
+            }}
+        />
+    );
+
+    const regulationModeField = (
+        <SelectInput
+            name={`${id}.${FieldConstants.REGULATION_MODE}`}
+            label="RegulationMode"
+            options={Object.values(RATIO_REGULATION_MODES)}
+            size="small"
+            disabled={isRatioTapLoadTapChangingCapabilitiesOff}
+            previousValue={getRatioTapChangerRegulationModeLabel(previousValues?.ratioTapChanger)}
+        />
+    );
+
+    const targetVoltage1Field = (
+        <FloatInput
+            name={`${id}.${FieldConstants.TARGET_V}`}
+            label="TargetVoltage"
+            adornment={VoltageAdornment}
+            formProps={{
+                disabled: isRatioTapLoadTapChangingCapabilitiesOff,
+            }}
+            previousValue={previousValues?.ratioTapChanger?.targetV ?? undefined}
+        />
+    );
+
+    const targetDeadbandField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.TARGET_DEADBAND}`}
+            label="Deadband"
+            adornment={VoltageAdornment}
+            formProps={{
+                disabled: isRatioTapLoadTapChangingCapabilitiesOff,
+            }}
+            previousValue={previousValues?.ratioTapChanger?.targetDeadband}
+        />
+    );
+
+    return (
+        <>
+            <Grid container spacing={2}>
+                <GridItem>{ratioTapLoadTapChangingCapabilitiesField}</GridItem>
+                <GridItem size="auto" />
+            </Grid>
+            <GridSection title="RegulationSection" heading={4} />
+            <Grid container spacing={1}>
+                <GridItem size={4}>{regulationModeField}</GridItem>
+                <GridItem size={4}>{targetVoltage1Field}</GridItem>
+                <GridItem size={4}>{targetDeadbandField}</GridItem>
+            </Grid>
+            <RegulatedTerminalSection
+                id={id}
+                voltageLevelOptions={voltageLevelOptions}
+                previousValues={previousValues}
+                tapChangerDisabled={isRatioTapLoadTapChangingCapabilitiesOff}
+                regulationType={regulationType}
+                fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
+            />
+
+            <GridSection title="TapsSection" heading={4} />
+            <RatioTapChangerPaneSteps
+                disabled={!ratioTapChangerEnabledWatcher}
+                previousValues={previousValues?.ratioTapChanger}
+                editData={editData}
+                isModification={isModification}
+            />
+        </>
+    );
+}

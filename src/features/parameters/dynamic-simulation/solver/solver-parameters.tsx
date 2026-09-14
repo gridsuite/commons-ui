@@ -4,11 +4,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid2 as Grid, SxProps } from '@mui/material';
+import { Grid, SxProps } from '@mui/material';
 import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { SolverType } from '../../../../utils/types/dynamic-simulation.type';
-import ParameterField from '../../common/parameter-field';
+import { ParameterField } from '../../common/parameter-field';
 import { ParameterType, SpecificParameterInfos } from '../../../../utils/types/parameters.type';
 import { Solver } from './solver-parameters-constants';
 import { IdaSolverParameters } from './ida-solver';

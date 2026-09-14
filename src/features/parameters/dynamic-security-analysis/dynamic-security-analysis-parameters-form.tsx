@@ -5,15 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, Stack, Tab, Tabs } from '@mui/material';
+import { Grid, Stack, Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 
 import ScenarioParameters from './scenario-parameters';
 import ContingencyParameters from './contingency-parameters';
-import { ProviderParam, TabPanel, UseTabsReturn } from '../common';
+import { ProviderParam, TabPanel } from '../common';
 import { getTabStyle, parametersStyles } from '../parameters-style';
 import { TabValues } from './dynamic-security-analysis.type';
 import { UseComputationParametersFormReturn } from '../common/utils';
+import { UseTabsReturn } from '../../../hooks';
 
 type DynamicSecurityAnalysisParametersFormProps = {
     dynamicSecurityAnalysisMethods: UseComputationParametersFormReturn;

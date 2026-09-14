@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { BatteryDialogTab } from './batteryTabs.utils';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
@@ -19,6 +19,7 @@ import {
     PropertiesForm,
     ReactiveLimitsForm,
     ShortCircuitForm,
+    UpdateReactiveCapabilityCurveTable,
     VoltageRegulationForm,
 } from '../../common';
 import { CheckboxNullableInput, FloatInput } from '../../../../components';
@@ -27,7 +28,7 @@ import { ActivePowerAdornment, EquipmentType, Identifiable, ReactivePowerAdornme
 
 export interface BatteryDialogTabsContentProps extends ConnectivityNetworkProps {
     batteryToModify?: BatteryFormInfos | null;
-    updatePreviousReactiveCapabilityCurveTable: (action: string, index: number) => void;
+    updatePreviousReactiveCapabilityCurveTable: UpdateReactiveCapabilityCurveTable;
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
     tabIndex: number;
 }

@@ -9,7 +9,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { DensityLarge as DensityLargeIcon } from '@mui/icons-material';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
-import { areIdsEqual, ElementType, FieldConstants, FieldType, getIdOrValue, Option } from '../../../../../utils';
+import {
+    areIdsEqual,
+    ElementType,
+    FieldConstants,
+    FieldType,
+    getIdOrValue,
+    NUMERIC_VALUE_OR_EMPTY_FIELD,
+    Option,
+} from '../../../../../utils';
 import { useFormatLabelWithUnit, usePredefinedProperties } from '../../../../../hooks';
 import {
     AutocompleteInput,
@@ -125,7 +133,7 @@ function AssignmentForm(props: Readonly<AssignmentFormProps>) {
                                   Number.isNaN(Number(optionValue))
                               ) {
                                   setError(`${name}.${index}.${FieldConstants.VALUE}`, {
-                                      message: 'NumericValueOrEmptyField',
+                                      message: NUMERIC_VALUE_OR_EMPTY_FIELD,
                                   });
                               } else {
                                   setError(`${name}.${index}.${FieldConstants.VALUE}`, {

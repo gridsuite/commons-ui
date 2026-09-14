@@ -19,6 +19,8 @@ import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
 import { ComposedModificationMetadata } from '../../../utils';
+import { isReferenceModification } from '../utils';
+import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
  * Cell/header renderers must keep a stable reference across renders to avoid
@@ -74,6 +76,14 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     );
 }
 
+export function ReferenceCellRenderer({ row, table }: CCtx) {
+    const { meta } = table.options;
+
+    if (isReferenceModification(row.original)) {
+        return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
+    }
+    return null;
+}
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
     return (
@@ -112,7 +122,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
     const rootNetwork = meta?.context.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
-    if (!rootNetwork || !meta?.modifications.toExclude || !meta.modifications.setToExclude) {
+    if (!rootNetwork || !meta?.modifications.applicabilities || !meta.modifications.setApplicabilities) {
         return null;
     }
     return (
@@ -122,8 +132,8 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
                 studyUuid={meta?.context.studyUuid ?? null}
                 currentNodeId={meta?.context.currentNodeId}
                 rootNetwork={rootNetwork}
-                modificationsToExclude={meta.modifications.toExclude}
-                setModificationsToExclude={meta.modifications.setToExclude}
+                applicabilities={meta.modifications.applicabilities}
+                setApplicabilities={meta.modifications.setApplicabilities}
                 isDisabled={meta?.status.isDisabled}
             />
         </Box>

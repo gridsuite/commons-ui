@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useFormContext } from 'react-hook-form';
-import { Box, Grid2 as Grid } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 import FormulaForm from './formula/formula-form';
 import { getFormulaInitialValue } from './formula/formula-utils';
 import { EquipmentType, FieldConstants, mergeSx } from '../../../../utils';

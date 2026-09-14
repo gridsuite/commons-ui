@@ -4,7 +4,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-
 export const filterFr = {
     OR: 'OU',
     AND: 'ET',
@@ -29,7 +28,6 @@ export const filterFr = {
     Hvdc: 'HVDC',
     'filter.expert': 'Par critères',
     'filter.explicitNaming': 'Par nommage',
-    nameEmpty: 'Le nom est vide',
     equipmentType: "Type d'ouvrage",
     changeTypeMessage: "Le type d'ouvrage sera modifié et la configuration actuelle sera perdue.",
     PropertyValues: 'Valeurs de la propriété',
@@ -53,7 +51,6 @@ export const filterFr = {
     Countries2: 'Pays 2',
     nominalVoltage: 'Tension nominale',
     EnergySourceText: "Source d'énergie",
-    nameAlreadyUsed: 'Ce nom est déjà utilisé',
     nameValidityCheckErrorMsg: 'Erreur lors de la vérification de la validité du nom',
     cantSubmitWhileValidating: "Impossible de soumettre le formulaire durant la validation d'un champ",
     elementNotFound: 'Élément inexistant',

@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { useWatch } from 'react-hook-form';
-import { Grid2 as Grid } from '@mui/material';
+import { Grid } from '@mui/material';
 import { GridSection } from '../../../../../../components/composite/grid/grid-section';
 import { FieldConstants, KiloAmpereAdornment, VoltageAdornment } from '../../../../../../utils';
 import { FloatInput } from '../../../../../../components/ui';

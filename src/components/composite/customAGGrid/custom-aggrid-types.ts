@@ -93,6 +93,11 @@ export enum SortWay {
     DESC = 'desc',
 }
 
+export type PaginationConfig = {
+    page: number;
+    rowsPerPage: number | { value: number; label: string };
+};
+
 export type TableSortConfig = Record<string, SortConfig[]>;
 
 export type TableSort = {

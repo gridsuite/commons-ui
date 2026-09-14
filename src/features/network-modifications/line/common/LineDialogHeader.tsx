@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid2 as Grid, TextField } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { filledTextField } from '../../common';
 import { TextInput } from '../../../../components/ui';
