@@ -228,7 +228,7 @@ export function ElementSaveDialog({
             {
                 ...emptyFormData,
                 [FieldConstants.NAME]: name,
-                [FieldConstants.DESCRIPTION]: defaultDescription == null ? undefined : defaultDescription,
+                [FieldConstants.DESCRIPTION]: defaultDescription ?? undefined,
             },
             { keepDefaultValues: true }
         );
