@@ -19,7 +19,7 @@ const EMPTY_UUID_SET: Set<UUID> = new Set();
 function getReferenceIds(referenceModifications: NetworkModificationMetadata[]): UUID[] {
     return [
         ...new Set(
-            referenceModifications.map((modification) => modification.referenceId).filter((id) => id !== undefined)
+            referenceModifications.map((modification) => modification.referencedId).filter((id) => id !== undefined)
         ),
     ];
 }
@@ -38,7 +38,7 @@ function replaceIfChanged(nextUuids: Set<UUID>) {
 /**
  * Resolves the write permission the current user has on the shared modifications a node points at.
  *
- * A reference modification carries the uuid of the shared modification it points at (its `referenceId`), which
+ * A reference modification carries the uuid of the shared modification it points at (its `referencedId`), which
  * is also the uuid of the corresponding element in the directory - so its permission is the one of the
  * directory holding it.
  *
@@ -52,7 +52,7 @@ export function useSharedModificationsPermissions(modifications: NetworkModifica
     readOnlySharedModificationUuids: Set<UUID>;
 } {
     const [readOnlySharedModificationUuids, setReadOnlySharedModificationUuids] = useState<Set<UUID>>(EMPTY_UUID_SET);
-    // referenceId -> has the write permission
+    // referencedId -> has the write permission
     const [permissionsCache, setPermissionsCache] = useState<Map<UUID, boolean>>(() => new Map());
 
     // The directory server has no notification dedicated to permissions: any change on a directory - including

@@ -118,7 +118,7 @@ export function isReferenceModificationOrInsideOne(
  *
  * @param modification the row to check
  * @param readOnlySharedModificationUuids uuids of the shared modifications the user can't write into
- * (a reference modification's referenceId, not the row's own uuid)
+ * (a reference modification's referencedId, not the row's own uuid)
  */
 export function isInLockedSharedModification(
     modification: BasicComposedModificationMetadata,
@@ -139,8 +139,8 @@ export function isModificationEditLocked(
     return (
         isInLockedSharedModification(modification, readOnlySharedModificationUuids) ||
         (isReferenceModification(modification) &&
-            !!modification.referenceId &&
-            !!readOnlySharedModificationUuids?.has(modification.referenceId))
+            !!modification.referencedId &&
+            !!readOnlySharedModificationUuids?.has(modification.referencedId))
     );
 }
 
@@ -445,7 +445,7 @@ export async function fetchSubModificationsForExpandedRows(
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
                 const ancestorSharedModificationUuids = [
                     ...(node.ancestorSharedModificationUuids ?? []),
-                    ...(node.referenceId ? [node.referenceId] : []),
+                    ...(node.referencedId ? [node.referencedId] : []),
                 ];
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
