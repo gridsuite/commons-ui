@@ -65,7 +65,9 @@ export default defineConfig((_config) => ({
                 enableBuild: false,
             }),
         svgr(), // works on every import with the pattern "**/*.svg?react"
-        cssInjectedByJs(),
+        cssInjectedByJs({
+            relativeCSSInjection: true,
+        }),
         dts({
             tsconfigPath: './tsconfig.build.json',
         }),
