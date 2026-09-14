@@ -48,7 +48,11 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toHaveBeenCalled();
+        expect(ReconnectingWebSocket).toHaveBeenCalledWith(
+            'test',
+            ['token', 'fake-token'],
+            expect.objectContaining({ minUptime: 12000 })
+        );
     });
 
     test('renders NotificationsProvider children component ', () => {
