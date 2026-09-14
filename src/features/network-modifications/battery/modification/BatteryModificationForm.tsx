@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
@@ -13,6 +13,7 @@ import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './Batte
 import { BatteryDialogTab } from './batteryTabs.utils';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {
@@ -34,7 +35,7 @@ export function BatteryModificationForm({
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <BatteryDialogHeader batteryToModify={batteryToModify} equipmentId={equipmentId} />
             </Grid>
@@ -45,7 +46,7 @@ export function BatteryModificationForm({
                     onTabChange={onTabChange}
                 />
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <BatteryDialogTabsContent
                     tabIndex={selectedTab}
                     batteryToModify={batteryToModify}
@@ -55,7 +56,7 @@ export function BatteryModificationForm({
                     updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTable}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }

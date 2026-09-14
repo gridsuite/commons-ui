@@ -8,7 +8,7 @@
 import { FormattedMessage, useIntl } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
-import { Grid, Box, Button, CircularProgress, Typography, Stack } from '@mui/material';
+import { Grid, Box, Button, CircularProgress, Typography, Stack, AlertColor, Alert } from '@mui/material';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -71,6 +71,8 @@ export type ElementSaveDialogProps = {
     createLabelId?: string;
     updateLabelId?: string;
     createOnlyMode?: boolean;
+    alertMessageId?: string;
+    alertSeverity?: AlertColor;
 } & (
     | {
           /** createOnlyMode uses only CREATE operation */
@@ -137,6 +139,8 @@ export function ElementSaveDialog({
     createLabelId,
     updateLabelId,
     createOnlyMode = false,
+    alertMessageId,
+    alertSeverity = 'warning',
 }: Readonly<ElementSaveDialogProps>) {
     const intl = useIntl();
     const { snackError } = useSnackMessage();
@@ -406,6 +410,11 @@ export function ElementSaveDialog({
                     id: isCreateMode ? 'showSelectDirectoryDialog' : selectorTitleId,
                 })}
             />
+            {alertMessageId && (
+                <Alert severity={alertSeverity}>
+                    <FormattedMessage id={alertMessageId} />
+                </Alert>
+            )}
         </CustomMuiDialog>
     );
 }

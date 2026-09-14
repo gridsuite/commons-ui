@@ -17,6 +17,9 @@ type DirectoryItemsInputLineProps = {
     elementType: string;
     hideErrorMessage?: boolean;
     allowMultiSelect?: boolean;
+    labelGridSize?: number;
+    inputGridSize?: number;
+    showPlaceHolder?: boolean;
 };
 
 export function ParameterLineDirectoryItemsInput({
@@ -26,13 +29,16 @@ export function ParameterLineDirectoryItemsInput({
     elementType,
     hideErrorMessage,
     allowMultiSelect = true,
+    labelGridSize = 7,
+    inputGridSize = 5,
+    showPlaceHolder = false,
 }: Readonly<DirectoryItemsInputLineProps>) {
     return (
         <Grid container spacing={1} paddingTop={1} paddingBottom={1} sx={{ width: '100%' }}>
-            <Grid size={7} sx={parametersStyles.parameterName}>
+            <Grid size={labelGridSize} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />
             </Grid>
-            <Grid size={5} sx={parametersStyles.controlItem}>
+            <Grid size={inputGridSize} sx={parametersStyles.controlItem}>
                 <DirectoryItemsInput
                     name={name}
                     equipmentTypes={equipmentTypes}
@@ -42,6 +48,7 @@ export function ParameterLineDirectoryItemsInput({
                     label={undefined}
                     itemFilter={undefined}
                     allowMultiSelect={allowMultiSelect}
+                    showPlaceHolder={showPlaceHolder}
                 />
             </Grid>
         </Grid>
