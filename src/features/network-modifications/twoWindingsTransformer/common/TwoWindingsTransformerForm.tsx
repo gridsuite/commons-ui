@@ -38,7 +38,12 @@ export function TwoWindingsTransformerForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2} height="100%">
+        <Stack
+            spacing={2}
+            sx={{
+                height: '100%',
+            }}
+        >
             <TwoWindingsTransformerDialogHeader twtToModify={twtToModify} isModification={isModification} />
             <TwoWindingsTransformerDialogTabs
                 tabIndex={selectedTab}

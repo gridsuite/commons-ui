@@ -225,7 +225,13 @@ export function VoltageLevelTopologyModificationForm({
                         {...filledTextField}
                     />
                 </Grid>
-                <Grid size={8} container justifyContent="flex-end">
+                <Grid
+                    size={8}
+                    container
+                    sx={{
+                        justifyContent: 'flex-end',
+                    }}
+                >
                     {isPreviousStatusEnabled && (
                         <Button
                             variant="outlined"

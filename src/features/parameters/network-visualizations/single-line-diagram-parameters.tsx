@@ -87,10 +87,14 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
         <Grid
             container
             spacing={1}
-            sx={parametersStyles.scrollableGrid}
             key="singleLineDiagramParameters"
-            marginTop={-3}
-            justifyContent="space-between"
+            sx={[
+                {
+                    marginTop: -3,
+                    justifyContent: 'space-between',
+                },
+                parametersStyles.scrollableGrid,
+            ]}
         >
             {labelPosition(PARAM_DIAGONAL_LABEL, DIAGONAL_LABEL)}
             {labelPosition(PARAM_CENTER_LABEL, CENTER_LABEL)}

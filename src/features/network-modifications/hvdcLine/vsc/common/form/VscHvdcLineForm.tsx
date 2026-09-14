@@ -33,7 +33,12 @@ export function VscHvdcLineForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2} height="100%">
+        <Stack
+            spacing={2}
+            sx={{
+                height: '100%',
+            }}
+        >
             <VscHvdcLineDialogHeader hvdcLineToModify={hvdcLineToModify} isModification={isModification} />
             <VscHvdcLineDialogTabs
                 tabIndex={selectedTab}

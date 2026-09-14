@@ -51,7 +51,15 @@ export function EquipmentSelectionParameters() {
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
             </Alert>
-            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+            <Grid
+                container
+                sx={[
+                    {
+                        justifyContent: 'flex-end',
+                    },
+                    equipmentsSelectionStyles.choiceContainer,
+                ]}
+            >
                 <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={GENERATORS_SELECTION_TYPE}
@@ -66,7 +74,15 @@ export function EquipmentSelectionParameters() {
                 label="VariableGenerators"
                 hideErrorMessage
             />
-            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+            <Grid
+                container
+                sx={[
+                    {
+                        justifyContent: 'flex-end',
+                    },
+                    equipmentsSelectionStyles.choiceContainer,
+                ]}
+            >
                 <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={TRANSFORMERS_SELECTION_TYPE}
@@ -81,7 +97,15 @@ export function EquipmentSelectionParameters() {
                 label="VariableTransformers"
                 hideErrorMessage
             />
-            <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
+            <Grid
+                container
+                sx={[
+                    {
+                        justifyContent: 'flex-end',
+                    },
+                    equipmentsSelectionStyles.choiceContainer,
+                ]}
+            >
                 <Grid size={5} sx={equipmentsSelectionStyles.choice}>
                     <RadioInput
                         name={SHUNT_COMPENSATORS_SELECTION_TYPE}

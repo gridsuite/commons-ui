@@ -55,14 +55,18 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
 
     return (
         <Dialog open={openDialog && !!userProfile && !!userDetails} onClose={onClose}>
-            <DialogTitle fontWeight="bold" sx={styles.DialogTitle}>
+            <DialogTitle sx={{ ...styles.DialogTitle, fontWeight: 'bold' }}>
                 <FormattedMessage id="user-information-dialog/title" />
             </DialogTitle>
 
             <DialogContent>
                 <Grid container spacing={2} sx={styles.DialogContent}>
                     <Grid size={6}>
-                        <Typography fontWeight="bold">
+                        <Typography
+                            sx={{
+                                fontWeight: 'bold',
+                            }}
+                        >
                             <FormattedMessage id="user-information-dialog/role" />
                         </Typography>
                     </Grid>
@@ -87,7 +91,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                     </Grid>
 
                     <Grid size={6}>
-                        <Typography fontWeight="bold">
+                        <Typography
+                            sx={{
+                                fontWeight: 'bold',
+                            }}
+                        >
                             <FormattedMessage id="user-information-dialog/profile" />
                         </Typography>
                     </Grid>
@@ -100,13 +108,31 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                     </Grid>
                 </Grid>
 
-                <Box mt={3} sx={styles.quotasBox}>
-                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
+                <Box
+                    sx={[
+                        {
+                            mt: 3,
+                        },
+                        styles.quotasBox,
+                    ]}
+                >
+                    <Typography
+                        sx={[
+                            {
+                                fontWeight: 'bold',
+                            },
+                            styles.quotasTypography,
+                        ]}
+                    >
                         <FormattedMessage id="user-information-dialog/quotas" />
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-cases-or-studies" />
                             </Typography>
                         </Grid>
@@ -120,7 +146,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             </Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-builds-per-user" />
                             </Typography>
                         </Grid>
@@ -128,12 +158,23 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
                         </Grid>
                     </Grid>
-                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
+                    <Typography
+                        sx={[
+                            {
+                                fontWeight: 'bold',
+                            },
+                            styles.quotasTypography,
+                        ]}
+                    >
                         <FormattedMessage id="user-information-dialog/quotas-per-execution" />
                     </Typography>
                     <Grid container spacing={2}>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-loadflow-per-user" />
                             </Typography>
                         </Grid>
@@ -141,7 +182,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedLoadflow}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-security-per-user" />
                             </Typography>
                         </Grid>
@@ -149,7 +194,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedSecurity}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-user" />
                             </Typography>
                         </Grid>
@@ -157,7 +206,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedSensitivity}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-user" />
                             </Typography>
                         </Grid>
@@ -165,7 +218,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedShortCircuit}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-user" />
                             </Typography>
                         </Grid>
@@ -173,7 +230,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedVoltageInit}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-pccMin-per-user" />
                             </Typography>
                         </Grid>
@@ -181,7 +242,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedPccMin}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-user" />
                             </Typography>
                         </Grid>
@@ -189,7 +254,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedStateEstimation}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-user" />
                             </Typography>
                         </Grid>
@@ -197,7 +266,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedBalanceAdjustement}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-user" />
                             </Typography>
                         </Grid>
@@ -205,7 +278,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedDynamicSimulation}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-user" />
                             </Typography>
                         </Grid>
@@ -213,7 +290,11 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                             <Typography>{userDetails?.maxAllowedDynamicSecurity}</Typography>
                         </Grid>
                         <Grid size={6}>
-                            <Typography fontWeight="bold">
+                            <Typography
+                                sx={{
+                                    fontWeight: 'bold',
+                                }}
+                            >
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-user" />
                             </Typography>
                         </Grid>

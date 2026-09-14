@@ -55,12 +55,32 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
 
     return (
         <Box>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Grid container alignItems="center">
-                    <Grid paddingTop={1}>
+            <Stack
+                direction="row"
+                sx={{
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                }}
+            >
+                <Grid
+                    container
+                    sx={{
+                        alignItems: 'center',
+                    }}
+                >
+                    <Grid
+                        sx={{
+                            paddingTop: 1,
+                        }}
+                    >
                         <FolderOutlined />
                     </Grid>
-                    <Grid paddingTop={1} paddingLeft={1}>
+                    <Grid
+                        sx={{
+                            paddingTop: 1,
+                            paddingLeft: 1,
+                        }}
+                    >
                         <Tooltip
                             title={nodeInfos?.[DIRECTORY_ITEM_FULL_PATH] ?? ''}
                             slotProps={{
@@ -71,12 +91,22 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
                                 },
                             }}
                         >
-                            <Typography fontWeight={breadcrumb ? undefined : 'bold'} noWrap>
+                            <Typography
+                                noWrap
+                                sx={{
+                                    fontWeight: breadcrumb ? undefined : 'bold',
+                                }}
+                            >
                                 {breadcrumb || <FormattedMessage id={getAbsenceLabelKeyFromType(types?.[0])} />}
                             </Typography>
                         </Tooltip>
                     </Grid>
-                    <Grid paddingTop={1} paddingLeft={1}>
+                    <Grid
+                        sx={{
+                            paddingTop: 1,
+                            paddingLeft: 1,
+                        }}
+                    >
                         {error?.message && (
                             <FormHelperText error>{intl.formatMessage({ id: error?.message })}</FormHelperText>
                         )}

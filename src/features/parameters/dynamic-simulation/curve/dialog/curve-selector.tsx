@@ -70,7 +70,14 @@ const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>
         return (
             <>
                 <Grid size={6}>
-                    <Stack alignItems="flex-start" justifyContent="flex-start" spacing={1} sx={{ height: '100%' }}>
+                    <Stack
+                        spacing={1}
+                        sx={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            height: '100%',
+                        }}
+                    >
                         <Typography sx={styles.h6} variant="h6">
                             <FormattedMessage id="DynamicSimulationCurveEquipmentFilter" />
                         </Typography>
@@ -85,7 +92,14 @@ const CurveSelector = forwardRef<CurveSelectorApi, Readonly<CurveSelectorProps>>
                     </Stack>
                 </Grid>
                 <Grid size={6}>
-                    <Stack alignItems="flex-start" justifyContent="flex-start" spacing={1} sx={{ height: '100%' }}>
+                    <Stack
+                        spacing={1}
+                        sx={{
+                            alignItems: 'flex-start',
+                            justifyContent: 'flex-start',
+                            height: '100%',
+                        }}
+                    >
                         <Typography sx={styles.h6} variant="h6">
                             <FormattedMessage id="DynamicSimulationCurveCurveFilter" />
                         </Typography>

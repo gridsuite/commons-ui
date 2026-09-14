@@ -80,7 +80,11 @@ export function DescriptionModificationDialog({
             formContext={{ ...methods, validationSchema: schema, removeOptional: true }}
             titleId="description"
         >
-            <Box paddingTop={1}>
+            <Box
+                sx={{
+                    paddingTop: 1,
+                }}
+            >
                 <ExpandingTextField
                     name={FieldConstants.DESCRIPTION}
                     label="descriptionProperty"
