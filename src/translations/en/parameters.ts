@@ -124,7 +124,7 @@ export const parametersEn = {
     ShortCircuitCharacteristics: 'Features considered',
     ShortCircuitVoltageProfileMode: 'Initial voltage profile',
     ShortCircuitStartedGeneratorsMode: 'Generators started',
-    ShortCircuitInClusterFilter: 'Definition of cluster filters',
+    ShortCircuitInClusterFilter: 'Definition of calculation cluster filters',
     ShortCircuitInCluster: 'In cluster',
     ShortCircuitOutCluster: 'Out cluster',
     startedGeneratorsInCalculationClusterThreshold: 'Threshold',
