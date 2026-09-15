@@ -111,6 +111,8 @@ export const businessErrorsFr = {
         'Le type de container pour la modification {modificationId} est introuvable',
     'modification.badType':
         'Le type de la modification {modificationId} est invalide : type actuel {modificationType} -> type attendu {expectedModificationType}',
+    'modification.containsShared':
+        'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
