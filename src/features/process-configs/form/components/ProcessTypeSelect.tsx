@@ -21,6 +21,7 @@ export function ProcessTypeSelect({ onCheckNewValue }: Readonly<ProcessTypeSelec
             options={PROCESS_CONFIG_TYPES}
             onCheckNewValue={onCheckNewValue}
             fullWidth
+            disableClearable
             size="small"
         />
     );

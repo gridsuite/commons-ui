@@ -7,7 +7,7 @@
 
 import * as yup from 'yup';
 import { directoryItemSchema } from '../../../components';
-import { FieldConstants } from '../../../utils';
+import { FieldConstants, YUP_REQUIRED } from '../../../utils';
 import { ProcessType } from './process-config.type';
 import { processConfigModificationsShape } from './process-config-modifications-edition.utils';
 import type { ProcessConfigMode } from './process-config-form.types';
@@ -28,7 +28,7 @@ const parameterField = (field: ProcessConfigParameterField) =>
         .of(parameterSelectionSchema)
         .when('processType', {
             is: (value: unknown) => getProcessTypesRequiringParameter(field).includes(value as ProcessType),
-            then: (schema) => schema.required().length(1),
+            then: (schema) => schema.required().length(1, YUP_REQUIRED),
             otherwise: (schema) => schema,
         });
 
