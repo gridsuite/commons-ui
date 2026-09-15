@@ -50,6 +50,7 @@ export function useProcessTypeGuard(form: UseFormReturn<ProcessConfigFormValues>
             );
 
             if (!hasOtherChanges) {
+                setConfirmedProcessType(nextProcessType);
                 return true;
             }
 

@@ -9,14 +9,13 @@ import { Divider, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import { ProcessTypeSelect } from './components/ProcessTypeSelect';
-import { PrefillConfigSelector } from './components/PrefillConfigSelector';
 import { ProcessTypeChangeDialog } from './components/ProcessTypeChangeDialog';
 import { usePrefillSelection } from './hooks/usePrefillSelection';
 import { useProcessTypeGuard } from './hooks/useProcessTypeGuard';
 import { GeneralInformationSection, SpecificInformationSection } from '../common';
 import type { ProcessConfigFormProps } from '../common/process-config-form.types';
-import type { DirectoryItemSchema } from '../../../components';
-import { FieldConstants } from '../../../utils';
+import { DirectoryItemSelector, type DirectoryItemSchema } from '../../../components';
+import { ElementType, FieldConstants } from '../../../utils';
 
 export function ProcessConfigForm({
     form,
@@ -67,11 +66,16 @@ export function ProcessConfigForm({
             )}
 
             {isCreate && isSelectorOpen && (
-                <PrefillConfigSelector
+                <DirectoryItemSelector
                     open
-                    types={[selectedProcessType]}
                     onClose={handleSelect}
+                    types={[ElementType.PROCESS_CONFIG]}
+                    equipmentTypes={[selectedProcessType]}
                     itemFilter={itemFilter}
+                    title="processConfigPrefill"
+                    onlyLeaves
+                    multiSelect={false}
+                    validationButtonText="validate"
                 />
             )}
 
