@@ -49,10 +49,18 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
             .map(([urlKey, url]) => {
-                const rws = new ReconnectingWebSocket(url, ['token', token], {
-                    // this option set the minimum duration being connected before reset the retry count to 0
-                    minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
-                });
+                const protocols = ['token', token];
+                const rws = new ReconnectingWebSocket(
+                    () => {
+                        protocols[1] = getUserToken() ?? '';
+                        return url;
+                    },
+                    protocols,
+                    {
+                        // this option set the minimum duration being connected before reset the retry count to 0
+                        minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
+                    }
+                );
 
                 rws.onmessage = broadcastMessage(urlKey);
 
