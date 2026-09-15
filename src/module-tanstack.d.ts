@@ -31,6 +31,10 @@ declare module '@tanstack/react-table' {
             isRowDragDisabled?: boolean;
             modificationToEditLabel: RefObject<UUID | null>;
         };
+        permissions: {
+            // uuids of the shared modifications the user can't write into
+            readOnlySharedModificationUuids?: Set<UUID>;
+        };
         status: {
             isImpactedByNotification?: () => boolean;
             notificationMessageId?: string;
