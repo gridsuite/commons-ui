@@ -34,6 +34,7 @@ declare module '@mui/material/styles' {
         severityChip: {
             disabledColor: string;
         };
+        row: CSSObject;
     }
 
     export interface Theme extends MuiTheme, Required<ThemeExtension> {}
