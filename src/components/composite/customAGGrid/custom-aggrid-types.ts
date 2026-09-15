@@ -6,17 +6,6 @@
  */
 import { ColDef, ComponentType, GridApi, IFilterOptionDef } from 'ag-grid-community';
 import { UUID } from 'crypto';
-import {
-    DYNAMIC_SIMULATION_RESULT_SORT_STORE,
-    LOADFLOW_RESULT_SORT_STORE,
-    PCCMIN_ANALYSIS_RESULT_SORT_STORE,
-    PROCESS_EXECUTION_HISTORY_SORT_STORE,
-    SECURITY_ANALYSIS_RESULT_SORT_STORE,
-    SENSITIVITY_ANALYSIS_RESULT_SORT_STORE,
-    SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
-    SPREADSHEET_SORT_STORE,
-    STATEESTIMATION_RESULT_SORT_STORE,
-} from '../../../utils/store-sort-filter-fields';
 
 export enum TableType {
     Loadflow = 'Loadflow',
@@ -100,27 +89,23 @@ export type PaginationConfig = {
     rowsPerPage: number | { value: number; label: string };
 };
 
+// --- BEGIN types for sort in different tables --- //
 export type TableSortConfig = Record<string, SortConfig[]>;
 
-export type TableSort = {
-    [SPREADSHEET_SORT_STORE]: TableSortConfig;
-    [LOADFLOW_RESULT_SORT_STORE]: TableSortConfig;
-    [SECURITY_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [SENSITIVITY_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [DYNAMIC_SIMULATION_RESULT_SORT_STORE]: TableSortConfig;
-    [SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [STATEESTIMATION_RESULT_SORT_STORE]: TableSortConfig;
-    [PCCMIN_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [PROCESS_EXECUTION_HISTORY_SORT_STORE]: TableSortConfig;
-};
-export type TableSortKeysType = keyof TableSort;
+export type GenericTableSort = Record<string, TableSortConfig>;
 
-export type SortParams = {
-    table: TableSortKeysType;
+// for each app, define specific tables to manage
+export type TableSort<T extends GenericTableSort = GenericTableSort> = T;
+
+export type TableSortKeysType<T extends GenericTableSort = GenericTableSort> = keyof TableSort<T>;
+
+export type SortParams<T extends GenericTableSort = GenericTableSort> = {
+    table: TableSortKeysType<T>;
     tab: string;
     isChildren?: boolean;
     persistSort?: (api: GridApi, sort: SortConfig) => Promise<void>;
 };
+// --- END types for sort in different tables --- //
 
 export enum ColumnTypes {
     TEXT = 'TEXT',

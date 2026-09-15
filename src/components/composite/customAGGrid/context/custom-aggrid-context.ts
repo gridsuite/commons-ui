@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { createContext, useContext } from 'react';
-import { FilterConfig, FilterParams, SortConfig, SortParams } from '../custom-aggrid-types';
+import { FilterConfig, FilterParams, GenericTableSort, SortConfig, SortParams } from '../custom-aggrid-types';
 
-export interface CustomAggridSortContextValue {
-    getSortConfig: (sortParams: SortParams | undefined) => SortConfig[] | undefined;
-    setSortConfig: (sortParams: SortParams, updatedSortConfig: SortConfig[]) => void;
+export interface CustomAggridSortContextValue<T extends GenericTableSort = GenericTableSort> {
+    getSortConfig: (sortParams: SortParams<T> | undefined) => SortConfig[] | undefined;
+    setSortConfig: (sortParams: SortParams<T>, updatedSortConfig: SortConfig[]) => void;
 }
 
 export const CustomAggridSortContext = createContext<CustomAggridSortContextValue | null>(null);
