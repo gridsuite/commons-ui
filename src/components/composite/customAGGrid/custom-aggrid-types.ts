@@ -92,15 +92,10 @@ export type PaginationConfig = {
 // --- BEGIN types for sort in different tables --- //
 export type TableSortConfig = Record<string, SortConfig[]>;
 
-export type GenericTableSort = Record<string, TableSortConfig>;
+export type TableSort = Record<string, TableSortConfig>;
 
-// for each app, define specific tables to manage
-export type TableSort<T extends GenericTableSort = GenericTableSort> = T;
-
-export type TableSortKeysType<T extends GenericTableSort = GenericTableSort> = keyof TableSort<T>;
-
-export type SortParams<T extends GenericTableSort = GenericTableSort> = {
-    table: TableSortKeysType<T>;
+export type SortParams = {
+    table: string;
     tab: string;
     isChildren?: boolean;
     persistSort?: (api: GridApi, sort: SortConfig) => Promise<void>;
