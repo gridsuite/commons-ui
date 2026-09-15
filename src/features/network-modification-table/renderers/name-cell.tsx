@@ -102,7 +102,8 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         isEditingRef.current = false;
         setIsEditing(false);
         setInputBaseWidthPx(null);
-    }, []);
+            meta?.interaction.onHighlightConsumed();
+    }, [meta]);
 
     const updateName = useCallback(
         (newName: string) => {
