@@ -7,6 +7,7 @@
  */
 
 import * as yup from 'yup';
+import { v4 as uuid4 } from 'uuid';
 import {
     AMOUNT_TEMPORARY_LIMITS_ERROR,
     EquipmentType,
@@ -134,7 +135,8 @@ const mapOperationalLimitGroupBackToFront = (
     modification: LimitSetsEquipmentModification,
     group: LimitSetsOperationalLimitGroup
 ): TabularModificationRow => {
-    const row: TabularModificationRow = {};
+    // the row uuid is the ag-grid row id (getRowId): without it every row would share the same undefined id
+    const row: TabularModificationRow = { [FieldConstants.AG_GRID_ROW_UUID]: uuid4() };
     row[TabularFieldConstants.EQUIPMENT_ID] = modification[TabularFieldConstants.EQUIPMENT_ID];
     row[FieldConstants.IS_ACTIVE] =
         (modification[FieldConstants.SELECTED_OPERATIONAL_LIMITS_GROUP_ID1]?.value === group.id &&

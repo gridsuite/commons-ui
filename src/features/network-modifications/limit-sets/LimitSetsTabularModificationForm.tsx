@@ -132,17 +132,18 @@ export function LimitSetsTabularModificationForm({
                 if (requiredFieldNameInError !== '') {
                     setError(TabularFieldConstants.MODIFICATIONS_TABLE, {
                         type: 'custom',
-                        message: intl.formatMessage({ id: 'FieldRequired' }, { requiredFieldNameInError: keyLabel }),
+                        message: intl.formatMessage({ id: 'FieldRequired' }, { requiredFieldNameInError }),
                     });
+                } else if (fieldTypeInError !== '') {
+                    setFieldTypeError(
+                        fieldTypeInError,
+                        expectedTypeForFieldInError,
+                        TabularFieldConstants.MODIFICATIONS_TABLE,
+                        setError,
+                        intl,
+                        expectedValues
+                    );
                 }
-                setFieldTypeError(
-                    fieldTypeInError,
-                    expectedTypeForFieldInError,
-                    TabularFieldConstants.MODIFICATIONS_TABLE,
-                    setError,
-                    intl,
-                    expectedValues
-                );
             }
 
             setValue(TabularFieldConstants.CSV_FILENAME, file.name);
