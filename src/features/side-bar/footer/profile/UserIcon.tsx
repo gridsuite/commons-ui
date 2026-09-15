@@ -6,21 +6,8 @@
  */
 
 import { Avatar, SxProps, Theme } from '@mui/material';
-import { isEmpty, mergeSx } from '../../../../utils';
-
-function getAbbreviationFromUserName(name: string) {
-    if (isEmpty(name)) {
-        return '';
-    }
-
-    const [firstName, ...otherNames] = name.split(' ');
-
-    if (otherNames.length > 0) {
-        return `${firstName[0]}${otherNames.at(-1)![0]}`;
-    }
-
-    return firstName[0];
-}
+import { mergeSx } from '../../../../utils';
+import { getAbbreviationFromUserName } from '../../../../utils/user-utils';
 
 export function UserAvatarIcon({ label, sx }: Readonly<{ label: string; sx?: SxProps<Theme> }>) {
     return (
