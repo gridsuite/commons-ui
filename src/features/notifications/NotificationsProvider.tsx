@@ -11,17 +11,13 @@ import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
 import { getUser, getUserToken, subscribeToUserState } from '../../redux';
+import { setupAuthenticatedUrl } from '../../services';
 
 // the delay before we consider the WS truly connected
 const DELAY_BEFORE_WEBSOCKET_CONNECTED = 12000;
 
 function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, string] {
     return tuple[1] !== undefined;
-}
-
-function appendTokenToUrl(url: string, token: string): string {
-    const sep = url.includes('?') ? '&' : '?';
-    return `${url}${sep}access_token=${encodeURIComponent(token)}`;
 }
 
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
@@ -56,7 +52,10 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             .map(([urlKey, url]) => {
                 // URL lambda: called by ReconnectingWebSocket on each (re)connect, so reconnections always uses the
                 // current token without putting the token in the effect deps (which would recreate the WS on every silent renew).
-                const rws = new ReconnectingWebSocket(() => appendTokenToUrl(url, getUserToken() ?? ''), [], {
+                // The token itself never goes in the URL as-is: it's split via XOR into a random share (a transient
+                // cookie set right before connecting) and a complementary share (appended to the URL), so the
+                // gateway can recombine them but neither channel alone reveals the token.
+                const rws = new ReconnectingWebSocket(() => setupAuthenticatedUrl(getUser(), url), [], {
                     // this option set the minimum duration being connected before reset the retry count to 0
                     minUptime: DELAY_BEFORE_WEBSOCKET_CONNECTED,
                 });

@@ -36,6 +36,25 @@ export async function fetchAppsMetadata(): Promise<Metadata[]> {
     return res.json();
 }
 
+/**
+ * Split-token rollback support - used together with loadSplitTokenRollbackConfig() in
+ * services/utils.ts. Once the split-token auth mechanism (see setupAuthenticatedUrl) has proven
+ * itself in production, we may remove this rollback capability, but it's not required.
+ *
+ * Shape of the dynamically-served split-token.json file (deployed next to apps-metadata.json,
+ * see the links above), letting ops disable the mechanism without a frontend redeploy.
+ */
+export type SplitTokenConfig = {
+    disable?: boolean;
+};
+
+/** See SplitTokenConfig. */
+export async function fetchSplitTokenConfig(): Promise<SplitTokenConfig> {
+    const env = await fetchEnv();
+    const res = await fetch(`${env.appsMetadataServerUrl}/split-token.json`);
+    return res.json();
+}
+
 export function isStudyMetadata(metadata: Metadata): metadata is StudyMetadata {
     return metadata.name === 'Study';
 }
