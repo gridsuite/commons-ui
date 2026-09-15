@@ -35,4 +35,5 @@ export const processConfigFr = {
     edit: 'Modifier le dossier',
     Select: 'Choisir un dossier',
     importElements: 'Importer',
+    selectProcessConfig: "Choisir une configuration d'analyse",
 };

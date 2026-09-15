@@ -33,4 +33,5 @@ export const processConfigEn = {
     edit: 'Update the folder',
     Select: 'Select a folder',
     importElements: 'Import',
+    selectProcessConfig: 'Select a process configuration',
 };
