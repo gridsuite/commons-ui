@@ -8,6 +8,7 @@
 import { Divider, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
+import { useIntl } from 'react-intl';
 import { ProcessTypeSelect } from './components/ProcessTypeSelect';
 import { ProcessTypeChangeDialog } from './components/ProcessTypeChangeDialog';
 import { usePrefillSelection } from './hooks/usePrefillSelection';
@@ -26,6 +27,8 @@ export function ProcessConfigForm({
 }: Readonly<ProcessConfigFormProps>) {
     const { control } = form;
     const isCreate = mode === 'create';
+
+    const intl = useIntl();
 
     const {
         selectedProcessType,
@@ -72,10 +75,10 @@ export function ProcessConfigForm({
                     types={[ElementType.PROCESS_CONFIG]}
                     equipmentTypes={[selectedProcessType]}
                     itemFilter={itemFilter}
-                    title="processConfigPrefill"
+                    title={intl.formatMessage({ id: 'selectProcessConfig' })}
                     onlyLeaves
                     multiSelect={false}
-                    validationButtonText="validate"
+                    validationButtonText={intl.formatMessage({ id: 'validate' })}
                 />
             )}
 

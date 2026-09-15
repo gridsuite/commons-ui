@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Button, Stack, Typography } from '@mui/material';
+import { Button, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Control } from 'react-hook-form';
 import { FormSection } from './FormSection';
