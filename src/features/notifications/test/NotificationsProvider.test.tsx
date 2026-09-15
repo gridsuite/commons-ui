@@ -12,12 +12,24 @@ import type { User } from 'oidc-client-ts';
 import { NotificationsProvider } from '../NotificationsProvider';
 import { useNotificationsListener } from '../hooks/useNotificationsListener';
 
+let mockUserToken: string | undefined = 'fake-token';
+let mockUser: User | null = { profile: {} } as User;
+const mockUserStateListeners = new Set<() => void>();
+
+function notifyUserStateListeners() {
+    mockUserStateListeners.forEach((listener) => listener());
+}
+
 jest.mock('reconnecting-websocket');
 jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 jest.mock('../../../redux', (): typeof import('../../../redux') => ({
     ...jest.requireActual<typeof import('../../../redux')>('../../../redux'),
-    getUserToken: () => 'fake-token',
-    getUser: () => ({ profile: {} }) as User,
+    getUser: () => mockUser,
+    getUserToken: () => mockUserToken,
+    subscribeToUserState: (listener: () => void) => {
+        mockUserStateListeners.add(listener);
+        return () => mockUserStateListeners.delete(listener);
+    },
 }));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 
@@ -34,12 +46,16 @@ const WS_KEY = 'WS_KEY';
 
 describe('NotificationsProvider', () => {
     beforeEach(() => {
+        mockUserToken = 'fake-token';
+        mockUser = { profile: {} } as User;
+        mockUserStateListeners.clear();
         container = document.createElement('div');
         document.body.appendChild(container);
     });
 
     afterEach(() => {
         container?.remove();
+        jest.clearAllMocks();
     });
 
     test('renders NotificationsProvider component', () => {
@@ -48,7 +64,56 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toHaveBeenCalled();
+        expect(ReconnectingWebSocket).toHaveBeenCalledWith(
+            expect.any(Function),
+            ['token', 'fake-token'],
+            expect.objectContaining({ minUptime: 12000 })
+        );
+    });
+
+    test('creates Notification WebSockets when authentication becomes available', async () => {
+        mockUser = null;
+        mockUserToken = undefined;
+        const root = createRoot(container);
+
+        act(() => {
+            root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
+        });
+
+        expect(ReconnectingWebSocket).not.toHaveBeenCalled();
+
+        act(() => {
+            mockUser = { profile: {} } as User;
+            mockUserToken = 'fake-token';
+            notifyUserStateListeners();
+        });
+
+        await waitFor(() =>
+            expect(ReconnectingWebSocket).toHaveBeenCalledWith(
+                expect.any(Function),
+                ['token', 'fake-token'],
+                expect.objectContaining({ minUptime: 12000 })
+            )
+        );
+    });
+
+    test('uses the latest token on reconnect without recreating Notification WebSockets', () => {
+        const root = createRoot(container);
+
+        act(() => {
+            root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
+        });
+
+        const [urlProvider, protocols] = MockedReconnectingWebSocket.mock.calls[0];
+
+        act(() => {
+            mockUserToken = 'renewed-token';
+            notifyUserStateListeners();
+        });
+
+        expect(ReconnectingWebSocket).toHaveBeenCalledTimes(1);
+        expect((urlProvider as () => string)()).toEqual('test');
+        expect(protocols).toEqual(['token', 'renewed-token']);
     });
 
     test('renders NotificationsProvider children component ', () => {
