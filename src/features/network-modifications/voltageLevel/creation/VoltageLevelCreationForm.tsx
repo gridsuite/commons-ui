@@ -12,7 +12,7 @@ import { TextInput } from '../../../../components/ui';
 import { FieldConstants } from '../../../../utils';
 import { VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
-import { filledTextField, PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm, tabbedFormStyles } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
 import { UseTabsReturn } from '../../../../hooks';
 
@@ -32,7 +32,7 @@ export function VoltageLevelCreationForm({
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -77,7 +77,7 @@ export function VoltageLevelCreationForm({
                     />
                 </Tabs>
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <Box hidden={selectedTab !== VoltageLevelTab.SUBSTATION_TAB}>
                     <SubstationTab
                         substationOptions={substationOptions}
@@ -93,7 +93,7 @@ export function VoltageLevelCreationForm({
                 <Box hidden={selectedTab !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
                     <PropertiesForm networkElementType="voltageLevel" />
                 </Box>
-            </Grid>
+            </Box>
         </Stack>
     );
 }

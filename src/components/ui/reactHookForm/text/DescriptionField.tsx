@@ -19,12 +19,16 @@ export interface DescriptionFieldProps {
     expandingTextSx?: SxStyle;
     maxCharactersNumber?: number;
     rows?: number;
+    buttonLabel?: string;
+    buttonSx?: SxStyle;
 }
 
 export function DescriptionField({
     expandingTextSx,
     maxCharactersNumber = MAX_CHAR_DESCRIPTION,
     rows = 3,
+    buttonLabel,
+    buttonSx,
 }: Readonly<DescriptionFieldProps>) {
     const { setValue, getValues } = useFormContext();
     const description = getValues(FieldConstants.DESCRIPTION);
@@ -46,7 +50,12 @@ export function DescriptionField({
     }, [description]);
 
     return !isDescriptionFieldVisible ? (
-        <AddButton onClick={handleOpenDescription} data-testid="AddDescriptionButton" label="AddDescription" />
+        <AddButton
+            onClick={handleOpenDescription}
+            data-testid="AddDescriptionButton"
+            sx={buttonSx}
+            label={buttonLabel || 'AddDescription'}
+        />
     ) : (
         <Box sx={{ display: 'flex', alignItems: 'flex-start' }}>
             <ExpandingTextField
