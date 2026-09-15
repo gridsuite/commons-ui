@@ -60,7 +60,7 @@ export function TextInput({
     disabled,
     dataTestId,
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate, readOnly } = useCustomFormContext();
     const {
         field: { onChange: onChangeRhf, value, ref },
         fieldState: { error },
@@ -96,6 +96,8 @@ export function TextInput({
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
 
+    const hasValue = transformedValue.trim().length > 0;
+
     return (
         <Field
             data-testid={dataTestId}
@@ -119,6 +121,13 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
+                },
+                inputLabel: {
+                    shrink: hasValue,
+                },
+                htmlInput: {
+                    readOnly,
+                    onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 ...slotProps,
             }}
