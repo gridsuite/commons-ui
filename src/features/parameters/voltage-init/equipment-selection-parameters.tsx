@@ -50,8 +50,7 @@ export function EquipmentSelectionParameters() {
         <Stack>
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
-            </Alert>
-            <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
+                <br />
                 <FormattedMessage id="VoltageInitParametersBatteriesAlert" />
             </Alert>
             <Grid container justifyContent="flex-end" sx={equipmentsSelectionStyles.choiceContainer}>
