@@ -48,7 +48,14 @@ export function AutocompleteInput({
     dataTestId,
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
+    const {
+        validationSchema,
+        getValues,
+        removeOptional,
+        isNodeBuilt,
+        isUpdate,
+        readOnly: isFormReadOnly,
+    } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -83,6 +90,8 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
+    const isReadOnly = readOnly || isFormReadOnly;
+    const hasValue = selectedValues !== null;
 
     return (
         <Autocomplete
@@ -99,7 +108,10 @@ export function AutocompleteInput({
                 },
             })}
             options={options}
-            renderInput={(params) => (
+            readOnly={isReadOnly}
+            disableClearable={isReadOnly}
+            popupIcon={isReadOnly ? null : undefined}
+            renderInput={({ inputProps, ...rest }) => (
                 <TextField
                     {...(label && {
                         label: FieldLabel({
@@ -111,6 +123,16 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
+                    slotProps={{
+                        htmlInput: {
+                            ...inputProps,
+                            readOnly: isReadOnly,
+                            onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
+                        },
+                        inputLabel: {
+                            shrink: hasValue,
+                        },
+                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue
@@ -122,16 +144,7 @@ export function AutocompleteInput({
                     }
                     {...genHelperError(error?.message)}
                     {...formProps}
-                    {...params}
-                    slotProps={{
-                        ...formProps?.slotProps,
-                        ...params.slotProps,
-                        htmlInput: {
-                            ...formProps?.slotProps?.htmlInput,
-                            ...params.slotProps.htmlInput,
-                            readOnly,
-                        },
-                    }}
+                    {...rest}
                 />
             )}
             {...props}
