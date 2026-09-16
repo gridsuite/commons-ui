@@ -13,11 +13,11 @@ import { FieldConstants, isDisabledValidationButton, snackWithFallback } from '.
 import { ProcessType } from './common';
 import {
     getProcessConfigBackendFromFormData,
-    useProcessConfigForm,
     type ProcessConfigEditionDialogProps,
     type ProcessConfigFormValues,
 } from './common';
 import { ProcessConfigForm } from './form/process-config-form';
+import { useProcessConfigForm } from './form/hooks/useProcessConfigForm';
 
 const PROCESS_CONFIG_EDIT_TITLE_IDS: Record<string, string> = {
     [ProcessType.LOADFLOW]: 'process_config/editLFProcessConfigTitle',

@@ -8,9 +8,8 @@
 import { Grid, Typography } from '@mui/material';
 import { UUID } from 'node:crypto';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { DirectoryItemInput } from './DirectoryItemInput';
 import { FormSection } from './FormSection';
-import { DescriptionField, UniqueNameInput } from '../../../components';
+import { DescriptionField, DirectoryItemInput, UniqueNameInput } from '../../../components';
 import { ElementType, FieldConstants } from '../../../utils';
 
 type GeneralInformationSectionProps = {

@@ -10,16 +10,16 @@ import { useEffect, useMemo, useState } from 'react';
 import { useForm, UseFormReturn } from 'react-hook-form';
 import type { UUID } from 'node:crypto';
 import type * as yup from 'yup';
-import { snackWithFallback } from '../../../utils';
-import { useSnackMessage } from '../../../hooks';
-import { getProcessConfigFormData } from './process-config-mapping';
-import { getProcessConfigFormDefaultValues } from './process-config-form.constants';
-import { getProcessConfigFormSchema } from './process-config-form.schema';
+import { snackWithFallback } from '../../../../utils';
+import { useSnackMessage } from '../../../../hooks';
+import { getProcessConfigFormData } from '../../common/process-config-mapping';
+import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
+import { getProcessConfigFormSchema } from '../../common/process-config-form.schema';
 import type {
     FetchPersistedProcessConfigHandler,
     ProcessConfigFormValues,
     ProcessConfigMode,
-} from './process-config-form.types';
+} from '../../common/process-config-form.types';
 
 type UseProcessConfigFormParams = {
     mode: ProcessConfigMode;

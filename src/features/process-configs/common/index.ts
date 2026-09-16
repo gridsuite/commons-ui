@@ -20,4 +20,3 @@ export * from './process-config-form.constants';
 export * from './process-config-form.schema';
 export * from './process-config-form.types';
 export * from './process-config-mapping';
-export * from './useProcessConfigForm';
