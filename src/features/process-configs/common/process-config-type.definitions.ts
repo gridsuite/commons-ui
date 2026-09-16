@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { ElementType, FieldConstants } from '../../../utils';
+import { ElementType, FieldConstants, ParameterType, SpecificParameterInfos } from '../../../utils';
 import { ProcessType } from './process-config.type';
 
 export type ProcessConfigParameterField =
@@ -29,7 +29,8 @@ export type ProcessConfigParameterDefinition = {
 
 export type ProcessConfigTypeDefinition = {
     label: string;
-    parameters: readonly ProcessConfigParameterDefinition[];
+    parameters: ProcessConfigParameterDefinition[];
+    advancedParams?: SpecificParameterInfos[];
 };
 
 export const PROCESS_CONFIG_TYPE_DEFINITIONS = {
@@ -47,6 +48,13 @@ export const PROCESS_CONFIG_TYPE_DEFINITIONS = {
                 elementType: ElementType.SECURITY_ANALYSIS_PARAMETERS,
                 label: 'process_config/securityAnalysis',
                 backendProperty: 'securityAnalysisParametersUuid',
+            },
+        ],
+        advancedParams: [
+            {
+                name: 'testField',
+                type: ParameterType.BOOLEAN,
+                label: 'testField',
             },
         ],
     },
@@ -93,4 +101,32 @@ export function getProcessTypesRequiringParameter(field: ProcessConfigParameterF
     return Object.values(ProcessType).filter((processType) =>
         getProcessConfigTypeDefinition(processType)?.parameters.some((parameter) => parameter.field === field)
     );
+}
+
+
+export function getAdvancedParameterDefinitions() {
+    const definitions = new Map<
+        string,
+        {
+            parameter: SpecificParameterInfos;
+            processTypes: ProcessType[];
+        }
+    >();
+
+    Object.entries(PROCESS_CONFIG_TYPE_DEFINITIONS).forEach(([processType, definition]) => {
+        definition.advancedParams?.forEach((parameter) => {
+            const existing = definitions.get(parameter.name);
+
+            if (existing) {
+                existing.processTypes.push(processType as ProcessType);
+            } else {
+                definitions.set(parameter.name, {
+                    parameter,
+                    processTypes: [processType as ProcessType],
+                });
+            }
+        });
+    });
+
+    return [...definitions.values()];
 }

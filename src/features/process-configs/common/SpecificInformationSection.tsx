@@ -7,11 +7,14 @@
 
 import { Button, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { Control } from 'react-hook-form';
+import { Control, useWatch } from 'react-hook-form';
 import { FormSection } from './FormSection';
 import { ModificationsSubSection } from './ModificationsSubSection';
 import { ProvidersParametersSubSection } from './ProvidersParametersSubSection';
 import type { ProcessConfigFormValues } from './process-config-form.types';
+import { getProcessConfigTypeDefinition } from './process-config-type.definitions';
+import { FormSubSection } from './FormSubSection';
+import { ParameterField } from '../../parameters';
 
 type SpecificInformationSectionProps = {
     control: Control<ProcessConfigFormValues>;
@@ -19,6 +22,9 @@ type SpecificInformationSectionProps = {
 };
 
 export function SpecificInformationSection({ control, onPrefill }: Readonly<SpecificInformationSectionProps>) {
+    const selectedProcessType = useWatch({ control, name: 'processType' });
+
+    const definition = getProcessConfigTypeDefinition(selectedProcessType);
     return (
         <FormSection
             id="specific-information-heading"
@@ -34,7 +40,17 @@ export function SpecificInformationSection({ control, onPrefill }: Readonly<Spec
             }
         >
             <ModificationsSubSection />
-            <ProvidersParametersSubSection control={control} />
+            <ProvidersParametersSubSection parameters={definition?.parameters} />
+            {definition?.advancedParams && (
+                <FormSubSection
+                    id="advanced-parameters-heading"
+                    title={<FormattedMessage id="process_config/providersParameters" />}
+                >
+                    {definition?.advancedParams?.map((item) => (
+                        <ParameterField id="advanced_parameters" {...item} key={item.name} />
+                    ))}
+                </FormSubSection>
+            )}
         </FormSection>
     );
 }
