@@ -125,7 +125,7 @@ export const parametersEn = {
     ShortCircuitCharacteristics: 'Features considered',
     ShortCircuitVoltageProfileMode: 'Initial voltage profile',
     ShortCircuitStartedGeneratorsMode: 'Generators started',
-    ShortCircuitInClusterFilter: 'In cluster filters',
+    ShortCircuitInClusterFilter: 'Definition of calculation cluster filters',
     ShortCircuitInCluster: 'In cluster',
     ShortCircuitOutCluster: 'Out cluster',
     startedGeneratorsInCalculationClusterThreshold: 'Threshold',
@@ -177,6 +177,7 @@ export const parametersEn = {
     VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Update bus voltage',
     VoltageInitParametersEquipmentsSelectionAlert:
         'Static var compensators and VSC converter stations are always considered variable',
+    VoltageInitParametersBatteriesAlert: 'Batteries are considered variable when their voltage control is activated',
     VoltageLimits: 'Voltage limits',
     VoltageLevelFilter: 'Voltage level filter',
     LowVoltageLimitDefault: 'Low voltage limit default value',
