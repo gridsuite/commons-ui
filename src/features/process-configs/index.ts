@@ -6,5 +6,6 @@
  */
 
 export * from './common';
+export * from './form/hooks/useProcessConfigForm';
 export * from './form/process-config-form';
 export * from './process-config-edition-dialog';
