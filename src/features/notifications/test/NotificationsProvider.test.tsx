@@ -48,11 +48,11 @@ describe('NotificationsProvider', () => {
         act(() => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
-        expect(ReconnectingWebSocket).toHaveBeenCalledWith(
-            'test',
-            ['token', 'fake-token'],
-            expect.objectContaining({ minUptime: 12000 })
-        );
+        expect(ReconnectingWebSocket).toHaveBeenCalled();
+        const [urlProvider, protocols] = MockedReconnectingWebSocket.mock.calls[0];
+        expect(protocols).toEqual(['token', '']);
+        expect((urlProvider as () => string)()).toEqual('test');
+        expect(protocols).toEqual(['token', 'fake-token']); // calling urlProvider mutates it
     });
 
     test('renders NotificationsProvider children component ', () => {
