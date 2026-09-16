@@ -42,6 +42,32 @@ export enum FilterNumberComparators {
     GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
 }
 
+export enum UndisplayedFilterNumberComparators {
+    GREATER_THAN = 'greaterThan',
+    LESS_THAN = 'lessThan',
+}
+
+export type PaginationConfig = {
+    page: number;
+    rowsPerPage: number | { value: number; label: string };
+};
+
+// --- BEGIN types for filter in different tables --- //
+export type FilterData = {
+    dataType?: string;
+    type?: string;
+    originalType?: string; // used to store the original type of the filter before any transformation (e.g EQUALS and NOT_EQUAL in number filters)
+    value: unknown;
+    tolerance?: number; // tolerance when comparing values. Only useful for the number type
+};
+export type FilterConfig = FilterData & {
+    column: string;
+};
+
+export type ColumnFilterConfig = Record<string, FilterConfig[]>;
+
+export type TableColumnFilter = Record<string, ColumnFilterConfig>;
+
 export type FilterParams = {
     type: TableType;
     tab: string;
@@ -55,23 +81,13 @@ export interface CustomAggridFilterParams {
     colId: string;
     filterParams: FilterParams;
 }
+// --- BEGIN types for filter in different tables --- //
 
-export enum UndisplayedFilterNumberComparators {
-    GREATER_THAN = 'greaterThan',
-    LESS_THAN = 'lessThan',
+// --- BEGIN types for sort in different tables --- //
+export enum SortWay {
+    ASC = 'asc',
+    DESC = 'desc',
 }
-
-export type FilterData = {
-    dataType?: string;
-    type?: string;
-    originalType?: string; // used to store the original type of the filter before any transformation (e.g EQUALS and NOT_EQUAL in number filters)
-    value: unknown;
-    tolerance?: number; // tolerance when comparing values. Only useful for the number type
-};
-
-export type FilterConfig = FilterData & {
-    column: string;
-};
 
 export type SortConfig = {
     colId: string;
@@ -79,17 +95,6 @@ export type SortConfig = {
     children?: boolean;
 };
 
-export enum SortWay {
-    ASC = 'asc',
-    DESC = 'desc',
-}
-
-export type PaginationConfig = {
-    page: number;
-    rowsPerPage: number | { value: number; label: string };
-};
-
-// --- BEGIN types for sort in different tables --- //
 export type TableSortConfig = Record<string, SortConfig[]>;
 
 export type TableSort = Record<string, TableSortConfig>;
