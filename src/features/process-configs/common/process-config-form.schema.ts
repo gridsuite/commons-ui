@@ -7,13 +7,14 @@
 
 import * as yup from 'yup';
 import { directoryItemSchema } from '../../../components';
-import { FieldConstants, YUP_REQUIRED } from '../../../utils';
+import { FieldConstants, ParameterType, SpecificParameterInfos, YUP_REQUIRED } from '../../../utils';
 import { ProcessType } from './process-config.type';
 import { processConfigModificationsShape } from './process-config-modifications-edition.utils';
 import type { ProcessConfigMode } from './process-config-form.types';
 import {
     PROCESS_CONFIG_PARAMETER_FIELDS,
     getProcessTypesRequiringParameter,
+    getAdvancedParameterDefinitions,
     type ProcessConfigParameterField,
 } from './process-config-type.definitions';
 
@@ -32,6 +33,30 @@ const parameterField = (field: ProcessConfigParameterField) =>
             otherwise: (schema) => schema,
         });
 
+const advancedParameterSchema = (parameter: SpecificParameterInfos) => {
+    switch (parameter.type) {
+        case ParameterType.BOOLEAN:
+            return yup.boolean();
+
+        default:
+            return yup.mixed();
+    }
+};
+
+const getAdvancedParametersShape = () => {
+    const shape: Record<string, yup.AnySchema> = {};
+
+    getAdvancedParameterDefinitions().forEach(({ parameter, processTypes }) => {
+        shape[parameter.name] = advancedParameterSchema(parameter).when('processType', {
+            is: (value: unknown) => processTypes.includes(value as ProcessType),
+            then: (schema) => schema.required(YUP_REQUIRED),
+            otherwise: (schema) => schema.notRequired(),
+        });
+    });
+
+    return shape;
+};
+
 export function getProcessConfigFormSchema(mode: ProcessConfigMode) {
     const parameterFields: Record<string, yup.AnySchema> = {};
     PROCESS_CONFIG_PARAMETER_FIELDS.forEach((field) => {
@@ -48,6 +73,8 @@ export function getProcessConfigFormSchema(mode: ProcessConfigMode) {
         ...processConfigModificationsShape,
 
         ...parameterFields,
+
+        ...getAdvancedParametersShape(),
 
         ...(mode === 'create'
             ? {

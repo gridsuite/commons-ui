@@ -5,12 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Control, useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { FormSubSection } from './FormSubSection';
-import type { ProcessConfigFormValues } from './process-config-form.types';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
-import { getProcessConfigTypeDefinition } from './process-config-type.definitions';
+import { ProcessConfigParameterDefinition } from './process-config-type.definitions';
 
 const commonDirectoryItemsInputProps = {
     allowMultiSelect: false,
@@ -20,17 +18,15 @@ const commonDirectoryItemsInputProps = {
     showPlaceHolder: true,
 };
 
-export function ProvidersParametersSubSection({ control }: Readonly<{ control: Control<ProcessConfigFormValues> }>) {
-    const selectedProcessType = useWatch({ control, name: 'processType' });
-
-    const definition = getProcessConfigTypeDefinition(selectedProcessType);
-
+export function ProvidersParametersSubSection({
+    parameters,
+}: Readonly<{ parameters: ProcessConfigParameterDefinition[] | undefined }>) {
     return (
         <FormSubSection
             id="network-parameters-heading"
             title={<FormattedMessage id="process_config/providersParameters" />}
         >
-            {definition?.parameters.map(({ field, elementType, label }) => (
+            {parameters?.map(({ field, elementType, label }) => (
                 <ParameterLineDirectoryItemsInput
                     key={field}
                     label={label}
