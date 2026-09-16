@@ -23,6 +23,13 @@ export type ModificationContainer = {
     type: ModificationContainerType | null;
 };
 
+export interface ModificationMoveInfos {
+    modificationUuid: UUID;
+    source: ModificationContainer;
+    target: ModificationContainer;
+    beforeUuid?: UUID | null;
+}
+
 export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
@@ -98,13 +105,6 @@ export function getNetworkModificationsFromComposite(
     const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
     return backendFetchJson(url);
-}
-
-export interface ModificationMoveInfos {
-    modificationUuid: UUID;
-    source: ModificationContainer;
-    target: ModificationContainer;
-    beforeUuid?: UUID | null;
 }
 
 // null id on a GROUP means "the node's own group", resolved by study-server
