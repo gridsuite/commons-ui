@@ -100,21 +100,35 @@ export function getNetworkModificationsFromComposite(
     return backendFetchJson(url);
 }
 
-export function moveModification(
+export interface ModificationMoveInfos {
+    modificationUuid: UUID;
+    source: ModificationContainer;
+    target: ModificationContainer;
+    beforeUuid?: UUID | null;
+}
+
+// null id on a GROUP means "the node's own group", resolved by study-server
+export const toModificationContainer = (compositeUuid?: UUID | null): ModificationContainer =>
+    compositeUuid
+        ? { id: compositeUuid, type: ModificationContainerType.COMPOSITE }
+        : { id: null, type: ModificationContainerType.GROUP };
+
+export function moveModifications(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
-    modificationUuid: UUID,
-    sourceContainer: ModificationContainer,
-    targetContainer: ModificationContainer,
-    beforeUuid: UUID | null
+    modifications: ModificationMoveInfos[],
+    originNodeUuid?: UUID
 ) {
-    console.info(`move modification ${modificationUuid} in node ${nodeUuid}`);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${modificationUuid}`;
+    console.info(`move ${modifications.length} modification(s) to node ${nodeUuid}`);
+    let url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/move`;
+    if (originNodeUuid) {
+        url += `?${new URLSearchParams({ originNodeUuid })}`;
+    }
     console.debug(url);
     return backendFetch(url, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source: sourceContainer, target: targetContainer, beforeUuid }),
+        body: JSON.stringify(modifications),
     });
 }
 
