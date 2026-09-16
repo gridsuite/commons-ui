@@ -6,14 +6,14 @@
  */
 
 import { Box, Button, FormHelperText, Grid, Stack, Tooltip, Typography } from '@mui/material';
+import { FolderOutlined } from '@mui/icons-material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { useCallback, useMemo, useState } from 'react';
 import { useController } from 'react-hook-form';
 import { UUID } from 'node:crypto';
-import { FolderOutlined } from '@mui/icons-material';
-import { DIRECTORY_ITEM_FULL_PATH, DIRECTORY_ITEM_ID } from '../constants';
-import { DirectoryItemSchema, getAbsenceLabelKeyFromType } from './directory-item-utils';
 import { DirectoryItemSelector, DirectoryItemSelectorProps } from '../../directoryItemSelector';
+import { DirectoryItemSchema, getAbsenceLabelKeyFromType } from './directory-item-utils';
+import { DIRECTORY_ITEM_FULL_PATH, DIRECTORY_ITEM_ID } from '../constants';
 import { TreeViewFinderNodeProps } from '../../treeViewFinder';
 
 export interface DirectoryItemSelectorInputProps extends Omit<DirectoryItemSelectorProps, 'onClose' | 'open'> {
@@ -28,24 +28,25 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
         fieldState: { error },
     } = useController({ name });
 
-    const nodeInfos: DirectoryItemSchema | undefined | null = value;
+    const selectedFolder: DirectoryItemSchema | undefined | null = value;
     const intl = useIntl();
 
-    const breadcrumb = useMemo(() => {
-        return nodeInfos?.[DIRECTORY_ITEM_FULL_PATH] ? nodeInfos[DIRECTORY_ITEM_FULL_PATH] : undefined;
-    }, [nodeInfos]);
+    const path = useMemo(() => {
+        return selectedFolder?.[DIRECTORY_ITEM_FULL_PATH] ? selectedFolder[DIRECTORY_ITEM_FULL_PATH] : undefined;
+    }, [selectedFolder]);
 
-    const onNodeChanged = useCallback(
-        (nodes: TreeViewFinderNodeProps[]) => {
-            if (nodes.length > 0) {
-                const fullPath = nodes[0]?.name;
-                const nodeId: UUID | null = nodes[0]?.id;
-                if (nodeId) {
-                    const newNodeInfos = {
-                        [DIRECTORY_ITEM_ID]: nodeId,
+    const onSelectFolder = useCallback(
+        (folders: TreeViewFinderNodeProps[]) => {
+            const folder = folders.length > 0 ? folders[0] : undefined;
+            if (folder) {
+                const parentNames = folder.parents?.map((parent) => parent.name) ?? [];
+                const fullPath = [...parentNames, folder.name].join(' / ');
+                const folderId: UUID | null = folder.id;
+                if (folderId) {
+                    onChange({
+                        [DIRECTORY_ITEM_ID]: folderId,
                         [DIRECTORY_ITEM_FULL_PATH]: fullPath,
-                    };
-                    onChange(newNodeInfos);
+                    });
                 }
             }
             setIsOpen(false);
@@ -53,41 +54,81 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
         [onChange]
     );
 
+    const [head, tail] = useMemo(() => {
+        if (!path) {
+            return ['', ''];
+        }
+        const lastSeparatorIndex = path.lastIndexOf(' / ');
+        return lastSeparatorIndex === -1
+            ? [path, '']
+            : [path.slice(0, lastSeparatorIndex), path.slice(lastSeparatorIndex)];
+    }, [path]);
+
     return (
         <Box>
             <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Grid container alignItems="center">
-                    <Grid paddingTop={1}>
+                <Grid container alignItems="center" sx={{ flex: 1, minWidth: 0 }}>
+                    <Grid
+                        sx={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            flexShrink: 0,
+                        }}
+                    >
                         <FolderOutlined />
                     </Grid>
-                    <Grid paddingTop={1} paddingLeft={1}>
+                    <Grid size={{ xs: 'grow', sm: 8 }} sx={{ minWidth: 0, paddingLeft: 1 }}>
                         <Tooltip
-                            title={nodeInfos?.[DIRECTORY_ITEM_FULL_PATH] ?? ''}
+                            title={path ?? ''}
                             slotProps={{
                                 tooltip: {
                                     sx: {
-                                        maxWidth: 'none', //  to override the background of text is auto cut
+                                        maxWidth: 'none',
                                     },
                                 },
                             }}
                         >
-                            <Typography fontWeight={breadcrumb ? undefined : 'bold'} noWrap>
-                                {breadcrumb || <FormattedMessage id={getAbsenceLabelKeyFromType(types?.[0])} />}
-                            </Typography>
+                            {path ? (
+                                <Box sx={{ display: 'flex', minWidth: 0, overflow: 'hidden' }} aria-label={path}>
+                                    <Typography
+                                        component="span"
+                                        variant="body2"
+                                        sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}
+                                    >
+                                        {head}
+                                    </Typography>
+                                    <Typography component="span" variant="body2" sx={{ whiteSpace: 'nowrap' }}>
+                                        {tail}
+                                    </Typography>
+                                </Box>
+                            ) : (
+                                <Typography variant="body2" noWrap>
+                                    <FormattedMessage id={getAbsenceLabelKeyFromType(types?.[0])} />
+                                </Typography>
+                            )}
                         </Tooltip>
                     </Grid>
                     <Grid paddingTop={1} paddingLeft={1}>
                         {error?.message && (
-                            <FormHelperText error>{intl.formatMessage({ id: error?.message })}</FormHelperText>
+                            <FormHelperText error>{intl.formatMessage({ id: error.message })}</FormHelperText>
                         )}
                     </Grid>
                 </Grid>
-                <Button onClick={() => setIsOpen(true)} variant="contained" color="primary" component="label">
-                    <FormattedMessage id={breadcrumb ? 'edit' : 'Select'} />
+
+                <Button
+                    variant="outlined"
+                    onClick={() => setIsOpen(true)}
+                    component="label"
+                    sx={{
+                        textTransform: 'none',
+                        whiteSpace: 'nowrap',
+                    }}
+                >
+                    <FormattedMessage id={path ? 'edit' : 'Select'} />
                 </Button>
             </Stack>
-
-            <DirectoryItemSelector open={isOpen} onClose={onNodeChanged} types={types} {...props} />
+            <DirectoryItemSelector open={isOpen} onClose={onSelectFolder} types={types} {...props} />
         </Box>
     );
 }
