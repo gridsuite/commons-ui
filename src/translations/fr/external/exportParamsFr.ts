@@ -111,6 +111,12 @@ export const exportParamsFr = {
         'Applique la topologie bus branch aux postes sélectionnés',
     'iidm.export.xml.flatten': 'Mettre à plat',
     'iidm.export.xml.flatten.desc': 'Mettre à plat un réseau pour ignorer les sous réseaux',
+    'iidm.export.xml.only-selected-operational-limits-groups': 'Jeux de limites actifs uniquement',
+    'iidm.export.xml.only-selected-operational-limits-groups.desc':
+        'Exporter seulement les jeux de limites actifs de chaque ouvrage',
+    'iidm.export.xml.force-export-network-with-beta-features': "Forcer l'export en présence de fonctionnalités en beta",
+    'iidm.export.xml.force-export-network-with-beta-features.desc':
+        " Forcer l'export du réseau même s'il contient des fonctionnalités en beta, en ignorant leur serialisation si elle n'existe pas.",
     'iidm.export.xml.sorted': 'Trier les ouvrages dans le fichier',
     'iidm.export.xml.sorted.desc': 'Trier les ouvrages dans le fichier',
     'iidm.export.xml.version': 'Version IIDM',
