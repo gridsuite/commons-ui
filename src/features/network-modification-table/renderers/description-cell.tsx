@@ -52,17 +52,13 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const handleModifyDescription = useCallback(() => {
         setOpenDescModificationDialog(true);
     }, []);
-    const finalDescription = useMemo(
-        () => (isReferenceModification(data) ? JSON.parse(data.messageValues)?.description : data.description),
-        [data]
-    );
 
     return (
         <>
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={finalDescription ?? ''}
+                    description={data.description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                 />
@@ -72,7 +68,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(finalDescription)}
+                        sx={createEditDescriptionStyle(data.description)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>

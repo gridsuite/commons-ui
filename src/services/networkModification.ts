@@ -8,7 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponent } from './utils';
 import { PREFIX_STUDY_SERVER_QUERIES } from './study';
-import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
+import { ComposedModificationMetadata, ModificationReferenceInfos, NetworkModificationMetadata } from '../utils';
 
 export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
     `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
