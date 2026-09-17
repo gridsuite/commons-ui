@@ -32,6 +32,7 @@ import {
 import { VscHdvLineModificationDto } from './vscHvdcLineModification.types';
 import {
     getInjectionActiveReactivePowerEditDataProperties,
+    getInjectionActiveReactivePowerEmptyFormDataProperties,
     getInjectionActiveReactivePowerValidationSchemaProperties,
 } from '../../../common';
 
@@ -61,7 +62,10 @@ export const vscHvdcLineModificationEmptyFormData: DeepNullable<VscHvdcLineModif
     [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationEmptyFormData(true),
     [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationEmptyFormData(true),
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
-    [FieldConstants.STATE_ESTIMATION]: null,
+    [FieldConstants.STATE_ESTIMATION]: {
+        [FieldConstants.CONVERTER_STATION_1]: getInjectionActiveReactivePowerEmptyFormDataProperties(),
+        [FieldConstants.CONVERTER_STATION_2]: getInjectionActiveReactivePowerEmptyFormDataProperties(),
+    },
 };
 
 export const vscHvdcLineModificationDtoToForm = (
