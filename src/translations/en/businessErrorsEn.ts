@@ -41,7 +41,7 @@ export const businessErrorsEn = {
     'study.tooManyNadConfigs': 'Maximum number of NAD configuration exceeded.',
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
     'study.elementAlreadyExists': 'An element with the name {fileName} already exists',
-    'study.maxOperationTypeExceeded': 'Max number of operation reached : {currentComputation}/{maxComputation}',
+    'study.maxOperationTypeExceeded': 'Max number of operation reached',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
@@ -107,6 +107,7 @@ export const businessErrorsEn = {
     'modification.container.type.notFound': 'Modification container type of {modificationId} not found',
     'modification.badType':
         'Modification type of {modificationId} is invalid : actual type {modificationType} -> expected type {expectedModificationType}',
+    'modification.containsShared': 'Modification {modificationId} contains a shared modification and cannot be shared',
     'modification.notFound': 'Modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',

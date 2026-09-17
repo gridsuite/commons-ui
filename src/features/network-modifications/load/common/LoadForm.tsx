@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { LoadDialogTab } from './load.utils';
 import { LoadDialogHeader, LoadDialogHeaderProps } from './LoadDialogHeader';
 import { LoadDialogTabs } from './LoadDialogTabs';
 import { LoadDialogTabsContent, LoadDialogTabsContentProps } from './LoadDialogTabsContent';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface LoadFormProps
     extends LoadDialogHeaderProps, Omit<LoadDialogTabsContentProps, 'tabIndex' | 'isModification' | 'loadToModify'> {
@@ -28,7 +29,7 @@ export function LoadForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <LoadDialogHeader loadToModify={loadToModify} isModification={isModification} />
             </Grid>
@@ -40,7 +41,7 @@ export function LoadForm({
                     isModification={isModification}
                 />
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <LoadDialogTabsContent
                     tabIndex={selectedTab}
                     loadToModify={loadToModify}
@@ -49,7 +50,7 @@ export function LoadForm({
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     PositionDiagramPane={PositionDiagramPane}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }
