@@ -72,7 +72,7 @@ const defaultStyles = {
         alignContent: 'center',
         alignItems: 'center',
         marginLeft: '2px',
-        fontSize: '18px',
+        fontSize: '14px',
         flexShrink: 0,
     },
     [cssIcon]: {},
