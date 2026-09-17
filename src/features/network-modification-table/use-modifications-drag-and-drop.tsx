@@ -25,7 +25,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { moveModifications, toModificationContainer } from '../../services';
+import { modificationLocation, moveModifications } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -202,7 +202,7 @@ export const useModificationsDragAndDrop = ({
             onDragEnd();
 
             const { source, destination } = result;
-            if (!destination || source.index === destination.index) {
+            if (!destination || source.index === destination.index || !currentNodeUuid) {
                 return;
             }
 
@@ -277,8 +277,8 @@ export const useModificationsDragAndDrop = ({
             moveModifications(studyUuid, currentNodeUuid, [
                 {
                     modificationUuid: movingUuid,
-                    source: toModificationContainer(sourceContainerId),
-                    target: toModificationContainer(targetContainerId),
+                    source: modificationLocation(currentNodeUuid, sourceContainerId),
+                    target: modificationLocation(currentNodeUuid, targetContainerId),
                     beforeUuid,
                 },
             ]).catch((error) => {
