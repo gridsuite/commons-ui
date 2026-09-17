@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
@@ -14,7 +14,6 @@ import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationMetadata } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
-import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
     data: ComposedModificationMetadata;
@@ -58,7 +57,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={data.description ?? ''}
+                    description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                 />
