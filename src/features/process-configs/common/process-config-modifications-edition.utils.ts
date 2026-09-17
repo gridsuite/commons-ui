@@ -32,8 +32,6 @@ export const processConfigModificationsShape = {
     [FieldConstants.MODIFICATIONS]: yup.array().required().of(processConfigModificationSchema),
 };
 
-export const emptyProcessConfigModificationsFormData = { [FieldConstants.MODIFICATIONS]: [] };
-
 export function getProcessConfigModificationsFormData(
     processConfigModifications: ModificationInfo[],
     elementNamesByUuid: Record<string, string>
