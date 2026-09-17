@@ -24,12 +24,13 @@ export type ModificationContainer = {
 };
 
 export interface ModificationLocation {
-    nodeUuid?: UUID;
-    compositeUuid?: UUID;
+    nodeUuid: UUID | null;
+    compositeUuid: UUID | null;
 }
 
-export const modificationLocation = (nodeUuid?: UUID, compositeUuid?: UUID | null): ModificationLocation =>
-    compositeUuid ? { compositeUuid } : { nodeUuid };
+export const modificationLocation = (nodeUuid?: UUID, compositeUuid?: UUID | null): ModificationLocation => {
+    return { nodeUuid: nodeUuid ?? null, compositeUuid: compositeUuid ?? null };
+};
 
 export interface ModificationMoveRequest {
     modificationUuid: UUID;
