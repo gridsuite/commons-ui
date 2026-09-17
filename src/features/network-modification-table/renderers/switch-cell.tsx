@@ -5,33 +5,33 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Switch, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { setModificationMetadata } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
-import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
+import { ComposedModificationMetadata, NetworkModificationActivations, snackWithFallback } from '../../../utils';
+import { isActivated, isDeactivatedByAncestor } from '../utils';
 
 export interface SwitchCellProps {
-    data: ComposedModificationMetadata;
+    row: Row<ComposedModificationMetadata>;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
+    activations: NetworkModificationActivations;
+    setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
     isDisabled?: boolean;
 }
 
-export function SwitchCell(props: SwitchCellProps) {
-    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
+export function SwitchCell(props: Readonly<SwitchCellProps>) {
+    const { row, studyUuid, currentNodeId, activations, setPendingActivations, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
+    const data = row.original;
     const modificationUuid = data.uuid;
-    const [modificationActivated, setModificationActivated] = useState(data.activated);
-
-    // Re-sync the local checked state when the row data is refreshed (e.g. after a server notification).
-    useEffect(() => {
-        setModificationActivated(data.activated);
-    }, [data.activated]);
+    const modificationActivated = isActivated(activations, modificationUuid);
 
     const toggleModificationActive = useCallback(
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
@@ -40,21 +40,27 @@ export function SwitchCell(props: SwitchCellProps) {
             }
 
             setIsLoading(true);
-            setModificationActivated(checked);
+            // Apply optimistic update, dropped once the modifications are fetched back with the new value
+            setPendingActivations((prev) => ({ ...prev, [modificationUuid]: checked }));
 
             setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
                 activated: checked,
                 type: data.type,
             })
                 .catch((error) => {
-                    setModificationActivated(data.activated); // rollback
+                    // Rollback on failure: with nothing pending the switch reads the modification again
+                    setPendingActivations((prev) => {
+                        const rolledBack = { ...prev };
+                        delete rolledBack[modificationUuid];
+                        return rolledBack;
+                    });
                     snackWithFallback(snackError, error, { headerId: 'networkModificationActivationError' });
                 })
                 .finally(() => {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, studyUuid, currentNodeId, data.type, data.activated, snackError]
+        [modificationUuid, studyUuid, currentNodeId, data.type, setPendingActivations, snackError]
     );
 
     return (
@@ -66,7 +72,7 @@ export function SwitchCell(props: SwitchCellProps) {
             <span>
                 <Switch
                     size="small"
-                    disabled={isLoading || isDisabled}
+                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations)}
                     checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />
