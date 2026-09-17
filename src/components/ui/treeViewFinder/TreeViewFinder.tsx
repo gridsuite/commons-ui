@@ -71,7 +71,7 @@ const defaultStyles = {
         display: 'flex',
         alignContent: 'center',
         alignItems: 'center',
-        marginLeft: '12px',
+        marginLeft: '2px',
         fontSize: '18px',
         flexShrink: 0,
     },
@@ -100,7 +100,6 @@ export interface TreeViewFinderNodeProps {
     parents?: TreeViewFinderNodeProps[];
     specificMetadata?: {
         equipmentType: string;
-        type?: string;
     };
     references?: ReferenceAttributes[];
 }
@@ -419,8 +418,8 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         return null;
     };
 
-    const isSharedModification = (node: TreeViewFinderNodeProps) => {
-        return node.type === ElementType.MODIFICATION && !!node.references?.length;
+    const isShared = (node: TreeViewFinderNodeProps) => {
+        return !!node.references?.length;
     };
 
     const renderTreeItemLabel = (node: TreeViewFinderNodeProps) => {
@@ -428,7 +427,7 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
             <div className={composeClasses(classes, cssLabelRoot)}>
                 {getNodeIcon(node)}
                 <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
-                {isSharedModification(node) && (
+                {isShared(node) && (
                     <CustomTooltip title={intl.formatMessage({ id: 'importComposites.shared' })}>
                         <DatasetLinkedIcon className={composeClasses(classes, cssSharedIcon)} />
                     </CustomTooltip>

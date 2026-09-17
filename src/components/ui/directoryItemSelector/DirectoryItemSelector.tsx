@@ -229,9 +229,7 @@ export function DirectoryItemSelector({
                 return {
                     id: e.elementUuid,
                     name: e.elementName,
-                    type: e.type,
                     description: e.description,
-                    specificMetadata: e.specificMetadata,
                     references: e.references,
                     icon: getFileIcon(e.type, styles.icon),
                     children:
