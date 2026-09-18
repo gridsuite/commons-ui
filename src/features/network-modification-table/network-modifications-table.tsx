@@ -36,17 +36,20 @@ import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
     collectApplicabilities,
+    collectReferenceModifications,
     fetchSubModificationsForExpandedRows,
     findAllLoadedCompositeModifications,
     findDepth,
     formatToComposedModification,
     isCompositeModification,
+    isInLockedSharedModification,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
     removeUuidsFromTree,
 } from './utils';
 import { ModificationRow } from './row';
+import { useSharedModificationsPermissions } from './use-shared-modifications-permissions';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -54,7 +57,11 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
-    onSelectedRowsChange: (selectedRows: ComposedModificationMetadata[], isAssemblyDepthExceeded: boolean) => void;
+    onSelectedRowsChange: (
+        selectedRows: ComposedModificationMetadata[],
+        isAssemblyDepthExceeded: boolean,
+        containsLockedModification: boolean
+    ) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
@@ -117,6 +124,13 @@ export function NetworkModificationsTable({
         composedModificationsRef.current = composedModifications;
     }, [composedModifications]);
 
+    // Resolved from the whole loaded tree rather than from the node's modifications, so we get all nested references
+    const referenceModifications = useMemo(
+        () => collectReferenceModifications(composedModifications),
+        [composedModifications]
+    );
+    const { readOnlySharedModificationUuids } = useSharedModificationsPermissions(referenceModifications);
+
     // refs are kept for the "event" props to prevent retriggering the associated useEffects
     const modificationToEditLabelRef = useRef(modificationToEditLabel);
     useEffect(() => {
@@ -137,9 +151,12 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows));
+            const containsLockedModification = selectedRows.some((row) =>
+                isInLockedSharedModification(row, readOnlySharedModificationUuids)
+            );
+            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
         },
-        [onSelectedRowsChange, isAssemblyDepthExceeded]
+        [onSelectedRowsChange, isAssemblyDepthExceeded, readOnlySharedModificationUuids]
     );
 
     const { rowSelection, onRowSelectionChange, lastClickedRowId, emitSelection } = useModificationsSelection({
@@ -220,6 +237,9 @@ export function NetworkModificationsTable({
                 isRowDragDisabled,
                 modificationToEditLabel: modificationToEditLabelRef,
             },
+            permissions: {
+                readOnlySharedModificationUuids,
+            },
             status: {
                 isImpactedByNotification,
                 notificationMessageId,
@@ -240,6 +260,7 @@ export function NetworkModificationsTable({
             handleRowSelected,
             modificationToEditLabelRef,
             isRowDragDisabled,
+            readOnlySharedModificationUuids,
             isImpactedByNotification,
             notificationMessageId,
             isFetchingModifications,
@@ -287,6 +308,7 @@ export function NetworkModificationsTable({
         onDragEnd: onRowDragEnd,
         studyUuid,
         currentNodeUuid: currentNodeId,
+        readOnlySharedModificationUuids,
     });
 
     // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
@@ -385,6 +407,10 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={isInLockedSharedModification(
+                                                    row.original,
+                                                    readOnlySharedModificationUuids
+                                                )}
                                             />
                                         );
                                     })}
