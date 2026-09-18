@@ -55,6 +55,7 @@ export function AppSideBarFooter({
                             setSelectedLanguage={setSelectedLanguage}
                         />
                         <SideBarMenuItem
+                            tooltip={isMinimized ? 'top-bar/logout' : undefined}
                             label="top-bar/logout"
                             icon={<Logout />}
                             onClick={onLogoutClick}
@@ -65,6 +66,7 @@ export function AppSideBarFooter({
                 <Divider />
 
                 <SideBarMenuItem
+                    tooltip={isMinimized ? 'top-bar/expand' : undefined}
                     label="top-bar/minimize"
                     icon={isMinimized ? <KeyboardDoubleArrowRight /> : <KeyboardDoubleArrowLeft />}
                     onClick={toggleSideBarMinimized}

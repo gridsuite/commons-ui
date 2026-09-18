@@ -5,18 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { GENERATOR_TAB_FIELDS, GeneratorDialogTab } from './generatorTabs.utils';
+import { GeneratorDialogTab } from './generatorTabs.utils';
 import { GeneratorDialogHeader, GeneratorDialogHeaderProps } from './GeneratorDialogHeader';
 import { GeneratorDialogTabs } from './GeneratorDialogTabs';
 import { GeneratorDialogTabsContent, GeneratorDialogTabsContentProps } from './GeneratorDialogTabsContent';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface GeneratorModificationFormProps
     extends GeneratorDialogHeaderProps, Omit<GeneratorDialogTabsContentProps, 'tabIndex'> {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+    useTabsReturn: UseTabsReturn<GeneratorDialogTab>;
 }
 
 export function GeneratorModificationForm({
@@ -26,15 +28,14 @@ export function GeneratorModificationForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
+    useTabsReturn,
 }: Readonly<GeneratorModificationFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<GeneratorDialogTab>(
-        GENERATOR_TAB_FIELDS,
-        GeneratorDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab: tabIndex, tabsWithError: tabIndexesWithError, onTabChange } = useTabsReturn;
+
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <GeneratorDialogHeader generatorToModify={generatorToModify} equipmentId={equipmentId} />
             </Grid>
@@ -42,10 +43,10 @@ export function GeneratorModificationForm({
                 <GeneratorDialogTabs
                     tabIndex={tabIndex}
                     tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
+                    onTabChange={onTabChange}
                 />
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <GeneratorDialogTabsContent
                     tabIndex={tabIndex}
                     generatorToModify={generatorToModify}
@@ -55,7 +56,7 @@ export function GeneratorModificationForm({
                     updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTable}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }

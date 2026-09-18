@@ -6,7 +6,7 @@
  */
 
 import { memo } from 'react';
-import ParameterField from '../common/parameter-field';
+import { ParameterField } from '../common/parameter-field';
 import {
     BALANCE_TYPE,
     CONNECTED_MODE,

@@ -5,10 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { Box, Card, CardContent, Grid, Tab, Tabs } from '@mui/material';
-import { useFormContext } from 'react-hook-form';
 
 import {
     COLUMNS_DEFINITIONS_HVDCS,
@@ -36,6 +35,8 @@ import { BuildStatus, BuildStatusChip } from '../../node';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { DndColumn } from '../../../components/composite/dnd-table';
 import { parametersStyles } from '../parameters-style';
+
+import { UseSensiTabsReturn } from './use-sensitivity-analysis-parameters';
 
 const styles = {
     circularProgress: (theme) => ({
@@ -78,6 +79,7 @@ interface SensitivityParametersSelectorProps {
     isStudyLinked: boolean;
     isRootNode: boolean;
     globalBuildStatus?: BuildStatus;
+    useSensiTabsReturn: UseSensiTabsReturn;
 }
 
 interface TabInfo {
@@ -93,47 +95,22 @@ function SensitivityParametersSelector({
     isStudyLinked,
     isRootNode,
     globalBuildStatus,
+    useSensiTabsReturn,
 }: Readonly<SensitivityParametersSelectorProps>) {
     const intl = useIntl();
+
     const {
-        formState: { errors, dirtyFields },
-    } = useFormContext();
+        selectedTab: tabValue,
+        setSelectedTab: setTabValue,
+        tabsWithError,
+        onTabChange: handleTabChange,
+    } = useSensiTabsReturn.useTabsReturn;
 
-    const [tabValue, setTabValue] = useState(SensiTabValues.SensitivityBranches);
-    const [subTabValue, setSubTabValue] = useState(SensiBranchesTabValues.SensiInjectionsSet);
-    const handleTabChange = useCallback((event: React.SyntheticEvent<Element, Event>, newValue: number) => {
-        setTabValue(newValue);
-    }, []);
-    const handleSubTabChange = useCallback((event: React.SyntheticEvent<Element, Event>, newValue: number) => {
-        setSubTabValue(newValue);
-    }, []);
-
-    const hasDirtyFields = Object.keys(dirtyFields).length > 0;
-
-    const subTabHasError = useMemo<Record<number, boolean>>(
-        () => ({
-            [SensiBranchesTabValues.SensiInjectionsSet]:
-                hasDirtyFields &&
-                !!dirtyFields[PARAMETER_SENSI_INJECTIONS_SET] &&
-                !!errors[PARAMETER_SENSI_INJECTIONS_SET],
-            [SensiBranchesTabValues.SensiInjection]:
-                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_INJECTION] && !!errors[PARAMETER_SENSI_INJECTION],
-            [SensiBranchesTabValues.SensiHVDC]:
-                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_HVDC] && !!errors[PARAMETER_SENSI_HVDC],
-            [SensiBranchesTabValues.SensiPST]:
-                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_PST] && !!errors[PARAMETER_SENSI_PST],
-        }),
-        [errors, dirtyFields, hasDirtyFields]
-    );
-
-    const tabHasError = useMemo<Record<number, boolean>>(
-        () => ({
-            [SensiTabValues.SensitivityBranches]: Object.values(subTabHasError).some(Boolean),
-            [SensiTabValues.SensitivityNodes]:
-                hasDirtyFields && !!dirtyFields[PARAMETER_SENSI_NODES] && !!errors[PARAMETER_SENSI_NODES],
-        }),
-        [subTabHasError, errors, dirtyFields, hasDirtyFields]
-    );
+    const {
+        selectedTab: subTabValue,
+        tabsWithError: subTabsWithError,
+        onTabChange: handleSubTabChange,
+    } = useSensiTabsReturn.useSubTabsReturn;
 
     const tabInfo: TabInfo[] = [
         {
@@ -190,7 +167,7 @@ function SensitivityParametersSelector({
         if (!isDeveloperMode) {
             setTabValue(SensiTabValues.SensitivityBranches);
         }
-    }, [isDeveloperMode]);
+    }, [isDeveloperMode, setTabValue]);
 
     return (
         <Grid sx={{ width: '100%' }}>
@@ -205,7 +182,7 @@ function SensitivityParametersSelector({
                                 fontSize: 17,
                                 fontWeight: 'bold',
                                 textTransform: 'capitalize',
-                                ...(tabHasError[index] &&
+                                ...(tabsWithError.includes(index as SensiTabValues) &&
                                     index !== tabValue && {
                                         color: 'error.main',
                                         '&.Mui-selected': { color: 'error.main' },
@@ -275,7 +252,8 @@ function SensitivityParametersSelector({
                                                 fontWeight: 'bold',
                                                 textTransform: 'capitalize',
                                             },
-                                            subTabHasError[subIndex] && subIndex !== subTabValue
+                                            subTabsWithError.includes(subIndex as SensiBranchesTabValues) &&
+                                                subIndex !== subTabValue
                                                 ? parametersStyles.tabWithError
                                                 : undefined
                                         )}

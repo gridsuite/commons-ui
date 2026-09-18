@@ -23,13 +23,17 @@ export const PARAM_COMPONENT_LIBRARY = 'componentLibrary';
 export const PARAM_DIAGONAL_LABEL = 'diagonalLabel';
 export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
 export const PARAM_NAD_POSITIONS_GENERATION_MODE = 'nadPositionsGenerationMode';
-export const PARAM_STATE_ESTIMATION = 'stateEstimation';
+export const PARAM_MEASUREMENTS = 'measurements';
+export const PARAM_OBSERVABILITY = 'observability';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
     SINGLE_LINE_DIAGRAM = 'singleLineDiagramParameters',
     NETWORK_AREA_DIAGRAM = 'networkAreaDiagramParameters',
 }
+
+export const NV_TAB_VALUES = Object.values(NetworkVisualizationTabValues);
+
 export const MAP_MANUAL_REFRESH = 'MapManualRefresh';
 export const LINE_FLOW_MODE = 'LineFlowMode';
 export const MAP_BASE_MAP = 'MapBaseMap';
@@ -39,7 +43,8 @@ export const CENTER_LABEL = 'centerLabel';
 export const SUBSTATION_LAYOUT = 'SubstationLayout';
 export const COMPONENT_LIBRARY = 'ComponentLibrary';
 export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
-export const CUSTOM_REAL_TIME_STATE_ESTIMATION = 'CustomRealTimeStateEstimation';
+export const MEASUREMENTS_LABEL = 'measurements';
+export const OBSERVABILITY_LABEL = 'observability';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {

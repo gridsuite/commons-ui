@@ -122,7 +122,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
     const rootNetwork = meta?.context.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
-    if (!rootNetwork || !meta?.modifications.toExclude || !meta.modifications.setToExclude) {
+    if (!rootNetwork || !meta?.modifications.applicabilities || !meta.modifications.setApplicabilities) {
         return null;
     }
     return (
@@ -132,8 +132,8 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
                 studyUuid={meta?.context.studyUuid ?? null}
                 currentNodeId={meta?.context.currentNodeId}
                 rootNetwork={rootNetwork}
-                modificationsToExclude={meta.modifications.toExclude}
-                setModificationsToExclude={meta.modifications.setToExclude}
+                applicabilities={meta.modifications.applicabilities}
+                setApplicabilities={meta.modifications.setApplicabilities}
                 isDisabled={meta?.status.isDisabled}
             />
         </Box>

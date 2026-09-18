@@ -119,22 +119,22 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                 </Box>
                             </Typography>
                         </Grid>
-                    </Grid>
-                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
-                        <FormattedMessage id="user-information-dialog/quotas-per-study" />
-                    </Typography>
-                    <Grid container spacing={2}>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-builds-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-builds-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
                             <Typography>{userDetails?.maxAllowedBuilds}</Typography>
                         </Grid>
+                    </Grid>
+                    <Typography fontWeight="bold" sx={styles.quotasTypography}>
+                        <FormattedMessage id="user-information-dialog/quotas-per-execution" />
+                    </Typography>
+                    <Grid container spacing={2}>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-loadflow-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-loadflow-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -142,7 +142,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-security-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-security-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -150,7 +150,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-sensitivity-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -158,7 +158,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-shortCircuit-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -166,7 +166,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-voltageInit-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -174,7 +174,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-pccMin-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-pccMin-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -182,7 +182,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-stateEstimation-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -190,7 +190,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -198,7 +198,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -206,7 +206,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicSecurity-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>
@@ -214,7 +214,7 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                         </Grid>
                         <Grid size={6}>
                             <Typography fontWeight="bold">
-                                <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-study" />
+                                <FormattedMessage id="user-information-dialog/number-of-dynamicMargin-per-user" />
                             </Typography>
                         </Grid>
                         <Grid size={6}>

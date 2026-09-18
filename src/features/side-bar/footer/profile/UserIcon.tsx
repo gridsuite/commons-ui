@@ -5,32 +5,22 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Avatar } from '@mui/material';
-import { isEmpty } from '../../../../utils';
+import { Avatar, SxProps, Theme } from '@mui/material';
+import { mergeSx } from '../../../../utils';
+import { getAbbreviationFromUserName } from '../../../../utils/user-utils';
 
-function getAbbreviationFromUserName(name: string) {
-    if (isEmpty(name)) {
-        return '';
-    }
-
-    const [firstName, ...otherNames] = name.split(' ');
-
-    if (otherNames.length > 0) {
-        return `${firstName[0]}${otherNames.at(-1)![0]}`;
-    }
-
-    return firstName[0];
-}
-
-export function UserAvatarIcon({ label }: Readonly<{ label: string }>) {
+export function UserAvatarIcon({ label, sx }: Readonly<{ label: string; sx?: SxProps<Theme> }>) {
     return (
         <Avatar
-            sx={(theme) => ({
-                height: '24px',
-                width: '24px',
-                fontSize: theme.typography.pxToRem(11),
-                textTransform: 'uppercase',
-            })}
+            sx={mergeSx(
+                (theme) => ({
+                    height: '24px',
+                    width: '24px',
+                    fontSize: theme.typography.pxToRem(11),
+                    textTransform: 'uppercase',
+                }),
+                { ...sx }
+            )}
         >
             {getAbbreviationFromUserName(label)}
         </Avatar>

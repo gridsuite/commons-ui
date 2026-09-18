@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import React from 'react';
+import { SyntheticEvent } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { GeneratorDialogTab } from './generatorTabs.utils';
@@ -14,19 +14,19 @@ import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameter
 interface GeneratorDialogTabsProps {
     tabIndex: number;
     tabIndexesWithError: number[];
-    setTabIndex: (newTabIndex: number) => void;
+    onTabChange: (event: SyntheticEvent<Element, Event>, newValue: number) => void;
 }
 
 export function GeneratorDialogTabs({
     tabIndex,
     tabIndexesWithError,
-    setTabIndex,
+    onTabChange,
 }: Readonly<GeneratorDialogTabsProps>) {
     return (
         <Tabs
             value={tabIndex}
             variant="scrollable"
-            onChange={(event: React.SyntheticEvent, newValue: number) => setTabIndex(newValue)}
+            onChange={onTabChange}
             slotProps={{
                 indicator: {
                     sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),

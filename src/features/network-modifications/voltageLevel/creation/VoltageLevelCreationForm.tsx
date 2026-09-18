@@ -10,29 +10,29 @@ import { FormattedMessage } from 'react-intl';
 import { useWatch } from 'react-hook-form';
 import { TextInput } from '../../../../components/ui';
 import { FieldConstants } from '../../../../utils';
-import { VOLTAGE_LEVEL_TAB_FIELDS, VoltageLevelTab } from './voltageLevel.constants';
+import { VoltageLevelTab } from './voltageLevel.constants';
 import { CharacteristicsTab, StructureTab, SubstationTab } from './tabs';
-import { filledTextField, PropertiesForm } from '../../common';
+import { filledTextField, PropertiesForm, tabbedFormStyles } from '../../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../../parameters/parameters-style';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
 
 export interface VoltageLevelCreationFormProps {
     substationOptions?: string[];
     showDeleteSubstationButton?: boolean;
+    useTabsReturn: UseTabsReturn<VoltageLevelTab>;
 }
 
 export function VoltageLevelCreationForm({
     substationOptions,
     showDeleteSubstationButton = true,
-}: VoltageLevelCreationFormProps = {}) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<VoltageLevelTab>(
-        VOLTAGE_LEVEL_TAB_FIELDS,
-        VoltageLevelTab.SUBSTATION_TAB
-    );
+    useTabsReturn,
+}: VoltageLevelCreationFormProps) {
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
+
     const watchHideBusBarSection = useWatch({ name: FieldConstants.HIDE_BUS_BAR_SECTION });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <Grid container spacing={2}>
                     <Grid size={4}>
@@ -49,51 +49,51 @@ export function VoltageLevelCreationForm({
             </Grid>
             <Grid>
                 <Tabs
-                    value={tabIndex}
+                    value={selectedTab}
                     variant="scrollable"
-                    onChange={(_, newValue) => setTabIndex(newValue)}
+                    onChange={onTabChange}
                     slotProps={{
                         indicator: {
-                            sx: getTabIndicatorStyle(tabIndexesWithError, tabIndex),
+                            sx: getTabIndicatorStyle(tabsWithError, selectedTab),
                         },
                     }}
                 >
                     <Tab
                         label={<FormattedMessage id="SubstationTab" />}
-                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.SUBSTATION_TAB)}
+                        sx={getTabStyle(tabsWithError, VoltageLevelTab.SUBSTATION_TAB)}
                     />
                     <Tab
                         label={<FormattedMessage id="CharacteristicsTab" />}
-                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.CHARACTERISTICS_TAB)}
+                        sx={getTabStyle(tabsWithError, VoltageLevelTab.CHARACTERISTICS_TAB)}
                     />
                     <Tab
                         label={<FormattedMessage id="StructureTab" />}
-                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.STRUCTURE_TAB)}
+                        sx={getTabStyle(tabsWithError, VoltageLevelTab.STRUCTURE_TAB)}
                         disabled={watchHideBusBarSection}
                     />
                     <Tab
                         label={<FormattedMessage id="AdditionalInformationTab" />}
-                        sx={getTabStyle(tabIndexesWithError, VoltageLevelTab.ADDITIONAL_INFORMATION_TAB)}
+                        sx={getTabStyle(tabsWithError, VoltageLevelTab.ADDITIONAL_INFORMATION_TAB)}
                     />
                 </Tabs>
             </Grid>
-            <Grid>
-                <Box hidden={tabIndex !== VoltageLevelTab.SUBSTATION_TAB}>
+            <Box sx={tabbedFormStyles.scrollableContent}>
+                <Box hidden={selectedTab !== VoltageLevelTab.SUBSTATION_TAB}>
                     <SubstationTab
                         substationOptions={substationOptions}
                         showDeleteButton={showDeleteSubstationButton}
                     />
                 </Box>
-                <Box hidden={tabIndex !== VoltageLevelTab.CHARACTERISTICS_TAB}>
+                <Box hidden={selectedTab !== VoltageLevelTab.CHARACTERISTICS_TAB}>
                     <CharacteristicsTab />
                 </Box>
-                <Box hidden={tabIndex !== VoltageLevelTab.STRUCTURE_TAB}>
+                <Box hidden={selectedTab !== VoltageLevelTab.STRUCTURE_TAB}>
                     <StructureTab />
                 </Box>
-                <Box hidden={tabIndex !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
+                <Box hidden={selectedTab !== VoltageLevelTab.ADDITIONAL_INFORMATION_TAB}>
                     <PropertiesForm networkElementType="voltageLevel" />
                 </Box>
-            </Grid>
+            </Box>
         </Stack>
     );
 }

@@ -47,7 +47,7 @@ export function SettingsMenu({
                 renderLabel={() => (
                     <Box>
                         {intl.formatMessage({ id: 'top-bar/language' })}
-                        <Typography component="span" fontSize={12} sx={{ color: 'text.disabled' }}>
+                        <Typography component="span" fontSize={12} sx={{ color: 'text.secondary' }}>
                             {' - '}
                             {intl.formatMessage({
                                 id: `top-bar/language/${selectedLanguage}`,

@@ -5,18 +5,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid, Stack } from '@mui/material';
+import { Box, Grid, Stack } from '@mui/material';
 import { useWatch } from 'react-hook-form';
 import { BatteryDialogHeader, BatteryDialogHeaderProps } from './BatteryDialogHeader';
 import { BatteryDialogTabs } from './BatteryDialogTabs';
 import { BatteryDialogTabsContent, BatteryDialogTabsContentProps } from './BatteryDialogTabsContent';
-import { BATTERY_TAB_FIELDS, BatteryDialogTab } from './batteryTabs.utils';
+import { BatteryDialogTab } from './batteryTabs.utils';
 import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { useTabsWithError } from '../../hooks';
+import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface BatteryModificationFormProps
     extends BatteryDialogHeaderProps, Omit<BatteryDialogTabsContentProps, 'tabIndex'> {
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+    useTabsReturn: UseTabsReturn<BatteryDialogTab>;
 }
 
 export function BatteryModificationForm({
@@ -26,28 +28,27 @@ export function BatteryModificationForm({
     fetchBusesOrBusbarSections,
     PositionDiagramPane,
     fetchVoltageLevelEquipments,
+    useTabsReturn,
 }: Readonly<BatteryModificationFormProps>) {
-    const { tabIndex, setTabIndex, tabIndexesWithError } = useTabsWithError<BatteryDialogTab>(
-        BATTERY_TAB_FIELDS,
-        BatteryDialogTab.CONNECTIVITY_TAB
-    );
+    const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
+
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <Grid>
                 <BatteryDialogHeader batteryToModify={batteryToModify} equipmentId={equipmentId} />
             </Grid>
             <Grid>
                 <BatteryDialogTabs
-                    tabIndex={tabIndex}
-                    tabIndexesWithError={tabIndexesWithError}
-                    setTabIndex={setTabIndex}
+                    tabIndex={selectedTab}
+                    tabIndexesWithError={tabsWithError}
+                    onTabChange={onTabChange}
                 />
             </Grid>
-            <Grid>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <BatteryDialogTabsContent
-                    tabIndex={tabIndex}
+                    tabIndex={selectedTab}
                     batteryToModify={batteryToModify}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
@@ -55,7 +56,7 @@ export function BatteryModificationForm({
                     updatePreviousReactiveCapabilityCurveTable={updatePreviousReactiveCapabilityCurveTable}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
-            </Grid>
+            </Box>
         </Stack>
     );
 }

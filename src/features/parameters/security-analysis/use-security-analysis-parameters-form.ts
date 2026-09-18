@@ -24,11 +24,10 @@ import {
     LIMIT_REDUCTIONS_FORM,
     PROVIDER,
     toFormValuesLimitReductions,
-    useTabs,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { updateParameter } from '../../../services';
-import { useSnackMessage } from '../../../hooks';
+import { useTabs, useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
 import { getSAParametersFormSchema, toFormValueSaParameters } from './columns-definitions';
@@ -41,6 +40,7 @@ import {
     LOW_VOLTAGE_ABSOLUTE_THRESHOLD,
     LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
     TabValues,
+    TAB_VALUES,
 } from './constants';
 
 export interface UseSecurityAnalysisParametersFormReturn {
@@ -171,7 +171,7 @@ export const useSecurityAnalysisParametersForm = (
         onError: onValidationError,
     } = useTabs({
         defaultTab: TabValues.Contingencies,
-        tabEnum: TabValues,
+        tabValues: TAB_VALUES,
         errors: formMethods.formState.errors,
         tabFields: TAB_FIELDS,
     });

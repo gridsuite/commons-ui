@@ -12,6 +12,7 @@ import {
     getPowerWithValidityValidationSchema,
 } from './powerWithValidity.utils';
 import { FieldConstants } from '../../../../utils';
+import { BranchModificationDto } from '../branch/branchModification.types';
 
 export function getBranchActiveReactivePowerEmptyFormDataProperties() {
     return {
@@ -46,8 +47,7 @@ export const getBranchActiveReactivePowerValidationSchema = (id: string) => ({
     [id]: getBranchActiveReactivePowerValidationSchemaObject(),
 });
 
-// TODO: once 2wt uses proper schema and infered type, we could change this any below
-export function getBranchActiveReactivePowerEditDataProperties(branchData: any) {
+export function getBranchActiveReactivePowerEditDataProperties(branchData: BranchModificationDto) {
     return {
         ...getPowerWithValidityEditData(FieldConstants.MEASUREMENT_P1, {
             value: branchData?.p1MeasurementValue?.value,
@@ -65,12 +65,5 @@ export function getBranchActiveReactivePowerEditDataProperties(branchData: any) 
             value: branchData?.q2MeasurementValue?.value,
             validity: branchData?.q2MeasurementValidity?.value,
         }),
-    };
-}
-export function getBranchActiveReactivePowerEditData(id: string, branchData: any) {
-    return {
-        [id]: {
-            ...getBranchActiveReactivePowerEditDataProperties(branchData),
-        },
     };
 }
