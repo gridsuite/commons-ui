@@ -25,7 +25,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { ModificationContainerType, moveModification } from '../../services';
+import { modificationLocation, moveModifications } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -202,7 +202,7 @@ export const useModificationsDragAndDrop = ({
             onDragEnd();
 
             const { source, destination } = result;
-            if (!destination || source.index === destination.index) {
+            if (!destination || source.index === destination.index || !currentNodeUuid) {
                 return;
             }
 
@@ -274,20 +274,14 @@ export const useModificationsDragAndDrop = ({
             }
 
             // Group id is filled in the study server, by convention if we send null data it will be resolved as a group operation
-            moveModification(
-                studyUuid,
-                currentNodeUuid,
-                movingUuid,
+            moveModifications(studyUuid, currentNodeUuid, [
                 {
-                    id: sourceContainerId,
-                    type: sourceContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
+                    modificationUuid: movingUuid,
+                    source: modificationLocation(currentNodeUuid, sourceContainerId),
+                    target: modificationLocation(currentNodeUuid, targetContainerId),
+                    beforeUuid,
                 },
-                {
-                    id: targetContainerId,
-                    type: targetContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
-                },
-                beforeUuid
-            ).catch((error) => {
+            ]).catch((error) => {
                 snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
                 setComposedModifications(previousModifications);
             });

@@ -23,6 +23,22 @@ export type ModificationContainer = {
     type: ModificationContainerType | null;
 };
 
+export interface ModificationLocation {
+    nodeUuid: UUID | null;
+    compositeUuid: UUID | null;
+}
+
+export const modificationLocation = (nodeUuid?: UUID, compositeUuid?: UUID | null): ModificationLocation => {
+    return { nodeUuid: nodeUuid ?? null, compositeUuid: compositeUuid ?? null };
+};
+
+export interface ModificationMoveRequest {
+    modificationUuid: UUID;
+    source: ModificationLocation;
+    target: ModificationLocation;
+    beforeUuid?: UUID | null;
+}
+
 export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
@@ -100,21 +116,18 @@ export function getNetworkModificationsFromComposite(
     return backendFetchJson(url);
 }
 
-export function moveModification(
+export function moveModifications(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
-    modificationUuid: UUID,
-    sourceContainer: ModificationContainer,
-    targetContainer: ModificationContainer,
-    beforeUuid: UUID | null
+    modifications: ModificationMoveRequest[]
 ) {
-    console.info(`move modification ${modificationUuid} in node ${nodeUuid}`);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modification/${modificationUuid}`;
+    console.info(`move ${modifications.length} modification(s) to node ${nodeUuid}`);
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/move`;
     console.debug(url);
     return backendFetch(url, {
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ source: sourceContainer, target: targetContainer, beforeUuid }),
+        body: JSON.stringify(modifications),
     });
 }
 
