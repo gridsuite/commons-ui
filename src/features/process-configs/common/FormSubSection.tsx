@@ -16,8 +16,8 @@ type FormSubSectionProps = {
 
 export function FormSubSection({ children, id, title }: FormSubSectionProps) {
     return (
-        <Stack spacing={1.5} component="section" aria-labelledby={id}>
-            <Typography id={id} variant="subtitle1" fontWeight={600}>
+        <Stack component="section" aria-labelledby={id}>
+            <Typography paddingBottom={1} id={id} variant="subtitle1" fontWeight={600}>
                 {title}
             </Typography>
             {children}
