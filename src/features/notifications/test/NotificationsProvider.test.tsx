@@ -49,6 +49,10 @@ describe('NotificationsProvider', () => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
         expect(ReconnectingWebSocket).toHaveBeenCalled();
+        const [urlProvider, protocols] = MockedReconnectingWebSocket.mock.calls[0];
+        expect(protocols).toEqual(['token', '']);
+        expect((urlProvider as () => string)()).toEqual('test');
+        expect(protocols).toEqual(['token', 'fake-token']); // calling urlProvider mutates it
     });
 
     test('renders NotificationsProvider children component ', () => {
