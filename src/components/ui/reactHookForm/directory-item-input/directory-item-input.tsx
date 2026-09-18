@@ -124,6 +124,7 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
                         textTransform: 'none',
                         whiteSpace: 'nowrap',
                     }}
+                    size="small"
                 >
                     <FormattedMessage id={path ? 'edit' : 'Select'} />
                 </Button>
