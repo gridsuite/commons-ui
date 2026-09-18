@@ -8,6 +8,7 @@ import React, { useCallback, useState } from 'react';
 import { IconButton, ListItemIcon, ListItemText, Menu } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
+import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
 import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
 import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
@@ -15,11 +16,12 @@ import { CustomMenuItem, CustomTooltip } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
 export interface ReferenceLinkCellProps {
-    data: ComposedModificationMetadata;
+    row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
 }
 
-export function ReferenceLinkCell({ data, disabled = false }: Readonly<ReferenceLinkCellProps>) {
+export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceLinkCellProps>) {
+    const data = row.original;
     const intl = useIntl();
     const { snackInfo, snackError } = useSnackMessage();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
