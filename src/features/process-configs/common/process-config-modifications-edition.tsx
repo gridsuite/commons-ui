@@ -7,6 +7,7 @@
 import { useFieldArray } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useIntl } from 'react-intl';
+import { Box } from '@mui/material';
 import {
     DESCRIPTION,
     ACTIVE,
@@ -73,12 +74,14 @@ export function ProcessConfigModificationsEdition({ name }: Readonly<{ name: str
     );
 
     return (
-        <DndTable
-            name={name}
-            useFieldArrayOutput={useFieldArrayModifications}
-            createRows={createModification}
-            columnsDefinition={columnsDefinition}
-            withAddRowsDialog={false}
-        />
+        <Box paddingTop={1}>
+            <DndTable
+                name={name}
+                useFieldArrayOutput={useFieldArrayModifications}
+                createRows={createModification}
+                columnsDefinition={columnsDefinition}
+                withAddRowsDialog={false}
+            />
+        </Box>
     );
 }
