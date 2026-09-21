@@ -6,3 +6,5 @@
  */
 export * from './TreeViewFinder';
 export * from './TreeViewUtils';
+export * from './HighlightedText';
+export * from './TreeViewSearchBar';
