@@ -1,6 +1,6 @@
 {
     "name": "@gridsuite/commons-ui",
-    "version": "0.296.0",
+    "version": "0.297.0",
     "description": "common react components for gridsuite applications",
     "author": "gridsuite team",
     "homepage": "https://github.com/gridsuite",
@@ -95,9 +95,9 @@
         "yup": "^1.7.0"
     },
     "overrides": {
-       "mui-nested-menu": {
-          "@mui/material": ">=5.0.0"
-       }
+        "mui-nested-menu": {
+            "@mui/material": ">=5.0.0"
+        }
     },
     "devDependencies": {
         "@babel/helper-builder-react-jsx": "^7.27.1",
