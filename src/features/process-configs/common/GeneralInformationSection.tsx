@@ -47,7 +47,7 @@ export function GeneralInformationSection({
 
                 {withFolderField && (
                     <Grid size={{ xs: 12, sm: 12 }}>
-                        <Typography variant="subtitle1">
+                        <Typography variant="subtitle1" fontWeight={600} paddingBottom={0.5}>
                             <FormattedMessage id="processConfigSaveDirectory" />
                         </Typography>
                         <DirectoryItemInput
