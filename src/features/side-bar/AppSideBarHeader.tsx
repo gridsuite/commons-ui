@@ -44,7 +44,13 @@ export function AppSideBarHeader({
             }}
             spacing={1}
         >
-            <Stack direction="row" alignItems="center" justifyContent={isMinimized ? 'center' : 'flex-start'}>
+            <Stack
+                direction="row"
+                sx={{
+                    alignItems: 'center',
+                    justifyContent: isMinimized ? 'center' : 'flex-start',
+                }}
+            >
                 <Box sx={{ position: 'relative', display: 'inline-block' }}>
                     {appLogo}
 
@@ -53,7 +59,11 @@ export function AppSideBarHeader({
 
                 {!isMinimized && (
                     <Box sx={{ position: 'relative', display: 'inline-block' }}>
-                        <Typography fontSize={18}>
+                        <Typography
+                            sx={{
+                                fontSize: 18,
+                            }}
+                        >
                             <Box component="span" style={{ fontWeight: 'bold' }}>
                                 Grid
                             </Box>
@@ -69,10 +79,12 @@ export function AppSideBarHeader({
 
             <Stack
                 direction="row"
-                visibility={isLoggedIn ? 'inherit' : 'hidden'}
-                alignItems="center"
-                justifyContent={isMinimized ? 'center' : 'end'}
                 spacing={1}
+                sx={{
+                    visibility: isLoggedIn ? 'inherit' : 'hidden',
+                    alignItems: 'center',
+                    justifyContent: isMinimized ? 'center' : 'end',
+                }}
             >
                 <>
                     {!isMinimized && <Typography variant="caption">V{appVersion}</Typography>}

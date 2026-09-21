@@ -74,7 +74,7 @@ export function ProcessConfigModificationsEdition({ name }: Readonly<{ name: str
     );
 
     return (
-        <Box paddingTop={1}>
+        <Box sx={{ paddingTop: 1 }}>
             <DndTable
                 name={name}
                 useFieldArrayOutput={useFieldArrayModifications}

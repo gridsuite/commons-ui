@@ -14,7 +14,14 @@ export interface OverflowableChipProps extends ChipProps {
 
 export function OverflowableChip({ label, boxSx, ...otherProps }: Readonly<OverflowableChipProps>) {
     return (
-        <Box padding="3px" sx={{ cursor: 'default', ...boxSx }} onClick={(e) => e.stopPropagation()}>
+        <Box
+            onClick={(e) => e.stopPropagation()}
+            sx={{
+                padding: '3px',
+                cursor: 'default',
+                ...boxSx,
+            }}
+        >
             <Chip
                 size="small"
                 label={

@@ -66,8 +66,8 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
 
     return (
         <Box>
-            <Stack direction="row" alignItems="center" justifyContent="space-between">
-                <Grid container alignItems="center" sx={{ flex: 1, minWidth: 0 }}>
+            <Stack direction="row" sx={{ alignItems: 'center', justifyContent: 'space-between' }}>
+                <Grid container sx={{ alignItems: 'center', flex: 1, minWidth: 0 }}>
                     <Grid
                         sx={{
                             display: 'flex',
@@ -109,7 +109,12 @@ export function DirectoryItemInput({ name, types, ...props }: Readonly<Directory
                             )}
                         </Tooltip>
                     </Grid>
-                    <Grid paddingTop={1} paddingLeft={1}>
+                    <Grid
+                        sx={{
+                            paddingTop: 1,
+                            paddingLeft: 1,
+                        }}
+                    >
                         {error?.message && (
                             <FormHelperText error>{intl.formatMessage({ id: error.message })}</FormHelperText>
                         )}
