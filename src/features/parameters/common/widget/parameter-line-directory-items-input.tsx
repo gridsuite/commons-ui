@@ -37,11 +37,7 @@ export function ParameterLineDirectoryItemsInput({
         <Grid
             container
             spacing={1}
-            sx={{
-                paddingTop: 1,
-                paddingBottom: 1,
-                width: '100%',
-            }}
+            sx={{ paddingTop: 1, paddingBottom: 1, alignItems: 'center', width: '100%' }}
         >
             <Grid size={labelGridSize} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={label} />

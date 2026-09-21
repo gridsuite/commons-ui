@@ -95,7 +95,8 @@ export const parametersFr = {
     HorizontalSubstationLayout: 'Horizontal',
     VerticalSubstationLayout: 'Vertical',
     ComponentLibrary: 'Sélection de la bibliothèque de composants',
-    CustomRealTimeStateEstimation: "Estimation d'état",
+    measurements: 'Télémesures',
+    observability: 'Observabilité',
     nadPositionsGenerationModeLabel: 'Initialisation des positions',
     NadGeoPositionsModeLabel: 'Géographique',
     NadAutoPositionsModeLabel: 'Automatique',
@@ -123,12 +124,12 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération du seuil par défaut des résultats de l'analyse de sensibilité",
     fetchDefaultLimitReductionsError: 'Une erreur est survenue lors de la récupération des abattements par défaut',
 
-    descWithFeederResult: 'Avec apports',
+    descWithFeederResult: 'Résultats avec détails par départ',
     ShortCircuitPredefinedParameters: 'Paramètres prédéfinis',
     ShortCircuitCharacteristics: 'Caractéristiques prises en compte',
     ShortCircuitVoltageProfileMode: 'Plan de tension initial',
     ShortCircuitStartedGeneratorsMode: 'Démarrage des groupes',
-    ShortCircuitInClusterFilter: 'Regroupements de la zone intérieure',
+    ShortCircuitInClusterFilter: 'Définition de la zone intérieure',
     ShortCircuitInCluster: 'Zone intérieure',
     ShortCircuitOutCluster: 'Zone extérieure',
     startedGeneratorsInCalculationClusterThreshold: 'Seuil',
@@ -182,6 +183,8 @@ export const parametersFr = {
     VoltageInitParametersGeneralUpdateBusVoltageLabel: 'Mettre à jour tension des nœuds électriques',
     VoltageInitParametersEquipmentsSelectionAlert:
         'Les consignes des CSPR et des stations VSC sont toujours considérées comme variables',
+    VoltageInitParametersBatteriesAlert:
+        'Les consignes des batteries sont variables si leur réglage de tension est activé',
     VoltageLimits: 'Limites de tension',
     VoltageLevelFilter: 'Filtre poste',
     LowVoltageLimitDefault: 'Valeur par défaut limite basse',

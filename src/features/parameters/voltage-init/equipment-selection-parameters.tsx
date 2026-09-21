@@ -27,7 +27,7 @@ const equipmentsSelectionStyles = {
         marginBottom: theme.spacing(2),
     }),
     choice: (theme) => ({
-        marginTop: theme.spacing(4),
+        marginTop: theme.spacing(2),
     }),
     choiceContainer: {
         paddingLeft: 1,
@@ -50,6 +50,8 @@ export function EquipmentSelectionParameters() {
         <Stack>
             <Alert sx={equipmentsSelectionStyles.alert} severity="info" variant="outlined">
                 <FormattedMessage id="VoltageInitParametersEquipmentsSelectionAlert" />
+                <br />
+                <FormattedMessage id="VoltageInitParametersBatteriesAlert" />
             </Alert>
             <Grid
                 container
