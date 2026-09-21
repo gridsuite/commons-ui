@@ -108,7 +108,13 @@ export function SetPointsLimitsForm({
         <>
             <GridSection title="ReactiveLimits" />
 
-            <Grid container spacing={2} padding={1}>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    padding: 1,
+                }}
+            >
                 <Grid size={4}>
                     <SelectInput
                         name={`${id}.${FieldConstants.CHARACTERISTICS_CHOICE}`}
@@ -132,7 +138,13 @@ export function SetPointsLimitsForm({
                 )}
             </Grid>
             <GridSection title="Setpoints" />
-            <Grid container spacing={2} padding={1}>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    padding: 1,
+                }}
+            >
                 <Grid size={4}>
                     <SelectInput
                         name={`${id}.${FieldConstants.VOLTAGE_REGULATION_MODE}`}
@@ -148,7 +160,13 @@ export function SetPointsLimitsForm({
                 <GridItem size={4}>{voltageRegulationTypeField}</GridItem>
             </Grid>
             {watchRegulationType === REGULATION_TYPES.DISTANT.id && (
-                <Grid container spacing={2} padding={1}>
+                <Grid
+                    container
+                    spacing={2}
+                    sx={{
+                        padding: 1,
+                    }}
+                >
                     <Grid size={4} sx={{ alignItems: 'center' }}>
                         <FormattedMessage id="RegulatingTerminalGenerator" />
                     </Grid>
