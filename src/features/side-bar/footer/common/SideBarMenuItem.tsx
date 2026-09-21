@@ -32,7 +32,16 @@ export function SideBarMenuItem({
     return (
         <Tooltip placement="right-start" title={tooltip && intl.formatMessage({ id: tooltip })}>
             <CustomMenuItem disabled={disabled} onClick={onClick} sx={submenuFooterStyle.subMenu}>
-                {icon} {showLabel && <Typography px={1}>{intl.formatMessage({ id: label })}</Typography>}
+                {icon}{' '}
+                {showLabel && (
+                    <Typography
+                        sx={{
+                            px: 1,
+                        }}
+                    >
+                        {intl.formatMessage({ id: label })}
+                    </Typography>
+                )}
             </CustomMenuItem>
         </Tooltip>
     );

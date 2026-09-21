@@ -118,7 +118,14 @@ function CurveSelectorDialog({
                             modelsFetcher={modelsFetcher}
                         />
                     </Grid>
-                    <Grid size={0.5} display="flex" justifyContent="center" alignItems="center">
+                    <Grid
+                        size={0.5}
+                        sx={{
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <Stack>
                             <CustomTooltip
                                 title={intl.formatMessage({

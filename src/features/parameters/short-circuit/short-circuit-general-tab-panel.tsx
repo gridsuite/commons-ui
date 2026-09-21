@@ -135,7 +135,14 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
 
         // fields definition
         const feederResult = (
-            <Grid container alignItems="center" spacing={2} direction="row">
+            <Grid
+                container
+                spacing={2}
+                direction="row"
+                sx={{
+                    alignItems: 'center',
+                }}
+            >
                 <Grid size={10}>
                     <FieldLabel label="descWithFeederResult" />
                 </Grid>
@@ -214,12 +221,30 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
 
         return (
             <TabPanel index={ShortCircuitParametersTabValues.GENERAL} ref={ref} {...othersTabPanelProps}>
-                <Grid container paddingLeft={2}>
-                    <Grid container paddingTop={2} size={{ xl: 6 }}>
+                <Grid
+                    container
+                    sx={{
+                        paddingLeft: 2,
+                    }}
+                >
+                    <Grid
+                        container
+                        size={{ xl: 6 }}
+                        sx={{
+                            paddingTop: 2,
+                        }}
+                    >
                         <GridItem size={10}>{feederResult}</GridItem>
                     </Grid>
                     <GridSection title="ShortCircuitPredefinedParameters" heading={4} />
-                    <Grid size={{ xl: 6 }} container spacing={1} alignItems="center">
+                    <Grid
+                        size={{ xl: 6 }}
+                        container
+                        spacing={1}
+                        sx={{
+                            alignItems: 'center',
+                        }}
+                    >
                         <GridItem size={9}>{predefinedParameters}</GridItem>
                         <GridItem size={2}>{statusToShow}</GridItem>
                     </Grid>

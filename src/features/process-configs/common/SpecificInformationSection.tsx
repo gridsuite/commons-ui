@@ -23,7 +23,11 @@ export function SpecificInformationSection({ control, onPrefill }: Readonly<Spec
         <FormSection
             id="specific-information-heading"
             title={
-                <Stack component="span" direction="row" alignItems="center" justifyContent="space-between" width="100%">
+                <Stack
+                    component="span"
+                    direction="row"
+                    sx={{ alignItems: 'center', justifyContent: 'space-between', width: '100%' }}
+                >
                     <FormattedMessage id="processConfigSpecificInformation" />
                     {onPrefill && (
                         <Button variant="outlined" sx={{ textTransform: 'none' }} onClick={onPrefill}>
