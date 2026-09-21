@@ -38,7 +38,17 @@ export const Default: Story = {};
 export const Nested: Story = {
     render: () => {
         return (
-            <ExpandableGroup renderHeader={<Typography fontWeight="bold">Parent group</Typography>}>
+            <ExpandableGroup
+                renderHeader={
+                    <Typography
+                        sx={{
+                            fontWeight: 'bold',
+                        }}
+                    >
+                        Parent group
+                    </Typography>
+                }
+            >
                 <Box sx={{ pl: 2 }}>
                     <ExpandableGroup renderHeader={<Typography>Child group A</Typography>}>
                         <Box sx={{ p: 2 }}>
@@ -60,7 +70,13 @@ export const CustomHeader: Story = {
     args: {
         renderHeader: (
             <Stack>
-                <Typography fontWeight="bold">Custom header</Typography>
+                <Typography
+                    sx={{
+                        fontWeight: 'bold',
+                    }}
+                >
+                    Custom header
+                </Typography>
                 <Typography variant="caption">Additional context</Typography>
             </Stack>
         ),

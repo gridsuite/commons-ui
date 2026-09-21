@@ -26,7 +26,15 @@ export function DarkModeToggle({ currentTheme, setTheme }: Readonly<DarkModeTogg
     };
     return (
         <CustomMenuItem sx={submenuFooterStyle.subMenuChildren}>
-            <Stack width="100%" direction="row" justifyContent="space-between" alignItems="center" spacing={2}>
+            <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                    width: '100%',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                }}
+            >
                 <FormattedMessage id="top-bar/darkMode" />
                 <Switch checked={isDarkMode} onChange={toggleMode} />
             </Stack>

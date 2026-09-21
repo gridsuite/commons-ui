@@ -640,7 +640,11 @@ function AppContent({ language, onLanguageClick }) {
         );
     const defaultTab = (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <Box mt={3}>
+            <Box
+                sx={{
+                    mt: 3,
+                }}
+            >
                 <Typography variant="h3" color="textPrimary" align="center">
                     Connected
                 </Typography>
@@ -903,7 +907,12 @@ function AppContent({ language, onLanguageClick }) {
                     helperText="HELPER TEXT"
                 />
             </div>
-            <Box mt={2} width={500}>
+            <Box
+                sx={{
+                    mt: 2,
+                    width: 500,
+                }}
+            >
                 <InlineSearch />
             </Box>
             <hr />

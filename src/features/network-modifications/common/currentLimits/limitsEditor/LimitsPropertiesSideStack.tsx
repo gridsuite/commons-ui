@@ -74,7 +74,14 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
     }, []);
 
     return (
-        <Stack direction="column" spacing={2} paddingTop={2} flexWrap="wrap">
+        <Stack
+            direction="column"
+            spacing={2}
+            sx={{
+                paddingTop: 2,
+                flexWrap: 'wrap',
+            }}
+        >
             <Stack direction="row" sx={{ display: 'flex', flexWrap: 'wrap' }}>
                 {limitsProperties?.map((property: LimitsProperty, index: number) => (
                     <LimitsTagChip
@@ -89,11 +96,13 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
             </Stack>
             {isEditing && !disabled ? (
                 <Box
-                    display="flex"
-                    gap={2}
-                    width="100%"
                     onMouseEnter={() => setHovered(true)}
                     onMouseLeave={() => setHovered(false)}
+                    sx={{
+                        display: 'flex',
+                        gap: 2,
+                        width: '100%',
+                    }}
                 >
                     <Autocomplete
                         options={Object.values(predefinedPropertiesNames)}

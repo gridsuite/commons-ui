@@ -16,7 +16,13 @@ function Form({ children }: PropsWithChildren) {
     const methods = useForm({ defaultValues: { threshold: 27 } });
     return (
         <CustomFormProvider {...methods} validationSchema={yup.object().shape({ threshold: yup.number().required() })}>
-            <Box px={2}>{children}</Box>
+            <Box
+                sx={{
+                    px: 2,
+                }}
+            >
+                {children}
+            </Box>
         </CustomFormProvider>
     );
 }
