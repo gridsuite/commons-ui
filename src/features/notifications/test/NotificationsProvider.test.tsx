@@ -17,7 +17,10 @@ jest.mock('uuid', () => ({ v4: () => '00000000-0000-0000-0000-000000000000' }));
 jest.mock('../../../redux', (): typeof import('../../../redux') => ({
     ...jest.requireActual<typeof import('../../../redux')>('../../../redux'),
     getUserToken: () => 'fake-token',
-    getUser: () => ({ profile: {} }) as User,
+    getUser: () =>
+        ({
+            profile: {},
+        }) as User,
 }));
 const MockedReconnectingWebSocket = ReconnectingWebSocket as jest.MockedClass<typeof ReconnectingWebSocket>;
 
@@ -49,6 +52,10 @@ describe('NotificationsProvider', () => {
             root.render(<NotificationsProvider urls={{ [WS_KEY]: 'test' }} />);
         });
         expect(ReconnectingWebSocket).toHaveBeenCalled();
+        const [urlProvider, protocols] = MockedReconnectingWebSocket.mock.calls[0];
+        expect(protocols).toEqual(['token', '']);
+        expect((urlProvider as () => string)()).toEqual('test');
+        expect(protocols).toEqual(['token', 'fake-token']); // calling urlProvider mutates it
     });
 
     test('renders NotificationsProvider children component ', () => {

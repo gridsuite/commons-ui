@@ -47,15 +47,9 @@ export type GlobalFilterProps = {
 };
 
 // renderInput : the inputfield that contains the chips, adornments and label
-function RenderInput({
-    id,
-    size,
-    fullWidth,
-    inputProps,
-    disabled,
-    InputProps: { startAdornment, ...otherInputProps },
-}: Readonly<AutocompleteRenderInputParams>) {
+function RenderInput({ id, size, fullWidth, slotProps, disabled }: Readonly<AutocompleteRenderInputParams>) {
     const intl = useIntl();
+    const { startAdornment, ...otherInputProps } = slotProps.input;
     return (
         <TextField
             id={id}
@@ -66,7 +60,7 @@ function RenderInput({
                 id: 'results.globalFilter.fillerText',
             })}
             slotProps={{
-                htmlInput: inputProps,
+                htmlInput: slotProps.htmlInput,
                 input: {
                     ...otherInputProps,
                     startAdornment: (
@@ -116,7 +110,7 @@ function RenderOption(props: RenderOptionProps) {
         case GlobalFilterType.GENERIC_FILTER:
             content = (
                 <>
-                    <OverflowableText text={label} width="100%" />
+                    <OverflowableText text={label} sx={{ width: '100%' }} />
                     <IconButton
                         sx={{
                             display: 'none',

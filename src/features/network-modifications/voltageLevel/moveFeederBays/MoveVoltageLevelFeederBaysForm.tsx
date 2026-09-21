@@ -334,7 +334,11 @@ export function MoveVoltageLevelFeederBaysForm({
                     </GridItem>
                 )}
             </Grid>
-            <Grid paddingTop={2}>
+            <Grid
+                sx={{
+                    paddingTop: 2,
+                }}
+            >
                 <FormattedMessage id="moveFeederBaysSections" />
             </Grid>
             <Box sx={{ pt: 1, flex: 1, minHeight: 0 }}>

@@ -89,7 +89,14 @@ export function ReactiveCapabilityCurveTableForm({
                     labelSuffix = index - 1;
                 }
                 return (
-                    <Grid key={value.id} container spacing={3} width="100%">
+                    <Grid
+                        key={value.id}
+                        container
+                        spacing={3}
+                        sx={{
+                            width: '100%',
+                        }}
+                    >
                         <ReactiveCapabilityCurveRowForm id={id} index={index} labelSuffix={labelSuffix} />
                         <Grid size={1}>
                             <IconButton

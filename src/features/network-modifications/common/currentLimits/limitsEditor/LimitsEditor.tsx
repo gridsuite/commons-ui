@@ -203,10 +203,13 @@ export function LimitsEditor({
                 <Box>
                     <Grid
                         container
-                        justifyContent="flex-start"
-                        alignItems="stretch"
                         spacing={2}
-                        sx={{ paddingBottom: 1, paddingTop: 3 }}
+                        sx={{
+                            justifyContent: 'flex-start',
+                            alignItems: 'stretch',
+                            paddingBottom: 1,
+                            paddingTop: 3,
+                        }}
                     >
                         <Grid size={4}>
                             <TextInput
@@ -244,7 +247,12 @@ export function LimitsEditor({
                 </Box>
             )}
 
-            <Box component="h4" margin={1}>
+            <Box
+                component="h4"
+                sx={{
+                    margin: 1,
+                }}
+            >
                 <FormattedMessage id="TemporaryCurrentLimitsText" />
             </Box>
             <TemporaryLimitsTable

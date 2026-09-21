@@ -80,7 +80,12 @@ export function StandbyAutomatonForm() {
                         labelPlacement="start"
                     />
                     {hover && watchVoltageMode !== VOLTAGE_REGULATION_MODES.VOLTAGE.id && (
-                        <Box marginLeft={2} marginTop="5px">
+                        <Box
+                            sx={{
+                                marginLeft: 2,
+                                marginTop: '5px',
+                            }}
+                        >
                             <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
                                 <WarningAmber color="warning" />
                             </Tooltip>
@@ -120,7 +125,13 @@ export function StandbyAutomatonForm() {
             </Grid>
             {watchAddStandbyAutomatonProps && (
                 <>
-                    <Grid container spacing={2} padding={2}>
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            padding: 2,
+                        }}
+                    >
                         {Object.keys(fields).map((key: string) => {
                             const typedKey = key as FieldKeys;
                             return (
@@ -130,7 +141,13 @@ export function StandbyAutomatonForm() {
                             );
                         })}
                     </Grid>
-                    <Grid container spacing={2} padding={2}>
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            padding: 2,
+                        }}
+                    >
                         <SusceptanceArea />
                     </Grid>
                 </>
