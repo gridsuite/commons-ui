@@ -168,7 +168,14 @@ export function VscConverterStationPane({
             <Grid container spacing={2} sx={{ width: '100%' }}>
                 <GridItem size={4}>{reactivePowerField}</GridItem>
             </Grid>
-            <Grid container spacing={2} paddingTop={2} sx={{ width: '100%' }}>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    paddingTop: 2,
+                    width: '100%',
+                }}
+            >
                 <GridItem size={4}>{voltageRegulation}</GridItem>
                 <GridItem size={4}>{voltageField}</GridItem>
             </Grid>
