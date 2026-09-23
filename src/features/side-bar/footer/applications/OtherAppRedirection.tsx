@@ -19,22 +19,24 @@ export function OtherAppRedirection({ app }: Readonly<OtherAppRedirectionProps>)
     return (
         <CustomMenuItem sx={submenuFooterStyle.subMenuChildren}>
             <Box
-                sx={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                }}
                 component="a"
                 href={app.url.toString()}
                 target="_blank"
                 rel="noopener noreferrer"
-                width="100%"
+                sx={{
+                    width: '100%',
+                    textDecoration: 'none',
+                    color: 'inherit',
+                }}
             >
                 <Stack
                     spacing={2}
                     direction="row"
-                    alignContent="center"
-                    alignItems="center"
-                    justifyContent="space-between"
+                    sx={{
+                        alignContent: 'center',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                    }}
                 >
                     <Typography>
                         Grid

@@ -51,10 +51,13 @@ export function FeederBayPositionCellRenderer({ name, disabled }: Readonly<Feede
                             <FormattedMessage id="DuplicatedPositionsWarning" />
                         </Typography>
                     ),
-                    FormHelperTextProps: {
-                        sx: {
-                            ml: 'auto',
-                            color: (theme) => (isDuplicate ? theme.palette.warning.main : theme.palette.text.secondary),
+                    slotProps: {
+                        formHelperText: {
+                            sx: {
+                                ml: 'auto',
+                                color: (theme) =>
+                                    isDuplicate ? theme.palette.warning.main : theme.palette.text.secondary,
+                            },
                         },
                     },
                     sx: {

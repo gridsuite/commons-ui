@@ -83,8 +83,9 @@ export function EquipmentSearchDialog() {
                         })}
                         value={displayedValue}
                         slotProps={{
+                            ...params.slotProps,
                             input: {
-                                ...params.InputProps,
+                                ...params.slotProps.input,
                                 startAdornment: <Search color="disabled" />,
                             },
                         }}

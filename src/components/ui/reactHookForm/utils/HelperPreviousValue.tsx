@@ -61,7 +61,13 @@ export function HelperPreviousValue({
                             <WarningAmberRounded color="warning" fontSize="small" />
                         )}
                     </CustomTooltip>
-                    <Typography noWrap fontSize={11} align="center">
+                    <Typography
+                        noWrap
+                        align="center"
+                        sx={{
+                            fontSize: 11,
+                        }}
+                    >
                         {previousValue + (adornmentText ? ` ${adornmentText}` : '')}
                     </Typography>
                 </Stack>
