@@ -23,19 +23,11 @@ export type ModificationContainer = {
     type: ModificationContainerType | null;
 };
 
-export interface ModificationLocation {
-    nodeUuid: UUID | null;
-    compositeUuid: UUID | null;
-}
-
-export const modificationLocation = (nodeUuid?: UUID, compositeUuid?: UUID | null): ModificationLocation => {
-    return { nodeUuid: nodeUuid ?? null, compositeUuid: compositeUuid ?? null };
-};
-
+/** One move of a batch: a missing composite designates the node's own group */
 export interface ModificationMoveRequest {
     modificationUuid: UUID;
-    source: ModificationLocation;
-    target: ModificationLocation;
+    sourceCompositeUuid?: UUID | null;
+    targetCompositeUuid?: UUID | null;
     beforeUuid?: UUID | null;
 }
 
@@ -116,13 +108,16 @@ export function getNetworkModificationsFromComposite(
     return backendFetchJson(url);
 }
 
+/** Moves modifications into nodeUuid, all coming from originNodeUuid (defaults to nodeUuid) */
 export function moveModifications(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
-    modifications: ModificationMoveRequest[]
+    modifications: ModificationMoveRequest[],
+    originNodeUuid?: UUID
 ) {
     console.info(`move ${modifications.length} modification(s) to node ${nodeUuid}`);
-    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/move`;
+    const urlSearchParams = originNodeUuid ? `?${new URLSearchParams({ originNodeUuid })}` : '';
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/move${urlSearchParams}`;
     console.debug(url);
     return backendFetch(url, {
         method: 'put',

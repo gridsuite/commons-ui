@@ -25,7 +25,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { modificationLocation, moveModifications } from '../../services';
+import { moveModifications } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -273,12 +273,12 @@ export const useModificationsDragAndDrop = ({
                 setComposedModifications(updatedModifications);
             }
 
-            // Group id is filled in the study server, by convention if we send null data it will be resolved as a group operation
+            // A null composite designates the node's own group, resolved by the study server
             moveModifications(studyUuid, currentNodeUuid, [
                 {
                     modificationUuid: movingUuid,
-                    source: modificationLocation(currentNodeUuid, sourceContainerId),
-                    target: modificationLocation(currentNodeUuid, targetContainerId),
+                    sourceCompositeUuid: sourceContainerId,
+                    targetCompositeUuid: targetContainerId,
                     beforeUuid,
                 },
             ]).catch((error) => {
