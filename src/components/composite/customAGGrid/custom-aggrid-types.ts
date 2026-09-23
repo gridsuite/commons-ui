@@ -21,6 +21,8 @@ export enum TableType {
     ProcessExecutionHistory = 'ProcessExecutionHistory',
 }
 
+// Filter operators
+
 export enum FilterDataTypes {
     TEXT = 'text',
     NUMBER = 'number',
@@ -47,12 +49,15 @@ export enum UndisplayedFilterNumberComparators {
     LESS_THAN = 'lessThan',
 }
 
+// Pagination
+
 export type PaginationConfig = {
     page: number;
     rowsPerPage: number | { value: number; label: string };
 };
 
-// --- BEGIN types for filter in different tables --- //
+// Filters
+
 export type FilterData = {
     dataType?: string;
     type?: string;
@@ -81,9 +86,9 @@ export interface CustomAggridFilterParams {
     colId: string;
     filterParams: FilterParams;
 }
-// --- BEGIN types for filter in different tables --- //
 
-// --- BEGIN types for sort in different tables --- //
+// Sorting
+
 export enum SortWay {
     ASC = 'asc',
     DESC = 'desc',
@@ -105,7 +110,8 @@ export type SortParams = {
     isChildren?: boolean;
     persistSort?: (api: GridApi, sort: SortConfig) => Promise<void>;
 };
-// --- END types for sort in different tables --- //
+
+// Columns
 
 export enum ColumnTypes {
     TEXT = 'TEXT',
