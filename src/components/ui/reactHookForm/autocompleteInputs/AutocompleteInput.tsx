@@ -6,7 +6,13 @@
  */
 
 import { useMemo } from 'react';
-import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
+import {
+    Autocomplete,
+    AutocompleteProps,
+    type AutocompleteRenderInputParams,
+    TextField,
+    TextFieldProps,
+} from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
 import { useCustomFormContext } from '../provider';
@@ -111,7 +117,7 @@ export function AutocompleteInput({
             readOnly={isReadOnly}
             disableClearable={isReadOnly}
             popupIcon={isReadOnly ? null : undefined}
-            renderInput={({ inputProps, ...rest }) => (
+            renderInput={({ inputProps, InputProps, ...rest }: AutocompleteRenderInputParams) => (
                 <TextField
                     {...(label && {
                         label: FieldLabel({
@@ -126,6 +132,9 @@ export function AutocompleteInput({
                     slotProps={{
                         htmlInput: {
                             ...inputProps,
+                        },
+                        input: {
+                            ...InputProps,
                             readOnly: isReadOnly,
                             onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
                         },

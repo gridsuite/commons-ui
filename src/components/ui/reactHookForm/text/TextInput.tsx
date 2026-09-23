@@ -121,13 +121,11 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
+                    readOnly,
+                    onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
                     shrink: hasValue,
-                },
-                htmlInput: {
-                    readOnly,
-                    onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 ...slotProps,
             }}
