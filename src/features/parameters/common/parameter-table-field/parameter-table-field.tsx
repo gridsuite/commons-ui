@@ -87,7 +87,14 @@ export function ParameterTableField({
     return (
         <Grid container sx={sxContainerProps} size={12}>
             {label && (
-                <Grid container alignItems="center" paddingBottom={2} paddingTop={2}>
+                <Grid
+                    container
+                    sx={{
+                        alignItems: 'center',
+                        paddingBottom: 2,
+                        paddingTop: 2,
+                    }}
+                >
                     <Typography component="span" variant="h6">
                         <FormattedMessage id={label} />
                     </Typography>

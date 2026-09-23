@@ -39,8 +39,8 @@ export const vscHvdcLineCreationFormSchema = object()
 export type VscHvdcLineCreationFormData = InferType<typeof vscHvdcLineCreationFormSchema>;
 
 export const vscHvdcLineCreationEmptyFormData: DeepNullable<VscHvdcLineCreationFormData> = {
-    [FieldConstants.EQUIPMENT_ID]: null,
-    [FieldConstants.EQUIPMENT_NAME]: null,
+    [FieldConstants.EQUIPMENT_ID]: '',
+    [FieldConstants.EQUIPMENT_NAME]: '',
     [FieldConstants.HVDC_LINE]: getVscHvdcLineCharacteristicsEmptyFormData(false),
     [FieldConstants.CONVERTER_STATION_1]: getVscConverterStationEmptyFormData(false),
     [FieldConstants.CONVERTER_STATION_2]: getVscConverterStationEmptyFormData(false),

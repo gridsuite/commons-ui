@@ -150,17 +150,20 @@ export function removeUuidsFromTree(
 }
 /**
  *
- * @param modifications source where the composite modifications are looked for
- * @param composites result : all the composite modifications found
+ * @param modifications source where the composite and reference modifications are looked for
+ * @param containers result : all the composite and reference modifications found with loaded children
  */
-export function findAllLoadedCompositeModifications(
+export function findAllLoadedContainerModifications(
     modifications: ComposedModificationMetadata[],
-    composites: ComposedModificationMetadata[]
+    containers: ComposedModificationMetadata[]
 ) {
     modifications.forEach((modification) => {
-        if (isCompositeModification(modification) && modification.subModifications.length > 0) {
-            composites.push(modification);
-            findAllLoadedCompositeModifications(modification.subModifications, composites);
+        if (
+            (isCompositeModification(modification) || isReferenceModification(modification)) &&
+            modification.subModifications.length > 0
+        ) {
+            containers.push(modification);
+            findAllLoadedContainerModifications(modification.subModifications, containers);
         }
     });
 }
@@ -407,7 +410,15 @@ export async function fetchSubModificationsForExpandedRows(
                     childFromShared: true,
                 }));
 
-                setMods((prev) => updateSubModificationsOfACompositeInTree(node.rowKey, liveModifications, prev));
+                setMods((prev) => {
+                    // Preserve rowKeys and already-loaded children of nested composites on a forced re-fetch.
+                    const existingMod = findModificationInTree(node.rowKey, prev);
+                    const mergedSubs = mergeSubModificationsIntoTree(
+                        liveModifications,
+                        existingMod?.subModifications ?? []
+                    );
+                    return updateSubModificationsOfACompositeInTree(node.rowKey, mergedSubs, prev);
+                });
             } catch (error) {
                 console.error(`Failed to load reference children for ${node.uuid}`, error);
             }

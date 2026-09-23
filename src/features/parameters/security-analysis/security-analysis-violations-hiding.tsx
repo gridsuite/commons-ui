@@ -113,7 +113,13 @@ export function ViolationsHidingParameters() {
 
     return (
         <>
-            <Grid container spacing={1} paddingBottom={1}>
+            <Grid
+                container
+                spacing={1}
+                sx={{
+                    paddingBottom: 1,
+                }}
+            >
                 <Grid size={8} sx={parametersStyles.text}>
                     <Typography>
                         {intl.formatMessage({

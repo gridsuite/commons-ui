@@ -26,7 +26,13 @@ export function ByFilterDeletionForm() {
     }, [setValue]);
 
     return (
-        <Grid container spacing={2} pt={1}>
+        <Grid
+            container
+            spacing={2}
+            sx={{
+                pt: 1,
+            }}
+        >
             <Grid size="grow">
                 <AutocompleteInput
                     isOptionEqualToValue={richTypeEquals}

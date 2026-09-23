@@ -26,7 +26,12 @@ export function NameElementEditorForm({
 }: Readonly<NameElementEditorFormProps>) {
     return (
         <Grid>
-            <Stack spacing={2} marginBottom="8px">
+            <Stack
+                spacing={2}
+                sx={{
+                    marginBottom: '8px',
+                }}
+            >
                 <Grid>
                     <UniqueNameInput
                         name={FieldConstants.NAME}
