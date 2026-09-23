@@ -42,6 +42,8 @@ export const businessErrorsEn = {
     'study.tooManyMapCards': 'Maximum number of cards exceeded.',
     'study.elementAlreadyExists': 'An element with the name {fileName} already exists',
     'study.maxOperationTypeExceeded': 'Max number of operation reached',
+    'modification.sharedWriteForbidden':
+        'You are not allowed to write on one of the shared modifications this study uses.',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
