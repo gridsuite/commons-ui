@@ -270,4 +270,8 @@ export enum FieldConstants {
     IS_REMOVED = 'isRemoved',
     IS_SEPARATOR = 'isSeparator',
     ROW_ID = 'rowId',
+    LINE_TO_ATTACH_TO_1_ID = 'lineToAttachTo1Id',
+    LINE_TO_ATTACH_TO_2_ID = 'lineToAttachTo2Id',
+    REPLACING_LINE_1_ID = 'replacingLine1Id',
+    REPLACING_LINE_1_NAME = 'replacingLine1Name',
 }

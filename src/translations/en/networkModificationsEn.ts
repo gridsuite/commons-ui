@@ -581,4 +581,12 @@ export const networkModificationsEn = {
     modifiedSwitchesSeparatorTitle: 'Modification',
     unModifiedSwitchesSeparatorTitle: 'No-modification',
     SharedModificationsSavedAsCopy: 'Shared modifications will be saved as copy only',
+
+    DeleteVoltageLevelOnLineError: 'Error while deleting a voltage level on a line',
+    DeleteVoltageLevelOnLine: 'Delete a voltage level on a line',
+    Line1: 'Line 1',
+    Line2: 'Line 2',
+    ReplacingLine: 'Replacing line',
+    ReplacingLineId: 'ID replacing line',
+    ReplacingLineName: 'Name replacing line',
 };
