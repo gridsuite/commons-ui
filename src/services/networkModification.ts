@@ -28,7 +28,7 @@ export interface ModificationMoveRequest {
     modificationUuid: UUID;
     sourceCompositeUuid?: UUID | null;
     targetCompositeUuid?: UUID | null;
-    beforeUuid?: UUID | null;
+    insertBeforeUuid?: UUID | null;
 }
 
 export function fetchNetworkModification(modificationUuid: UUID) {

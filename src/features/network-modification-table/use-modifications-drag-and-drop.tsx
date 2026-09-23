@@ -234,7 +234,7 @@ export const useModificationsDragAndDrop = ({
 
             const previousModifications = [...composedModifications];
 
-            let beforeUuid: UUID | null;
+            let insertBeforeUuid: UUID | null;
             if (droppingIntoExpandedComposite || isSubRowInvolved) {
                 const targetSiblings = getTargetSiblings(targetComposite.rowKey, rows);
                 let landingSibling: Row<ComposedModificationMetadata> | undefined;
@@ -247,7 +247,7 @@ export const useModificationsDragAndDrop = ({
                     landingSibling = targetSiblings[beforeSiblingIndex];
                 }
                 const beforeRowKey: UUID | null = (landingSibling?.id as UUID | undefined) ?? null;
-                beforeUuid = landingSibling?.original.uuid ?? null;
+                insertBeforeUuid = landingSibling?.original.uuid ?? null;
 
                 setComposedModifications((prev) =>
                     moveSubModificationInTree(
@@ -269,7 +269,7 @@ export const useModificationsDragAndDrop = ({
                 const updatedModifications = [...composedModifications];
                 const [movedItem] = updatedModifications.splice(oldPosition, 1);
                 updatedModifications.splice(newPosition, 0, movedItem);
-                beforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
+                insertBeforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
                 setComposedModifications(updatedModifications);
             }
 
@@ -279,7 +279,7 @@ export const useModificationsDragAndDrop = ({
                     modificationUuid: movingUuid,
                     sourceCompositeUuid: sourceContainerId,
                     targetCompositeUuid: targetContainerId,
-                    beforeUuid,
+                    insertBeforeUuid,
                 },
             ]).catch((error) => {
                 snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
