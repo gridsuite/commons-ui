@@ -42,7 +42,15 @@ export function BottomTableButtons({
 }: BottomTableButtonsProps) {
     return (
         <>
-            <Grid container paddingTop={1} paddingLeft={1} alignItems="center" spacing={1}>
+            <Grid
+                container
+                spacing={1}
+                sx={{
+                    paddingTop: 1,
+                    paddingLeft: 1,
+                    alignItems: 'center',
+                }}
+            >
                 {csvProps?.getTableData && (
                     <Grid>
                         <CsvDownloadButton

@@ -240,18 +240,29 @@ function Module({ type, name, version, gitTag }: GridSuiteModule) {
                     </>
                 }
             >
-                <Stack direction="row" justifyContent="flex-start" alignItems="baseline" spacing={1}>
+                <Stack
+                    direction="row"
+                    spacing={1}
+                    sx={{
+                        justifyContent: 'flex-start',
+                        alignItems: 'baseline',
+                    }}
+                >
                     {ModuleTypesIcons[type] || ModuleTypesIcons.other}
-                    <Typography display="inline" noWrap>
+                    <Typography
+                        noWrap
+                        sx={{
+                            display: 'inline',
+                        }}
+                    >
                         {name || '<?>'}
                     </Typography>
                     <Typography
                         variant="caption"
-                        sx={mergeSx(moduleStyles.version, (theme: Theme) => ({
+                        noWrap
+                        sx={mergeSx({ display: 'inline' }, moduleStyles.version, (theme: Theme) => ({
                             color: theme.palette.text.secondary,
                         }))}
-                        display="inline"
-                        noWrap
                     >
                         {gitTag || version || null}
                     </Typography>
@@ -445,7 +456,13 @@ export function AboutDialog({
                         <AccordionDetails>
                             <Grid container sx={{ pl: 2 }} spacing={1}>
                                 {loadingAdditionalModules ? (
-                                    <Grid size="grow" display="inline-flex" justifyContent="center">
+                                    <Grid
+                                        size="grow"
+                                        sx={{
+                                            display: 'inline-flex',
+                                            justifyContent: 'center',
+                                        }}
+                                    >
                                         <CircularProgress color="inherit" />
                                     </Grid>
                                 ) : (

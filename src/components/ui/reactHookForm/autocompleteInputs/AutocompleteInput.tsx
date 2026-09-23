@@ -99,7 +99,7 @@ export function AutocompleteInput({
                 },
             })}
             options={options}
-            renderInput={({ inputProps, ...rest }) => (
+            renderInput={(params) => (
                 <TextField
                     {...(label && {
                         label: FieldLabel({
@@ -111,9 +111,6 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
-                    slotProps={{
-                        htmlInput: { ...inputProps, readOnly },
-                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue
@@ -125,7 +122,16 @@ export function AutocompleteInput({
                     }
                     {...genHelperError(error?.message)}
                     {...formProps}
-                    {...rest}
+                    {...params}
+                    slotProps={{
+                        ...formProps?.slotProps,
+                        ...params.slotProps,
+                        htmlInput: {
+                            ...formProps?.slotProps?.htmlInput,
+                            ...params.slotProps.htmlInput,
+                            readOnly,
+                        },
+                    }}
                 />
             )}
             {...props}

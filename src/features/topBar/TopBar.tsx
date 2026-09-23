@@ -35,7 +35,7 @@ import {
     Brightness3 as Brightness3Icon,
     Computer as ComputerIcon,
     ExitToApp as ExitToAppIcon,
-    HelpOutline as HelpOutlineIcon,
+    HelpOutlined as HelpOutlinedIcon,
     ManageAccounts,
     Person as PersonIcon,
     WbSunny as WbSunnyIcon,
@@ -444,7 +444,7 @@ export function TopBar({
                                             onClick={onAboutClicked}
                                         >
                                             <CustomListItemIcon>
-                                                <HelpOutlineIcon fontSize="small" />
+                                                <HelpOutlinedIcon fontSize="small" />
                                             </CustomListItemIcon>
                                             <ListItemText>
                                                 <Typography sx={styles.sizeLabel}>
