@@ -7,8 +7,14 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
+    fetchNetworkModification,
+    getNetworkModificationsFromComposite,
+    grantsPermission,
+    PermissionType,
+} from '../../services';
+import {
+    BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     ModificationReferenceInfos,
@@ -78,12 +84,12 @@ export function toMessageValues(modification: NetworkModificationMetadata) {
     return messageValues;
 }
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
-export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
@@ -96,6 +102,39 @@ export function containsReferenceModification(modification: ComposedModification
     }
     return modification.subModifications.some(
         (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
+}
+
+export function isReferenceModificationOrInsideOne(
+    modification: BasicComposedModificationMetadata | undefined
+): boolean {
+    return isReferenceModification(modification) || !!modification?.insideSharedModification;
+}
+
+/**
+ * Tells whether the user may not write into the shared modification a reference points at. A permission the
+ * server left out is one it could not resolve, which is not a denial: the row stays open.
+ */
+export function isSharedModificationReadOnly(modification: NetworkModificationMetadata | undefined) {
+    return !!modification?.permission && !grantsPermission(modification.permission, PermissionType.WRITE);
+}
+
+/**
+ * Tells whether a modification sits inside a shared modification the user can't write into - whatever it is.
+ */
+export function isInLockedSharedModification(modification: BasicComposedModificationMetadata) {
+    return !!modification.insideReadOnlySharedModification;
+}
+
+/**
+ * Same as isInLockedSharedModification, plus the reference modifications pointing at a shared modification the
+ * user can't write into. Only for what targets the shared modification itself - renaming a reference or saving
+ * its description does, moving or deleting it doesn't.
+ */
+export function isModificationEditLocked(modification: BasicComposedModificationMetadata) {
+    return (
+        isInLockedSharedModification(modification) ||
+        (isReferenceModification(modification) && isSharedModificationReadOnly(modification))
     );
 }
 
@@ -371,11 +410,16 @@ export async function fetchSubModificationsForExpandedRows(
                     return tree;
                 }
                 const existingMod = findModificationInTree(node.rowKey, tree);
-                // A composite nested inside a reference is itself flagged childFromShared;
-                // propagate the flag to its children so they stay non-clickable as well.
-                const inheritsReference = existingMod?.childFromShared === true;
+                // A composite nested inside a reference sits inside it as well, whether it is locked or not:
+                // the server, which knows nothing of where this composite is unfolded from, cannot say it.
                 const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map((m) =>
-                    inheritsReference ? { ...m, childFromShared: true } : m
+                    existingMod?.insideSharedModification
+                        ? {
+                              ...m,
+                              insideSharedModification: true,
+                              insideReadOnlySharedModification: existingMod.insideReadOnlySharedModification,
+                          }
+                        : m
                 );
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
@@ -399,9 +443,14 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
+                // Everything unfolded from a reference sits inside it, and is locked as soon as the reference
+                // is, or as soon as anything it is nested in already was
+                const insideReadOnlySharedModification =
+                    node.insideReadOnlySharedModification || isSharedModificationReadOnly(node);
                 const liveModifications = formatToComposedModification(children).map((m) => ({
                     ...m,
-                    childFromShared: true,
+                    insideSharedModification: true,
+                    insideReadOnlySharedModification,
                 }));
 
                 setMods((prev) => {

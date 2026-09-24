@@ -6,6 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
+import { PermissionType } from '../../services/directory';
 import { ModificationType } from './modificationType';
 
 export interface NetworkModificationMetadata {
@@ -17,6 +18,11 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
+    referencedId?: UUID;
+    // MODIFICATION_REFERENCE only: what the user may do with the shared modification it points at.
+    // Left out when the server could not resolve it, which must not be read as a denial.
+    permission?: PermissionType;
     applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
@@ -24,7 +30,10 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
-    childFromShared?: boolean;
+    // Whether it sits inside a shared modification, whatever the rights on it
+    insideSharedModification?: boolean;
+    // Whether it sits inside a shared modification the user may not write into
+    insideReadOnlySharedModification?: boolean;
 }
 
 export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {
@@ -35,7 +44,6 @@ export interface ReferencedCompositeModifications extends NetworkModificationMet
 }
 
 export interface ModificationReferenceInfos extends NetworkModificationMetadata {
-    referencedId?: UUID;
     referenceType?: string;
     referencedInfos?: BasicComposedModificationMetadata;
 }

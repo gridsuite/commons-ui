@@ -41,6 +41,7 @@ import {
     findDepth,
     formatToComposedModification,
     isCompositeModification,
+    isInLockedSharedModification,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
@@ -54,7 +55,11 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
-    onSelectedRowsChange: (selectedRows: ComposedModificationMetadata[], isAssemblyDepthExceeded: boolean) => void;
+    onSelectedRowsChange: (
+        selectedRows: ComposedModificationMetadata[],
+        isAssemblyDepthExceeded: boolean,
+        containsLockedModification: boolean
+    ) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
@@ -137,7 +142,8 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows));
+            const containsLockedModification = selectedRows.some(isInLockedSharedModification);
+            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
         },
         [onSelectedRowsChange, isAssemblyDepthExceeded]
     );
@@ -385,6 +391,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={isInLockedSharedModification(row.original)}
                                             />
                                         );
                                     })}
