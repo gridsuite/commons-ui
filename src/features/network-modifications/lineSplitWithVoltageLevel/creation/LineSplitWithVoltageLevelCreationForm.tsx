@@ -12,7 +12,7 @@ import { AddButton, AddButtonMode, TextInput } from '../../../../components/ui';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { FieldConstants } from '../../../../utils';
-import { LineToAttachOrSplitForm, LineToAttachOrSplitOption, VoltageLevelConnectivityForm } from '../../common';
+import { LineToAttachOrSplitForm, VoltageLevelConnectivityForm } from '../../common';
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
 import { VoltageLevelCreationDto } from '../../voltageLevel/creation/voltageLevelCreation.types';
 
@@ -28,7 +28,7 @@ export interface LineSplitWithVoltageLevelCreationFormProps extends Pick<
     ConnectivityNetworkProps,
     'voltageLevelOptions' | 'fetchBusesOrBusbarSections'
 > {
-    lineOptions?: LineToAttachOrSplitOption[];
+    lineOptions?: string[];
     newVoltageLevel?: VoltageLevelCreationDto | null;
     onNewVoltageLevelCreated?: (voltageLevel: VoltageLevelCreationDto) => Promise<string>;
     isUpdate?: boolean;

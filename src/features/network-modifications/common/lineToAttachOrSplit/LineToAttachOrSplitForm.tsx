@@ -11,11 +11,10 @@ import { AutocompleteInput } from '../../../../components/ui';
 import { areIdsEqual, FieldConstants, getObjectId } from '../../../../utils';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { PercentageArea } from './PercentageArea';
-import { LineToAttachOrSplitOption } from './lineToAttachOrSplit.types';
 
 export interface LineToAttachOrSplitFormProps {
     label: string;
-    lineOptions: LineToAttachOrSplitOption[];
+    lineOptions: string[];
 }
 
 export function LineToAttachOrSplitForm({ label, lineOptions = [] }: Readonly<LineToAttachOrSplitFormProps>) {

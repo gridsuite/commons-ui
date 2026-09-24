@@ -6,7 +6,6 @@
  */
 
 export * from './LineToAttachOrSplitForm';
-export * from './lineToAttachOrSplit.types';
 export * from './lineToAttachOrSplit.utils';
 export * from './PercentageArea';
 export * from './percentageArea.utils';

@@ -53,14 +53,18 @@ export function GenericIllustrationNetworkModification({
          */
         function updateOpacity(cssProperty: string, svgElt: HTMLElement | null) {
             if (svgElt) {
+                const opacityValue = isLightTheme ? '0' : '1';
                 const eltCssText = svgElt.style.cssText;
                 const indexOpacity = eltCssText.indexOf(cssProperty);
-                const newCssText =
-                    indexOpacity !== -1
-                        ? eltCssText.substring(0, indexOpacity + cssProperty.length) +
-                          (isLightTheme ? '0' : '1') +
-                          eltCssText.substring(indexOpacity + cssProperty.length + 1)
-                        : cssProperty + (isLightTheme ? '0' : '1');
+                let newCssText;
+                if (indexOpacity !== -1) {
+                    newCssText =
+                        eltCssText.substring(0, indexOpacity + cssProperty.length) +
+                        opacityValue +
+                        eltCssText.substring(indexOpacity + cssProperty.length + 1);
+                } else {
+                    newCssText = cssProperty + opacityValue;
+                }
                 // eslint-disable-next-line no-param-reassign -- mutating the DOM element's inline style is the point of this helper
                 svgElt.style.cssText = newCssText;
             }

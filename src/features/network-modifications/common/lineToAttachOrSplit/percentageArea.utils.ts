@@ -63,5 +63,5 @@ export function formatPercentageValue(value: string): Input {
     if (tmp.endsWith('.')) {
         return tmp;
     }
-    return parseFloat(value);
+    return Number.parseFloat(value);
 }
