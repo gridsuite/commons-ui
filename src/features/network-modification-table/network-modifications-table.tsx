@@ -55,11 +55,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     isRowDragDisabled?: boolean;
     onRowDragStart: () => void;
     onRowDragEnd: () => void;
-    onSelectedRowsChange: (
-        selectedRows: ComposedModificationMetadata[],
-        isAssemblyDepthExceeded: boolean,
-        containsLockedModification: boolean
-    ) => void;
+    onSelectedRowsChange: (selectedRows: ComposedModificationMetadata[], isAssemblyDepthExceeded: boolean) => void;
     columns: ColumnDef<ComposedModificationMetadata>[];
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
@@ -142,8 +138,7 @@ export function NetworkModificationsTable({
 
     const handleRowSelected = useCallback(
         (selectedRows: ComposedModificationMetadata[]) => {
-            const containsLockedModification = selectedRows.some(isInLockedSharedModification);
-            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows), containsLockedModification);
+            onSelectedRowsChange(selectedRows, isAssemblyDepthExceeded(selectedRows));
         },
         [onSelectedRowsChange, isAssemblyDepthExceeded]
     );
