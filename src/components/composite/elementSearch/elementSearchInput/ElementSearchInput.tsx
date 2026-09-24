@@ -4,7 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Autocomplete, AutocompleteProps, AutocompleteRenderInputParams, createFilterOptions } from '@mui/material';
+import {
+    Autocomplete,
+    AutocompleteProps,
+    AutocompleteRenderInputParams,
+    AutocompleteSlots,
+    createFilterOptions,
+} from '@mui/material';
 import { HTMLAttributes, ReactNode, useMemo } from 'react';
 import { useIntl } from 'react-intl';
 
@@ -15,8 +21,9 @@ export type RenderElementProps<T> = HTMLAttributes<HTMLLIElement> & {
 
 export interface ElementSearchInputProps<T> extends Pick<
     AutocompleteProps<T, false, boolean, true>,
-    'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable' | 'getOptionDisabled' | 'PaperComponent'
+    'sx' | 'size' | 'loadingText' | 'loading' | 'disableClearable' | 'getOptionDisabled'
 > {
+    PaperComponent?: AutocompleteSlots['paper'];
     searchTerm: string;
     onSearchTermChange: (searchTerm: string) => void;
     onSelectionChange: (selection: T) => void;

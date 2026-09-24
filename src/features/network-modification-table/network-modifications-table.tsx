@@ -37,7 +37,7 @@ import { useModificationsSelection } from './use-modifications-selection';
 import {
     collectApplicabilities,
     fetchSubModificationsForExpandedRows,
-    findAllLoadedCompositeModifications,
+    findAllLoadedContainerModifications,
     findDepth,
     formatToComposedModification,
     isCompositeModification,
@@ -166,15 +166,15 @@ export function NetworkModificationsTable({
         );
         setComposedModifications(nextMods);
 
-        // Re-fetch authoritative children for every composite that already had loaded children,
+        // Re-fetch authoritative children for every composite or reference that already had loaded children,
         // correcting anything stale that was temporarily preserved above.
         // Source of truth: prevMods — nextMods children may have been filtered just above.
         // The rowKeys collected here are still valid in nextMods since the merge above preserved them.
-        const loadedComposites: ComposedModificationMetadata[] = [];
-        findAllLoadedCompositeModifications(prevMods, loadedComposites);
-        if (loadedComposites.length > 0) {
+        const loadedContainers: ComposedModificationMetadata[] = [];
+        findAllLoadedContainerModifications(prevMods, loadedContainers);
+        if (loadedContainers.length > 0) {
             fetchSubModificationsForExpandedRows(
-                loadedComposites.map((m) => m.rowKey),
+                loadedContainers.map((m) => m.rowKey),
                 nextMods,
                 setComposedModifications,
                 true

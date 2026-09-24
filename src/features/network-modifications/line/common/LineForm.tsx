@@ -13,6 +13,7 @@ import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogT
 import { useCustomFormContext } from '../../../../components';
 import { ReadOnlyBoundary } from '../../../../components/ui/reactHookForm/provider/ReadOnlyBoundary';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
 
 interface LineFormProps
     extends LineDialogHeaderProps, Omit<LineDialogTabsContentProps, 'tabIndex' | 'isModification' | 'lineToModify'> {
@@ -32,7 +33,7 @@ export function LineForm({
     const { readOnly } = useCustomFormContext();
 
     return (
-        <Stack spacing={2} height="100%">
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <LineDialogHeader lineToModify={lineToModify} isModification={isModification} />
             <LineDialogTabs
                 tabIndex={selectedTab}
@@ -41,7 +42,7 @@ export function LineForm({
                 isModification={isModification}
                 withConnectivity={withConnectivity}
             />
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <ReadOnlyBoundary readOnly={readOnly}>
                     <LineDialogTabsContent
                         tabIndex={selectedTab}

@@ -18,7 +18,13 @@ import { parametersStyles } from '../parameters-style';
 
 export function SensitivityAnalysisFields() {
     return (
-        <Grid container spacing={1} paddingTop={1}>
+        <Grid
+            container
+            spacing={1}
+            sx={{
+                paddingTop: 1,
+            }}
+        >
             <Grid sx={parametersStyles.parameterName}>
                 <FormattedMessage id="flowSensitivityValue" />
             </Grid>

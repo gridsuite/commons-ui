@@ -67,7 +67,13 @@ export function SwitchesBetweenSections() {
     return (
         <>
             <GridSection title="SwitchesBetweenSections" />
-            <Grid container spacing={2} pt={1}>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    pt: 1,
+                }}
+            >
                 {rows.map((value, index) => (
                     <Grid size={4} key={value.id}>
                         <EnumInput

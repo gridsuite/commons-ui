@@ -227,8 +227,12 @@ export function ExplicitNamingFilterForm({
     return (
         <Stack
             spacing={2}
-            padding={1} // because of unscrollableHeader in parent component
-            sx={{ flexGrow: 1, flexWrap: 'nowrap', minHeight: 0 }}
+            sx={{
+                padding: 1,
+                flexGrow: 1,
+                flexWrap: 'nowrap',
+                minHeight: 0,
+            }}
         >
             <Grid>
                 <InputWithPopupConfirmation
@@ -257,7 +261,14 @@ export function ExplicitNamingFilterForm({
             </Grid>
             {watchEquipmentType && (
                 <>
-                    <Grid container spacing={2} justifyContent="space-between" alignItems="center">
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        }}
+                    >
                         <Grid>
                             <CsvDownloadButton
                                 data={getTemplateData}

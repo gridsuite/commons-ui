@@ -112,7 +112,13 @@ export function BatteryCreationForm({
             <SetPointsForm />
 
             {/* Active power control part */}
-            <Grid container spacing={2} paddingTop={2}>
+            <Grid
+                container
+                spacing={2}
+                sx={{
+                    paddingTop: 2,
+                }}
+            >
                 <GridItem
                     size={4}
                     tooltip={watchVoltageRegulation !== null ? '' : <FormattedMessage id="NoModification" />}

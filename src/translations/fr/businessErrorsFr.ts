@@ -42,8 +42,7 @@ export const businessErrorsFr = {
     'study.tooManyNadConfigs': "Nombre maximal de configurations d'image nodale de zone atteint.",
     'study.tooManyMapCards': 'Nombre maximal de carte atteint.',
     'study.elementAlreadyExists': 'Un élément avec le nom {fileName} est déjà présent',
-    'study.maxOperationTypeExceeded':
-        "Nombre maximal d'opération de ce type atteint : {currentComputation}/{maxComputation}",
+    'study.maxOperationTypeExceeded': "Nombre maximal d'opération de ce type atteint",
     'useradmin.permissionDenied': "Vous n'avez pas la permission d'effectuer cette action.",
     'useradmin.userNotFound': 'Utilisateur introuvable.',
     'useradmin.userAlreadyExists': "L'utilisateur existe déjà.",
@@ -111,6 +110,8 @@ export const businessErrorsFr = {
         'Le type de container pour la modification {modificationId} est introuvable',
     'modification.badType':
         'Le type de la modification {modificationId} est invalide : type actuel {modificationType} -> type attendu {expectedModificationType}',
+    'modification.containsShared':
+        'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',

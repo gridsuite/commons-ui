@@ -45,7 +45,14 @@ function createRows() {
 export const ShortCircuitPowerElectronicsTabPanel = forwardRef<HTMLSpanElement, Readonly<TabPanelProps>>(
     ({ ...othersTabPanelProps }, ref) => {
         const modelPowerElectronics = (
-            <Grid container alignItems="center" spacing={2} direction="row">
+            <Grid
+                container
+                spacing={2}
+                direction="row"
+                sx={{
+                    alignItems: 'center',
+                }}
+            >
                 <Grid size={10}>
                     <FieldLabel label="ShortCircuitModelPowerElectronics" />
                 </Grid>

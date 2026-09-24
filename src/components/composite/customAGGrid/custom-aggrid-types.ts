@@ -6,16 +6,6 @@
  */
 import { ColDef, ComponentType, GridApi, IFilterOptionDef } from 'ag-grid-community';
 import { UUID } from 'crypto';
-import {
-    DYNAMIC_SIMULATION_RESULT_SORT_STORE,
-    LOADFLOW_RESULT_SORT_STORE,
-    PCCMIN_ANALYSIS_RESULT_SORT_STORE,
-    SECURITY_ANALYSIS_RESULT_SORT_STORE,
-    SENSITIVITY_ANALYSIS_RESULT_SORT_STORE,
-    SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE,
-    SPREADSHEET_SORT_STORE,
-    STATEESTIMATION_RESULT_SORT_STORE,
-} from '../../../utils/store-sort-filter-fields';
 
 export enum TableType {
     Loadflow = 'Loadflow',
@@ -28,7 +18,10 @@ export enum TableType {
     StateEstimation = 'StateEstimation',
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
+    ProcessExecutionHistory = 'ProcessExecutionHistory',
 }
+
+// Filter operators
 
 export enum FilterDataTypes {
     TEXT = 'text',
@@ -51,6 +44,35 @@ export enum FilterNumberComparators {
     GREATER_THAN_OR_EQUAL = 'greaterThanOrEqual',
 }
 
+export enum UndisplayedFilterNumberComparators {
+    GREATER_THAN = 'greaterThan',
+    LESS_THAN = 'lessThan',
+}
+
+// Pagination
+
+export type PaginationConfig = {
+    page: number;
+    rowsPerPage: number | { value: number; label: string };
+};
+
+// Filters
+
+export type FilterData = {
+    dataType?: string;
+    type?: string;
+    originalType?: string; // used to store the original type of the filter before any transformation (e.g EQUALS and NOT_EQUAL in number filters)
+    value: unknown;
+    tolerance?: number; // tolerance when comparing values. Only useful for the number type
+};
+export type FilterConfig = FilterData & {
+    column: string;
+};
+
+export type ColumnFilterConfig = Record<string, FilterConfig[]>;
+
+export type TableColumnFilter = Record<string, ColumnFilterConfig>;
+
 export type FilterParams = {
     type: TableType;
     tab: string;
@@ -65,22 +87,12 @@ export interface CustomAggridFilterParams {
     filterParams: FilterParams;
 }
 
-export enum UndisplayedFilterNumberComparators {
-    GREATER_THAN = 'greaterThan',
-    LESS_THAN = 'lessThan',
+// Sorting
+
+export enum SortWay {
+    ASC = 'asc',
+    DESC = 'desc',
 }
-
-export type FilterData = {
-    dataType?: string;
-    type?: string;
-    originalType?: string; // used to store the original type of the filter before any transformation (e.g EQUALS and NOT_EQUAL in number filters)
-    value: unknown;
-    tolerance?: number; // tolerance when comparing values. Only useful for the number type
-};
-
-export type FilterConfig = FilterData & {
-    column: string;
-};
 
 export type SortConfig = {
     colId: string;
@@ -88,36 +100,18 @@ export type SortConfig = {
     children?: boolean;
 };
 
-export enum SortWay {
-    ASC = 'asc',
-    DESC = 'desc',
-}
-
-export type PaginationConfig = {
-    page: number;
-    rowsPerPage: number | { value: number; label: string };
-};
-
 export type TableSortConfig = Record<string, SortConfig[]>;
 
-export type TableSort = {
-    [SPREADSHEET_SORT_STORE]: TableSortConfig;
-    [LOADFLOW_RESULT_SORT_STORE]: TableSortConfig;
-    [SECURITY_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [SENSITIVITY_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [DYNAMIC_SIMULATION_RESULT_SORT_STORE]: TableSortConfig;
-    [SHORTCIRCUIT_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-    [STATEESTIMATION_RESULT_SORT_STORE]: TableSortConfig;
-    [PCCMIN_ANALYSIS_RESULT_SORT_STORE]: TableSortConfig;
-};
-export type TableSortKeysType = keyof TableSort;
+export type TableSort = Record<string, TableSortConfig>;
 
 export type SortParams = {
-    table: TableSortKeysType;
+    table: string;
     tab: string;
     isChildren?: boolean;
     persistSort?: (api: GridApi, sort: SortConfig) => Promise<void>;
 };
+
+// Columns
 
 export enum ColumnTypes {
     TEXT = 'TEXT',

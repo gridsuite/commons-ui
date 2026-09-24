@@ -42,16 +42,17 @@ export function SelectClearable(props: Readonly<SelectClearableProps>) {
                     ? intl.formatMessage({ id: option.label }) // If the option has a label property, display the label using internationalization
                     : option.id; // If the option doesn't have a label property, display the ID instead
             }}
-            renderInput={({ inputProps, ...otherParams }) => (
+            renderInput={(params) => (
                 <TextField
-                    {...otherParams}
+                    {...params}
                     {...(label && {
                         label: FieldLabel({
                             label,
                         }),
                     })}
                     slotProps={{
-                        htmlInput: { ...inputProps, readOnly: true },
+                        ...params.slotProps,
+                        htmlInput: { ...params.slotProps.htmlInput, readOnly: true },
                     }}
                 />
             )}

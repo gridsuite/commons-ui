@@ -27,7 +27,12 @@ export function StaticVarCompensatorTabsContent({
 }: Readonly<StaticVarCompensatorTabsContentProps>) {
     return (
         <>
-            <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.CONNECTIVITY_TAB} p={1}>
+            <Box
+                hidden={tabIndex !== StaticVarCompensatorDialogTab.CONNECTIVITY_TAB}
+                sx={{
+                    p: 1,
+                }}
+            >
                 <Grid container spacing={2}>
                     <GridItem size={12}>
                         <ConnectivityForm
