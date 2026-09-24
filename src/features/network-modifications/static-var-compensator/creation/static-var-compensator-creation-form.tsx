@@ -6,7 +6,7 @@
  */
 
 import { Box, Stack } from '@mui/material';
-import { ConnectivityNetworkProps } from '../../common';
+import { ConnectivityNetworkProps, tabbedFormStyles } from '../../common';
 import { StaticVarCompensatorDialogTab } from '../common/static-var-compensator-tab-utils';
 import { StaticVarCompensatorDialogHeader, StaticVarCompensatorDialogTabs } from '../common';
 import { StaticVarCompensatorTabsContent } from '../common/static-var-compensator-tabs-content';
@@ -28,14 +28,14 @@ export function StaticVarCompensatorCreationForm({
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
-        <Stack spacing={2}>
+        <Stack spacing={2} sx={tabbedFormStyles.container}>
             <StaticVarCompensatorDialogHeader />
             <StaticVarCompensatorDialogTabs
                 tabIndex={selectedTab}
                 tabIndexesWithError={tabsWithError}
                 onTabChange={onTabChange}
             />
-            <Box sx={{ flexGrow: 1, overflowY: 'auto', overflowX: 'hidden', paddingRight: 3 }}>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <StaticVarCompensatorTabsContent
                     voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}

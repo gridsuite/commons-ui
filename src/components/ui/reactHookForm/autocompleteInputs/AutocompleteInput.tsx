@@ -9,7 +9,6 @@ import { useMemo } from 'react';
 import {
     Autocomplete,
     AutocompleteProps,
-    type AutocompleteRenderInputParams,
     TextField,
     TextFieldProps,
 } from '@mui/material';
@@ -117,7 +116,7 @@ export function AutocompleteInput({
             readOnly={isReadOnly}
             disableClearable={isReadOnly}
             popupIcon={isReadOnly ? null : undefined}
-            renderInput={({ inputProps, InputProps, ...rest }: AutocompleteRenderInputParams) => (
+            renderInput={(params) => (
                 <TextField
                     {...(label && {
                         label: FieldLabel({
@@ -129,19 +128,6 @@ export function AutocompleteInput({
                         }),
                     })}
                     inputRef={ref}
-                    slotProps={{
-                        htmlInput: {
-                            ...inputProps,
-                        },
-                        input: {
-                            ...InputProps,
-                            readOnly: isReadOnly,
-                            onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
-                        },
-                        inputLabel: {
-                            shrink: hasValue,
-                        },
-                    }}
                     helperText={
                         previousValue && (
                             <HelperPreviousValue
@@ -153,7 +139,20 @@ export function AutocompleteInput({
                     }
                     {...genHelperError(error?.message)}
                     {...formProps}
-                    {...rest}
+                    {...params}
+                    slotProps={{
+                        ...formProps?.slotProps,
+                        ...params.slotProps,
+                        input: {
+                            ...formProps?.slotProps?.input,
+                            ...params.slotProps.input,
+                            readOnly: isReadOnly,
+                            onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
+                        },
+                        inputLabel: {
+                            shrink: hasValue,
+                        },
+                    }}
                 />
             )}
             {...props}

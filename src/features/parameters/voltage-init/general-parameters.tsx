@@ -64,7 +64,11 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
                         label="VoltageInitParametersGeneralApplyModificationsLabel"
                         onChange={setApplyModificationsValue}
                     />
-                    <Box my={2}>
+                    <Box
+                        sx={{
+                            my: 2,
+                        }}
+                    >
                         <LineSeparator />
                     </Box>
                 </>
