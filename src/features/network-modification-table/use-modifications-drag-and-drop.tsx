@@ -27,7 +27,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { ModificationContainerType, moveModification } from '../../services';
+import { moveModifications } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -214,7 +214,7 @@ export const useModificationsDragAndDrop = ({
             onDragEnd();
 
             const { source, destination } = result;
-            if (!destination || source.index === destination.index) {
+            if (!destination || source.index === destination.index || !currentNodeUuid) {
                 return;
             }
 
@@ -246,7 +246,7 @@ export const useModificationsDragAndDrop = ({
 
             const previousModifications = [...composedModifications];
 
-            let beforeUuid: UUID | null;
+            let insertBeforeUuid: UUID | null;
             if (droppingIntoExpandedComposite || isSubRowInvolved) {
                 const targetSiblings = getTargetSiblings(targetComposite.rowKey, rows);
                 let landingSibling: Row<ComposedModificationMetadata> | undefined;
@@ -259,7 +259,7 @@ export const useModificationsDragAndDrop = ({
                     landingSibling = targetSiblings[beforeSiblingIndex];
                 }
                 const beforeRowKey: UUID | null = (landingSibling?.id as UUID | undefined) ?? null;
-                beforeUuid = landingSibling?.original.uuid ?? null;
+                insertBeforeUuid = landingSibling?.original.uuid ?? null;
 
                 setComposedModifications((prev) =>
                     moveSubModificationInTree(
@@ -281,25 +281,19 @@ export const useModificationsDragAndDrop = ({
                 const updatedModifications = [...composedModifications];
                 const [movedItem] = updatedModifications.splice(oldPosition, 1);
                 updatedModifications.splice(newPosition, 0, movedItem);
-                beforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
+                insertBeforeUuid = updatedModifications[newPosition + 1]?.uuid ?? null;
                 setComposedModifications(updatedModifications);
             }
 
-            // Group id is filled in the study server, by convention if we send null data it will be resolved as a group operation
-            moveModification(
-                studyUuid,
-                currentNodeUuid,
-                movingUuid,
+            // A null composite designates the node's own group, resolved by the study server
+            moveModifications(studyUuid, currentNodeUuid, [
                 {
-                    id: sourceContainerId,
-                    type: sourceContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
+                    modificationUuid: movingUuid,
+                    sourceCompositeUuid: sourceContainerId,
+                    targetCompositeUuid: targetContainerId,
+                    insertBeforeUuid,
                 },
-                {
-                    id: targetContainerId,
-                    type: targetContainerId ? ModificationContainerType.COMPOSITE : ModificationContainerType.GROUP,
-                },
-                beforeUuid
-            ).catch((error) => {
+            ]).catch((error) => {
                 snackWithFallback(snackError, error, { headerId: 'errReorderModificationMsg' });
                 setComposedModifications(previousModifications);
             });
