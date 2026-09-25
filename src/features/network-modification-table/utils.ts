@@ -63,11 +63,13 @@ export function collectApplicabilities(
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
 // specific node's *position* in the tree
 export const formatToComposedModification = (
-    modifications: NetworkModificationMetadata[]
+    modifications: NetworkModificationMetadata[],
+    parentCompositeUuid?: UUID
 ): ComposedModificationMetadata[] => {
     return modifications.map((modification) => ({
         ...modification,
         subModifications: [],
+        parentCompositeUuid,
         rowKey: crypto.randomUUID(),
     }));
 };
@@ -148,17 +150,20 @@ export function removeUuidsFromTree(
 }
 /**
  *
- * @param modifications source where the composite modifications are looked for
- * @param composites result : all the composite modifications found
+ * @param modifications source where the composite and reference modifications are looked for
+ * @param containers result : all the composite and reference modifications found with loaded children
  */
-export function findAllLoadedCompositeModifications(
+export function findAllLoadedContainerModifications(
     modifications: ComposedModificationMetadata[],
-    composites: ComposedModificationMetadata[]
+    containers: ComposedModificationMetadata[]
 ) {
     modifications.forEach((modification) => {
-        if (isCompositeModification(modification) && modification.subModifications.length > 0) {
-            composites.push(modification);
-            findAllLoadedCompositeModifications(modification.subModifications, composites);
+        if (
+            (isCompositeModification(modification) || isReferenceModification(modification)) &&
+            modification.subModifications.length > 0
+        ) {
+            containers.push(modification);
+            findAllLoadedContainerModifications(modification.subModifications, containers);
         }
     });
 }
@@ -320,7 +325,10 @@ export function moveSubModificationInTree(
         }
         const newTargetSubs = [...targetMod.subModifications];
         const insertIdx = beforeRowKey ? newTargetSubs.findIndex((m) => m.rowKey === beforeRowKey) : -1;
-        newTargetSubs.splice(insertIdx === -1 ? newTargetSubs.length : insertIdx, 0, movedMod);
+        newTargetSubs.splice(insertIdx === -1 ? newTargetSubs.length : insertIdx, 0, {
+            ...movedMod,
+            parentCompositeUuid: targetMod.uuid,
+        });
         return updateSubModificationsOfACompositeInTree(
             targetParentRowKey,
             newTargetSubs,
@@ -330,7 +338,7 @@ export function moveSubModificationInTree(
 
     const insertIdx = beforeRowKey ? modsWithoutTheMovedModification.findIndex((m) => m.rowKey === beforeRowKey) : -1;
     const result = [...modsWithoutTheMovedModification];
-    result.splice(insertIdx === -1 ? result.length : insertIdx, 0, movedMod);
+    result.splice(insertIdx === -1 ? result.length : insertIdx, 0, { ...movedMod, parentCompositeUuid: undefined });
     return result;
 }
 
@@ -371,9 +379,10 @@ export async function fetchSubModificationsForExpandedRows(
                 // A composite nested inside a reference is itself flagged childFromShared;
                 // propagate the flag to its children so they stay non-clickable as well.
                 const inheritsReference = existingMod?.childFromShared === true;
-                const liveModifications = formatToComposedModification(subMods.filter((m) => !m.stashed)).map((m) =>
-                    inheritsReference ? { ...m, childFromShared: true } : m
-                );
+                const liveModifications = formatToComposedModification(
+                    subMods.filter((m) => !m.stashed),
+                    node.uuid
+                ).map((m) => (inheritsReference ? { ...m, childFromShared: true } : m));
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
                 const mergedSubs = mergeSubModificationsIntoTree(
@@ -396,12 +405,20 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
-                const liveModifications = formatToComposedModification(children).map((m) => ({
+                const liveModifications = formatToComposedModification(children, detail.referencedId).map((m) => ({
                     ...m,
                     childFromShared: true,
                 }));
 
-                setMods((prev) => updateSubModificationsOfACompositeInTree(node.rowKey, liveModifications, prev));
+                setMods((prev) => {
+                    // Preserve rowKeys and already-loaded children of nested composites on a forced re-fetch.
+                    const existingMod = findModificationInTree(node.rowKey, prev);
+                    const mergedSubs = mergeSubModificationsIntoTree(
+                        liveModifications,
+                        existingMod?.subModifications ?? []
+                    );
+                    return updateSubModificationsOfACompositeInTree(node.rowKey, mergedSubs, prev);
+                });
             } catch (error) {
                 console.error(`Failed to load reference children for ${node.uuid}`, error);
             }

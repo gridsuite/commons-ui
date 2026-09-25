@@ -200,8 +200,12 @@ export const isFieldTypeOk = (value: any, fieldDefinition: { type?: string; opti
             break;
 
         case TABULAR_NUMBER: {
-            const parsedNumber = Number.parseFloat(value);
-            if (Number.isNaN(parsedNumber)) {
+            // Number() rejects trailing garbage ("12A", "12,5") that parseFloat would silently truncate to 12
+            const isNumeric =
+                typeof value === 'number'
+                    ? !Number.isNaN(value)
+                    : typeof value === 'string' && value.trim() !== '' && !Number.isNaN(Number(value));
+            if (!isNumeric) {
                 return false;
             }
             break;
