@@ -41,7 +41,6 @@ import {
     findDepth,
     formatToComposedModification,
     isCompositeModification,
-    isInLockedSharedModification,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
     mergeSubModificationsIntoTree,
@@ -386,7 +385,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
-                                                isFormOpeningLocked={isInLockedSharedModification(row.original)}
+                                                isFormOpeningLocked={row.original.childFromReadOnlyShared}
                                             />
                                         );
                                     })}

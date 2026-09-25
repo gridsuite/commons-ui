@@ -21,7 +21,6 @@ export interface NetworkModificationMetadata {
     // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
     referencedId?: UUID;
     // MODIFICATION_REFERENCE only: what the user may do with the shared modification it points at.
-    // Left out when the server could not resolve it, which must not be read as a denial.
     permission?: PermissionType;
     applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
@@ -30,10 +29,9 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     subModifications: ComposedModificationMetadata[];
     maxDepth?: number;
     name?: string;
-    // Whether it sits inside a shared modification, whatever the rights on it
-    insideSharedModification?: boolean;
-    // Whether it sits inside a shared modification the user may not write into
-    insideReadOnlySharedModification?: boolean;
+    childFromShared?: boolean;
+    // Same as above, restricted to the shared modifications the user may not write into
+    childFromReadOnlyShared?: boolean;
 }
 
 export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {

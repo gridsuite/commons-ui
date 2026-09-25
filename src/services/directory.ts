@@ -70,15 +70,14 @@ export function elementAlreadyExists(directoryUuid: UUID, elementName: string, t
 
 // Ordered from the weakest to the strongest: each one grants the previous ones
 export enum PermissionType {
-    NONE = 'NONE',
     READ = 'READ',
     WRITE = 'WRITE',
     MANAGE = 'MANAGE',
 }
 
-const PERMISSION_LEVELS = [PermissionType.NONE, PermissionType.READ, PermissionType.WRITE, PermissionType.MANAGE];
+const PERMISSION_LEVELS = [PermissionType.READ, PermissionType.WRITE, PermissionType.MANAGE];
 
-export function grantsPermission(held: PermissionType, required: PermissionType) {
+export function hasPermission(held: PermissionType, required: PermissionType) {
     return PERMISSION_LEVELS.indexOf(held) >= PERMISSION_LEVELS.indexOf(required);
 }
 

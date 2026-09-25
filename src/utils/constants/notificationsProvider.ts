@@ -15,7 +15,7 @@ export enum NotificationsUrlKeys {
     MONITOR = 'MONITOR',
 }
 
-// The notifications the directory-server emits, listened to by both GridExplore and GridStudy
+// The notifications the directory-server emits
 export enum DirectoriesNotificationType {
     DELETE_DIRECTORY = 'DELETE_DIRECTORY',
     ADD_DIRECTORY = 'ADD_DIRECTORY',

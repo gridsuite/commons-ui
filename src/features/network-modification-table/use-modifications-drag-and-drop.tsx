@@ -20,7 +20,6 @@ import {
     containsReferenceModification,
     findModificationInTree,
     isCompositeModification,
-    isInLockedSharedModification,
     isModificationEditLocked,
     isReferenceModification,
     isReferenceModificationOrInsideOne,
@@ -147,7 +146,7 @@ export const useModificationsDragAndDrop = ({
             // out of it, moved around inside it, nor dropped into it. The shared modification taken as a
             // whole stays movable, hence a source tested on its ancestors only.
             const movesLockedContent =
-                isInLockedSharedModification(sourceRow.original) ||
+                !!sourceRow.original.childFromReadOnlyShared ||
                 (!!enteringParent && isModificationEditLocked(enteringParent));
             if (movesLockedContent) {
                 return true;

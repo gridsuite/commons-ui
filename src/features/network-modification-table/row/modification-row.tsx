@@ -28,7 +28,7 @@ interface ModificationRowProps {
     handleCellClick?: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled: boolean;
     highlightedModificationUuid: string | null;
-    // the form of a modification held by a shared modification the user can't write into stays closed
+    // TODO temporary before GRD-5139
     isFormOpeningLocked?: boolean;
 }
 
