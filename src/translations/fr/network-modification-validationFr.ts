@@ -6,9 +6,16 @@
  */
 import {
     ACTIVE_LIMITS_MIN_MAX_INVALID,
+    ACTIVE_POWER_SETPOINT_MAX_VALUE_ERROR,
+    ACTIVE_POWER_SETPOINT_MIN_VALUE_ERROR,
     CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
+    DC_RESISTANCE_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
     MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
+    NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    POWER_FACTOR_INTERVAL_VALUE_ERROR,
+    Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO,
     REACTIVE_LIMITS_MIN_MAX_INVALID,
     SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
     SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
@@ -50,4 +57,15 @@ export const networkModificationValidationFr = {
     TemporaryLimitDurationUnicityError: 'Les tempos des limites temporaires doivent être uniques dans la table',
     LimitSetApplicabilityError: "2 jeux de limites de même nom doivent s'appliquer sur des côtés différents.",
     permanentCurrentLimitMustBeGreaterThanZero: 'La valeur IST doit être supérieure à 0',
+
+    [ACTIVE_POWER_SETPOINT_MAX_VALUE_ERROR]:
+        'La valeur de la puissance active doit être inférieure à la valeur de la puissance active max',
+    [ACTIVE_POWER_SETPOINT_MIN_VALUE_ERROR]: 'La valeur de la puissance active doit être supérieure à 0',
+    [DC_RESISTANCE_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'La valeur de la résistance DC doit être supérieure à 0',
+    [MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'La valeur de la puissance active max doit être supérieure à 0',
+    [NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'La valeur de la tension nominale DC doit être supérieure à 0',
+    [POWER_FACTOR_INTERVAL_VALUE_ERROR]: 'La valeur du coefficient Q/P doit être comprise entre 0 et 1',
+    [Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO]: 'La valeur Q installée à tension nominale doit être supérieure à 0',
+    powerFactorMaxValueError: 'La valeur du coefficient Q/P doit être inférieure à 1',
+    powerFactorMinValueError: 'La valeur du coefficient Q/P doit être supérieure à -1',
 };
