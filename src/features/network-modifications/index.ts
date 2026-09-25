@@ -6,6 +6,7 @@
  */
 
 export * from './common';
+export * from './deleteVoltageLevelOnLine';
 export * from './equipmentDeletion';
 export * from './substation';
 export * from './voltageLevel';

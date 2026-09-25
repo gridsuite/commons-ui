@@ -603,4 +603,12 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
+
+    DeleteVoltageLevelOnLine: 'Supprimer une coupure',
+    DeleteVoltageLevelOnLineError: "Erreur lors de la suppression d'une coupure",
+    Line1: 'Liaison côté 1',
+    Line2: 'Liaison côté 2',
+    ReplacingLine: 'Liaison de remplacement',
+    ReplacingLineId: 'ID liaison de remplacement',
+    ReplacingLineName: 'Nom liaison de remplacement',
 };
