@@ -24,7 +24,7 @@ export type ModificationContainer = {
 };
 
 /** One move of a batch: a missing composite designates the node's own group */
-export interface ModificationMoveRequest {
+export interface ModificationMoveInfos {
     modificationUuid: UUID;
     sourceCompositeUuid?: UUID | null;
     targetCompositeUuid?: UUID | null;
