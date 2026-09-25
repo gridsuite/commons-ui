@@ -20,7 +20,9 @@ import {
     containsReferenceModification,
     findModificationInTree,
     isCompositeModification,
+    isModificationEditLocked,
     isReferenceModification,
+    isReferenceModificationOrInsideOne,
     MAX_COMPOSITE_NESTING_DEPTH,
     moveSubModificationInTree,
 } from './utils';
@@ -133,6 +135,23 @@ export const useModificationsDragAndDrop = ({
 
     const isDropForbidden = useCallback(
         (sourceRow: Row<ComposedModificationMetadata>, targetRow: Row<ComposedModificationMetadata>): boolean => {
+            const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
+            const entersTargetRowItself =
+                (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
+                targetRow.getIsExpanded() &&
+                isDraggingDown;
+            const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
+
+            // Without write rights on a shared modification, its content is frozen: nothing can be taken
+            // out of it, moved around inside it, nor dropped into it. The shared modification taken as a
+            // whole stays movable, hence a source tested on its ancestors only.
+            const movesLockedContent =
+                !!sourceRow.original.childFromReadOnlyShared ||
+                (!!enteringParent && isModificationEditLocked(enteringParent));
+            if (movesLockedContent) {
+                return true;
+            }
+
             const sourceIsCompositeOrReference =
                 isCompositeModification(sourceRow.original) || isReferenceModification(sourceRow.original);
 
@@ -145,22 +164,15 @@ export const useModificationsDragAndDrop = ({
                 // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
                 // into another shared modification, nor into one of its descendants (expanded children
                 // of the referenced composite).
-                const isDraggingDown = computeIsDraggingDown(sourceRow, targetRow);
-                const entersTargetRowItself =
-                    (isCompositeModification(targetRow.original) || isReferenceModification(targetRow.original)) &&
-                    targetRow.getIsExpanded() &&
-                    isDraggingDown;
-                const enteringParent = entersTargetRowItself ? targetRow.original : targetRow.getParentRow()?.original;
                 // A reference, or a composite carrying a reference among its (loaded) descendants,
                 // would end up nested under another reference — same forbidden shape either way.
                 const sourceCarriesReference =
                     isReferenceModification(sourceRow.original) || containsReferenceModification(sourceRow.original);
-                // A composite nested under a reference (directly or transitively) is flagged
-                // childFromShared, same as the reference's own children — so this also forbids
-                // dropping into such a composite, not just into the reference itself.
-                const enteringSharedSubtree =
-                    isReferenceModification(enteringParent) || enteringParent?.childFromShared === true;
-                const isReferenceIntoReference = sourceCarriesReference && enteringSharedSubtree;
+                // A composite nested under a reference (directly or transitively) carries that
+                // reference in its ancestors, same as the reference's own children — so this also
+                // forbids dropping into such a composite, not just into the reference itself.
+                const isReferenceIntoReference =
+                    sourceCarriesReference && isReferenceModificationOrInsideOne(enteringParent);
 
                 return exceedsNestingLimit || isSelfDrop || isReferenceIntoReference;
             }

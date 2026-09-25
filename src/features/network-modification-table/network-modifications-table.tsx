@@ -385,6 +385,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={row.original.childFromReadOnlyShared}
                                             />
                                         );
                                     })}
