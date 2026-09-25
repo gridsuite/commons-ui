@@ -112,7 +112,7 @@ export function getNetworkModificationsFromComposite(
 export function moveModifications(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
-    modifications: ModificationMoveRequest[],
+    modifications: ModificationMoveInfos[],
     originNodeUuid?: UUID
 ) {
     console.info(`move ${modifications.length} modification(s) to node ${nodeUuid}`);
