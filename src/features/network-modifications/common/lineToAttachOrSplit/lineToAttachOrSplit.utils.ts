@@ -1,0 +1,46 @@
+/**
+ * Copyright (c) 2023, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import * as yup from 'yup';
+import { FieldConstants } from '../../../../utils';
+import {
+    getPercentageAreaData,
+    getPercentageAreaEmptyFormData,
+    getPercentageAreaValidationSchema,
+} from './percentageArea.utils';
+
+const lineToAttachOrSplitFormValidationSchema = () => ({
+    [FieldConstants.LINE_TO_ATTACH_OR_SPLIT_ID]: yup.string().nullable().required(),
+    ...getPercentageAreaValidationSchema(),
+});
+export const getLineToAttachOrSplitFormValidationSchema = () => {
+    return lineToAttachOrSplitFormValidationSchema();
+};
+
+const lineToAttachOrSplitEmptyFormData = () => ({
+    [FieldConstants.LINE_TO_ATTACH_OR_SPLIT_ID]: null,
+    ...getPercentageAreaEmptyFormData(),
+});
+
+export const getLineToAttachOrSplitEmptyFormData = () => {
+    return lineToAttachOrSplitEmptyFormData();
+};
+
+export const getLineToAttachOrSplitFormData = ({
+    lineToAttachOrSplitId,
+    percent,
+}: {
+    lineToAttachOrSplitId: string;
+    percent: number;
+}) => {
+    return {
+        [FieldConstants.LINE_TO_ATTACH_OR_SPLIT_ID]: lineToAttachOrSplitId,
+        ...getPercentageAreaData({
+            percent,
+        }),
+    };
+};
