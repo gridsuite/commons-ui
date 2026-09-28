@@ -6,7 +6,8 @@
  */
 
 import { Grid } from '@mui/material';
-import { useMemo } from 'react';
+import { useMemo, useCallback } from 'react';
+import { useFormContext } from 'react-hook-form';
 import { useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FloatInput, SelectInput } from '../../../../components/ui';
@@ -40,6 +41,7 @@ export function VoltageRegulationForm({
     isGenerator = true,
 }: Readonly<VoltageRegulationFormProps>) {
     const intl = useIntl();
+    const { setValue } = useFormContext();
 
     const previousRegulationType = useMemo(() => {
         if (previousValues?.regulatingTerminalVlId || previousValues?.regulatingTerminalConnectableId) {
@@ -52,6 +54,13 @@ export function VoltageRegulationForm({
         name: FieldConstants.VOLTAGE_REGULATION_TYPE,
     });
 
+    const resetEquipment = useCallback(() => {
+        if (!isDistantRegulation) {
+            setValue(`${FieldConstants.EQUIPMENT}`, null);
+            setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
+        }
+    }, [setValue, voltageRegulationType]);
+
     const translatedPreviousRegulationLabel = useMemo(() => {
         if (isEquipmentModification && REGULATION_TYPES[previousRegulationType]) {
             return intl.formatMessage({ id: REGULATION_TYPES[previousRegulationType].label });
@@ -60,8 +69,7 @@ export function VoltageRegulationForm({
     }, [intl, isEquipmentModification, previousRegulationType]);
 
     const isDistantRegulation =
-        voltageRegulationType === REGULATION_TYPES.DISTANT.id ||
-        (!voltageRegulationType && previousRegulationType === REGULATION_TYPES.DISTANT.id);
+        voltageRegulationType === REGULATION_TYPES.DISTANT.id;
 
     const previousEquipmentSectionType =
         previousValues?.regulatingTerminalConnectableType && previousValues?.regulatingTerminalConnectableId
@@ -90,6 +98,7 @@ export function VoltageRegulationForm({
                     label="RegulationTypeText"
                     size="small"
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
+                    onChangeCallback={resetEquipment}
                 />
             </GridItem>
             {isDistantRegulation && (
