@@ -34,7 +34,12 @@ let appsMetadataPromise: Promise<Metadata[]> | undefined;
 export async function fetchEnv(): Promise<Env> {
     if (!envPromise) {
         console.info(`Fetching env.json...`);
-        envPromise = fetch('env.json').then((res) => res.json());
+        envPromise = fetch('env.json')
+            .then((res) => res.json())
+            .catch((error) => {
+                envPromise = undefined;
+                throw error;
+            });
     }
     return envPromise;
 }
@@ -44,7 +49,11 @@ export async function fetchAppsMetadata(): Promise<Metadata[]> {
         console.info(`Fetching apps and urls...`);
         appsMetadataPromise = fetchEnv()
             .then((env) => fetch(`${env.appsMetadataServerUrl}/apps-metadata.json`))
-            .then((res) => res.json());
+            .then((res) => res.json())
+            .catch((error) => {
+                appsMetadataPromise = undefined;
+                throw error;
+            });
     }
     return appsMetadataPromise;
 }
