@@ -57,7 +57,11 @@ export function Login({ onLoginClick, disabled }: LoginProps) {
                     <FormattedMessage id="login/connection" defaultMessage="connection" />
                 </Button>
             </Box>
-            <Box mt={2}>
+            <Box
+                sx={{
+                    mt: 2,
+                }}
+            >
                 <Typography variant="body2" color="textSecondary" align="center">
                     {'Copyright © '}
                     {/* eslint-disable-next-line jsx-a11y/anchor-is-valid */}

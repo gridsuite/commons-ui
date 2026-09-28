@@ -43,7 +43,16 @@ export function GroupValueEditor(props: ValueEditorProps<CompositeField>) {
     );
 
     return (
-        <Stack sx={styles.group} paddingLeft={1} paddingRight={1} paddingBottom={1}>
+        <Stack
+            sx={[
+                {
+                    paddingLeft: 1,
+                    paddingRight: 1,
+                    paddingBottom: 1,
+                },
+                styles.group,
+            ]}
+        >
             {children &&
                 Object.values(children).map((fieldData) => (
                     <RuleValueEditor

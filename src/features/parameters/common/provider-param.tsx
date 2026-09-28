@@ -26,7 +26,7 @@ const styles = {
 
 export function ProviderParam({ options, id, sx }: Readonly<ProviderParamProps>) {
     return (
-        <Grid container spacing={1} sx={mergeSx(styles.providerParam, sx)} justifyContent="space-between">
+        <Grid container spacing={1} sx={mergeSx({ justifyContent: 'space-between' }, styles.providerParam, sx)}>
             <Grid size="auto" sx={mergeSx(parametersStyles.parameterName, { paddingRight: 2 })}>
                 <FormattedMessage id="Provider" />
             </Grid>

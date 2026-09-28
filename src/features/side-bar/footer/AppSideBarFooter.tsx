@@ -41,7 +41,11 @@ export function AppSideBarFooter({
 }: Readonly<AppSideBarFooterProps>) {
     const isUserLoggedIn = !!userProfile;
     return (
-        <Stack p={1}>
+        <Stack
+            sx={{
+                p: 1,
+            }}
+        >
             <MenuList disablePadding>
                 {isUserLoggedIn && (
                     <>

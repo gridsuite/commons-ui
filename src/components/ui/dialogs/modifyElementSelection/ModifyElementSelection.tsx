@@ -76,8 +76,20 @@ export function ModifyElementSelection(props: ModifyElementSelectionProps) {
             }}
         >
             <Grid container>
-                <Typography m={1} component="span">
-                    <Box fontWeight="fontWeightBold" display="flex" justifyContent="center" alignItems="center">
+                <Typography
+                    component="span"
+                    sx={{
+                        m: 1,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            fontWeight: 'fontWeightBold',
+                            display: 'flex',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                        }}
+                    >
                         <FolderOutlined />
                         <span>
                             &nbsp;

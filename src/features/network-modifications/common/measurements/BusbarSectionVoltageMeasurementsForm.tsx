@@ -54,7 +54,13 @@ export function BusbarSectionVoltageMeasurementsForm({
 
                 return (
                     <Grid key={field.id}>
-                        <Grid container spacing={2} alignItems="center">
+                        <Grid
+                            container
+                            spacing={2}
+                            sx={{
+                                alignItems: 'center',
+                            }}
+                        >
                             <Grid size={3}>{bbsId}</Grid>
                             <Grid size={4}>
                                 <FloatInput

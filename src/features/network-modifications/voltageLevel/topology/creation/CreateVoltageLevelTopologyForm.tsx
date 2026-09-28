@@ -74,7 +74,13 @@ export function CreateVoltageLevelTopologyForm({
                 <Grid>
                     <Stack spacing={2}>
                         <Grid>
-                            <Grid container spacing={3} alignItems="center">
+                            <Grid
+                                container
+                                spacing={3}
+                                sx={{
+                                    alignItems: 'center',
+                                }}
+                            >
                                 <Grid size={4}>{voltageLevelIdField}</Grid>
                                 {PositionDiagramPane && isNodeBuilt && (
                                     <Grid>

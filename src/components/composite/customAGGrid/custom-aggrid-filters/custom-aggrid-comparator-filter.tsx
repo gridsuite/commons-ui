@@ -31,7 +31,12 @@ export function CustomAggridComparatorFilter({ colId, filterParams }: CustomAggr
         selectedFilterComparator === FilterTextComparators.IS_NOT_EMPTY;
 
     return (
-        <Stack gap={0.8} sx={{ padding: '8px' }}>
+        <Stack
+            sx={{
+                gap: 0.8,
+                padding: '8px',
+            }}
+        >
             <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <div style={{ flex: 1 }}>
                     <CustomAggridComparatorSelector

@@ -20,10 +20,14 @@ export function NetworkAreaDiagramParameters() {
         <Grid
             container
             spacing={1}
-            sx={parametersStyles.scrollableGrid}
             key="networkAreaDiagramParameters"
-            marginTop={-3}
-            justifyContent="space-between"
+            sx={[
+                {
+                    marginTop: -3,
+                    justifyContent: 'space-between',
+                },
+                parametersStyles.scrollableGrid,
+            ]}
         >
             <Grid size={8} sx={parametersStyles.parameterName}>
                 <FormattedMessage id={NAD_POSITIONS_GENERATION_MODE_LABEL} />

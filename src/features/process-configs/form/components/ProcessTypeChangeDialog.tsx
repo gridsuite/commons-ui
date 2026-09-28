@@ -18,8 +18,11 @@ export function ProcessTypeChangeDialog({ open, onCancel, onConfirm }: Readonly<
     return (
         <Dialog
             open={open}
-            onClose={onCancel}
-            disableEscapeKeyDown
+            onClose={(_, reason) => {
+                if (reason !== 'escapeKeyDown') {
+                    onCancel();
+                }
+            }}
             maxWidth="xs"
             slotProps={{ paper: { sx: { minWidth: 320 } } }}
             aria-labelledby="process-type-change-warning-title"

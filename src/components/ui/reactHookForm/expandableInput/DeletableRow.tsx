@@ -34,10 +34,12 @@ export function DeletableRow({
             container
             spacing={2}
             size={12}
-            alignItems={alignItems}
             onMouseEnter={() => setIsMouseHover(true)}
             onMouseLeave={() => setIsMouseHover(false)}
             data-testid={dataTestId}
+            sx={{
+                alignItems,
+            }}
         >
             {children}
             <Grid size={1}>

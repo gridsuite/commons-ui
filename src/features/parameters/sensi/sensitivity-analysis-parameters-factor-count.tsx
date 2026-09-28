@@ -6,7 +6,7 @@
  */
 import { Box, CircularProgress, SxProps, Theme } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { ErrorOutline as ErrorOutlineIcon } from '@mui/icons-material';
+import { ErrorOutlined as ErrorOutlinedIcon } from '@mui/icons-material';
 import type { MuiStyles } from '../../../utils';
 
 const styles = {
@@ -80,7 +80,7 @@ export function SensitivityAnalysisParametersFactorCount(props: SensitivityAnaly
 
     return (
         <Box sx={sx}>
-            {isAlert && <ErrorOutlineIcon sx={styles.errorOutlineIcon} />}
+            {isAlert && <ErrorOutlinedIcon sx={styles.errorOutlineIcon} />}
             <FormattedMessage id={messageId} values={{ count: displayCount, suffix }} />
         </Box>
     );

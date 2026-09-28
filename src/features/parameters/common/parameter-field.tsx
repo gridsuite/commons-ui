@@ -105,7 +105,16 @@ export function ParameterField({
     const INPUT_GRID_SIZE = 12 - LABEL_GRID_SIZE;
 
     return (
-        <Grid container spacing={1} paddingTop={1} key={name} justifyContent="space-between" sx={{ width: '100%' }}>
+        <Grid
+            container
+            spacing={1}
+            key={name}
+            sx={{
+                paddingTop: 1,
+                justifyContent: 'space-between',
+                width: '100%',
+            }}
+        >
             <Grid size={LABEL_GRID_SIZE}>
                 <CustomTooltip title={description} key={name}>
                     <Typography sx={parametersStyles.parameterName}>

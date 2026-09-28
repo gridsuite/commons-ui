@@ -47,7 +47,11 @@ export function CustomAggridTextFilter({
     const isRoundingDisplayed = useMemo(() => !!(isNumberInput && value), [isNumberInput, value]);
 
     return (
-        <Stack gap={0.2}>
+        <Stack
+            sx={{
+                gap: 0.2,
+            }}
+        >
             <Grid>
                 <TextField
                     size="small"

@@ -321,8 +321,17 @@ export function ElementSaveDialog({
                             <FormattedMessage id="showSelectDirectoryDialog" />
                         </Button>
                     </Grid>
-                    <Typography m={1} component="span">
-                        <Box fontWeight="fontWeightBold">
+                    <Typography
+                        component="span"
+                        sx={{
+                            m: 1,
+                        }}
+                    >
+                        <Box
+                            sx={{
+                                fontWeight: 'fontWeightBold',
+                            }}
+                        >
                             {destinationFolder ? destinationFolder.name : <CircularProgress />}
                         </Box>
                     </Typography>
@@ -336,8 +345,19 @@ export function ElementSaveDialog({
                         <FormattedMessage id="showSelectDirectoryItemDialog" />
                     </Button>
                 </Grid>
-                <Typography m={1} component="span">
-                    <Box fontWeight="fontWeightBold">{selectedItem ? selectedItem.fullPath : null}</Box>
+                <Typography
+                    component="span"
+                    sx={{
+                        m: 1,
+                    }}
+                >
+                    <Box
+                        sx={{
+                            fontWeight: 'fontWeightBold',
+                        }}
+                    >
+                        {selectedItem ? selectedItem.fullPath : null}
+                    </Box>
                 </Typography>
             </Grid>
         );
@@ -352,7 +372,12 @@ export function ElementSaveDialog({
             disabledSave={disableSave}
             formContext={{ ...formMethods, validationSchema: schema }}
         >
-            <Stack spacing={2} marginTop="auto">
+            <Stack
+                spacing={2}
+                sx={{
+                    marginTop: 'auto',
+                }}
+            >
                 {!createOnlyMode && (
                     <Grid>
                         <RadioInput

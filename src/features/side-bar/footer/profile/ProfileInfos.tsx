@@ -22,7 +22,12 @@ export function ProfileInfos({ userProfile }: Readonly<{ userProfile?: UserProfi
                 disabled
             >
                 <Person />
-                <Box component="span" px={1}>
+                <Box
+                    component="span"
+                    sx={{
+                        px: 1,
+                    }}
+                >
                     {userProfile?.name} <br />
                     <Box component="span">{userProfile?.email}</Box>
                 </Box>

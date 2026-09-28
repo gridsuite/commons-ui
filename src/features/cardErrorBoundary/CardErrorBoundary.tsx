@@ -105,7 +105,12 @@ export class CardErrorBoundary extends Component<PropsWithChildren<{}>, CardErro
                             }
                         />
                         <CardContent>
-                            <Typography variant="body2" color="text.secondary">
+                            <Typography
+                                variant="body2"
+                                sx={{
+                                    color: 'text.secondary',
+                                }}
+                            >
                                 <FormattedMessage
                                     id="card_error_boundary/content"
                                     defaultMessage="Please reload, or close and reopen this application, or contact support."
@@ -127,7 +132,12 @@ export class CardErrorBoundary extends Component<PropsWithChildren<{}>, CardErro
                         </CardActions>
                         <Collapse in={expanded}>
                             <CardContent>
-                                <Typography variant="body2" color="text.secondary">
+                                <Typography
+                                    variant="body2"
+                                    sx={{
+                                        color: 'text.secondary',
+                                    }}
+                                >
                                     <FormattedMessage
                                         id="card_error_boundary/expandederrorheader"
                                         defaultMessage="Error message (and see more information in the developper console):"

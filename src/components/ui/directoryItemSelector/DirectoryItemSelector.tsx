@@ -215,6 +215,7 @@ export function DirectoryItemSelector({
                 type: e.type,
                 description: e.description,
                 specificMetadata: e.specificMetadata,
+                references: e.references,
                 icon: getFileIcon(e.type, styles.icon),
                 children: e.type === ElementType.DIRECTORY ? convertChildren(e.children) : undefined,
                 childrenCount: e.type === ElementType.DIRECTORY ? e.subdirectoriesCount : undefined,
@@ -229,6 +230,7 @@ export function DirectoryItemSelector({
                     id: e.elementUuid,
                     name: e.elementName,
                     description: e.description,
+                    references: e.references,
                     icon: getFileIcon(e.type, styles.icon),
                     children:
                         e.type === ElementType.DIRECTORY

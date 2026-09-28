@@ -24,7 +24,7 @@ function FittingPopper({ style: _ignoredStyle, ...otherProps }: Readonly<PopperP
 export interface RegulatingTerminalFormProps {
     /** Parent path within the react-hook-form tree (e.g. 'setpointsLimits' or '') */
     id: string;
-    direction?: GridDirection;
+    direction?: GridDirection | 'column' | 'column-reverse';
     disabled?: boolean;
     voltageLevelOptions: Identifiable[];
     equipmentSectionTypeDefaultValue?: string;
@@ -85,7 +85,7 @@ export function RegulatingTerminalForm({
     }, [id, setValue]);
 
     return (
-        <Grid container direction={direction ?? 'row'} spacing={1}>
+        <Grid container spacing={1} sx={{ flexDirection: direction ?? 'row' }}>
             <Grid size={itemSize}>
                 <AutocompleteInput
                     name={`${id}.${FieldConstants.VOLTAGE_LEVEL}`}
