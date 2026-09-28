@@ -569,6 +569,21 @@ export const networkModificationsEn = {
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
 
+    // Limit sets tabular modification
+    LimitSetsTabularModification: 'Tabular modification of limits sets',
+    TabularLimitSets: 'Limit sets',
+    amountTemporaryLimits: 'Number of temporary limits',
+    amountTemporaryLimitsError: 'Limits number between 1 and 50',
+    acceptableDuration: 'Duration (s)',
+    value: 'Value (A)',
+    side: 'Side',
+    limitGroupName: 'Limits set name',
+    isActive: 'Active',
+    modificationType: 'Modification type',
+    temporaryLimitsModificationType: 'Temporary limits modification type',
+    TabularLimitSetsModificationSkeletonComment:
+        '#,SIDE1 | SIDE2 | EQUIPMENT,,true | false,,ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE,ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE (taken into account only when modificationType is set on modifying)',
+
     // Voltage level modification
     ModifyVoltageLevelTopology: 'Modify voltage level topology',
     VoltageLevelTopologyModificationError: 'Voltage level topology modification error',
