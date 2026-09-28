@@ -5,16 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import {Grid} from '@mui/material';
-import {useCallback, useMemo} from 'react';
-import {useFormContext, useWatch} from 'react-hook-form';
-import {FormattedMessage, useIntl} from 'react-intl';
-import {FloatInput, SelectInput} from '../../../../components/ui';
-import {GridItem} from '../../../../components/composite/grid/grid-item';
-import {EquipmentType, FieldConstants, Identifiable} from '../../../../utils';
-import {PercentageAdornment, VoltageAdornment} from '../../../../utils/constants/adornments';
-import {RegulatingTerminalForm} from '../regulatingTerminal';
-import {REGULATION_TYPES} from './voltageRegulation.utils';
+import { Grid } from '@mui/material';
+import { useCallback, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { FloatInput, SelectInput } from '../../../../components/ui';
+import { GridItem } from '../../../../components/composite/grid/grid-item';
+import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
+import { PercentageAdornment, VoltageAdornment } from '../../../../utils/constants/adornments';
+import { RegulatingTerminalForm } from '../regulatingTerminal';
+import { REGULATION_TYPES } from './voltageRegulation.utils';
 
 export interface VoltageRegulationFormPreviousValues {
     regulatingTerminalConnectableId?: string | null;
@@ -60,15 +60,14 @@ export function VoltageRegulationForm({
         return null;
     }, [intl, isEquipmentModification, previousRegulationType]);
 
-    const isDistantRegulation =
-        voltageRegulationType === REGULATION_TYPES.DISTANT.id;
+    const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
 
     const resetEquipment = useCallback(() => {
         if (!isDistantRegulation) {
             setValue(`${FieldConstants.EQUIPMENT}`, null);
             setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
         }
-    }, [setValue, voltageRegulationType]);
+    }, [setValue, isDistantRegulation]);
 
     const previousEquipmentSectionType =
         previousValues?.regulatingTerminalConnectableType && previousValues?.regulatingTerminalConnectableId
