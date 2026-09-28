@@ -5,17 +5,16 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
-import { useMemo, useCallback } from 'react';
-import { useFormContext } from 'react-hook-form';
-import { useWatch } from 'react-hook-form';
-import { FormattedMessage, useIntl } from 'react-intl';
-import { FloatInput, SelectInput } from '../../../../components/ui';
-import { GridItem } from '../../../../components/composite/grid/grid-item';
-import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
-import { PercentageAdornment, VoltageAdornment } from '../../../../utils/constants/adornments';
-import { RegulatingTerminalForm } from '../regulatingTerminal';
-import { REGULATION_TYPES } from './voltageRegulation.utils';
+import {Grid} from '@mui/material';
+import {useCallback, useMemo} from 'react';
+import {useFormContext, useWatch} from 'react-hook-form';
+import {FormattedMessage, useIntl} from 'react-intl';
+import {FloatInput, SelectInput} from '../../../../components/ui';
+import {GridItem} from '../../../../components/composite/grid/grid-item';
+import {EquipmentType, FieldConstants, Identifiable} from '../../../../utils';
+import {PercentageAdornment, VoltageAdornment} from '../../../../utils/constants/adornments';
+import {RegulatingTerminalForm} from '../regulatingTerminal';
+import {REGULATION_TYPES} from './voltageRegulation.utils';
 
 export interface VoltageRegulationFormPreviousValues {
     regulatingTerminalConnectableId?: string | null;
@@ -54,13 +53,6 @@ export function VoltageRegulationForm({
         name: FieldConstants.VOLTAGE_REGULATION_TYPE,
     });
 
-    const resetEquipment = useCallback(() => {
-        if (!isDistantRegulation) {
-            setValue(`${FieldConstants.EQUIPMENT}`, null);
-            setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
-        }
-    }, [setValue, voltageRegulationType]);
-
     const translatedPreviousRegulationLabel = useMemo(() => {
         if (isEquipmentModification && REGULATION_TYPES[previousRegulationType]) {
             return intl.formatMessage({ id: REGULATION_TYPES[previousRegulationType].label });
@@ -70,6 +62,13 @@ export function VoltageRegulationForm({
 
     const isDistantRegulation =
         voltageRegulationType === REGULATION_TYPES.DISTANT.id;
+
+    const resetEquipment = useCallback(() => {
+        if (!isDistantRegulation) {
+            setValue(`${FieldConstants.EQUIPMENT}`, null);
+            setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
+        }
+    }, [setValue, voltageRegulationType]);
 
     const previousEquipmentSectionType =
         previousValues?.regulatingTerminalConnectableType && previousValues?.regulatingTerminalConnectableId
