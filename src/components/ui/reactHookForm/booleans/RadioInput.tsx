@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroupProps } from '@mui/material';
+import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroupProps, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { FieldLabel } from '../utils/FieldLabel';
@@ -14,6 +14,7 @@ type RadioOptions = Array<{
     id: string;
     label: string;
     disabled?: boolean;
+    tooltip?: string;
 }>;
 
 export interface RadioInputProps {
@@ -40,15 +41,25 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                 based on `value !== undefined`, so an undefined-then-defined transition (e.g. after a late reset())
                 would otherwise be ignored, leaving no radio selected. */}
             <RadioGroup row aria-labelledby={id ?? label} value={value ?? ''} onChange={onChange} {...formProps}>
-                {options.map((option) => (
-                    <FormControlLabel
-                        control={<Radio />}
-                        value={option.id}
-                        key={option.id}
-                        label={<FieldLabel label={option.label} />}
-                        disabled={option.disabled}
-                    />
-                ))}
+                {options.map((option) => {
+                    const element = (
+                        <FormControlLabel
+                            control={<Radio />}
+                            value={option.id}
+                            key={option.id}
+                            label={<FieldLabel label={option.label} />}
+                            disabled={option.disabled}
+                        />
+                    );
+                    return option.tooltip ? (
+                        <Tooltip key={option.id} title={<FormattedMessage id={option.tooltip} />}>
+                            {/* disabled elements don't fire the mouse events Tooltip relies on */}
+                            <span>{element}</span>
+                        </Tooltip>
+                    ) : (
+                        element
+                    );
+                })}
             </RadioGroup>
         </FormControl>
     );

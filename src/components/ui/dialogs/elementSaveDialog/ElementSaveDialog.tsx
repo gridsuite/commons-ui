@@ -390,6 +390,7 @@ export function ElementSaveDialog({
                                               id: OperationType.CREATE_SHARED,
                                               label: createSharedLabelId ?? 'createSharedLabelId',
                                               disabled: createSharedDisabled,
+                                              tooltip: createSharedDisabled ? 'createSharedDisabledTooltip' : undefined,
                                           },
                                       ]
                                     : []),
