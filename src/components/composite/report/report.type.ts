@@ -5,12 +5,13 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { NETWORK_MODIFICATION } from './report.constant';
+import { NETWORK_MODIFICATION, PROCESS_EXECUTION } from './report.constant';
 import { ComputingType } from '../../../utils';
 
 export type SeverityLevel = 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
 
-export type ComputingAndNetworkModificationType = ComputingType | typeof NETWORK_MODIFICATION;
+export type ComputingAndNetworkModificationType =
+    ComputingType | typeof NETWORK_MODIFICATION | typeof PROCESS_EXECUTION;
 
 export type ReportSeverity = {
     name: SeverityLevel;

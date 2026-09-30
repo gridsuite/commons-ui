@@ -116,7 +116,7 @@ function LogTable({
     const intl = useIntl();
     const theme = useTheme<Theme>();
 
-    const { fetchLogs, fetchLogMatches } = useReportFetcherContext();
+    const { fetchLogs, fetchLogMatches, refreshCounter } = useReportFetcherContext();
     const { filters, updateFilters, pagination, changePagination } = useReportFilterContext();
 
     const { page, rowsPerPage } = pagination;
@@ -211,7 +211,7 @@ function LogTable({
         if (selectedReport.id && selectedReport.type) {
             refreshLogsOnSelectedReport();
         }
-    }, [refreshLogsOnSelectedReport, selectedReport]);
+    }, [refreshLogsOnSelectedReport, selectedReport, refreshCounter]);
 
     useEffect(() => {
         onFiltersChanged();

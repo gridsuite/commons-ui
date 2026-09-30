@@ -8,4 +8,13 @@
 export const tableFr = {
     'MuiVirtualizedTable/exportCSV': 'Télécharger un CSV',
     'export/undefined': 'Non défini',
+    Logs: 'Logs',
+    muiTablePaginationLabelRowsPerPage: 'Lignes par page : ',
+    muiTablePaginationLabelRowsPerPageAllBusesSCA: 'Défauts par page : ',
+    muiTablePaginationLabelRowsPerPageOneBusSCA: 'Départs par page : ',
+    muiTablePaginationOfLabel: 'sur',
+    muiTablePaginationPrevious: 'Aller à la page précédente',
+    muiTablePaginationNext: 'Aller à la page suivante',
+    muiTablePaginationFirst: 'Aller à la première page',
+    muiTablePaginationLast: 'Aller à la dernière page',
 };
