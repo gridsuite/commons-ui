@@ -6,7 +6,6 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { PermissionType } from '../../services/directory';
 import { ModificationType } from './modificationType';
 
 export interface NetworkModificationMetadata {
@@ -20,8 +19,8 @@ export interface NetworkModificationMetadata {
     messageValues: string;
     // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
     referencedId?: UUID;
-    // MODIFICATION_REFERENCE only: what the user may do with the shared modification it points at.
-    permission?: PermissionType;
+    // MODIFICATION_REFERENCE only: true when the user may write into the shared modification it points at
+    editable?: boolean;
     applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 

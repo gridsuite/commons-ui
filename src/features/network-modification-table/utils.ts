@@ -7,12 +7,7 @@
 
 import { Dispatch, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import {
-    fetchNetworkModification,
-    getNetworkModificationsFromComposite,
-    hasPermission,
-    PermissionType,
-} from '../../services';
+import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
     BasicComposedModificationMetadata,
     ComposedModificationMetadata,
@@ -114,11 +109,11 @@ export function isReferenceModificationOrInsideOne(
 }
 
 /**
- * Tells whether the user may not write into the shared modification a reference points at. A permission the
- * server left out is one it could not resolve, and it grants nothing.
+ * Tells whether a reference points at a shared modification its reader cannot write into. The server flags as
+ * editable only the references whose permission it resolved, so one without the flag stays read-only.
  */
 export function isSharedModificationReadOnly(modification: NetworkModificationMetadata | undefined) {
-    return !modification?.permission || !hasPermission(modification.permission, PermissionType.WRITE);
+    return !modification?.editable;
 }
 
 /**
