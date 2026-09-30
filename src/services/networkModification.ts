@@ -59,7 +59,15 @@ export function fetchBusBarSectionsForNewCoupler(
     return backendFetchJson(url);
 }
 
-export function updateModification({ modificationUuid, body }: { modificationUuid: UUID; body: string }) {
+export function updateModification({
+    modificationUuid,
+    body,
+    userId,
+}: {
+    modificationUuid: UUID;
+    body: string;
+    userId: string;
+}) {
     const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
 
     console.info('Updating modification', { url });
@@ -69,6 +77,7 @@ export function updateModification({ modificationUuid, body }: { modificationUui
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
+            userId,
         },
         body,
     });
