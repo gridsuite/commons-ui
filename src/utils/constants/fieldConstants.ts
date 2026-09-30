@@ -278,4 +278,7 @@ export enum FieldConstants {
     LEFT_SIDE_PERCENTAGE = 'leftSidePercentage',
     RIGHT_SIDE_PERCENTAGE = 'rightSidePercentage',
     SLIDER_PERCENTAGE = 'sliderPercentage',
+    ATTACHMENT_LINE_ID = 'attachmentLineId',
+    ATTACHMENT_POINT_ID = 'attachmentPointId',
+    ATTACHMENT_POINT_NAME = 'attachmentPointName',
 }
