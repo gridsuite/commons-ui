@@ -90,6 +90,7 @@ export const importParamsEn = {
     'iidm.import.xml.throw-exception-if-extension-not-found.desc': 'Throw exception if extension not found',
     'iidm.import.xml.missing-permanent-limit-percentage': 'Create missing permanent limit from temporary one',
     'iidm.import.minimal-validation-level': 'Minimal validation level',
+    'iidm.import.xml.only-selected-operational-limits-groups': 'Only selected operational limits group',
     'iidm.import.xml.with-automation-systems': 'With automation systems',
 
     // import extensions
