@@ -7,7 +7,7 @@
 
 import { Box, Grid, IconButton } from '@mui/material';
 import { useCallback, useMemo, useState } from 'react';
-import { useFieldArray, useFormContext, useWatch } from 'react-hook-form';
+import { useFieldArray, useWatch } from 'react-hook-form';
 import { ControlPoint as AddIcon } from '@mui/icons-material';
 import { OperationalLimitsGroups } from './operationalLimitsGroups/OperationalLimitsGroups';
 import { SelectedOperationalLimitGroup } from './SelectedOperationalLimitGroup';
@@ -20,7 +20,7 @@ import {
 import { OperationalLimitsGroupFormSchema } from './operationalLimitsGroups/operationalLimitsGroups.types';
 import { FieldConstants, type MuiStyles } from '../../../../utils';
 import { APPLICABILITY, CurrentLimits, CurrentLimitsData } from './limits.types';
-import { GridSection, InputWithPopupConfirmation, SwitchInput } from '../../../../components';
+import { GridSection, InputWithPopupConfirmation, SwitchInput, useCustomFormContext } from '../../../../components';
 import { BranchInfos } from '../../line/common/line.types';
 
 const limitsStyles = {
@@ -47,7 +47,7 @@ export function LimitsPane({
     isModification,
 }: Readonly<LimitsPaneProps>) {
     const [indexSelectedLimitSet, setIndexSelectedLimitSet] = useState<number | null>(null);
-    const { getValues, reset } = useFormContext();
+    const { getValues, reset, readOnly } = useCustomFormContext();
 
     const olgEditable: boolean = useWatch({
         name: `${id}.${FieldConstants.ENABLE_OLG_MODIFICATION}`,
@@ -189,9 +189,11 @@ export function LimitsPane({
                         }}
                     >
                         <GridSection size={12} title="LimitSets" />
-                        <IconButton color="primary" onClick={addNewLimitSet} disabled={!olgEditable}>
-                            <AddIcon />
-                        </IconButton>
+                        {!readOnly && (
+                            <IconButton color="primary" onClick={addNewLimitSet} disabled={!olgEditable}>
+                                <AddIcon />
+                            </IconButton>
+                        )}
                     </Box>
                     <OperationalLimitsGroups
                         parentFormName={id}
@@ -199,7 +201,7 @@ export function LimitsPane({
                         removeLimitsGroups={removeLimitsGroups}
                         indexSelectedLimitSet={indexSelectedLimitSet}
                         setIndexSelectedLimitSet={setIndexSelectedLimitSet}
-                        editable={olgEditable}
+                        editable={olgEditable && !readOnly}
                         currentLimitsToModify={equipmentToModify?.currentLimits ?? []}
                     />
                 </Grid>

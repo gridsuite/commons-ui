@@ -53,8 +53,7 @@ export function TapChangerSteps({
 }: Readonly<TapChangerStepsProps>) {
     const intl = useIntl();
 
-    const { trigger, getValues, setValue, clearErrors } = useFormContext();
-    const { isNodeBuilt } = useCustomFormContext();
+    const { trigger, getValues, setValue, clearErrors, isNodeBuilt, readOnly } = useCustomFormContext();
 
     const useFieldArrayOutput = useFieldArray({
         name: `${tapChanger}.${FieldConstants.STEPS}`,
@@ -74,9 +73,12 @@ export function TapChangerSteps({
 
     const disableAddingRows = useMemo(() => {
         return (
-            isModification && lowTapPosition === null && previousValues?.[FieldConstants.LOW_TAP_POSITION] === undefined
+            readOnly ||
+            (isModification &&
+                lowTapPosition === null &&
+                previousValues?.[FieldConstants.LOW_TAP_POSITION] === undefined)
         );
-    }, [isModification, lowTapPosition, previousValues]);
+    }, [isModification, lowTapPosition, previousValues, readOnly]);
 
     const allowedToAddTapRows = useCallback(() => {
         // triggering validation on low tap position before generating rows (the field is required)
@@ -263,7 +265,7 @@ export function TapChangerSteps({
     );
 
     const completedColumnsDefinition = columnsDefinition.map((column, index) =>
-        index === columnsDefinition.length - 1 ? { ...column, extra: createRuleButton } : column
+        index === columnsDefinition.length - 1 ? { ...column, extra: !readOnly ? createRuleButton : undefined } : column
     );
 
     const getTapPreviousValue = useCallback(
@@ -299,9 +301,9 @@ export function TapChangerSteps({
                 tableHeight={400}
                 allowedToAddRows={allowedToAddTapRows}
                 createRows={createTapRows}
-                handleUploadButton={handleImportTapRuleButton}
+                handleUploadButton={!readOnly ? handleImportTapRuleButton : undefined}
                 uploadButtonMessageId={importRuleMessageId}
-                handleResetButton={handleResetButton}
+                handleResetButton={!readOnly ? handleResetButton : undefined}
                 resetButtonMessageId={resetButtonMessageId}
                 previousValues={toTapChangerStepList(previousValues?.[FieldConstants.STEPS])}
                 getPreviousValue={getTapPreviousValue}
@@ -310,6 +312,7 @@ export function TapChangerSteps({
                 disableAddingRows={disableAddingRows}
                 disabled={disabled}
                 disableDragAndDrop
+                disabledDeletion={readOnly}
             />
             <CreateRuleDialog
                 tapChanger={tapChanger}

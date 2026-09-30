@@ -96,7 +96,8 @@ export function TextInput({
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
 
-    const hasValue = transformedValue.trim().length > 0;
+    const hasValue =
+        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
 
     return (
         <Field
@@ -111,7 +112,7 @@ export function TextInput({
             disabled={disabled}
             slotProps={{
                 input: {
-                    endAdornment: (
+                    endAdornment: readOnly ? null : (
                         <InputAdornment position="end">
                             {clearable && transformedValue !== undefined && transformedValue !== '' && (
                                 <IconButton onClick={handleClearValue} size="small">
@@ -122,7 +123,7 @@ export function TextInput({
                         </InputAdornment>
                     ),
                     readOnly,
-                    onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
+                    onMouseDown: readOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
                     shrink: hasValue,
@@ -131,6 +132,7 @@ export function TextInput({
             }}
             inputRef={ref}
             {...(clearable &&
+                !readOnly &&
                 adornment && {
                     handleClearValue,
                 })}

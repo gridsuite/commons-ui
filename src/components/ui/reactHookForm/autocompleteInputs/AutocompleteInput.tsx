@@ -6,13 +6,7 @@
  */
 
 import { useMemo } from 'react';
-import {
-    Autocomplete,
-    AutocompleteProps,
-    type AutocompleteRenderInputParams,
-    TextField,
-    TextFieldProps,
-} from '@mui/material';
+import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
 import { useCustomFormContext } from '../provider';
@@ -117,45 +111,48 @@ export function AutocompleteInput({
             readOnly={isReadOnly}
             disableClearable={isReadOnly}
             popupIcon={isReadOnly ? null : undefined}
-            renderInput={({ inputProps, InputProps, ...rest }: AutocompleteRenderInputParams) => (
-                <TextField
-                    {...(label && {
-                        label: FieldLabel({
-                            label,
-                            optional:
-                                !isFieldRequired(name, validationSchema, getValues()) &&
-                                !props?.disabled &&
-                                !removeOptional,
-                        }),
-                    })}
-                    inputRef={ref}
-                    slotProps={{
-                        htmlInput: {
-                            ...inputProps,
-                        },
-                        input: {
-                            ...InputProps,
-                            readOnly: isReadOnly,
-                            onMouseDown: !hasValue ? (event: any) => event.preventDefault() : undefined,
-                        },
-                        inputLabel: {
-                            shrink: hasValue,
-                        },
-                    }}
-                    helperText={
-                        previousValue && (
-                            <HelperPreviousValue
-                                previousValue={previousValue}
-                                isNodeBuilt={isNodeBuilt}
-                                disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                            />
-                        )
-                    }
-                    {...genHelperError(error?.message)}
-                    {...formProps}
-                    {...rest}
-                />
-            )}
+            renderInput={(params) => {
+                return (
+                    <TextField
+                        {...(label && {
+                            label: FieldLabel({
+                                label,
+                                optional:
+                                    !isFieldRequired(name, validationSchema, getValues()) &&
+                                    !props?.disabled &&
+                                    !removeOptional,
+                            }),
+                        })}
+                        inputRef={ref}
+                        helperText={
+                            previousValue && (
+                                <HelperPreviousValue
+                                    previousValue={previousValue}
+                                    isNodeBuilt={isNodeBuilt}
+                                    disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                                />
+                            )
+                        }
+                        {...genHelperError(error?.message)}
+                        {...formProps}
+                        {...params}
+                        slotProps={{
+                            ...formProps?.slotProps,
+                            ...params.slotProps,
+                            input: {
+                                ...formProps?.slotProps?.input,
+                                ...params.slotProps.input,
+                                readOnly: isReadOnly,
+                                onMouseDown:
+                                    isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                            },
+                            inputLabel: {
+                                shrink: hasValue,
+                            },
+                        }}
+                    />
+                );
+            }}
             {...props}
         />
     );

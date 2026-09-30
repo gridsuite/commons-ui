@@ -8,7 +8,7 @@
 import { Checkbox, CheckboxProps, FormControl, FormControlLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useCustomFormContext } from './provider';
 import { HelperPreviousValue } from './utils';
 
@@ -38,7 +38,7 @@ export function CheckboxNullableInput({
     } = useController({ name });
 
     const intl = useIntl();
-    const { isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { isNodeBuilt, isUpdate, readOnly } = useCustomFormContext();
 
     const handleChangeValue = useCallback(() => {
         let newValue;
@@ -58,6 +58,20 @@ export function CheckboxNullableInput({
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
 
+    const labelStyle = useMemo(() => {
+        return {
+            ...(style ? { color: style.color } : {}),
+            ...(readOnly
+                ? {
+                      '& .MuiFormControlLabel-label.Mui-disabled': {
+                          color: 'text.primary',
+                          opacity: 1,
+                      },
+                  }
+                : {}),
+        };
+    }, [readOnly, style]);
+
     return (
         <FormControl fullWidth size="small">
             <FormControlLabel
@@ -68,6 +82,7 @@ export function CheckboxNullableInput({
                         indeterminate={nullDisabled ? undefined : value === null}
                         onChange={handleChangeValue}
                         value="checked"
+                        disabled={readOnly}
                         slotProps={{
                             input: {
                                 'aria-label': 'primary checkbox',
@@ -84,7 +99,7 @@ export function CheckboxNullableInput({
                               id: currentLabel,
                           })
                 }
-                sx={style ? { color: style.color } : undefined}
+                sx={labelStyle}
             />
             {previousValue && (
                 <HelperPreviousValue

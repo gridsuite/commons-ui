@@ -12,7 +12,7 @@ import { useFieldArray } from 'react-hook-form';
 import { LimitsTagChip } from '../LimitsTagChip';
 import { LimitsProperty } from '../limits.types';
 import { usePredefinedProperties } from '../../../../../hooks';
-import { AddButton } from '../../../../../components';
+import { AddButton, useCustomFormContext } from '../../../../../components';
 
 export interface LimitsPropertiesSideStackProps {
     name: string;
@@ -20,7 +20,7 @@ export interface LimitsPropertiesSideStackProps {
 }
 export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPropertiesSideStackProps>) {
     const { fields: limitsProperties, append, remove } = useFieldArray<{ [key: string]: LimitsProperty[] }>({ name });
-
+    const { readOnly } = useCustomFormContext();
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [hovered, setHovered] = useState<boolean>(false);
     const [propertyName, setPropertyName] = useState<string>('');
@@ -92,7 +92,9 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                         showTooltip
                     />
                 ))}
-                {!isEditing && <AddButton disabled={disabled} label="AddProperty" onClick={() => setIsEditing(true)} />}
+                {!isEditing && !readOnly && (
+                    <AddButton disabled={disabled} label="AddProperty" onClick={() => setIsEditing(true)} />
+                )}
             </Stack>
             {isEditing && !disabled ? (
                 <Box
@@ -132,15 +134,17 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                         error={valueEditorError !== ''}
                         helperText={valueEditorError}
                     />
-                    <IconButton
-                        sx={{ verticalAlign: 'center' }}
-                        onClick={() => {
-                            setIsEditing(false);
-                            setNameEditorError('');
-                        }}
-                    >
-                        <Delete visibility={hovered ? 'visible' : 'hidden'} />
-                    </IconButton>
+                    {!readOnly && (
+                        <IconButton
+                            sx={{ verticalAlign: 'center' }}
+                            onClick={() => {
+                                setIsEditing(false);
+                                setNameEditorError('');
+                            }}
+                        >
+                            <Delete visibility={hovered ? 'visible' : 'hidden'} />
+                        </IconButton>
+                    )}
                 </Box>
             ) : (
                 ''

@@ -60,7 +60,7 @@ export function VoltageLevelTopologyModificationForm({
     isPreviousStatusEnabled = false,
 }: Readonly<VoltageLevelTopologyModificationFormProps>) {
     const intl = useIntl();
-    const { setValue, getValues, isNodeBuilt } = useCustomFormContext();
+    const { setValue, getValues, isNodeBuilt, readOnly } = useCustomFormContext();
     const equipmentId: string = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
     const defaultColDef = useMemo(
@@ -232,7 +232,7 @@ export function VoltageLevelTopologyModificationForm({
                         justifyContent: 'flex-end',
                     }}
                 >
-                    {isPreviousStatusEnabled && (
+                    {!readOnly && isPreviousStatusEnabled && (
                         <Button
                             variant="outlined"
                             color="primary"

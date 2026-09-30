@@ -8,6 +8,7 @@
 import { Slider, SliderProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { identity } from '../utils/functions';
+import { useCustomFormContext } from '../provider';
 
 export interface SliderInputProps extends SliderProps {
     name: string;
@@ -29,6 +30,8 @@ export function SliderInput({
     const {
         field: { onChange, value },
     } = useController({ name });
+
+    const { readOnly } = useCustomFormContext();
 
     const handleValueChange = (
         event: Event,
@@ -52,6 +55,7 @@ export function SliderInput({
             valueLabelDisplay={valueLabelDisplay}
             valueLabelFormat={valueLabelFormat}
             {...otherProps}
+            disabled={readOnly} // overrides otherProps.disabled if present
         />
     );
 }

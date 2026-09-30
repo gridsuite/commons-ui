@@ -9,6 +9,7 @@ import { type ChangeEvent, type JSX, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useCustomFormContext } from '../provider';
 
 type InputTypes = typeof Switch | typeof Checkbox;
 type InputProps<TInput> = TInput extends (props: infer Props) => JSX.Element ? Props : never;
@@ -34,6 +35,8 @@ export function BooleanInput<TInput extends InputTypes>({
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
 
+    const { readOnly } = useCustomFormContext();
+
     const intl = useIntl();
 
     const handleChangeValue = useCallback(
@@ -52,12 +55,30 @@ export function BooleanInput<TInput extends InputTypes>({
             slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
             data-testid={dataTestId}
             {...(otherFormProps as any)}
+            disabled={readOnly} // this after otherFormProps to override value of otherFormProps.disabled
             {...props}
         />
     );
 
     if (label) {
-        return <FormControlLabel control={CustomInput} label={intl.formatMessage({ id: label })} />;
+        return (
+            <FormControlLabel
+                control={CustomInput}
+                label={intl.formatMessage({ id: label })}
+                // must restore color and opacity otherwise disabled Input is detected
+                // by FormControlLabel.
+                sx={
+                    readOnly
+                        ? {
+                              '& .MuiFormControlLabel-label.Mui-disabled': {
+                                  color: 'text.primary',
+                                  opacity: 1,
+                              },
+                          }
+                        : undefined
+                }
+            />
+        );
     }
 
     return CustomInput;

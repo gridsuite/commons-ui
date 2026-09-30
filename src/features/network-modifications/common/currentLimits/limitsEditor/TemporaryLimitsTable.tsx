@@ -19,6 +19,7 @@ import {
     SELECTED,
     TableNumericalInput,
     TableTextInput,
+    useCustomFormContext,
 } from '../../../../../components';
 import { TemporaryLimitsData } from '../limits.types';
 
@@ -86,6 +87,7 @@ export function TemporaryLimitsTable({
 }: Readonly<TemporaryLimitsTableProps>) {
     const { fields, append, remove } = useFieldArray({ name: arrayFormName });
     const [hoveredRowIndex, setHoveredRowIndex] = useState(-1);
+    const { readOnly } = useCustomFormContext();
 
     const handleMouseEnter = useCallback((event: MouseEvent<HTMLTableRowElement>) => {
         const { index } = event.currentTarget.dataset;
@@ -141,15 +143,17 @@ export function TemporaryLimitsTable({
                             <Box sx={styles.columnsStyle}>{column.label}</Box>
                         </TableCell>
                     ))}
-                    <TableCell>
-                        <IconButton
-                            color="primary"
-                            onClick={handleAddRowButton}
-                            disabled={disabled || disableAddingRows}
-                        >
-                            <AddCircleIcon />
-                        </IconButton>
-                    </TableCell>
+                    {!readOnly && (
+                        <TableCell>
+                            <IconButton
+                                color="primary"
+                                onClick={handleAddRowButton}
+                                disabled={disabled || disableAddingRows}
+                            >
+                                <AddCircleIcon />
+                            </IconButton>
+                        </TableCell>
+                    )}
                 </TableRow>
             </TableHead>
         );
@@ -158,11 +162,13 @@ export function TemporaryLimitsTable({
     const renderTableRow = (rowId: string, index: number) => (
         <TableRow key={rowId} data-index={index} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             {columnsDefinition.map((column) => renderTableCell(rowId, index, column))}
-            <TableCell key={`${rowId}delete`}>
-                <IconButton data-index={index} color="primary" disabled={disabled} onClick={handleRemove}>
-                    <DeleteIcon visibility={index === hoveredRowIndex ? 'visible' : 'hidden'} />
-                </IconButton>
-            </TableCell>
+            {!readOnly && (
+                <TableCell key={`${rowId}delete`}>
+                    <IconButton data-index={index} color="primary" disabled={disabled} onClick={handleRemove}>
+                        <DeleteIcon visibility={index === hoveredRowIndex ? 'visible' : 'hidden'} />
+                    </IconButton>
+                </TableCell>
+            )}
         </TableRow>
     );
 

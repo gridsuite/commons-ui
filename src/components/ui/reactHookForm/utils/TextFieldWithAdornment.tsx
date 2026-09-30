@@ -66,22 +66,24 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const withEndAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
+                  ...slotProps?.input,
                   startAdornment: value && handleClearValue ? getClearAdornment('start') : undefined,
                   endAdornment: getTextAdornment('end'),
                   sx: { textAlign: 'end' },
               }
             : undefined;
-    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
+    }, [value, isFocused, slotProps?.input, handleClearValue, getClearAdornment, getTextAdornment]);
 
     const withStartAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
+                  ...slotProps?.input,
                   startAdornment: getTextAdornment('start'),
                   endAdornment: value && handleClearValue && getClearAdornment('end'),
                   sx: { textAlign: 'start' },
               }
             : undefined;
-    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
+    }, [value, isFocused, slotProps?.input, getTextAdornment, handleClearValue, getClearAdornment]);
 
     return (
         <TextField
@@ -92,7 +94,7 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
             onBlur={() => setIsFocused(false)}
             slotProps={{
                 ...slotProps,
-                input: adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText(),
+                input: adornmentPosition === 'start' ? withStartAdornmentText() : withEndAdornmentText()
             }}
         />
     );

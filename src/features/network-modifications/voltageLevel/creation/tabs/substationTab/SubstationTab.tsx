@@ -10,7 +10,7 @@ import { Grid } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { FieldConstants } from '../../../../../../utils';
 import { fetchDefaultCountry } from '../../../../../../services';
-import { AutocompleteInput, TextInput } from '../../../../../../components/ui';
+import { AutocompleteInput, TextInput, useCustomFormContext } from '../../../../../../components/ui';
 import { SubstationCreationSection, SubstationCreationSectionProps } from './SubstationCreationSection';
 import { AddButton } from '../../../../../../components/ui/addButton';
 
@@ -20,7 +20,7 @@ export interface SubstationTabContentProps extends Pick<SubstationCreationSectio
 
 export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<SubstationTabContentProps>) {
     const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
-    const { setValue, getValues } = useFormContext();
+    const { setValue, getValues, readOnly } = useCustomFormContext();
 
     const handleDeleteSubstationCreation = useCallback(() => {
         setValue(FieldConstants.ADD_SUBSTATION_CREATION, false);
@@ -78,9 +78,7 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
             >
                 <FormattedMessage id="Or" />
             </Grid>
-            <Grid>
-                <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
-            </Grid>
+            <Grid>{!readOnly && <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />}</Grid>
         </Grid>
     );
 }
