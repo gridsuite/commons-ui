@@ -154,6 +154,7 @@ export function MessageLogCellRenderer({
     param,
     highlightColor,
     currentHighlightColor,
+    textColor,
     searchTerm,
     currentResultIndex,
     searchResults,
@@ -161,6 +162,7 @@ export function MessageLogCellRenderer({
     param: ICellRendererParams;
     highlightColor?: string;
     currentHighlightColor?: string;
+    textColor?: string;
     searchTerm?: string;
     currentResultIndex?: number;
     searchResults?: number[];
@@ -208,6 +210,7 @@ export function MessageLogCellRenderer({
                                         searchResults[currentResultIndex] === param.node.rowIndex
                                             ? currentHighlightColor
                                             : highlightColor,
+                                    color: textColor,
                                 }}
                             >
                                 {part}

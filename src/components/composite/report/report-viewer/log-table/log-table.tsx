@@ -256,6 +256,7 @@ function LogTable({
                         param,
                         highlightColor: theme.searchedText.highlightColor,
                         currentHighlightColor: theme.searchedText.currentHighlightColor,
+                        textColor: theme.searchedText.textColor,
                         searchTerm,
                         currentResultIndex,
                         searchResults,
