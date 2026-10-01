@@ -10,6 +10,7 @@ import { useIntl } from 'react-intl';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { useCustomFormContext } from '../provider';
+import { readOnlyFormControlLabelStyle } from '../styles/styles';
 
 type InputTypes = typeof Switch | typeof Checkbox;
 type InputProps<TInput> = TInput extends (props: infer Props) => JSX.Element ? Props : never;
@@ -67,16 +68,7 @@ export function BooleanInput<TInput extends InputTypes>({
                 label={intl.formatMessage({ id: label })}
                 // must restore label color and opacity otherwise disabled Input is detected
                 // by FormControlLabel.
-                sx={
-                    readOnly
-                        ? {
-                              '& .MuiFormControlLabel-label.Mui-disabled': {
-                                  color: 'text.primary',
-                                  opacity: 1,
-                              },
-                          }
-                        : undefined
-                }
+                sx={readOnly ? readOnlyFormControlLabelStyle : undefined}
             />
         );
     }

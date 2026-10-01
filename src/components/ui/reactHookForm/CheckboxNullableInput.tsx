@@ -11,6 +11,7 @@ import { useController } from 'react-hook-form';
 import { useCallback, useMemo } from 'react';
 import { useCustomFormContext } from './provider';
 import { HelperPreviousValue } from './utils';
+import { readOnlyFormControlLabelStyle } from './styles/styles';
 
 interface CheckboxNullableInputProps {
     name: string;
@@ -61,14 +62,7 @@ export function CheckboxNullableInput({
     const labelStyle = useMemo(() => {
         return {
             ...(style ? { color: style.color } : {}),
-            ...(readOnly
-                ? {
-                      '& .MuiFormControlLabel-label.Mui-disabled': {
-                          color: 'text.primary',
-                          opacity: 1,
-                      },
-                  }
-                : {}),
+            ...(readOnly ? readOnlyFormControlLabelStyle : {}),
         };
     }, [readOnly, style]);
 
