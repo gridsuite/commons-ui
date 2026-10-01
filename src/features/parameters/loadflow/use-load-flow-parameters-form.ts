@@ -20,7 +20,6 @@ import {
     TAB_VALUES,
     TabValues,
 } from './load-flow-parameters-utils';
-import { LoadFlowParametersInfos } from './load-flow-parameters-type';
 import {
     ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
@@ -37,7 +36,13 @@ import {
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
-import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
+import {
+    ComputingType,
+    ElementType,
+    LoadFlowParametersInfos,
+    SpecificParameterInfos,
+    UseParametersBackendReturnProps
+} from '../../../utils';
 import {
     getNameElementEditorEmptyFormData,
     getNameElementEditorSchema,

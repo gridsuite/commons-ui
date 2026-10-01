@@ -52,6 +52,7 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays réglant',
     inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
+    defaultValue: 'Par défaut: {value}',
 
     General: 'Général',
     LimitReductions: 'Abattements',
