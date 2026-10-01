@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationMetadata } from '../../../services';
+import { setModificationNameAndDescription } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 
@@ -28,13 +28,14 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
     const modificationUuid = data.uuid;
+    console.log('test', data);
     const { description } = data;
     const empty = !description;
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {

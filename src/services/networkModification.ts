@@ -157,6 +157,29 @@ export function setModificationMetadata(
     });
 }
 
+export function setModificationNameAndDescription(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | undefined,
+    modificationUuid: UUID | undefined,
+    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+): Promise<Response> {
+    if (!modificationUuid) {
+        return Promise.reject(new Error('modificationUuid is required'));
+    }
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('uuid', modificationUuid);
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/name-and-description/` + encodeURI(modificationUuid);
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            'userId': 'admin'
+        },
+        body: JSON.stringify(metadata),
+    });
+}
+
 export function updateModificationStatusByRootNetwork(
     studyUuid: UUID,
     nodeUuid: UUID,
