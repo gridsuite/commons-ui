@@ -41,3 +41,11 @@ export const NUMERIC_VALUE_OR_EMPTY_FIELD = 'NumericValueOrEmptyField';
 export const WRONG_REF_OR_VALUE_ERROR = 'WrongRefOrValueError';
 export const VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR = 'ValueMustBeNumericWhenPercentageError';
 export const VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR = 'ValueMustBeRefWhenPercentageError';
+
+export const ACTIVE_POWER_SETPOINT_MAX_VALUE_ERROR = 'activePowerSetpointMaxValueError';
+export const ACTIVE_POWER_SETPOINT_MIN_VALUE_ERROR = 'activePowerSetpointMinValueError';
+export const DC_RESISTANCE_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'dcResistanceMustBeGreaterOrEqualToZero';
+export const MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'maxPMustBeGreaterOrEqualToZero';
+export const NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'nominalVMustBeGreaterOrEqualToZero';
+export const POWER_FACTOR_INTERVAL_VALUE_ERROR = 'powerFactorIntervalValueError';
+export const Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO = 'qMaxAtNominalVMustBeGreaterThanZero';
