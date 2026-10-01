@@ -14,7 +14,7 @@ type RadioOptions = Array<{
     id: string;
     label: string;
     disabled?: boolean;
-    tooltip?: string;
+    tooltipMessage?: string;
 }>;
 
 export interface RadioInputProps {
@@ -51,8 +51,8 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                             disabled={option.disabled}
                         />
                     );
-                    return option.tooltip ? (
-                        <Tooltip key={option.id} title={<FormattedMessage id={option.tooltip} />}>
+                    return option.tooltipMessage ? (
+                        <Tooltip key={option.id} title={<FormattedMessage id={option.tooltipMessage} />}>
                             {/* disabled elements don't fire the mouse events Tooltip relies on */}
                             <span>{element}</span>
                         </Tooltip>
