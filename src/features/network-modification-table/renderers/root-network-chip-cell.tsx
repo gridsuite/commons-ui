@@ -7,12 +7,11 @@
 
 import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import type { UUID } from 'node:crypto';
-import { ActivableChip } from '../../../components/ui/inputs';
+import { ActivableChip } from '../../../components';
 import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
-    ModificationType,
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     snackWithFallback,
@@ -69,9 +68,6 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const { snackError } = useSnackMessage();
     const modificationUuid = data.uuid;
 
-    const isReferenceModificationOrInsideOne =
-        data.type === ModificationType.MODIFICATION_REFERENCE || data.childFromShared;
-
     const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
     }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
@@ -124,7 +120,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
             isActivated={isModificationApplicable}
-            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne || rootNetwork.isCreating}
+            isDisabled={isLoading || isDisabled || rootNetwork.isCreating}
             onClick={handleModificationActivationByRootNetwork}
         />
     );
