@@ -62,7 +62,7 @@ export function VoltageRegulationForm({
 
     const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
 
-    const resetEquipment = useCallback(() => {
+    const clearEquipmentFields = useCallback(() => {
         if (!isDistantRegulation) {
             setValue(`${FieldConstants.EQUIPMENT}`, null);
             setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
@@ -96,7 +96,7 @@ export function VoltageRegulationForm({
                     label="RegulationTypeText"
                     size="small"
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
-                    onChangeCallback={resetEquipment}
+                    onChangeCallback={clearEquipmentFields}
                 />
             </GridItem>
             {isDistantRegulation && (
