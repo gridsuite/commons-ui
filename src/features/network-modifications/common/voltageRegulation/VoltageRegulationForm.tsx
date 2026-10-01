@@ -6,8 +6,8 @@
  */
 
 import { Grid } from '@mui/material';
-import { useMemo } from 'react';
-import { useWatch } from 'react-hook-form';
+import { useCallback, useMemo } from 'react';
+import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { FloatInput, SelectInput } from '../../../../components/ui';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
@@ -40,6 +40,7 @@ export function VoltageRegulationForm({
     isGenerator = true,
 }: Readonly<VoltageRegulationFormProps>) {
     const intl = useIntl();
+    const { setValue } = useFormContext();
 
     const previousRegulationType = useMemo(() => {
         if (previousValues?.regulatingTerminalVlId || previousValues?.regulatingTerminalConnectableId) {
@@ -59,9 +60,14 @@ export function VoltageRegulationForm({
         return null;
     }, [intl, isEquipmentModification, previousRegulationType]);
 
-    const isDistantRegulation =
-        voltageRegulationType === REGULATION_TYPES.DISTANT.id ||
-        (!voltageRegulationType && previousRegulationType === REGULATION_TYPES.DISTANT.id);
+    const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
+
+    const clearEquipmentFields = useCallback(() => {
+        if (!isDistantRegulation) {
+            setValue(`${FieldConstants.EQUIPMENT}`, null);
+            setValue(`${FieldConstants.VOLTAGE_LEVEL}`, null);
+        }
+    }, [setValue, isDistantRegulation]);
 
     const previousEquipmentSectionType =
         previousValues?.regulatingTerminalConnectableType && previousValues?.regulatingTerminalConnectableId
@@ -90,6 +96,7 @@ export function VoltageRegulationForm({
                     label="RegulationTypeText"
                     size="small"
                     previousValue={translatedPreviousRegulationLabel ?? undefined}
+                    onChangeCallback={clearEquipmentFields}
                 />
             </GridItem>
             {isDistantRegulation && (
