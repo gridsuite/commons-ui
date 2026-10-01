@@ -210,7 +210,7 @@ export function MessageLogCellRenderer({
                                         searchResults[currentResultIndex] === param.node.rowIndex
                                             ? currentHighlightColor
                                             : highlightColor,
-                                    color: textColor,
+                                    ...(textColor && { color: textColor }),
                                 }}
                             >
                                 {part}
