@@ -37,6 +37,7 @@ export type CustomMuiDialogProps<T extends FieldValues = FieldValues> = DialogPr
     confirmationMessageKey?: string;
     unscrollableFullHeight?: boolean;
     dialogWidth?: Breakpoint;
+    subtitle?: ReactNode;
 };
 
 const styles = {
@@ -102,6 +103,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
     dialogWidth,
     confirmationMessageKey,
     unscrollableFullHeight = false,
+    subtitle,
     ...dialogProps
 }: Readonly<CustomMuiDialogProps<T>>) {
     const [openConfirmationPopup, setOpenConfirmationPopup] = useState(false);
@@ -171,6 +173,7 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
                     <FormattedMessage id={titleId} />
+                    {subtitle}
                 </DialogTitle>
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}
