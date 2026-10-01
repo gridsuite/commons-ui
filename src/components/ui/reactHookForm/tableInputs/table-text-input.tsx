@@ -39,7 +39,7 @@ export function TableTextInput({
         onChange(outputTransform(e.target.value));
     };
 
-    const hasValue = value.trim().length > 0;
+    const hasValue = typeof value === 'string' ? value.trim().length > 0 : value != null;
 
     return (
         <TextField
@@ -63,7 +63,7 @@ export function TableTextInput({
                     onMouseDown: readOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
-                    shrink: hasValue,
+                    shrink: readOnly ? hasValue : undefined,
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}

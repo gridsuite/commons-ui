@@ -30,7 +30,7 @@ export function BooleanInput<TInput extends InputTypes>({
     dataTestId,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
-    const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
+    const { onChange, slotProps, disabled, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
@@ -54,8 +54,8 @@ export function BooleanInput<TInput extends InputTypes>({
             inputRef={ref}
             slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
             data-testid={dataTestId}
+            disabled={readOnly || disabled}
             {...(otherFormProps as any)}
-            disabled={readOnly} // this after otherFormProps to override value of otherFormProps.disabled
             {...props}
         />
     );
@@ -65,7 +65,7 @@ export function BooleanInput<TInput extends InputTypes>({
             <FormControlLabel
                 control={CustomInput}
                 label={intl.formatMessage({ id: label })}
-                // must restore color and opacity otherwise disabled Input is detected
+                // must restore label color and opacity otherwise disabled Input is detected
                 // by FormControlLabel.
                 sx={
                     readOnly

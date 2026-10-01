@@ -137,7 +137,7 @@ export function TableNumericalInput({
                     onMouseDown: readOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
-                    shrink: hasValue,
+                    shrink: readOnly ? hasValue : undefined,
                 },
                 ...slotProps,
             }}

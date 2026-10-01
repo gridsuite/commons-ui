@@ -111,48 +111,45 @@ export function AutocompleteInput({
             readOnly={isReadOnly}
             disableClearable={isReadOnly}
             popupIcon={isReadOnly ? null : undefined}
-            renderInput={(params) => {
-                return (
-                    <TextField
-                        {...(label && {
-                            label: FieldLabel({
-                                label,
-                                optional:
-                                    !isFieldRequired(name, validationSchema, getValues()) &&
-                                    !props?.disabled &&
-                                    !removeOptional,
-                            }),
-                        })}
-                        inputRef={ref}
-                        helperText={
-                            previousValue && (
-                                <HelperPreviousValue
-                                    previousValue={previousValue}
-                                    isNodeBuilt={isNodeBuilt}
-                                    disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
-                                />
-                            )
-                        }
-                        {...genHelperError(error?.message)}
-                        {...formProps}
-                        {...params}
-                        slotProps={{
-                            ...formProps?.slotProps,
-                            ...params.slotProps,
-                            input: {
-                                ...formProps?.slotProps?.input,
-                                ...params.slotProps.input,
-                                readOnly: isReadOnly,
-                                onMouseDown:
-                                    isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
-                            },
-                            inputLabel: {
-                                shrink: hasValue,
-                            },
-                        }}
-                    />
-                );
-            }}
+            renderInput={(params) => (
+                <TextField
+                    {...(label && {
+                        label: FieldLabel({
+                            label,
+                            optional:
+                                !isFieldRequired(name, validationSchema, getValues()) &&
+                                !props?.disabled &&
+                                !removeOptional,
+                        }),
+                    })}
+                    inputRef={ref}
+                    helperText={
+                        previousValue && (
+                            <HelperPreviousValue
+                                previousValue={previousValue}
+                                isNodeBuilt={isNodeBuilt}
+                                disabledTooltip={disabledTooltip || (!isUpdate && isNodeBuilt)}
+                            />
+                        )
+                    }
+                    {...genHelperError(error?.message)}
+                    {...formProps}
+                    {...params}
+                    slotProps={{
+                        ...formProps?.slotProps,
+                        ...params.slotProps,
+                        input: {
+                            ...formProps?.slotProps?.input,
+                            ...params.slotProps.input,
+                            readOnly: isReadOnly,
+                            onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                        },
+                        inputLabel: {
+                            shrink: isReadOnly ? hasValue : undefined,
+                        },
+                    }}
+                />
+            )}
             {...props}
         />
     );

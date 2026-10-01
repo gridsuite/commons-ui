@@ -25,6 +25,7 @@ export function SliderInput({
     valueLabelDisplay,
     valueLabelFormat,
     onValueChanged = identity,
+    disabled,
     ...otherProps
 }: SliderInputProps) {
     const {
@@ -54,8 +55,8 @@ export function SliderInput({
             marks={marks}
             valueLabelDisplay={valueLabelDisplay}
             valueLabelFormat={valueLabelFormat}
+            disabled={readOnly || disabled}
             {...otherProps}
-            disabled={readOnly} // overrides otherProps.disabled if present
         />
     );
 }
