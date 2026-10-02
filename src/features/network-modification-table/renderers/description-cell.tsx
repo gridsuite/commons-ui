@@ -23,7 +23,7 @@ export interface DescriptionCellProps {
 }
 
 export function DescriptionCell(props: DescriptionCellProps) {
-    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
+    const { data, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
