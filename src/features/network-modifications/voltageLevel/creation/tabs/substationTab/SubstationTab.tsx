@@ -71,14 +71,20 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                     <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" />
                 )}
             </Grid>
-            <Grid
-                sx={{
-                    mt: 0.75,
-                }}
-            >
-                <FormattedMessage id="Or" />
-            </Grid>
-            <Grid>{!readOnly && <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />}</Grid>
+            {!readOnly && (
+                <>
+                    <Grid
+                        sx={{
+                            mt: 0.75,
+                        }}
+                    >
+                        <FormattedMessage id="Or" />
+                    </Grid>
+                    <Grid>
+                        <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 }
