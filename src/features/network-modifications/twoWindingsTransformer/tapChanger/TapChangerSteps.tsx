@@ -73,12 +73,9 @@ export function TapChangerSteps({
 
     const disableAddingRows = useMemo(() => {
         return (
-            readOnly ||
-            (isModification &&
-                lowTapPosition === null &&
-                previousValues?.[FieldConstants.LOW_TAP_POSITION] === undefined)
+            isModification && lowTapPosition === null && previousValues?.[FieldConstants.LOW_TAP_POSITION] === undefined
         );
-    }, [isModification, lowTapPosition, previousValues, readOnly]);
+    }, [isModification, lowTapPosition, previousValues]);
 
     const allowedToAddTapRows = useCallback(() => {
         // triggering validation on low tap position before generating rows (the field is required)
@@ -301,9 +298,9 @@ export function TapChangerSteps({
                 tableHeight={400}
                 allowedToAddRows={allowedToAddTapRows}
                 createRows={createTapRows}
-                handleUploadButton={!readOnly ? handleImportTapRuleButton : undefined}
+                handleUploadButton={handleImportTapRuleButton}
                 uploadButtonMessageId={importRuleMessageId}
-                handleResetButton={!readOnly ? handleResetButton : undefined}
+                handleResetButton={handleResetButton}
                 resetButtonMessageId={resetButtonMessageId}
                 previousValues={toTapChangerStepList(previousValues?.[FieldConstants.STEPS])}
                 getPreviousValue={getTapPreviousValue}
@@ -312,7 +309,6 @@ export function TapChangerSteps({
                 disableAddingRows={disableAddingRows}
                 disabled={disabled}
                 disableDragAndDrop
-                disabledDeletion={readOnly}
             />
             <CreateRuleDialog
                 tapChanger={tapChanger}
