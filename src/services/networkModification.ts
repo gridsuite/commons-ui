@@ -166,7 +166,7 @@ export function setModificationNameAndDescription(
     }
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('uuid', modificationUuid);
-    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/name-and-description/` + encodeURI(modificationUuid);
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/name-and-description/${safeEncodeURIComponent(modificationUuid)}`;
     return backendFetch(url, {
         method: 'PUT',
         headers: {

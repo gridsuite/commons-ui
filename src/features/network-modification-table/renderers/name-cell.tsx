@@ -74,7 +74,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         } catch {
             return '';
         }
-    }, [isComposite, row.original.messageValues]);
+    }, [isComposite, isReferenced, row.original.messageValues]);
 
     // Single source of truth for the name: optimistic on rename, re-synced from the server.
     const [compositeName, setCompositeName] = useState(savedCompositeName);
@@ -199,19 +199,20 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps = isComposite || isReferenced
-        ? {
-              ref: labelRef,
-              onClick: handleLabelClick,
-              sx: {
-                  cursor: 'text',
-                  '&:hover': {
-                      textDecoration: 'underline dotted',
-                      textDecorationColor: theme.palette.text.secondary,
+    const compositeReadModeProps =
+        isComposite || isReferenced
+            ? {
+                  ref: labelRef,
+                  onClick: handleLabelClick,
+                  sx: {
+                      cursor: 'text',
+                      '&:hover': {
+                          textDecoration: 'underline dotted',
+                          textDecorationColor: theme.palette.text.secondary,
+                      },
                   },
-              },
-          }
-        : {};
+              }
+            : {};
     return (
         <Box
             sx={mergeSx(

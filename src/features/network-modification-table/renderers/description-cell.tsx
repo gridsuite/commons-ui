@@ -41,7 +41,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                 setIsLoading(false);
             });
         },
-        [studyUuid, currentNodeId, modificationUuid, data.type]
+        [modificationUuid, data.type]
     );
 
     const handleDescDialogClose = useCallback(() => {
