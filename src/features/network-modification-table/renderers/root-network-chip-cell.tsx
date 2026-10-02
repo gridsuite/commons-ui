@@ -6,6 +6,7 @@
  */
 
 import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
+import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { ActivableChip } from '../../../components/ui/inputs';
 import { updateModificationStatusByRootNetwork } from '../../../services';
@@ -13,60 +14,70 @@ import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
     ModificationType,
+    NetworkModificationActivations,
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
+import { isAppliedOn, isApplicableOn, isDeactivatedItselfOrByAncestor } from '../utils';
 
-/**
- * A modification is applicable on a root network unless its applicability for it is explicitly false:
- * a root network without an entry is applicable.
- */
-function isApplicableOn(
-    applicabilities: NetworkModificationApplicabilities,
-    modificationUuid: UUID,
-    rootNetworkUuid: UUID
-) {
-    return applicabilities[modificationUuid]?.[rootNetworkUuid] ?? true;
-}
-
-function setApplicability(
-    prevApplicabilities: NetworkModificationApplicabilities,
+function addPendingApplicability(
+    pendingApplicabilities: NetworkModificationApplicabilities,
     modificationUuid: UUID,
     rootNetworkUuid: UUID,
     applicable: boolean
 ): NetworkModificationApplicabilities {
     return {
-        ...prevApplicabilities,
+        ...pendingApplicabilities,
         [modificationUuid]: {
-            ...prevApplicabilities[modificationUuid],
+            ...pendingApplicabilities[modificationUuid],
             [rootNetworkUuid]: applicable,
         },
     };
 }
 
+// for rollback
+function removePendingApplicability(
+    pendingApplicabilities: NetworkModificationApplicabilities,
+    modificationUuid: UUID,
+    rootNetworkUuid: UUID
+): NetworkModificationApplicabilities {
+    const byRootNetwork = { ...pendingApplicabilities[modificationUuid] };
+    delete byRootNetwork[rootNetworkUuid];
+    const rolledBack = { ...pendingApplicabilities };
+    if (Object.keys(byRootNetwork).length === 0) {
+        delete rolledBack[modificationUuid];
+    } else {
+        rolledBack[modificationUuid] = byRootNetwork;
+    }
+    return rolledBack;
+}
+
 export interface RootNetworkChipCellProps {
-    data: ComposedModificationMetadata;
+    row: Row<ComposedModificationMetadata>;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     rootNetwork: RootNetworkRowInfo;
+    activations: NetworkModificationActivations;
     applicabilities: NetworkModificationApplicabilities;
-    setApplicabilities: React.Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
+    setPendingApplicabilities: React.Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
 }
 
-export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
+export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const {
-        data,
+        row,
         studyUuid,
         currentNodeId,
         rootNetwork,
+        activations,
         applicabilities,
-        setApplicabilities,
+        setPendingApplicabilities,
         isDisabled = false,
     } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
+    const data = row.original;
     const modificationUuid = data.uuid;
 
     const isReferenceModificationOrInsideOne =
@@ -75,6 +86,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
     const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
     }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
+
+    // What the modification wants is not necessarily what it gets: it also depends on the composites it is nested in
+    const isModificationApplied = isAppliedOn(row, activations, applicabilities, rootNetwork.rootNetworkUuid);
 
     const handleModificationActivationByRootNetwork = useCallback(() => {
         if (!studyUuid || !currentNodeId) {
@@ -86,9 +100,9 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         // toggle the current applicability
         const newApplicability = !isModificationApplicable;
 
-        // Apply optimistic update
-        setApplicabilities((prev) =>
-            setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, newApplicability)
+        // Apply optimistic update, dropped once the modifications are fetched back with the new applicability
+        setPendingApplicabilities((prev) =>
+            addPendingApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, newApplicability)
         );
 
         // Perform backend call
@@ -100,9 +114,8 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
             newApplicability
         )
             .catch((error) => {
-                // Rollback on failure to the value shown when the user clicked
-                setApplicabilities((prev) =>
-                    setApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid, isModificationApplicable)
+                setPendingApplicabilities((prev) =>
+                    removePendingApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid)
                 );
                 snackWithFallback(snackError, error, { headerId: 'modificationActivationByRootNetworkError' });
             })
@@ -115,7 +128,7 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         currentNodeId,
         isModificationApplicable,
         rootNetwork.rootNetworkUuid,
-        setApplicabilities,
+        setPendingApplicabilities,
         snackError,
     ]);
 
@@ -123,8 +136,15 @@ export function RootNetworkChipCell(props: RootNetworkChipCellProps) {
         <ActivableChip
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
-            isActivated={isModificationApplicable}
-            isDisabled={isLoading || isDisabled || isReferenceModificationOrInsideOne || rootNetwork.isCreating}
+            isActivationRequested={isModificationApplicable}
+            isActivationEffective={isModificationApplied}
+            isDisabled={
+                isLoading ||
+                isDisabled ||
+                isReferenceModificationOrInsideOne ||
+                rootNetwork.isCreating ||
+                isDeactivatedItselfOrByAncestor(row, activations)
+            }
             onClick={handleModificationActivationByRootNetwork}
         />
     );

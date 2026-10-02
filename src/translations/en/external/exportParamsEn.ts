@@ -84,6 +84,8 @@ export const exportParamsEn = {
     'iidm.export.xml.topology-level.voltage-levels.bus-breaker': 'Bus breaker topology voltage levels',
     'iidm.export.xml.topology-level.voltage-levels.bus-branch': 'Bus branch topology voltage levels',
     'iidm.export.xml.flatten': 'Flatten',
+    'iidm.export.xml.only-selected-operational-limits-groups': 'Only selected operational limits group',
+    'iidm.export.xml.force-export-network-with-beta-features': 'Force export when beta features are present',
     'iidm.export.xml.sorted': 'Sort export output file',
     'iidm.export.xml.sorted.desc': 'Sort export output file',
     'iidm.export.xml.version': 'IIDM Version',

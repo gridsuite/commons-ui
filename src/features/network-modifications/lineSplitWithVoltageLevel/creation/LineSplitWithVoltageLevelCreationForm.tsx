@@ -40,7 +40,7 @@ export function LineSplitWithVoltageLevelCreationForm({
     fetchBusesOrBusbarSections,
     lineOptions = [],
     newVoltageLevel = null,
-    onNewVoltageLevelCreated = () => Promise.reject(new Error('onNewVoltageLevelCreated is not provided')),
+    onNewVoltageLevelCreated = () => new Promise(() => {}),
     isUpdate = false,
     NewVoltageLevelPane,
 }: Readonly<LineSplitWithVoltageLevelCreationFormProps>) {

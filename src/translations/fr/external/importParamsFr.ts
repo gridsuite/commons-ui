@@ -104,6 +104,9 @@ export const importParamsFr = {
     'iidm.import.minimal-validation-level': "Niveau de validation de l'import",
     'iidm.import.minimal-validation-level.desc':
         "Permet de changer le niveau de validation de l'import du réseau, les valeurs possibles sont : 'EQUIPMENT' et 'STEADY_STATE_HYPOTHESIS'",
+    'iidm.import.xml.only-selected-operational-limits-groups': 'Jeux de limites actifs uniquement',
+    'iidm.import.xml.only-selected-operational-limits-groups.desc':
+        'Importer seulement les jeux de limites actifs de chaque ouvrage',
     'iidm.import.xml.with-automation-systems': 'Importer les automates',
     'iidm.import.xml.with-automation-systems.desc': "Permet d'importer les automates dans le réseau",
 
