@@ -8,6 +8,7 @@
 import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { Row } from '@tanstack/react-table';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationNameAndDescription } from '../../../services';
@@ -15,15 +16,16 @@ import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 
 export interface DescriptionCellProps {
-    data: ComposedModificationMetadata;
+    row: Row<ComposedModificationMetadata>;
     isDisabled?: boolean;
 }
 
 export function DescriptionCell(props: DescriptionCellProps) {
-    const { data, isDisabled = false } = props;
+    const { row, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
+    const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
     const empty = !description;

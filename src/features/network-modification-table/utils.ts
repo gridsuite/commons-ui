@@ -6,12 +6,14 @@
  */
 
 import { Dispatch, SetStateAction } from 'react';
+import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     ModificationReferenceInfos,
+    NetworkModificationActivations,
     NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
@@ -19,6 +21,66 @@ import {
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
+/**
+ * A modification is activated unless an entry says otherwise.
+ */
+export function isActivated(activations: NetworkModificationActivations, modificationUuid: UUID) {
+    return activations[modificationUuid] ?? true;
+}
+
+// Indexes by uuid the global activation every modification of the tree carries, sub modifications included.
+export function collectActivations(modifications: ComposedModificationMetadata[]): NetworkModificationActivations {
+    return modifications.reduce(
+        (activations, modification) => ({
+            ...activations,
+            [modification.uuid]: modification.activated,
+            ...collectActivations(modification.subModifications),
+        }),
+        {}
+    );
+}
+
+// Override server activation when pending one exists.
+export function mergeActivations(
+    serverActivations: NetworkModificationActivations,
+    pendingActivations: NetworkModificationActivations
+): NetworkModificationActivations {
+    return Object.keys(pendingActivations).length === 0
+        ? serverActivations
+        : { ...serverActivations, ...pendingActivations };
+}
+
+/**
+ * Keeps the pending activations the server has yet to report, dropping the ones the fetched modifications now
+ * carry: clearing them on every refresh would flick the switch back to the old value until the change makes it
+ * back. Returns the map it was given when nothing was dropped, to spare a render.
+ */
+export function keepStillPendingActivations(
+    pendingActivations: NetworkModificationActivations,
+    serverActivations: NetworkModificationActivations
+): NetworkModificationActivations {
+    const pendingUuids = Object.keys(pendingActivations);
+    if (pendingUuids.length === 0) {
+        return pendingActivations;
+    }
+    const stillPending = Object.entries(pendingActivations).filter(
+        ([uuid, activated]) => isActivated(serverActivations, uuid as UUID) !== activated
+    );
+    return stillPending.length === pendingUuids.length ? pendingActivations : Object.fromEntries(stillPending);
+}
+
+/**
+ * A modification is applicable on a root network unless its applicability for it is explicitly false:
+ * a root network without an entry is applicable.
+ */
+export function isApplicableOn(
+    applicabilities: NetworkModificationApplicabilities,
+    modificationUuid: UUID,
+    rootNetworkUuid: UUID
+) {
+    return applicabilities[modificationUuid]?.[rootNetworkUuid] ?? true;
+}
 
 // Convert applicability by tag to applicability by root network id.
 function toApplicabilityByRootNetworkUuid(
@@ -57,6 +119,87 @@ export function collectApplicabilities(
 ): NetworkModificationApplicabilities {
     const uuidByTag = new Map(rootNetworks.map((rootNetwork) => [rootNetwork.tag, rootNetwork.rootNetworkUuid]));
     return collectApplicabilitiesByUuid(modifications, uuidByTag);
+}
+
+// Override server applicability when pending one exists.
+export function mergeApplicabilities(
+    serverApplicabilities: NetworkModificationApplicabilities,
+    pendingApplicabilities: NetworkModificationApplicabilities
+): NetworkModificationApplicabilities {
+    if (Object.keys(pendingApplicabilities).length === 0) {
+        return serverApplicabilities;
+    }
+    return Object.entries(pendingApplicabilities).reduce(
+        (merged, [uuid, pendingByRootNetwork]) => ({
+            ...merged,
+            [uuid]: { ...merged[uuid as UUID], ...pendingByRootNetwork },
+        }),
+        serverApplicabilities
+    );
+}
+
+/**
+ * Keeps the pending applicabilities the server has yet to report, the way {@link keepStillPendingActivations}
+ * does for the activations.
+ */
+export function keepStillPendingApplicabilities(
+    pendingApplicabilities: NetworkModificationApplicabilities,
+    serverApplicabilities: NetworkModificationApplicabilities
+): NetworkModificationApplicabilities {
+    const pendingUuids = Object.keys(pendingApplicabilities);
+    if (pendingUuids.length === 0) {
+        return pendingApplicabilities;
+    }
+    let hasChanged = false;
+    const stillPending: NetworkModificationApplicabilities = {};
+    pendingUuids.forEach((modificationUuid) => {
+        const byRootNetwork = Object.entries(pendingApplicabilities[modificationUuid as UUID]).filter(
+            ([rootNetworkUuid, applicable]) =>
+                isApplicableOn(serverApplicabilities, modificationUuid as UUID, rootNetworkUuid as UUID) !== applicable
+        );
+        hasChanged ||= byRootNetwork.length !== Object.keys(pendingApplicabilities[modificationUuid as UUID]).length;
+        if (byRootNetwork.length > 0) {
+            stillPending[modificationUuid as UUID] = Object.fromEntries(byRootNetwork);
+        }
+    });
+    return hasChanged ? stillPending : pendingApplicabilities;
+}
+
+/**
+ * Whether a parent composite of the row is globally deactivated.
+ */
+export function isDeactivatedByAncestor(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations
+) {
+    return row.getParentRows().some((ancestor) => !isActivated(activations, ancestor.original.uuid));
+}
+
+/**
+ * Whether the modification is deactivated, by its own activation or by that of a composite holding it, so that
+ * it applies nowhere and has no per root network choice left to make.
+ */
+export function isDeactivatedItselfOrByAncestor(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations
+) {
+    return !isActivated(activations, row.original.uuid) || isDeactivatedByAncestor(row, activations);
+}
+
+/**
+ * Whether the modification effectively applies on the root network: it has to want it, and so does every
+ * composite it is nested in, both globally and for that root network.
+ */
+export function isAppliedOn(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations,
+    applicabilities: NetworkModificationApplicabilities,
+    rootNetworkUuid: UUID
+) {
+    return [row, ...row.getParentRows()].every(
+        ({ original }) =>
+            isActivated(activations, original.uuid) && isApplicableOn(applicabilities, original.uuid, rootNetworkUuid)
+    );
 }
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
