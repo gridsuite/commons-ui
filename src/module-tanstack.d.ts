@@ -8,7 +8,12 @@
 import { Dispatch, RefObject, SetStateAction } from 'react';
 import { SxProps, Theme } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import { ComposedModificationMetadata, NetworkModificationApplicabilities, RootNetworkRowInfo } from './utils';
+import {
+    ComposedModificationMetadata,
+    NetworkModificationActivations,
+    NetworkModificationApplicabilities,
+    RootNetworkRowInfo,
+} from './utils';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
@@ -22,8 +27,10 @@ declare module '@tanstack/react-table' {
         };
         modifications: {
             count?: number;
+            activations?: NetworkModificationActivations;
+            setPendingActivations?: Dispatch<SetStateAction<NetworkModificationActivations>>;
             applicabilities?: NetworkModificationApplicabilities;
-            setApplicabilities?: Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
+            setPendingApplicabilities?: Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
         };
         interaction: {
             lastClickedRowId: RefObject<string | null>;

@@ -16,6 +16,7 @@ export * from './battery';
 export * from './shunt-compensator';
 export * from './hvdcLine';
 export * from './line';
+export * from './lineSplitWithVoltageLevel';
 export * from './twoWindingsTransformer';
 export * from './static-var-compensator';
 export * from './tabular';
