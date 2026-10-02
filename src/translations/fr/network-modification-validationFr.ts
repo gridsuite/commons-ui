@@ -16,6 +16,7 @@ import {
     TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
     VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    VARIATION_LIST_EMPTY,
     WRONG_REF_OR_VALUE_ERROR,
 } from '../../utils';
 
@@ -50,4 +51,7 @@ export const networkModificationValidationFr = {
     TemporaryLimitDurationUnicityError: 'Les tempos des limites temporaires doivent être uniques dans la table',
     LimitSetApplicabilityError: "2 jeux de limites de même nom doivent s'appliquer sur des côtés différents.",
     permanentCurrentLimitMustBeGreaterThanZero: 'La valeur IST doit être supérieure à 0',
+    [VARIATION_LIST_EMPTY]: 'La liste des variations est vide',
+    AllExplicitNamingFiltersError:
+        'Tous les types de filtres doivent être par nommage lorsque le mode de variation est empilement ou ventilation',
 };

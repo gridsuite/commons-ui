@@ -20,3 +20,4 @@ export * from './reactiveLimits';
 export * from './regulatingTerminal';
 export * from './voltageRegulation';
 export * from './currentLimits';
+export * from './scaling';
