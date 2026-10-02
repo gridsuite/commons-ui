@@ -603,4 +603,22 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
+
+    Variations: 'Variations',
+    CreateVariation: 'Ajouter Variation',
+    VariationMode: 'Mode de variation',
+    ReactiveVariationMode: 'Mode variation du réactif',
+    DeltaP: 'Δ P',
+    TargetPText: 'P cible',
+    ProportionalToPMax: 'Proportionnel à Pmax',
+    StackingUp: 'Empilement',
+    RegularDistribution: 'Équirépartition',
+    TanPhiFixed: 'tan(φ) fixe',
+    ConstantQWithoutUnit: 'Q constant',
+
+    GeneratorScaling: 'Variation plan de production',
+    GeneratorScalingError: 'Erreur lors de la création de la variation du plan de production',
+
+    LoadScaling: 'Variation plan de consommation',
+    LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
 };
