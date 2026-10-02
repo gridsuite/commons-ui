@@ -12,15 +12,7 @@ import LogTable from './log-table/log-table';
 import { mapReportsTree } from '../report-treeview/report-tree.mapper';
 import { VirtualizedTreeview } from '../report-treeview/virtualized-treeview';
 import { ReportItem } from '../report-treeview/treeview-item';
-import {
-    ComputingAndNetworkModificationType,
-    Log,
-    Report,
-    ReportTree,
-    ReportType,
-    SelectedReportLog,
-    SeverityLevel,
-} from '../report.type';
+import { LogType, Log, Report, ReportTree, ReportType, SelectedReportLog, SeverityLevel } from '../report.type';
 import { GLOBAL_REPORT_NODE_LABEL } from '../report.constant';
 import { MuiStyles } from '../../../../utils';
 
@@ -34,7 +26,7 @@ const styles = {
 
 export type ReportViewerProps = {
     report: Report;
-    reportType: ComputingAndNetworkModificationType;
+    reportType: LogType;
     severities: SeverityLevel[] | undefined;
     resetFilters?: boolean;
 };
