@@ -16,7 +16,7 @@ import {
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
-import { isCompositeModification, toMessageValues } from '../utils';
+import { isCompositeModification, isReferenceModification, toMessageValues } from '../utils';
 import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
 
@@ -48,6 +48,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
+    const isReferenced = isReferenceModification(row.original);
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -64,7 +65,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     // Composite name as carried by the server data.
     const savedCompositeName = useMemo(() => {
-        if (!isComposite) {
+        if (!isComposite && !isReferenced) {
             return '';
         }
         try {
@@ -72,7 +73,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         } catch {
             return '';
         }
-    }, [isComposite, row.original.messageValues]);
+    }, [isComposite, isReferenced, row.original.messageValues]);
 
     // Single source of truth for the name: optimistic on rename, re-synced from the server.
     const [compositeName, setCompositeName] = useState(savedCompositeName);
@@ -197,19 +198,20 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps = isComposite
-        ? {
-              ref: labelRef,
-              onClick: handleLabelClick,
-              sx: {
-                  cursor: 'text',
-                  '&:hover': {
-                      textDecoration: 'underline dotted',
-                      textDecorationColor: theme.palette.text.secondary,
+    const compositeReadModeProps =
+        isComposite || isReferenced
+            ? {
+                  ref: labelRef,
+                  onClick: handleLabelClick,
+                  sx: {
+                      cursor: 'text',
+                      '&:hover': {
+                          textDecoration: 'underline dotted',
+                          textDecorationColor: theme.palette.text.secondary,
+                      },
                   },
-              },
-          }
-        : {};
+              }
+            : {};
     return (
         <Box
             sx={mergeSx(

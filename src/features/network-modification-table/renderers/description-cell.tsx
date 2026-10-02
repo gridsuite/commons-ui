@@ -9,22 +9,19 @@ import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
-import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationMetadata } from '../../../services';
+import { setModificationNameAndDescription } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     isDisabled?: boolean;
 }
 
-export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
-    const { row, studyUuid, currentNodeId, isDisabled = false } = props;
+export function DescriptionCell(props: DescriptionCellProps) {
+    const { row, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -36,14 +33,14 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {
                 setIsLoading(false);
             });
         },
-        [studyUuid, currentNodeId, modificationUuid, data.type]
+        [modificationUuid, data.type]
     );
 
     const handleDescDialogClose = useCallback(() => {
