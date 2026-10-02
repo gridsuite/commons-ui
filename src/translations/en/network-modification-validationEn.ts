@@ -16,6 +16,7 @@ import {
     TARGET_DEADBAND_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR,
     VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR,
+    VARIATION_LIST_EMPTY,
     WRONG_REF_OR_VALUE_ERROR,
 } from '../../utils';
 
@@ -47,4 +48,7 @@ export const networkModificationValidationEn = {
     TemporaryLimitDurationUnicityError: 'Temporary limit acceptable durations must be unique in the table',
     LimitSetApplicabilityError: '2 limit sets with the same name must have different application sides.',
     permanentCurrentLimitMustBeGreaterThanZero: 'The permanent current limit value must be greater than 0',
+    [VARIATION_LIST_EMPTY]: 'Variations list is empty',
+    AllExplicitNamingFiltersError:
+        'All filters types have to be Explicit Naming when variation mode is stacking up or ventilation',
 };

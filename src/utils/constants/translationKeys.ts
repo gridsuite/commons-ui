@@ -42,3 +42,5 @@ export const NUMERIC_VALUE_OR_EMPTY_FIELD = 'NumericValueOrEmptyField';
 export const WRONG_REF_OR_VALUE_ERROR = 'WrongRefOrValueError';
 export const VALUE_MUST_BE_NUMERIC_WHEN_PERCENTAGE_ERROR = 'ValueMustBeNumericWhenPercentageError';
 export const VALUE_MUST_BE_REF_WHEN_PERCENTAGE_ERROR = 'ValueMustBeRefWhenPercentageError';
+
+export const VARIATION_LIST_EMPTY = 'EmptyList.variations';
