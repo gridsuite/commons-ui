@@ -11,7 +11,7 @@ import { Accordion, AccordionDetails, AccordionSummary, Box, Typography } from '
 import { ExpandCircleDown, ExpandMore } from '@mui/icons-material';
 import { type MuiStyles } from '../../../../utils';
 
-type AccordionIllustrationProps = {
+export type AccordionIllustrationProps = {
     state: boolean;
     onClick: (show: boolean) => void;
 };
