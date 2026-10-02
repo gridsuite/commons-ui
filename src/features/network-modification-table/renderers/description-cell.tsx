@@ -17,8 +17,6 @@ import { createEditDescriptionStyle } from '../network-modification-table-styles
 
 export interface DescriptionCellProps {
     data: ComposedModificationMetadata;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     isDisabled?: boolean;
 }
 

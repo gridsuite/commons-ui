@@ -66,14 +66,7 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    return (
-        <DescriptionCell
-            data={row.original}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
-            isDisabled={meta?.status.isDisabled}
-        />
-    );
+    return <DescriptionCell data={row.original} isDisabled={meta?.status.isDisabled} />;
 }
 
 export function ReferenceCellRenderer({ row, table }: CCtx) {
