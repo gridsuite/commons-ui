@@ -158,11 +158,11 @@ export function setModificationMetadata(
 }
 
 export function setModificationNameAndDescription(
-    studyUuid: UUID | null,
-    nodeUuid: UUID | undefined,
     modificationUuid: UUID | undefined,
     metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
 ): Promise<Response> {
+    console.log('modificationUuid', modificationUuid);
+    console.log('metadata', metadata);
     if (!modificationUuid) {
         return Promise.reject(new Error('modificationUuid is required'));
     }

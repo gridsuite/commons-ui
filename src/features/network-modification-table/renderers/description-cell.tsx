@@ -28,14 +28,13 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
     const modificationUuid = data.uuid;
-    console.log('test', data);
     const { description } = data;
     const empty = !description;
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
+            return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {

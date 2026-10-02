@@ -17,7 +17,7 @@ import {
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
-import { isCompositeModification, toMessageValues } from '../utils';
+import { isCompositeModification, isReferenceModification, toMessageValues } from '../utils';
 import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
 
@@ -49,6 +49,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
+    const isReferenced = isReferenceModification(row.original);
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -65,7 +66,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     // Composite name as carried by the server data.
     const savedCompositeName = useMemo(() => {
-        if (!isComposite) {
+        if (!isComposite && !isReferenced) {
             return '';
         }
         try {
@@ -198,7 +199,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps = isComposite
+    const compositeReadModeProps = isComposite || isReferenced
         ? {
               ref: labelRef,
               onClick: handleLabelClick,
