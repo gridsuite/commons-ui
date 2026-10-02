@@ -285,4 +285,9 @@ export enum FieldConstants {
     LEFT_SIDE_PERCENTAGE = 'leftSidePercentage',
     RIGHT_SIDE_PERCENTAGE = 'rightSidePercentage',
     SLIDER_PERCENTAGE = 'sliderPercentage',
+    LINE_TO_ATTACH_TO_1_ID = 'lineToAttachTo1Id',
+    LINE_TO_ATTACH_TO_2_ID = 'lineToAttachTo2Id',
+    ATTACHED_LINE_ID = 'attachedLineId',
+    REPLACING_LINE_1_ID = 'replacingLine1Id',
+    REPLACING_LINE_1_NAME = 'replacingLine1Name',
 }
