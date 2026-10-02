@@ -12,6 +12,11 @@ import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousVa
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
+const readOnlyAutocompleteProps = {
+    readOnly: true, // seems logical
+    disableClearable: true, // remove clear button
+    popupIcon: null, // remove icon for the popup Menu
+};
 export interface AutocompleteInputProps extends Omit<
     AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
     // we already defined them in our custom Autocomplete
@@ -100,9 +105,7 @@ export function AutocompleteInput({
                 },
             })}
             options={options}
-            readOnly={readOnly}
-            disableClearable={readOnly}
-            popupIcon={readOnly ? null : undefined}
+            {...(readOnly ? readOnlyAutocompleteProps : {})}
             renderInput={(params) => (
                 <TextField
                     {...(label && {
