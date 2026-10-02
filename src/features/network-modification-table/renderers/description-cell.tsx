@@ -8,7 +8,6 @@
 import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationNameAndDescription } from '../../../services';
