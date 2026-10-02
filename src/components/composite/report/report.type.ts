@@ -10,8 +10,7 @@ import { ComputingType } from '../../../utils';
 
 export type SeverityLevel = 'UNKNOWN' | 'TRACE' | 'DEBUG' | 'DETAIL' | 'INFO' | 'WARN' | 'ERROR' | 'FATAL';
 
-export type ComputingAndNetworkModificationType =
-    ComputingType | typeof NETWORK_MODIFICATION | typeof PROCESS_EXECUTION;
+export type LogType = ComputingType | typeof NETWORK_MODIFICATION | typeof PROCESS_EXECUTION;
 
 export type ReportSeverity = {
     name: SeverityLevel;

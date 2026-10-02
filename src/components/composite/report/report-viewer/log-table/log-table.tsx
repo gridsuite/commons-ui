@@ -21,7 +21,7 @@ import {
 import { VisibilityOff as VisibilityOffIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import { getDefaultSeverityFilter, REPORT_SEVERITY } from '../../report-severity';
 import { QuickSearch } from '../../QuickSearch';
-import { ComputingAndNetworkModificationType, Log, SelectedReportLog, SeverityLevel } from '../../report.type';
+import { LogType, Log, SelectedReportLog, SeverityLevel } from '../../report.type';
 import { reportStyles } from '../../report.styles';
 import { useReportFetcherContext, useReportFilterContext } from '../context/report-viewer-context';
 import { MuiStyles, SxStyle } from '../../../../../utils';
@@ -98,7 +98,7 @@ const PAGE_OPTIONS = [15, 30, 50, 100];
 
 export type LogTableProps = {
     selectedReport: SelectedReportLog;
-    reportType: ComputingAndNetworkModificationType;
+    reportType: LogType;
     severities: SeverityLevel[] | undefined;
     onRowClick: (data: Log | undefined) => void;
     onFiltersChanged: () => void;

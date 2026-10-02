@@ -10,8 +10,6 @@ export const tableFr = {
     'export/undefined': 'Non défini',
     Logs: 'Logs',
     muiTablePaginationLabelRowsPerPage: 'Lignes par page : ',
-    muiTablePaginationLabelRowsPerPageAllBusesSCA: 'Défauts par page : ',
-    muiTablePaginationLabelRowsPerPageOneBusSCA: 'Départs par page : ',
     muiTablePaginationOfLabel: 'sur',
     muiTablePaginationPrevious: 'Aller à la page précédente',
     muiTablePaginationNext: 'Aller à la page suivante',
