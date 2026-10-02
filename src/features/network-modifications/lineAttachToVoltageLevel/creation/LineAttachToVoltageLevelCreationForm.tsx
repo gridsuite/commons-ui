@@ -61,15 +61,15 @@ export function LineAttachToVoltageLevelCreationForm({
     lineOptions = [],
     isUpdate = false,
     newVoltageLevel = null,
-    onNewVoltageLevelCreated = () => Promise.reject(new Error('onNewVoltageLevelCreated is not provided')),
+    onNewVoltageLevelCreated = () => new Promise(() => {}),
     NewVoltageLevelPane,
     attachmentPoint = null,
-    onAttachmentPointModified = () => Promise.reject(new Error('onAttachmentPointModified is not provided')),
+    onAttachmentPointModified = () => new Promise(() => {}),
     onAttachmentPointIdChanged,
     onAttachmentPointNameChanged,
     AttachmentPointPane,
     attachmentLine = null,
-    onAttachedLineCreated = () => Promise.reject(new Error('onAttachedLineCreated is not provided')),
+    onAttachedLineCreated = () => new Promise(() => {}),
     AttachedLinePane,
 }: Readonly<LineAttachToVoltageLevelCreationFormProps>) {
     const [voltageLevelDialogOpen, setVoltageLevelDialogOpen] = useState(false);
