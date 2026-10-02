@@ -15,14 +15,13 @@ import { Option } from '../../../../utils';
 export interface AutocompleteInputProps extends Omit<
     AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
     // we already defined them in our custom Autocomplete
-    'value' | 'onChange' | 'renderInput'
+    'value' | 'onChange' | 'renderInput' | 'readOnly'
 > {
     name: string;
     options: Option[];
     label?: string;
     outputTransform?: (value: Option | null) => Option | null;
     inputTransform?: (value: Option | null) => Option | null;
-    readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
@@ -30,6 +29,7 @@ export interface AutocompleteInputProps extends Omit<
     disabledTooltip?: boolean;
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
     dataTestId?: string;
+    selectMode?: boolean;
 }
 
 export function AutocompleteInput({
@@ -38,7 +38,6 @@ export function AutocompleteInput({
     options,
     outputTransform = identity, // transform materialUi input value before sending it to react hook form, mostly used to deal with select fields that need to return a string
     inputTransform = identity, // transform react hook form value before sending it to materialUi input, mostly used to deal with select fields that need to return a string
-    readOnly = false,
     previousValue,
     allowNewValue,
     onChangeCallback, // method called when input value is changing
@@ -46,16 +45,10 @@ export function AutocompleteInput({
     disabledTooltip,
     onCheckNewValue,
     dataTestId,
+    selectMode = false, // if we need to use Autocomplete as a Select
     ...props
 }: AutocompleteInputProps) {
-    const {
-        validationSchema,
-        getValues,
-        removeOptional,
-        isNodeBuilt,
-        isUpdate,
-        readOnly: isFormReadOnly,
-    } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate, readOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -90,7 +83,6 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
-    const isReadOnly = readOnly || isFormReadOnly;
     const hasValue = selectedValues !== null;
 
     return (
@@ -108,9 +100,9 @@ export function AutocompleteInput({
                 },
             })}
             options={options}
-            readOnly={isReadOnly}
-            disableClearable={isReadOnly}
-            popupIcon={isReadOnly ? null : undefined}
+            readOnly={readOnly}
+            disableClearable={readOnly}
+            popupIcon={readOnly ? null : undefined}
             renderInput={(params) => (
                 <TextField
                     {...(label && {
@@ -141,11 +133,17 @@ export function AutocompleteInput({
                         input: {
                             ...formProps?.slotProps?.input,
                             ...params.slotProps.input,
-                            readOnly: isReadOnly,
-                            onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                            onMouseDown: readOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                        },
+                        htmlInput: {
+                            ...formProps?.slotProps?.htmlInput,
+                            ...params.slotProps.htmlInput,
+                            // forced to set readOnly here on htmlInput instead of input otherwise
+                            // selectMode=true allows to type characters in the input
+                            readOnly: readOnly || selectMode,
                         },
                         inputLabel: {
-                            shrink: isReadOnly ? hasValue : undefined,
+                            shrink: readOnly ? hasValue : undefined,
                         },
                     }}
                 />

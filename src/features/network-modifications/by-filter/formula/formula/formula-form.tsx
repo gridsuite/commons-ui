@@ -85,7 +85,7 @@ function FormulaForm({ name, index }: FormulaProps) {
         <AutocompleteInput
             name={`${name}.${index}.${OPERATOR}`}
             options={OPERATOR_OPTIONS}
-            readOnly
+            selectMode
             label="Operator"
             size="small"
             inputTransform={inputTransform}
