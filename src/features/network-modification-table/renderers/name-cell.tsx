@@ -11,7 +11,6 @@ import { Box, IconButton, InputBase, useTheme } from '@mui/material';
 import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
 import { CustomTooltip } from '../../../components';
 import {
-    createModificationNameCellStyle,
     createNameCellLabelBoxSx,
     createNameCellRootStyle,
     networkModificationTableStyles,
@@ -280,7 +279,6 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
                                 {...renamableCompositeModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
-                                    createModificationNameCellStyle(row.original.activated),
                                     renamableCompositeModeProps.sx
                                 )}
                             >

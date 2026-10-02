@@ -17,7 +17,7 @@ import { SelectHeaderCell } from './select-header-cell';
 import { DescriptionCell } from './description-cell';
 import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
-import { createRootNetworkChipCellSx, networkModificationTableStyles } from '../network-modification-table-styles';
+import { networkModificationTableStyles, rootNetworkChipCellSx } from '../network-modification-table-styles';
 import { isModificationEditLocked, isReferenceModification } from '../utils';
 import { ComposedModificationMetadata } from '../../../utils';
 import { ReferenceLinkCell } from './reference-link-cell';
@@ -75,7 +75,7 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
     return (
         <DescriptionCell
-            data={row.original}
+            row={row}
             studyUuid={meta?.context.studyUuid ?? null}
             currentNodeId={meta?.context.currentNodeId}
             isDisabled={meta?.status.isDisabled}
@@ -88,18 +88,23 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
     if (isReferenceModification(row.original)) {
-        return <ReferenceLinkCell data={row.original} disabled={meta?.status.isDisabled} />;
+        return <ReferenceLinkCell row={row} disabled={meta?.status.isDisabled} />;
     }
     return null;
 }
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
+    if (!meta?.modifications.activations || !meta.modifications.setPendingActivations) {
+        return null;
+    }
     return (
         <SwitchCell
-            data={row.original}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
-            isDisabled={meta?.status.isDisabled || isModificationEditLocked(row.original)}
+            row={row}
+            studyUuid={meta.context.studyUuid ?? null}
+            currentNodeId={meta.context.currentNodeId}
+            activations={meta.modifications.activations}
+            setPendingActivations={meta.modifications.setPendingActivations}
+            isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
         />
     );
 }
@@ -130,19 +135,25 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
     const { meta } = table.options;
     // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
     const rootNetwork = meta?.context.rootNetworks?.find((r) => r.rootNetworkUuid === column.id);
-    if (!rootNetwork || !meta?.modifications.applicabilities || !meta.modifications.setApplicabilities) {
+    if (
+        !rootNetwork ||
+        !meta?.modifications.activations ||
+        !meta.modifications.applicabilities ||
+        !meta.modifications.setPendingApplicabilities
+    ) {
         return null;
     }
     return (
-        <Box sx={createRootNetworkChipCellSx(row.original.activated)}>
+        <Box sx={rootNetworkChipCellSx}>
             <RootNetworkChipCell
-                data={row.original}
-                studyUuid={meta?.context.studyUuid ?? null}
-                currentNodeId={meta?.context.currentNodeId}
+                row={row}
+                studyUuid={meta.context.studyUuid ?? null}
+                currentNodeId={meta.context.currentNodeId}
                 rootNetwork={rootNetwork}
+                activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}
-                setApplicabilities={meta.modifications.setApplicabilities}
-                isDisabled={meta?.status.isDisabled || isModificationEditLocked(row.original)}
+                setPendingApplicabilities={meta.modifications.setPendingApplicabilities}
+                isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
             />
         </Box>
     );
