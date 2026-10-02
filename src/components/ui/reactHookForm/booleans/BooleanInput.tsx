@@ -9,6 +9,8 @@ import { type ChangeEvent, type JSX, useCallback } from 'react';
 import { useIntl } from 'react-intl';
 import { Checkbox, FormControlLabel, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useCustomFormContext } from '../provider';
+import { readOnlyFormControlLabelStyle } from '../styles/styles';
 
 type InputTypes = typeof Switch | typeof Checkbox;
 type InputProps<TInput> = TInput extends (props: infer Props) => JSX.Element ? Props : never;
@@ -29,10 +31,12 @@ export function BooleanInput<TInput extends InputTypes>({
     dataTestId,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
-    const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
+    const { onChange, slotProps, disabled, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
+
+    const { readOnly } = useCustomFormContext();
 
     const intl = useIntl();
 
@@ -51,13 +55,22 @@ export function BooleanInput<TInput extends InputTypes>({
             inputRef={ref}
             slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
             data-testid={dataTestId}
+            disabled={readOnly || disabled}
             {...(otherFormProps as any)}
             {...props}
         />
     );
 
     if (label) {
-        return <FormControlLabel control={CustomInput} label={intl.formatMessage({ id: label })} />;
+        return (
+            <FormControlLabel
+                control={CustomInput}
+                label={intl.formatMessage({ id: label })}
+                // must restore label color and opacity otherwise disabled Input is detected
+                // by FormControlLabel.
+                sx={readOnly ? readOnlyFormControlLabelStyle : undefined}
+            />
+        );
     }
 
     return CustomInput;

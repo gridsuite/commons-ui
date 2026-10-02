@@ -53,8 +53,7 @@ export function TapChangerSteps({
 }: Readonly<TapChangerStepsProps>) {
     const intl = useIntl();
 
-    const { trigger, getValues, setValue, clearErrors } = useFormContext();
-    const { isNodeBuilt } = useCustomFormContext();
+    const { trigger, getValues, setValue, clearErrors, isNodeBuilt, readOnly } = useCustomFormContext();
 
     const useFieldArrayOutput = useFieldArray({
         name: `${tapChanger}.${FieldConstants.STEPS}`,
@@ -263,7 +262,7 @@ export function TapChangerSteps({
     );
 
     const completedColumnsDefinition = columnsDefinition.map((column, index) =>
-        index === columnsDefinition.length - 1 ? { ...column, extra: createRuleButton } : column
+        index === columnsDefinition.length - 1 ? { ...column, extra: !readOnly ? createRuleButton : undefined } : column
     );
 
     const getTapPreviousValue = useCallback(

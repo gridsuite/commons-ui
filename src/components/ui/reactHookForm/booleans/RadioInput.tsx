@@ -9,6 +9,8 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroup
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { FieldLabel } from '../utils/FieldLabel';
+import { useCustomFormContext } from '../provider';
+import { readOnlyFormControlLabelStyle } from '../styles/styles';
 
 type RadioOptions = Array<{
     id: string;
@@ -28,6 +30,7 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
     const {
         field: { onChange, value },
     } = useController({ name, defaultValue: '' });
+    const { readOnly } = useCustomFormContext();
 
     return (
         <FormControl>
@@ -42,11 +45,14 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
             <RadioGroup row aria-labelledby={id ?? label} value={value ?? ''} onChange={onChange} {...formProps}>
                 {options.map((option) => (
                     <FormControlLabel
-                        control={<Radio />}
+                        control={<Radio disabled={readOnly} />}
                         value={option.id}
                         key={option.id}
                         label={<FieldLabel label={option.label} />}
                         disabled={option.disabled}
+                        // must restore label color and opacity otherwise disabled Input is detected
+                        // by FormControlLabel.
+                        sx={readOnly ? readOnlyFormControlLabelStyle : undefined}
                     />
                 ))}
             </RadioGroup>

@@ -10,8 +10,6 @@ import { LineDialogTab } from './line.utils';
 import { LineDialogHeader, LineDialogHeaderProps } from './LineDialogHeader';
 import { LineDialogTabs } from './LineDialogTabs';
 import { LineDialogTabsContent, LineDialogTabsContentProps } from './LineDialogTabsContent';
-import { useCustomFormContext } from '../../../../components';
-import { ReadOnlyBoundary } from '../../../../components/ui/reactHookForm/provider/ReadOnlyBoundary';
 import { UseTabsReturn } from '../../../../hooks';
 import { tabbedFormStyles } from '../../common';
 
@@ -30,7 +28,6 @@ export function LineForm({
     useTabsReturn,
 }: Readonly<LineFormProps>) {
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
-    const { readOnly } = useCustomFormContext();
 
     return (
         <Stack spacing={2} sx={tabbedFormStyles.container}>
@@ -43,17 +40,15 @@ export function LineForm({
                 withConnectivity={withConnectivity}
             />
             <Box sx={tabbedFormStyles.scrollableContent}>
-                <ReadOnlyBoundary readOnly={readOnly}>
-                    <LineDialogTabsContent
-                        tabIndex={selectedTab}
-                        lineToModify={lineToModify}
-                        voltageLevelOptions={voltageLevelOptions}
-                        fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
-                        PositionDiagramPane={PositionDiagramPane}
-                        isModification={isModification}
-                        withConnectivity={withConnectivity}
-                    />
-                </ReadOnlyBoundary>
+                <LineDialogTabsContent
+                    tabIndex={selectedTab}
+                    lineToModify={lineToModify}
+                    voltageLevelOptions={voltageLevelOptions}
+                    fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+                    PositionDiagramPane={PositionDiagramPane}
+                    isModification={isModification}
+                    withConnectivity={withConnectivity}
+                />
             </Box>
         </Stack>
     );

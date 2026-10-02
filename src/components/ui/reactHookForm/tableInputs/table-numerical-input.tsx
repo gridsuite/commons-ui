@@ -6,11 +6,12 @@
  */
 
 import { IconButton, InputAdornment, InputBaseComponentProps, StandardTextFieldProps, TextField } from '@mui/material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
 import { genHelperError } from '../utils';
+import { useCustomFormContext } from '../provider';
 
 export interface TableNumericalInputProps extends StandardTextFieldProps {
     name: string;
@@ -33,7 +34,7 @@ export function TableNumericalInput({
     hideErrorMessage,
     ...props
 }: Readonly<TableNumericalInputProps>) {
-    const { trigger } = useFormContext();
+    const { trigger, readOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -89,6 +90,8 @@ export function TableNumericalInput({
     };
 
     const { slotProps, ...otherProps } = props;
+    const hasValue =
+        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
 
     return (
         <TextField
@@ -130,6 +133,11 @@ export function TableNumericalInput({
                         lang: 'en-US', // to have '.' as decimal separator
                         ...inputProps,
                     },
+                    readOnly,
+                    onMouseDown: readOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                },
+                inputLabel: {
+                    shrink: readOnly ? hasValue : undefined,
                 },
                 ...slotProps,
             }}
