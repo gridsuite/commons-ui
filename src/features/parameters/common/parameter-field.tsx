@@ -10,7 +10,7 @@ import { Info } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
-import { ParameterDifference, ParameterType } from '../../../utils/types/parameters.type';
+import { ParameterDifference, ParameterType, ParameterValue } from '../../../utils/types/parameters.type';
 import {
     AutocompleteInput,
     CountriesInput,
@@ -35,16 +35,11 @@ interface ParameterFieldProps {
     sx?: SxProps;
 }
 
-function formatDefaultValue(value: unknown): string {
+function formatDefaultValue(value: ParameterValue): string {
     if (Array.isArray(value)) {
         return value.join(', ');
     }
-
-    if (typeof value === 'object' && value !== null) {
-        return JSON.stringify(value);
-    }
-
-    return String(value);
+    return value.toString();
 }
 
 export function ParameterField({
