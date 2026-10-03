@@ -6,10 +6,11 @@
  */
 
 import { Chip, Grid, SxProps, Typography } from '@mui/material';
+import { Info } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
-import { ParameterType } from '../../../utils/types/parameters.type';
+import { ParameterDifference, ParameterType, ParameterValue } from '../../../utils/types/parameters.type';
 import {
     AutocompleteInput,
     CountriesInput,
@@ -30,7 +31,15 @@ interface ParameterFieldProps {
     inputLabel?: string;
     description?: string;
     possibleValues?: { id: string; label: string }[] | string[];
+    parameterDifference?: ParameterDifference;
     sx?: SxProps;
+}
+
+function formatDefaultValue(value: ParameterValue): string {
+    if (Array.isArray(value)) {
+        return value.join(', ');
+    }
+    return value.toString();
 }
 
 export function ParameterField({
@@ -41,6 +50,7 @@ export function ParameterField({
     inputLabel,
     description,
     possibleValues,
+    parameterDifference,
     sx,
 }: Readonly<ParameterFieldProps>) {
     const renderField = () => {
@@ -116,11 +126,39 @@ export function ParameterField({
             }}
         >
             <Grid size={LABEL_GRID_SIZE}>
-                <CustomTooltip title={description} key={name}>
-                    <Typography sx={parametersStyles.parameterName}>
-                        {label ? <FormattedMessage id={label} /> : name}
-                    </Typography>
-                </CustomTooltip>
+                <Typography
+                    component="div"
+                    sx={{
+                        ...parametersStyles.parameterName,
+                        display: 'flex',
+                        alignItems: 'center',
+                    }}
+                >
+                    <CustomTooltip title={description} key={name}>
+                        <span>{label ? <FormattedMessage id={label} /> : name}</span>
+                    </CustomTooltip>
+                    {parameterDifference && (
+                        <CustomTooltip
+                            title={
+                                <FormattedMessage
+                                    id="defaultValue"
+                                    values={{
+                                        value: formatDefaultValue(parameterDifference.defaultValue),
+                                    }}
+                                />
+                            }
+                        >
+                            <Info
+                                fontSize="small"
+                                color="info"
+                                sx={{
+                                    ml: 0.5,
+                                }}
+                                data-testid={`${id}.${name}.default-value-info`}
+                            />
+                        </CustomTooltip>
+                    )}
+                </Typography>
             </Grid>
             <Grid container size={INPUT_GRID_SIZE} sx={parametersStyles.controlItem}>
                 {renderField()}

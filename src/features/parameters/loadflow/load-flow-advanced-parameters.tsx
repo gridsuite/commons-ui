@@ -18,7 +18,7 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
+import { ParameterDifference, ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { ADVANCED_PARAMETERS } from '../common';
 
 export const advancedParams: SpecificParameterInfos[] = [
@@ -83,11 +83,20 @@ export const advancedParams: SpecificParameterInfos[] = [
     },
 ];
 
-function LoadFlowAdvancedParameters() {
+interface LoadFlowAdvancedParametersProps {
+    parametersDifferences?: Record<string, ParameterDifference>;
+}
+
+function LoadFlowAdvancedParameters({ parametersDifferences }: Readonly<LoadFlowAdvancedParametersProps>) {
     return (
         <>
             {advancedParams.map((item) => (
-                <ParameterField id={ADVANCED_PARAMETERS} {...item} key={item.name} />
+                <ParameterField
+                    id={ADVANCED_PARAMETERS}
+                    {...item}
+                    key={item.name}
+                    parameterDifference={parametersDifferences?.[item.name]}
+                />
             ))}
         </>
     );
