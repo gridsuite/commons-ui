@@ -139,7 +139,7 @@ export const useModificationsDragAndDrop = ({
             if (sourceIsCompositeOrReference) {
                 const targetDepth = computeTargetDepth(sourceRow, targetRow);
                 const exceedsNestingLimit =
-                    (sourceRow.original.maxDepth ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH;
+                    (sourceRow.original.sublevelCount ?? 0) + targetDepth > MAX_COMPOSITE_NESTING_DEPTH;
                 const isSelfDrop = !!findModificationInTree(targetRow.id as UUID, [sourceRow.original]);
 
                 // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
