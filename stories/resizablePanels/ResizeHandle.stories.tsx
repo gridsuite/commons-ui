@@ -28,11 +28,23 @@ const meta = {
             style={{ width: 420, height: 180, border: '1px solid black' }}
         >
             <Panel>
-                <Box p={2}>First panel</Box>
+                <Box
+                    sx={{
+                        p: 2,
+                    }}
+                >
+                    First panel
+                </Box>
             </Panel>
             <ResizeHandle {...args} />
             <Panel>
-                <Box p={2}>Second panel</Box>
+                <Box
+                    sx={{
+                        p: 2,
+                    }}
+                >
+                    Second panel
+                </Box>
             </Panel>
         </PanelGroup>
     ),

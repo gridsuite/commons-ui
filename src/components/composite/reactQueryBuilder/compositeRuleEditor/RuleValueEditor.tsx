@@ -53,11 +53,25 @@ export function RuleValueEditor(props: RuleValueEditorProps) {
     };
 
     return (
-        <Grid container paddingTop={1}>
+        <Grid
+            container
+            sx={{
+                paddingTop: 1,
+            }}
+        >
             <Grid container size={4} sx={styles.gridItem}>
                 <Typography>{intl.formatMessage({ id: fieldData.label })}</Typography>
             </Grid>
-            <Grid container size={2.5} sx={styles.gridItem} paddingLeft={1}>
+            <Grid
+                container
+                size={2.5}
+                sx={[
+                    {
+                        paddingLeft: 1,
+                    },
+                    styles.gridItem,
+                ]}
+            >
                 <Select
                     value={operator}
                     size="small"
@@ -73,7 +87,16 @@ export function RuleValueEditor(props: RuleValueEditorProps) {
                     ))}
                 </Select>
             </Grid>
-            <Grid container size={5.5} sx={styles.gridItem} paddingLeft={1}>
+            <Grid
+                container
+                size={5.5}
+                sx={[
+                    {
+                        paddingLeft: 1,
+                    },
+                    styles.gridItem,
+                ]}
+            >
                 <ValueEditorControlElement
                     {...props}
                     operator={operator}

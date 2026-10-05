@@ -24,7 +24,14 @@ export function ShuntCompensatorSelectionForm({
         <>
             <GridSection title={title} heading={4} />
             {mcsRows.map((field, index) => (
-                <Grid container spacing={1} alignItems="center" key={field.id}>
+                <Grid
+                    container
+                    spacing={1}
+                    key={field.id}
+                    sx={{
+                        alignItems: 'center',
+                    }}
+                >
                     <Grid size={1}>
                         <CheckboxInput
                             name={`${arrayFormName}[${index}].${FieldConstants.SHUNT_COMPENSATOR_SELECTED}`}

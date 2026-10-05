@@ -82,15 +82,22 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
 
     return (
         <Grid container onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} sx={{ width: '100%' }}>
-            <Grid container alignItems="center" wrap="nowrap" sx={{ width: '100%' }}>
+            <Grid
+                container
+                wrap="nowrap"
+                sx={{
+                    alignItems: 'center',
+                    width: '100%',
+                }}
+            >
                 <Grid
                     container
                     sx={{
+                        flexBasis: forceDisplayFilterIcon ? 'auto' : '100%',
                         cursor: isSortable ? 'pointer' : 'default',
                         ...styles.titleContainer,
                         flex: forceDisplayFilterIcon ? '0 1 auto' : undefined,
                     }}
-                    flexBasis={forceDisplayFilterIcon ? 'auto' : '100%'}
                 >
                     <Grid
                         container
@@ -100,7 +107,16 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                         }}
                         onClick={handleClickHeader}
                     >
-                        <Grid container sx={styles.displayName} alignItems="center" wrap="nowrap">
+                        <Grid
+                            container
+                            wrap="nowrap"
+                            sx={[
+                                {
+                                    alignItems: 'center',
+                                },
+                                styles.displayName,
+                            ]}
+                        >
                             <Grid>{displayName}</Grid>
                             {isInvalid && (
                                 <Grid sx={styles.invalidIcon}>

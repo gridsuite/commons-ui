@@ -247,6 +247,20 @@ export const networkModificationsFr = {
     ModifyBattery: 'Modifier une batterie',
     BatteryModificationError: "Erreur lors de la modification d'une batterie",
     Connectivity: 'Connectivité',
+    Information: 'Information',
+    LineSplitWithVoltageLevel: 'Créer une coupure',
+    LineToSplit: 'Liaison coupée',
+    VoltageLevelToSplitAt: 'Poste en coupure',
+    NewVoltageLevel: 'Créer poste',
+    Line1: 'Liaison côté 1',
+    Line2: 'Liaison côté 2',
+    VoltageLevel1: 'Poste côté 1',
+    VoltageLevel2: 'Poste côté 2',
+    Line1ID: 'ID liaison côté 1',
+    Line2ID: 'ID liaison côté 2',
+    Line1Name: 'Nom liaison côté 1',
+    Line2Name: 'Nom liaison côté 2',
+    LineDivisionError: "Erreur lors de la création d'une coupure",
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
     On: 'Activé',
@@ -575,6 +589,21 @@ export const networkModificationsFr = {
     'TabularModificationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;true | false;;TOP | BOTTOM;;;',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR;;',
+
+    // Limit sets tabular modification
+    LimitSetsTabularModification: 'Modification tabulaire de jeux de limites',
+    TabularLimitSets: 'Jeux de limite',
+    amountTemporaryLimits: 'Nombre de limites temporaires',
+    amountTemporaryLimitsError: 'Nombre de limites entre 1 et 50',
+    acceptableDuration: 'Tempo (s)',
+    value: 'Valeur (A)',
+    side: 'Côté',
+    limitGroupName: 'Nom du jeu de limites',
+    isActive: 'Actif',
+    modificationType: 'Type de modification',
+    temporaryLimitsModificationType: 'Type de modification des limites temporaires',
+    TabularLimitSetsModificationSkeletonComment:
+        '#;SIDE1 | SIDE2 | EQUIPMENT;;true | false;;ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE;ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE (pris en compte uniquement lorsque modificationType est défini sur modifier)',
 
     // Voltage level modification
     ModifyVoltageLevelTopology: "Modifier la topologie d'un poste",

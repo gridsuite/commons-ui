@@ -242,6 +242,20 @@ export const networkModificationsEn = {
     ModifyBattery: 'Modify battery',
     BatteryModificationError: 'Error while modifying battery',
     Connectivity: 'Connectivity',
+    Information: 'Information',
+    LineSplitWithVoltageLevel: 'Create a voltage level on a line',
+    LineToSplit: 'Existing line',
+    VoltageLevelToSplitAt: 'Voltage level to split at',
+    NewVoltageLevel: 'Create voltage level',
+    Line1: 'Line 1',
+    Line2: 'Line 2',
+    VoltageLevel1: 'Voltage level 1',
+    VoltageLevel2: 'Voltage level 2',
+    Line1ID: 'Line 1 ID',
+    Line2ID: 'Line 2 ID',
+    Line1Name: 'Line 1 name',
+    Line2Name: 'Line 2 name',
+    LineDivisionError: 'Error while puting a voltage level amidst a line',
     ActiveLimits: 'Active limits',
     ReactiveLimits: 'Reactive limits',
     On: 'On',
@@ -568,6 +582,21 @@ export const networkModificationsEn = {
     'TabularModificationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,true | false,,TOP | BOTTOM,,,',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
+
+    // Limit sets tabular modification
+    LimitSetsTabularModification: 'Tabular modification of limits sets',
+    TabularLimitSets: 'Limit sets',
+    amountTemporaryLimits: 'Number of temporary limits',
+    amountTemporaryLimitsError: 'Limits number between 1 and 50',
+    acceptableDuration: 'Duration (s)',
+    value: 'Value (A)',
+    side: 'Side',
+    limitGroupName: 'Limits set name',
+    isActive: 'Active',
+    modificationType: 'Modification type',
+    temporaryLimitsModificationType: 'Temporary limits modification type',
+    TabularLimitSetsModificationSkeletonComment:
+        '#,SIDE1 | SIDE2 | EQUIPMENT,,true | false,,ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE,ADD | MODIFY | MODIFY_OR_ADD | DELETE | REPLACE (taken into account only when modificationType is set on modifying)',
 
     // Voltage level modification
     ModifyVoltageLevelTopology: 'Modify voltage level topology',

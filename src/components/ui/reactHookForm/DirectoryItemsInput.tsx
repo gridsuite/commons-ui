@@ -288,8 +288,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                             {showPlaceHolder && !directoryElements?.length && (
                                 <Typography
                                     variant="body2"
-                                    color="text.secondary"
                                     sx={{
+                                        color: 'text.secondary',
                                         whiteSpace: 'nowrap',
                                     }}
                                 >

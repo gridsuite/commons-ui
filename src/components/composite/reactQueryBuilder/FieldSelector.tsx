@@ -14,9 +14,11 @@ const ITEM_PADDING = 4;
 const ITEMS_COUNT = 10;
 
 const MenuProps = {
-    PaperProps: {
-        style: {
-            maxHeight: (ITEM_HEIGHT + ITEM_PADDING) * ITEMS_COUNT + ITEM_PADDING,
+    slotProps: {
+        paper: {
+            style: {
+                maxHeight: (ITEM_HEIGHT + ITEM_PADDING) * ITEMS_COUNT + ITEM_PADDING,
+            },
         },
     },
 };

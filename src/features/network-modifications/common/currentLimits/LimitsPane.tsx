@@ -203,7 +203,15 @@ export function LimitsPane({
                         currentLimitsToModify={equipmentToModify?.currentLimits ?? []}
                     />
                 </Grid>
-                <Grid size={6} sx={limitsStyles.parametersBox} marginLeft={2}>
+                <Grid
+                    size={6}
+                    sx={[
+                        {
+                            marginLeft: 2,
+                        },
+                        limitsStyles.parametersBox,
+                    ]}
+                >
                     {indexSelectedLimitSet !== null &&
                         operationalLimitsGroups.map(
                             (operationalLimitsGroup: OperationalLimitsGroupFormSchema, index: number) =>

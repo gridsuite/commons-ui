@@ -6,11 +6,14 @@
  */
 
 import { Chip } from '@mui/material';
-import { CheckCircleOutline, Cancel } from '@mui/icons-material';
+import { CheckCircle, RadioButtonUnchecked } from '@mui/icons-material';
 import { CustomTooltip } from '../tooltip/CustomTooltip';
 
 export interface ActivableChipProps {
-    isActivated: boolean;
+    /** What the element wants: carried by the icon */
+    isActivationRequested: boolean;
+    /** Whether it takes effect: carried by the background */
+    isActivationEffective: boolean;
     label: string;
     tooltipMessage: string;
     onClick: () => void;
@@ -18,19 +21,25 @@ export interface ActivableChipProps {
 }
 
 export function ActivableChip(props: Readonly<ActivableChipProps>) {
-    const { isActivated, label, tooltipMessage, onClick, isDisabled } = props;
+    const { isActivationRequested, isActivationEffective, label, tooltipMessage, onClick, isDisabled } = props;
 
     return (
         <CustomTooltip title={tooltipMessage}>
             <Chip
                 label={label}
-                deleteIcon={isActivated ? <CheckCircleOutline /> : <Cancel />}
+                deleteIcon={isActivationRequested ? <CheckCircle /> : <RadioButtonUnchecked />}
                 color="primary"
                 size="small"
-                variant={isActivated ? 'filled' : 'outlined'}
+                variant={isActivationEffective ? 'filled' : 'outlined'}
                 onDelete={onClick}
                 onClick={onClick}
                 disabled={isDisabled}
+                sx={{
+                    // the delete icon is a status, not an actionable element: no hover highlight
+                    '& .MuiChip-deleteIcon, & .MuiChip-deleteIcon:hover': {
+                        color: 'inherit',
+                    },
+                }}
             />
         </CustomTooltip>
     );

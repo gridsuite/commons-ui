@@ -94,10 +94,14 @@ export function MapParameters() {
         <Grid
             container
             spacing={1}
-            sx={parametersStyles.scrollableGrid}
             key="mapParameters"
-            marginTop={-3}
-            justifyContent="space-between"
+            sx={[
+                {
+                    marginTop: -3,
+                    justifyContent: 'space-between',
+                },
+                parametersStyles.scrollableGrid,
+            ]}
         >
             {lineSwitch(PARAM_LINE_FULL_PATH, PARAM_LINE_FULL_PATH)}
             {lineSwitch(PARAM_LINE_PARALLEL_PATH, PARAM_LINE_PARALLEL_PATH)}

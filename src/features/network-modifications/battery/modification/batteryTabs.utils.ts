@@ -27,6 +27,7 @@ export const BATTERY_TAB_FIELDS: Readonly<Partial<Record<BatteryDialogTab, Field
         FieldConstants.REACTIVE_POWER_SET_POINT,
         FieldConstants.FREQUENCY_REGULATION,
         FieldConstants.DROOP,
+        FieldConstants.VOLTAGE_SET_POINT,
     ],
     [BatteryDialogTab.SPECIFIC_TAB]: [FieldConstants.TRANSIENT_REACTANCE, FieldConstants.TRANSFORMER_REACTANCE],
     [BatteryDialogTab.ADDITIONAL_INFORMATION_TAB]: [FieldConstants.ADDITIONAL_PROPERTIES],

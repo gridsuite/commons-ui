@@ -48,7 +48,13 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
     return watchAddSubstationCreation ? (
         <SubstationCreationSection showDeleteButton={showDeleteButton} onDelete={handleDeleteSubstationCreation} />
     ) : (
-        <Grid container spacing={2} pt={2}>
+        <Grid
+            container
+            spacing={2}
+            sx={{
+                pt: 2,
+            }}
+        >
             <Grid size={4}>
                 {substationOptions ? (
                     <AutocompleteInput
@@ -65,7 +71,11 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                     <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" />
                 )}
             </Grid>
-            <Grid mt={0.75}>
+            <Grid
+                sx={{
+                    mt: 0.75,
+                }}
+            >
                 <FormattedMessage id="Or" />
             </Grid>
             <Grid>

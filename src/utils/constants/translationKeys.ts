@@ -14,6 +14,7 @@ export const YUP_NOT_TYPE_DEFAULT = 'YupNotTypeDefault';
 export const DUPLICATED_PROPS_ERROR = 'DuplicatedPropsError';
 
 export const REAL_PERCENTAGE = 'RealPercentage';
+export const OUT_OF_BOUNDS_PERCENTAGE = 'OutOfBoundsPercentage';
 export const MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'mustBeGreaterOrEqualToZero';
 export const NORMALIZED_PERCENTAGE = 'NormalizedPercentage';
 export const DESCRIPTION_LIMIT_ERROR = 'descriptionLimitError';
@@ -21,6 +22,7 @@ export const SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO =
     'ShortCircuitCurrentLimitMustBeGreaterOrEqualToZero';
 export const NAME_EMPTY = 'nameEmpty';
 export const MODIFICATIONS_REQUIRED_TAB_ERROR = 'ModificationsRequiredTabError';
+export const AMOUNT_TEMPORARY_LIMITS_ERROR = 'amountTemporaryLimitsError';
 
 export const ACTIVE_LIMITS_MIN_MAX_INVALID = 'ActiveLimitsMinMaxInvalid';
 export const REACTIVE_LIMITS_MIN_MAX_INVALID = 'ReactiveLimitsMinMaxInvalid';

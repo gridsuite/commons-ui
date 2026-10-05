@@ -60,7 +60,11 @@ export function Logout({ onLogoutClick, disabled }: LogoutProps) {
                     <FormattedMessage id="login/logout" defaultMessage="logout" />
                 </Button>
             </Box>
-            <Box mt={2}>
+            <Box
+                sx={{
+                    mt: 2,
+                }}
+            >
                 <Copyright />
             </Box>
         </Container>

@@ -33,8 +33,10 @@ import {
 import type { UUID } from 'node:crypto';
 import { makeComposeClasses, type MuiStyles, toNestedGlobalSelectors } from '../../../utils/styles';
 import { CancelButton } from '../reactHookForm/utils/CancelButton';
-import { ElementAttributes, ElementType } from '../../../utils';
+import { ElementAttributes, ElementType, ReferenceAttributes } from '../../../utils';
 import { doesNodeHasChildren } from './TreeViewUtils';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
+import { DatasetLinkedIcon } from '../icons/DatasetLinkedIcon';
 
 // As a bunch of individual variables to try to make it easier
 // to track that they are all used. Not sure, maybe group them in an object ?
@@ -42,6 +44,7 @@ const cssDialogPaper = 'dialogPaper';
 const cssLabelRoot = 'labelRoot';
 const cssLabelText = 'labelText';
 const cssLabelIcon = 'labelIcon';
+const cssSharedIcon = 'sharedIcon';
 const cssIcon = 'icon';
 
 // converted to nested rules
@@ -56,7 +59,6 @@ const defaultStyles = {
     },
     [cssLabelText]: {
         fontWeight: 'inherit',
-        flexGrow: 1,
     },
     [cssLabelIcon]: {
         display: 'flex',
@@ -64,6 +66,14 @@ const defaultStyles = {
         alignItems: 'center',
 
         marginRight: '4px',
+    },
+    [cssSharedIcon]: {
+        display: 'flex',
+        alignContent: 'center',
+        alignItems: 'center',
+        marginLeft: '2px',
+        fontSize: '14px',
+        flexShrink: 0,
     },
     [cssIcon]: {},
 } as const satisfies MuiStyles;
@@ -91,6 +101,7 @@ export interface TreeViewFinderNodeProps {
     specificMetadata?: {
         equipmentType: string;
     };
+    references?: ReferenceAttributes[];
 }
 
 interface TreeViewFinderNodeMapProps {
@@ -407,11 +418,20 @@ function TreeViewFinderComponant(props: Readonly<TreeViewFinderProps>) {
         return null;
     };
 
+    const isShared = (node: TreeViewFinderNodeProps) => {
+        return !!node.references?.length;
+    };
+
     const renderTreeItemLabel = (node: TreeViewFinderNodeProps) => {
         return (
             <div className={composeClasses(classes, cssLabelRoot)}>
                 {getNodeIcon(node)}
                 <Typography className={composeClasses(classes, cssLabelText)}>{node.name}</Typography>
+                {isShared(node) && (
+                    <CustomTooltip title={intl.formatMessage({ id: 'importComposites.shared' })}>
+                        <DatasetLinkedIcon className={composeClasses(classes, cssSharedIcon)} />
+                    </CustomTooltip>
+                )}
             </div>
         );
     };

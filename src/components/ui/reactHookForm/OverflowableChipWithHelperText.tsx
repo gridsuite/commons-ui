@@ -20,11 +20,16 @@ export function OverflowableChipWithHelperText({
 }: Readonly<OverflowableChipWithHelperTextProps>) {
     return (
         <Box
-            display="flex"
-            alignItems="left"
-            flexDirection="column"
-            sx={mergeSx({ cursor: 'default' }, boxSx)}
             onClick={(e) => e.stopPropagation()}
+            sx={mergeSx(
+                {
+                    display: 'flex',
+                    alignItems: 'left',
+                    flexDirection: 'column',
+                },
+                { cursor: 'default' },
+                boxSx
+            )}
         >
             <OverflowableChip boxSx={{ paddingBottom: '2px' }} {...otherProps} />
             {helperText && (

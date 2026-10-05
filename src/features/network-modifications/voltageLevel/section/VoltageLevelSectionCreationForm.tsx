@@ -328,7 +328,13 @@ export function VoltageLevelSectionCreationForm({
         <Box sx={{ p: 2 }}>
             <Grid container spacing={2}>
                 <Grid size={12}>
-                    <Grid container spacing={2} alignItems="center">
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            alignItems: 'center',
+                        }}
+                    >
                         <Grid size={{ xs: 12, md: 6 }}>{voltageLevelIdField}</Grid>
                         {PositionDiagramPane && isNodeBuilt && (
                             <Grid size={{ xs: 12, md: 3 }}>

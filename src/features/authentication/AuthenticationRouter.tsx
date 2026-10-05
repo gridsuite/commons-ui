@@ -35,7 +35,12 @@ export function AuthenticationRouter({
         }
     }, [userManager.instance]);
     return (
-        <Stack alignItems="center" sx={{ width: '100%' }}>
+        <Stack
+            sx={{
+                alignItems: 'center',
+                width: '100%',
+            }}
+        >
             {userManager.error !== null && <h1>Error : Getting userManager; {userManager.error}</h1>}
             {signInCallbackError !== null && (
                 <h1>
