@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
@@ -29,13 +29,23 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const modificationUuid = data.uuid;
     const { description } = data;
     const empty = !description;
+    const [descriptionState, setDescriptionState] = useState(description);
+
+    const savedDescription = useMemo(() => {
+        return data.description;
+    }, [data.description]);
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
+            setDescriptionState(descriptionRecord.description);
             return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
+            }).catch(() => {
+                // rollback
+                setDescriptionState(savedDescription);
+                return Promise.reject(new Error('error while updating description'));
             }).finally(() => {
                 setIsLoading(false);
             });
@@ -56,12 +66,12 @@ export function DescriptionCell(props: DescriptionCellProps) {
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={description ?? ''}
+                    description={descriptionState ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                 />
             )}
-            <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
+            <Tooltip title={descriptionState ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
                 <span>
                     <IconButton
                         onClick={handleModifyDescription}
