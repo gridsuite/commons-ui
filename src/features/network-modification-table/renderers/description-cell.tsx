@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState, useMemo } from 'react';
+import { useCallback, useState, useMemo, useEffect } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
@@ -28,12 +28,16 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
-    const empty = !description;
     const [descriptionState, setDescriptionState] = useState(description);
+    const empty = useMemo(() => !descriptionState, [descriptionState]) ;
 
     const savedDescription = useMemo(() => {
-        return data.description;
-    }, [data.description]);
+        return description;
+    }, [description]);
+
+    useEffect(() => {
+        setDescriptionState(savedDescription);
+    }, [savedDescription]);
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
