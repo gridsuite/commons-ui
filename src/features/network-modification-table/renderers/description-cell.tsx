@@ -60,7 +60,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, data.type, savedDescription]
+        [modificationUuid, data.type, savedDescription, snackError]
     );
 
     const handleDescDialogClose = useCallback(() => {

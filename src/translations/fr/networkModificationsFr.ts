@@ -617,5 +617,6 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
-    setModificationNameAndDescriptionError: 'Erreur lors de la modification du nom et/ou de la description de la modification',
+    setModificationNameAndDescriptionError:
+        'Erreur lors de la modification du nom et/ou de la description de la modification',
 };
