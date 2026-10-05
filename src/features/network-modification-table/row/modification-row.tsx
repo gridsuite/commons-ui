@@ -28,7 +28,7 @@ interface ModificationRowProps {
     handleCellClick?: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled: boolean;
     highlightedModificationUuid: string | null;
-    // TODO temporary before GRD-5139
+    // TODO temporary before implementing readOnly form
     isFormOpeningLocked?: boolean;
 }
 
