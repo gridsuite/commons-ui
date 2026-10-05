@@ -18,6 +18,10 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Active: Story = { args: { isActivated: true } };
-export const Inactive: Story = { args: { isActivated: false } };
-export const Disabled: Story = { args: { isActivated: true, isDisabled: true } };
+// The icon tells what the chip wants, the background whether it takes effect: the two vary on their own.
+export const Active: Story = { args: { isActivationRequested: true, isActivationEffective: true } };
+export const ActiveButNotApplied: Story = { args: { isActivationRequested: true, isActivationEffective: false } };
+export const Inactive: Story = { args: { isActivationRequested: false, isActivationEffective: false } };
+export const Disabled: Story = {
+    args: { isActivationRequested: true, isActivationEffective: true, isDisabled: true },
+};
