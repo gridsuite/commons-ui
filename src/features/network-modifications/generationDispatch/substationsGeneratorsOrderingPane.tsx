@@ -34,7 +34,7 @@ export function SubstationsGeneratorsOrderingPane({ substations }: Readonly<Subs
                 component: (rowIndex: number) =>
                     SubstationsAutocomplete({
                         name: `${id}[${rowIndex}].${FieldConstants.SUBSTATION_IDS}`,
-                        substations: substations,
+                        substations,
                     }),
             },
         ] satisfies DndColumn[];

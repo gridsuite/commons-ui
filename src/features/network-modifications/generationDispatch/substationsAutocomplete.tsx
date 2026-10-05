@@ -59,7 +59,7 @@ export default function SubstationsAutocomplete({
             value={value}
             onChange={handleChange}
             options={substations}
-            size={'small'}
+            size="small"
             freeSolo
             sx={styles.autocomplete}
             renderInput={(params) => (
@@ -74,8 +74,8 @@ export default function SubstationsAutocomplete({
                     {...genHelperError(error?.message)}
                 />
             )}
-            autoHighlight={true}
-            disableCloseOnSelect={true}
+            autoHighlight
+            disableCloseOnSelect
             data-testid="SubstationsInput"
             {...props}
         />

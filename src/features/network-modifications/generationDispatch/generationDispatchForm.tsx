@@ -20,7 +20,7 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
     const lossCoefficientField = (
         <FloatInput
             name={FieldConstants.LOSS_COEFFICIENT}
-            label={'LossCoefficient'}
+            label="LossCoefficient"
             adornment={PercentageAdornment}
             dataTestId="LossCoefficientInput"
         />
@@ -30,13 +30,13 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
         <Grid
             container
             spacing={2}
-            direction={'row'}
+            direction="row"
             sx={{
                 alignItems: 'center',
             }}
         >
             <Grid size={5}>
-                <FieldLabel label={'GeneratorsWithFixedActivePower'} optional />
+                <FieldLabel label="GeneratorsWithFixedActivePower" optional />
             </Grid>
             <Grid size={4}>
                 <DirectoryItemsInput
@@ -44,8 +44,8 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
                     dataTestId="GeneratorsWithFixedActivePowerInput"
                     equipmentTypes={[EquipmentType.GENERATOR]}
                     elementType={ElementType.FILTER}
-                    titleId={'FiltersListsSelection'}
-                    label={''}
+                    titleId="FiltersListsSelection"
+                    label=""
                 />
             </Grid>
         </Grid>
@@ -67,7 +67,7 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
             <Grid>
                 <FloatInput
                     name={FieldConstants.DEFAULT_OUTAGE_RATE}
-                    label={'DefaultOutageRate'}
+                    label="DefaultOutageRate"
                     adornment={PercentageAdornment}
                     dataTestId="DefaultOutageRateInput"
                 />
@@ -79,13 +79,13 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
         <Grid
             container
             spacing={2}
-            direction={'row'}
+            direction="row"
             sx={{
                 alignItems: 'center',
             }}
         >
             <Grid size={5}>
-                <FieldLabel label={'GeneratorsWithoutOutage'} optional />
+                <FieldLabel label="GeneratorsWithoutOutage" optional />
             </Grid>
             <Grid size={4}>
                 <DirectoryItemsInput
@@ -93,8 +93,8 @@ export function GenerationDispatchForm({ substationsIds = [] }: Readonly<Generat
                     dataTestId="GeneratorsWithoutOutageInput"
                     equipmentTypes={[EquipmentType.GENERATOR]}
                     elementType={ElementType.FILTER}
-                    titleId={'FiltersListsSelection'}
-                    label={''}
+                    titleId="FiltersListsSelection"
+                    label=""
                 />
             </Grid>
         </Grid>

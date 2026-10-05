@@ -71,7 +71,7 @@ export function FrequencyReservePane({
             placement="left"
         >
             <span>
-                <IconButton disabled={true}>
+                <IconButton disabled>
                     <InfoIcon />
                 </IconButton>
             </span>

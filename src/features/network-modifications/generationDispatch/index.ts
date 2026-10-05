@@ -5,9 +5,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './generationDispatch.types'
-export * from './generationDispatch.utils'
-export * from './frequencyReservePane'
-export * from './substationsAutocomplete'
-export * from './substationsGeneratorsOrderingPane'
-export * from './generationDispatchForm'
+export * from './generationDispatch.types';
+export * from './generationDispatch.utils';
+export * from './frequencyReservePane';
+export * from './substationsAutocomplete';
+export * from './substationsGeneratorsOrderingPane';
+export * from './generationDispatchForm';
