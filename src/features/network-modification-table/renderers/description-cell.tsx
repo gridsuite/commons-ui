@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState, useMemo, useEffect } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
@@ -29,7 +29,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const modificationUuid = data.uuid;
     const { description } = data;
     const [descriptionState, setDescriptionState] = useState(description);
-    const empty = useMemo(() => !descriptionState, [descriptionState]) ;
+    const empty = useMemo(() => !descriptionState, [descriptionState]);
 
     const savedDescription = useMemo(() => {
         return description;
@@ -46,13 +46,15 @@ export function DescriptionCell(props: DescriptionCellProps) {
             return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
-            }).catch(() => {
-                // rollback
-                setDescriptionState(savedDescription);
-                return Promise.reject(new Error('error while updating description'));
-            }).finally(() => {
-                setIsLoading(false);
-            });
+            })
+                .catch(() => {
+                    // rollback
+                    setDescriptionState(savedDescription);
+                    return Promise.reject(new Error('error while updating description'));
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         },
         [modificationUuid, data.type]
     );
