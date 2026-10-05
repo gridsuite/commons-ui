@@ -81,12 +81,7 @@ export function ProcessConfigEditionDialog({
             disabledSave={isLoading || isDisabledValidationButton(errors)}
             isDataFetching={isLoading}
         >
-            <ProcessConfigForm
-                form={formMethods}
-                mode="edit"
-                initialElementName={processConfigName}
-                activeDirectory={directory}
-            />
+            <ProcessConfigForm mode="edit" initialElementName={processConfigName} activeDirectory={directory} />
         </CustomMuiDialog>
     );
 }

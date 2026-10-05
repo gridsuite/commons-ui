@@ -6,7 +6,6 @@
  */
 
 import type { UUID } from 'node:crypto';
-import type { UseFormReturn } from 'react-hook-form';
 import type { DirectoryItemSchema } from '../../../components';
 import { FieldConstants } from '../../../utils';
 import { ProcessType } from './process-config.type';
@@ -51,7 +50,6 @@ export type UpdateProcessConfigHandler = (
 ) => Promise<Response>;
 
 export type ProcessConfigFormProps = {
-    form: UseFormReturn<ProcessConfigFormValues>;
     mode: ProcessConfigMode;
     initialElementName?: string;
     activeDirectory?: UUID;

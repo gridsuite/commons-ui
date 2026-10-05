@@ -19,13 +19,11 @@ import { DirectoryItemSelector, type DirectoryItemSchema } from '../../../compon
 import { ElementType, FieldConstants } from '../../../utils';
 
 export function ProcessConfigForm({
-    form,
     mode,
     initialElementName,
     activeDirectory,
     onFetchProcessConfig,
 }: Readonly<ProcessConfigFormProps>) {
-    const { control } = form;
     const isCreate = mode === 'create';
 
     const intl = useIntl();
@@ -36,13 +34,11 @@ export function ProcessConfigForm({
         checkProcessTypeChange,
         confirmProcessTypeChange,
         cancelProcessTypeChange,
-    } = useProcessTypeGuard(form);
+    } = useProcessTypeGuard();
 
-    const selectedDirectory = useWatch({ control, name: FieldConstants.DIRECTORY }) as
-        DirectoryItemSchema | null | undefined;
+    const selectedDirectory = useWatch({ name: FieldConstants.DIRECTORY }) as DirectoryItemSchema | null | undefined;
 
     const { isSelectorOpen, openSelector, itemFilter, handleSelect } = usePrefillSelection({
-        form,
         onFetchProcessConfig,
         selectedProcessType,
     });
@@ -62,7 +58,6 @@ export function ProcessConfigForm({
                         withFolderField={isCreate}
                     />
                     <SpecificInformationSection
-                        control={control}
                         onPrefill={isCreate && onFetchProcessConfig ? openSelector : undefined}
                     />
                 </>
