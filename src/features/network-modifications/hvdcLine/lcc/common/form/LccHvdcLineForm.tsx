@@ -12,7 +12,8 @@ import { UseTabsReturn } from '../../../../../../hooks';
 import { LccHvdcLineDialogHeader } from './LccHvdcLineDialogHeader';
 import { LccHvdcLineDialogTabsContent } from './LccHvdcLineDialogTabsContent';
 import { LccHvdcLineDialogTabs } from './LccHvdcLineDialogTabs';
-import { LccHvdcLineDialogTab, LccHvdcLineFormInfos } from '../lccHvdcLine.types';
+import { LccHvdcLineFormInfos } from '../lccHvdcLine.types';
+import { LccHvdcLineDialogTab } from '../lccHvdcLine.utils';
 
 interface LccCreationFormProps extends ConnectivityNetworkProps {
     useTabsReturn: UseTabsReturn<LccHvdcLineDialogTab>;

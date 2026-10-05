@@ -10,7 +10,8 @@ import { ConnectivityNetworkProps } from '../../../../common';
 import { FieldConstants } from '../../../../../../utils';
 import { LccHvdcLine } from './LccHvdcLine';
 import { LccConverterStation } from './LccConverterStation';
-import { LccHvdcLineDialogTab, LccHvdcLineFormInfos } from '../lccHvdcLine.types';
+import { LccHvdcLineFormInfos } from '../lccHvdcLine.types';
+import { LccHvdcLineDialogTab } from '../lccHvdcLine.utils';
 
 export interface LccHvdcLineDialogTabsContentProps extends ConnectivityNetworkProps {
     lccHvdcLineToModify?: LccHvdcLineFormInfos | null;

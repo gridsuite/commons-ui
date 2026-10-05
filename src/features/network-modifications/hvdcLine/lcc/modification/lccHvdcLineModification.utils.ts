@@ -24,9 +24,9 @@ import {
 } from '../../../../../utils';
 import {
     getLccHvdcLineEmptyFormData,
-    ShuntCompensatorModificationFormSchema,
+    LccShuntCompensatorModificationFormData,
     getEmptyShuntCompensatorOnSideFormData,
-    ShuntCompensatorFormSchema,
+    LccShuntCompensatorFormData,
 } from '../common';
 import {
     LccConverterStationModificationDto,
@@ -137,7 +137,7 @@ export function getLccHvdcLineModificationDtoToForm(hvdcLine: LccModificationDto
 
 const getShuntCompensatorOnSideFormModificationData = (
     infos?: LccShuntCompensatorModificationInfos[]
-): ShuntCompensatorFormSchema[] => {
+): LccShuntCompensatorFormData[] => {
     return (
         infos?.map((shuntCp) => ({
             [FieldConstants.SHUNT_COMPENSATOR_ID]: shuntCp.id ?? null,
@@ -184,7 +184,7 @@ export const lccHvdcLineModificationDtoToForm = (
 };
 
 const getShuntCompensatorOnSideModificationData = (
-    shuntCompensatorInfos?: ShuntCompensatorModificationFormSchema[] | null
+    shuntCompensatorInfos?: LccShuntCompensatorModificationFormData[] | null
 ): LccShuntCompensatorModificationInfos[] => {
     return (
         shuntCompensatorInfos?.map((shuntCp) => ({

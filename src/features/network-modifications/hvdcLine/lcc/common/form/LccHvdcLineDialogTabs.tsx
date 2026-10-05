@@ -8,8 +8,8 @@
 import { SyntheticEvent } from 'react';
 import { Tab, Tabs } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { LccHvdcLineDialogTab } from '../lccHvdcLine.types';
 import { getTabIndicatorStyle, getTabStyle } from '../../../../../parameters';
+import { LccHvdcLineDialogTab } from '../lccHvdcLine.utils';
 
 interface LccCreationDialogTabsProps {
     tabIndex: number;

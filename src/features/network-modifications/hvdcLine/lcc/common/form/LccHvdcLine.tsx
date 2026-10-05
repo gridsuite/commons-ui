@@ -7,10 +7,9 @@
 
 import { useIntl } from 'react-intl';
 import { Grid } from '@mui/material';
-import { LccHvdcLineFormInfos } from '../lccHvdcLine.types';
+import { LCC_CONVERTER_MODE, LccConverterMode, LccHvdcLineFormInfos } from '../lccHvdcLine.types';
 import { FloatInput, GridItem, GridSection, SelectInput } from '../../../../../../components';
 import { ActivePowerAdornment, FieldConstants, OhmAdornment, VoltageAdornment } from '../../../../../../utils';
-import { VSC_CONVERTER_MODE, VscConverterMode } from '../../../vsc';
 import { PropertiesForm } from '../../../../common';
 
 interface LccHvdcLineProps {
@@ -55,13 +54,13 @@ export function LccHvdcLine({ id, lccHvdcLineToModify, isModification = false }:
         <SelectInput
             name={`${id}.${FieldConstants.CONVERTERS_MODE}`}
             label="converterModeLabel"
-            options={Object.values(VSC_CONVERTER_MODE)}
+            options={Object.values(LCC_CONVERTER_MODE)}
             size="small"
             disableClearable
             previousValue={
                 lccHvdcLineToModify
                     ? intl.formatMessage({
-                          id: VSC_CONVERTER_MODE[lccHvdcLineToModify.convertersMode as VscConverterMode].label,
+                          id: LCC_CONVERTER_MODE[lccHvdcLineToModify.convertersMode as LccConverterMode].label,
                       })
                     : undefined
             }

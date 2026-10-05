@@ -57,7 +57,6 @@ export function LccConverterStation({
     const connectivityForm = (
         <ConnectivityForm
             id={`${id}.${FieldConstants.CONNECTIVITY}`}
-            previousValues={undefined}
             voltageLevelOptions={voltageLevelOptions}
             PositionDiagramPane={PositionDiagramPane}
             fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}

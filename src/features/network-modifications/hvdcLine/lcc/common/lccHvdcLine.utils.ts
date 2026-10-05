@@ -10,6 +10,18 @@ import { LccHvdcLineFormInfos } from './lccHvdcLine.types';
 import { FieldConstants } from '../../../../../utils';
 import { copyEquipmentPropertiesForCreation, emptyProperties } from '../../../common';
 
+export enum LccHvdcLineDialogTab {
+    HVDC_LINE_TAB = 0,
+    CONVERTER_STATION_1_TAB = 1,
+    CONVERTER_STATION_2_TAB = 2,
+}
+
+export const HVDC_LCC_LINE_TAB_FIELDS: Readonly<Partial<Record<LccHvdcLineDialogTab, FieldConstants[]>>> = {
+    [LccHvdcLineDialogTab.HVDC_LINE_TAB]: [FieldConstants.HVDC_LINE_TAB, FieldConstants.ADDITIONAL_PROPERTIES],
+    [LccHvdcLineDialogTab.CONVERTER_STATION_1_TAB]: [FieldConstants.CONVERTER_STATION_1],
+    [LccHvdcLineDialogTab.CONVERTER_STATION_2_TAB]: [FieldConstants.CONVERTER_STATION_2],
+};
+
 export const getEmptyShuntCompensatorOnSideFormData = () => ({
     [FieldConstants.SHUNT_COMPENSATOR_ID]: null,
     [FieldConstants.SHUNT_COMPENSATOR_NAME]: '',

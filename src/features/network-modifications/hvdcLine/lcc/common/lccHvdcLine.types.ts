@@ -6,18 +6,26 @@
  */
 
 import { ConnectablePositionInfos } from '../../../common';
-import { FieldConstants } from '../../../../../utils';
 
-export enum LccHvdcLineDialogTab {
-    HVDC_LINE_TAB = 0,
-    CONVERTER_STATION_1_TAB = 1,
-    CONVERTER_STATION_2_TAB = 2,
+export enum LccConverterMode {
+    SIDE_1_RECTIFIER_SIDE_2_INVERTER = 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
+    SIDE_1_INVERTER_SIDE_2_RECTIFIER = 'SIDE_1_INVERTER_SIDE_2_RECTIFIER',
 }
 
-export const HVDC_LCC_LINE_TAB_FIELDS: Readonly<Partial<Record<LccHvdcLineDialogTab, FieldConstants[]>>> = {
-    [LccHvdcLineDialogTab.HVDC_LINE_TAB]: [FieldConstants.HVDC_LINE_TAB, FieldConstants.ADDITIONAL_PROPERTIES],
-    [LccHvdcLineDialogTab.CONVERTER_STATION_1_TAB]: [FieldConstants.CONVERTER_STATION_1],
-    [LccHvdcLineDialogTab.CONVERTER_STATION_2_TAB]: [FieldConstants.CONVERTER_STATION_2],
+export interface LccConverterModeValue {
+    id: string;
+    label: string;
+}
+
+export const LCC_CONVERTER_MODE: Record<LccConverterMode, LccConverterModeValue> = {
+    [LccConverterMode.SIDE_1_RECTIFIER_SIDE_2_INVERTER]: {
+        id: 'SIDE_1_RECTIFIER_SIDE_2_INVERTER',
+        label: 'side1RectifierSide2Inverter',
+    },
+    [LccConverterMode.SIDE_1_INVERTER_SIDE_2_RECTIFIER]: {
+        id: 'SIDE_1_INVERTER_SIDE_2_RECTIFIER',
+        label: 'side1InverterSide2Rectifier',
+    },
 };
 
 export interface LccShuntCompensatorInfos {
@@ -55,13 +63,13 @@ export interface LccHvdcLineFormInfos {
 }
 
 // this type used instead of ShuntCompensatorInfos because RHF uses 'id' to manage array, see useFieldArray
-export interface ShuntCompensatorFormSchema {
+export interface LccShuntCompensatorFormData {
     shuntCompensatorId: string;
     shuntCompensatorName?: string | null;
     maxQAtNominalV: number;
     connectedToHvdc?: boolean | null;
 }
 
-export interface ShuntCompensatorModificationFormSchema extends ShuntCompensatorFormSchema {
+export interface LccShuntCompensatorModificationFormData extends LccShuntCompensatorFormData {
     deletionMark?: boolean | null;
 }
