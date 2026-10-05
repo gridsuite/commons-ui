@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { useFormContext } from 'react-hook-form';
 import { ElementAttributes, ElementType, FieldConstants } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
-import type { FetchProcessConfigHandler, ProcessConfigFormValues } from '../../common/process-config-form.types';
+import type { FetchProcessConfigHandler } from '../../common/process-config-form.types';
 import { ProcessType } from '../../common';
 
 type UsePrefillSelectionParams = {
