@@ -297,7 +297,6 @@ export const networkModificationsEn = {
     CreateGenerator: 'Create generator',
     GeneratorCreationError: 'Error while creating generator',
     VoltageRegulationText: 'Voltage regulation',
-    GenerationDispatch: 'Generation dispatch',
     generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'Planned active power set point must be between minimum and maximum active power values',
@@ -488,6 +487,22 @@ export const networkModificationsEn = {
     builtNodeTooltipVlTopoModif: 'Switches list taking into account all applied modifications',
     notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
     Undefined: 'Undefined',
+
+    // Generation dispatch
+    GenerationDispatch: 'Generation dispatch',
+    GenerationDispatchError: 'Error while creating a generation dispatch',
+    LossCoefficient: 'Loss coefficient',
+    ReduceMaxP: 'Reduce maxP',
+    DefaultOutageRate: 'Default outage rate',
+    GeneratorsWithoutOutage: 'Generators without outage simulation',
+    GeneratorsWithFixedActivePower: 'Generators with fixed active power',
+    GeneratorFilter: 'GENERATOR FILTER',
+    FrequencyReserve: 'FREQUENCY RESERVE (%)',
+    frequencyReserve: 'Frequency reserve',
+    GeneratorsFiltersFrequencyReserveToolTip:
+        'User entries are applied one after another starting at the top of the list. If a generator is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
+    GeneratorsOrdering: 'Substations hierarchy',
+    GeneratorAvailability: 'Generator availability',
 
     // Tabular creation / modification - dialog
     TabularCreation: 'Tabular creation',
