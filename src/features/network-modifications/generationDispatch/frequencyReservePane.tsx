@@ -9,7 +9,7 @@ import { useIntl } from 'react-intl';
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { IconButton, Tooltip } from '@mui/material';
-import InfoIcon from '@mui/icons-material/Info';
+import { Info as InfoIcon } from '@mui/icons-material';
 import { DndColumn, DndColumnType, DndTable } from '../../../components';
 import { ElementType, EquipmentType, FieldConstants } from '../../../utils';
 
@@ -57,9 +57,11 @@ export function FrequencyReservePane({
     });
 
     const newRowData = useMemo(() => {
-        const newRowData: Record<string, unknown[] | null> = {};
-        columnsDefinition.forEach((column) => (newRowData[column.dataKey] = column.initialValue));
-        return newRowData;
+        const newRow: Record<string, unknown[] | null> = {};
+        columnsDefinition.forEach((column) => {
+            newRow[column.dataKey] = column.initialValue;
+        });
+        return newRow;
     }, [columnsDefinition]);
     const createFrequencyReserveRows = () => [newRowData];
 

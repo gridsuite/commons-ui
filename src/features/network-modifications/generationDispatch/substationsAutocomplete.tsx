@@ -36,7 +36,7 @@ type SubstationsAutocompleteProps = Pick<AutocompleteProps<string, true, false, 
     substations: string[];
 };
 
-export default function SubstationsAutocomplete({
+export function SubstationsAutocomplete({
     name,
     label,
     disabled,
@@ -48,8 +48,8 @@ export default function SubstationsAutocomplete({
         fieldState: { error },
     } = useController({ name });
 
-    const handleChange = (_: SyntheticEvent, value: string[]) => {
-        onChange(value);
+    const handleChange = (_: SyntheticEvent, newValue: string[]) => {
+        onChange(newValue);
     };
 
     return (

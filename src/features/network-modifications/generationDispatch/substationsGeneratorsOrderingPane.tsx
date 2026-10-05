@@ -8,9 +8,9 @@
 import { useIntl } from 'react-intl';
 import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
-import SubstationsAutocomplete from './substations-autocomplete.js';
 import { FieldConstants } from '../../../utils';
 import { DndColumn, DndColumnType, DndTable } from '../../../components';
+import { SubstationsAutocomplete } from './substationsAutocomplete';
 
 interface SubstationsGeneratorsOrderingPaneProps {
     substations: string[];
@@ -45,9 +45,11 @@ export function SubstationsGeneratorsOrderingPane({ substations }: Readonly<Subs
     });
 
     const newRowData = useMemo(() => {
-        const newRowData: Record<string, unknown[] | null> = {};
-        columnsDefinition.forEach((column) => (newRowData[column.dataKey] = column.initialValue));
-        return newRowData;
+        const newRow: Record<string, unknown[] | null> = {};
+        columnsDefinition.forEach((column) => {
+            newRow[column.dataKey] = column.initialValue;
+        });
+        return newRow;
     }, [columnsDefinition]);
     const createSubstationsGeneratorsOrderingRows = () => [newRowData];
 
