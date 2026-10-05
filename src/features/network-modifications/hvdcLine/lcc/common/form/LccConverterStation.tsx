@@ -18,19 +18,26 @@ interface LccConverterStationProps extends ConnectivityNetworkProps {
     stationLabel: string;
     stationToModify?: LccConverterStationFormInfos | null;
     isModification?: boolean;
+    isPreviousConnectionColumnDisplayed?: boolean;
 }
 
 function ShuntCompensatorSection({
     id,
     isModification,
     stationToModify,
+    isPreviousConnectionColumnDisplayed,
 }: {
     id: string;
     isModification?: boolean;
     stationToModify?: LccConverterStationFormInfos | null;
+    isPreviousConnectionColumnDisplayed?: boolean;
 }) {
     return isModification ? (
-        <ModificationFiltersShuntCompensatorTable id={id} previousValues={stationToModify?.shuntCompensatorsOnSide} />
+        <ModificationFiltersShuntCompensatorTable
+            id={id}
+            previousValues={stationToModify?.shuntCompensatorsOnSide}
+            isPreviousConnectionColumnDisplayed={isPreviousConnectionColumnDisplayed}
+        />
     ) : (
         <FiltersShuntCompensatorTable id={id} />
     );
@@ -44,6 +51,7 @@ export function LccConverterStation({
     PositionDiagramPane,
     voltageLevelOptions = [],
     fetchBusesOrBusbarSections,
+    isPreviousConnectionColumnDisplayed = false,
 }: Readonly<LccConverterStationProps>) {
     const stationNameField = (
         <TextInput
@@ -110,7 +118,12 @@ export function LccConverterStation({
                 <GridItem size={4}>{powerFactorField}</GridItem>
             </Grid>
             <GridSection title="Filters" />
-            <ShuntCompensatorSection id={id} isModification={isModification} stationToModify={stationToModify} />
+            <ShuntCompensatorSection
+                id={id}
+                isModification={isModification}
+                stationToModify={stationToModify}
+                isPreviousConnectionColumnDisplayed={isPreviousConnectionColumnDisplayed}
+            />
         </Grid>
     );
 }

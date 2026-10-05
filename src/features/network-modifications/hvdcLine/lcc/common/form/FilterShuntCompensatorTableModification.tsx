@@ -25,46 +25,54 @@ import { FieldConstants, ReactivePowerAdornment } from '../../../../../../utils'
 import { CheckboxNullableInput, FloatInput, TextInput } from '../../../../../../components';
 import { LccShuntCompensatorInfos } from '../lccHvdcLine.types';
 
-const SHUNT_COLUMNS_DEFINITION = [
-    {
-        label: FieldConstants.SHUNT_COMPENSATOR_ID,
-        dataKey: FieldConstants.SHUNT_COMPENSATOR_ID,
-        initialValue: '',
-        width: '25%',
-    },
-    {
-        label: FieldConstants.SHUNT_COMPENSATOR_NAME,
-        dataKey: FieldConstants.SHUNT_COMPENSATOR_NAME,
-        initialValue: '',
-        width: '20%',
-    },
-    {
-        label: FieldConstants.MAX_Q_AT_NOMINAL_V,
-        dataKey: FieldConstants.MAX_Q_AT_NOMINAL_V,
-        initialValue: null,
-        width: '25%',
-    },
-    {
-        label: 'previousConnection',
-        dataKey: FieldConstants.PREVIOUS_SHUNT_COMPENSATOR_SELECTED,
-        initialValue: null,
-        width: '20%',
-    },
-    {
-        label: 'connected',
-        dataKey: FieldConstants.SHUNT_COMPENSATOR_SELECTED,
-        initialValue: true,
-        width: '10%',
-    },
-];
+function shuntColumnsDefinition(isPreviousConnectionColumnDisplayed: boolean | undefined) {
+    return [
+        {
+            label: FieldConstants.SHUNT_COMPENSATOR_ID,
+            dataKey: FieldConstants.SHUNT_COMPENSATOR_ID,
+            initialValue: '',
+            width: '25%',
+        },
+        {
+            label: FieldConstants.SHUNT_COMPENSATOR_NAME,
+            dataKey: FieldConstants.SHUNT_COMPENSATOR_NAME,
+            initialValue: '',
+            width: '20%',
+        },
+        {
+            label: FieldConstants.MAX_Q_AT_NOMINAL_V,
+            dataKey: FieldConstants.MAX_Q_AT_NOMINAL_V,
+            initialValue: null,
+            width: '25%',
+        },
+        {
+            label: 'previousConnection',
+            dataKey: FieldConstants.PREVIOUS_SHUNT_COMPENSATOR_SELECTED,
+            initialValue: null,
+            width: isPreviousConnectionColumnDisplayed ? '20%' : '0',
+        },
+        {
+            label: 'connected',
+            dataKey: FieldConstants.SHUNT_COMPENSATOR_SELECTED,
+            initialValue: true,
+            width: '10%',
+        },
+    ];
+}
 
 type RowFormProps<T> = {
     id: string;
     deletionMark: boolean;
     previousValues?: T;
+    isPreviousConnectionColumnDisplayed: boolean | undefined;
 };
 
-function ShuntRowForm({ id, deletionMark, previousValues }: Readonly<RowFormProps<LccShuntCompensatorInfos>>) {
+function ShuntRowForm({
+    id,
+    deletionMark,
+    previousValues,
+    isPreviousConnectionColumnDisplayed,
+}: Readonly<RowFormProps<LccShuntCompensatorInfos>>) {
     const intl = useIntl();
     const PreviousConnection = useCallback(() => {
         let previousValue: boolean | null = null;
@@ -96,8 +104,7 @@ function ShuntRowForm({ id, deletionMark, previousValues }: Readonly<RowFormProp
             />
         );
     }, [id, intl, previousValues]);
-
-    return SHUNT_COLUMNS_DEFINITION.map((column) => (
+    return shuntColumnsDefinition(isPreviousConnectionColumnDisplayed).map((column) => (
         <TableCell key={column.dataKey} sx={{ width: column.width, textAlign: 'center' }}>
             {column.dataKey === FieldConstants.SHUNT_COMPENSATOR_ID && (
                 <TextInput name={`${id}.${FieldConstants.SHUNT_COMPENSATOR_ID}`} formProps={{ disabled: true }} />
@@ -130,8 +137,10 @@ function ShuntRowForm({ id, deletionMark, previousValues }: Readonly<RowFormProp
 
 type DeletableMarkRowProps<T> = {
     id: string;
-    RowForm: ComponentType<RowFormProps<T>>;
-    rowFormProps: Omit<RowFormProps<T>, 'id' | 'deletionMark'>;
+    RowForm: ComponentType<RowFormProps<T> & { isPreviousConnectionColumnDisplayed: boolean | undefined }>;
+    rowFormProps: Omit<RowFormProps<T>, 'id' | 'deletionMark'> & {
+        isPreviousConnectionColumnDisplayed: boolean | undefined;
+    };
 };
 
 function DeletableMarkRow<T>({ id, RowForm, rowFormProps }: Readonly<DeletableMarkRowProps<T>>) {
@@ -183,11 +192,13 @@ function DeletableMarkRow<T>({ id, RowForm, rowFormProps }: Readonly<DeletableMa
 interface ModificationFiltersShuntCompensatorTableProps {
     id: string;
     previousValues?: LccShuntCompensatorInfos[];
+    isPreviousConnectionColumnDisplayed: boolean | undefined;
 }
 
 export function ModificationFiltersShuntCompensatorTable({
     id,
     previousValues,
+    isPreviousConnectionColumnDisplayed,
 }: Readonly<ModificationFiltersShuntCompensatorTableProps>) {
     const intl = useIntl();
 
@@ -197,11 +208,11 @@ export function ModificationFiltersShuntCompensatorTable({
     const { fields: rows } = useFieldArray({ name: shuntTableId });
 
     const columnsDefinition = useMemo(() => {
-        return SHUNT_COLUMNS_DEFINITION.map((column) => ({
+        return shuntColumnsDefinition(isPreviousConnectionColumnDisplayed).map((column) => ({
             ...column,
             label: intl.formatMessage({ id: column.label }),
         }));
-    }, [intl]);
+    }, [intl, isPreviousConnectionColumnDisplayed]);
 
     return (
         <TableContainer>
@@ -226,7 +237,10 @@ export function ModificationFiltersShuntCompensatorTable({
                                 key={row.id}
                                 id={rowId}
                                 RowForm={ShuntRowForm}
-                                rowFormProps={{ previousValues: previousShuntValues }}
+                                rowFormProps={{
+                                    previousValues: previousShuntValues,
+                                    isPreviousConnectionColumnDisplayed,
+                                }}
                             />
                         );
                     })}

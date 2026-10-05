@@ -17,6 +17,7 @@ export interface LccHvdcLineDialogTabsContentProps extends ConnectivityNetworkPr
     lccHvdcLineToModify?: LccHvdcLineFormInfos | null;
     tabIndex: number;
     isModification?: boolean;
+    isPreviousConnectionColumnDisplayed?: boolean;
 }
 
 export function LccHvdcLineDialogTabsContent({
@@ -26,6 +27,7 @@ export function LccHvdcLineDialogTabsContent({
     voltageLevelOptions = [],
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
+    isPreviousConnectionColumnDisplayed = false,
 }: Readonly<LccHvdcLineDialogTabsContentProps>) {
     return (
         <>
@@ -45,6 +47,7 @@ export function LccHvdcLineDialogTabsContent({
                     voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+                    isPreviousConnectionColumnDisplayed={isPreviousConnectionColumnDisplayed}
                 />
             </Box>
             <Box hidden={tabIndex !== LccHvdcLineDialogTab.CONVERTER_STATION_2_TAB} sx={{ p: 1 }}>
@@ -56,6 +59,7 @@ export function LccHvdcLineDialogTabsContent({
                     voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
+                    isPreviousConnectionColumnDisplayed={isPreviousConnectionColumnDisplayed}
                 />
             </Box>
         </>

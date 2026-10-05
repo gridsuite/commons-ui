@@ -60,7 +60,7 @@ export function LccHvdcLine({ id, lccHvdcLineToModify, isModification = false }:
             previousValue={
                 lccHvdcLineToModify
                     ? intl.formatMessage({
-                          id: LCC_CONVERTER_MODE[lccHvdcLineToModify.convertersMode as LccConverterMode].label,
+                          id: LCC_CONVERTER_MODE[lccHvdcLineToModify.convertersMode as LccConverterMode]?.label,
                       })
                     : undefined
             }

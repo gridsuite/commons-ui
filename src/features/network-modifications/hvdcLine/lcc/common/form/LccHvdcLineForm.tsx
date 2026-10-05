@@ -19,6 +19,7 @@ interface LccCreationFormProps extends ConnectivityNetworkProps {
     useTabsReturn: UseTabsReturn<LccHvdcLineDialogTab>;
     isModification?: boolean;
     lccHvdcLineToModify?: LccHvdcLineFormInfos | null;
+    isPreviousConnectionColumnDisplayed?: boolean;
 }
 export function LccHvdcLineForm({
     lccHvdcLineToModify,
@@ -27,6 +28,7 @@ export function LccHvdcLineForm({
     PositionDiagramPane,
     isModification = false,
     useTabsReturn,
+    isPreviousConnectionColumnDisplayed = false,
 }: Readonly<LccCreationFormProps>) {
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
@@ -46,6 +48,7 @@ export function LccHvdcLineForm({
                     voltageLevelOptions={voltageLevelOptions}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     PositionDiagramPane={PositionDiagramPane}
+                    isPreviousConnectionColumnDisplayed={isPreviousConnectionColumnDisplayed}
                 />
             </Box>
         </Stack>
