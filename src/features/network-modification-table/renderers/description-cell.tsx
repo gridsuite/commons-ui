@@ -12,8 +12,9 @@ import { Row } from '@tanstack/react-table';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationNameAndDescription } from '../../../services';
-import { ComposedModificationMetadata } from '../../../utils';
+import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
+import { useSnackMessage } from '../../../hooks';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
@@ -22,6 +23,7 @@ export interface DescriptionCellProps {
 
 export function DescriptionCell(props: DescriptionCellProps) {
     const { row, isDisabled = false } = props;
+    const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -47,10 +49,12 @@ export function DescriptionCell(props: DescriptionCellProps) {
                 description: descriptionRecord.description,
                 type: data.type,
             })
-                .catch(() => {
-                    // rollback
+                .catch((error) => {
                     setDescriptionState(savedDescription);
-                    return Promise.reject(new Error('error while updating description'));
+                    snackWithFallback(snackError, error, {
+                        headerId: `setModificationNameAndDescriptionError`,
+                    });
+                    throw error;
                 })
                 .finally(() => {
                     setIsLoading(false);
