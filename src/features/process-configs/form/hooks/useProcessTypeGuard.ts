@@ -7,13 +7,15 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { Option } from '../../../../utils';
+import { FieldConstants, Option } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
 import type { ProcessConfigFormValues } from '../../common/process-config-form.types';
 import { deepEqual, withoutProcessType } from '../utils/form.utils';
 
 export function useProcessTypeGuard() {
-    const selectedProcessType = useWatch<ProcessConfigFormValues>({ name: 'processType' });
+    const selectedProcessType = useWatch<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>({
+        name: FieldConstants.PROCESS_TYPE,
+    });
     const { getValues, reset } = useFormContext<ProcessConfigFormValues>();
 
     const defaultValues = getProcessConfigFormDefaultValues('create');
@@ -69,7 +71,7 @@ export function useProcessTypeGuard() {
         }
         reset({
             ...defaultValues,
-            processType: pendingProcessType as ProcessConfigFormValues['processType'],
+            processType: pendingProcessType as ProcessConfigFormValues[FieldConstants.PROCESS_TYPE],
         });
         setConfirmedProcessType(pendingProcessType);
         setPendingProcessType(null);

@@ -49,7 +49,7 @@ export function ProcessConfigEditionDialog({
     } = formMethods;
     const { snackError } = useSnackMessage();
 
-    const selectedProcessType = useWatch({ control, name: 'processType' });
+    const selectedProcessType = useWatch({ control, name: FieldConstants.PROCESS_TYPE });
 
     const handleSave = useCallback<SubmitHandler<ProcessConfigFormValues>>(
         async (values) => {

@@ -23,14 +23,14 @@ export type ProcessConfigParameterRef = {
 type ProcessConfigParameterValues = Partial<Record<ProcessConfigParameterField, ProcessConfigParameterRef[]>>;
 
 export type ProcessConfigFormValues = {
-    processType: ProcessType | '';
+    [FieldConstants.PROCESS_TYPE]: ProcessType | '';
     [FieldConstants.NAME]: string;
     [FieldConstants.DESCRIPTION]?: string;
     [FieldConstants.DIRECTORY]?: DirectoryItemSchema | null;
     [FieldConstants.MODIFICATIONS]: ProcessConfigModification[];
 } & ProcessConfigParameterValues;
 
-export type ProcessConfigPrefillValues = Partial<Omit<ProcessConfigFormValues, 'processType'>>;
+export type ProcessConfigPrefillValues = Partial<Omit<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>>;
 
 export type FetchProcessConfigHandler = (
     processConfigUuid: string,

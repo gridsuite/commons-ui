@@ -11,6 +11,7 @@ import { FormSubSection } from './FormSubSection';
 import { ParameterLineDirectoryItemsInput } from '../../parameters';
 import { getProcessConfigTypeDefinition } from './process-config-type.definitions';
 import { ProcessConfigFormValues } from './process-config-form.types';
+import { FieldConstants } from '../../../utils';
 
 const commonDirectoryItemsInputProps = {
     allowMultiSelect: false,
@@ -21,7 +22,7 @@ const commonDirectoryItemsInputProps = {
 };
 
 export function ProvidersParametersSubSection() {
-    const selectedProcessType = useWatch<ProcessConfigFormValues>({ name: 'processType' });
+    const selectedProcessType = useWatch<ProcessConfigFormValues>({ name: FieldConstants.PROCESS_TYPE });
 
     const definition = getProcessConfigTypeDefinition(selectedProcessType);
 

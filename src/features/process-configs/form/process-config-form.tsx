@@ -13,9 +13,9 @@ import { ProcessTypeSelect } from './components/ProcessTypeSelect';
 import { ProcessTypeChangeDialog } from './components/ProcessTypeChangeDialog';
 import { usePrefillSelection } from './hooks/usePrefillSelection';
 import { useProcessTypeGuard } from './hooks/useProcessTypeGuard';
-import { GeneralInformationSection, SpecificInformationSection } from '../common';
+import { GeneralInformationSection, ProcessConfigFormValues, SpecificInformationSection } from '../common';
 import type { ProcessConfigFormProps } from '../common/process-config-form.types';
-import { DirectoryItemSelector, type DirectoryItemSchema } from '../../../components';
+import { DirectoryItemSelector } from '../../../components';
 import { ElementType, FieldConstants } from '../../../utils';
 
 export function ProcessConfigForm({
@@ -36,7 +36,9 @@ export function ProcessConfigForm({
         cancelProcessTypeChange,
     } = useProcessTypeGuard();
 
-    const selectedDirectory = useWatch({ name: FieldConstants.DIRECTORY }) as DirectoryItemSchema | null | undefined;
+    const selectedDirectory = useWatch<ProcessConfigFormValues, FieldConstants.DIRECTORY>({
+        name: FieldConstants.DIRECTORY,
+    });
 
     const { isSelectorOpen, openSelector, itemFilter, handleSelect } = usePrefillSelection({
         onFetchProcessConfig,

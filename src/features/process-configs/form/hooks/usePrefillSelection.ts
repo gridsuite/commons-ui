@@ -10,10 +10,11 @@ import { useFormContext } from 'react-hook-form';
 import { ElementAttributes, ElementType, FieldConstants } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
 import type { FetchProcessConfigHandler, ProcessConfigFormValues } from '../../common/process-config-form.types';
+import { ProcessType } from '../../common';
 
 type UsePrefillSelectionParams = {
     onFetchProcessConfig?: FetchProcessConfigHandler;
-    selectedProcessType: string;
+    selectedProcessType: ProcessType | '';
 };
 
 export function usePrefillSelection({ onFetchProcessConfig, selectedProcessType }: UsePrefillSelectionParams) {
@@ -54,7 +55,7 @@ export function usePrefillSelection({ onFetchProcessConfig, selectedProcessType 
                 {
                     ...getProcessConfigFormDefaultValues('create'),
                     ...prefillValues,
-                    processType: selectedProcessType as ProcessConfigFormValues['processType'],
+                    processType: selectedProcessType,
                     [FieldConstants.NAME]: currentName,
                     [FieldConstants.DIRECTORY]: currentDirectory,
                 },
