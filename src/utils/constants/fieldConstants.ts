@@ -285,4 +285,5 @@ export enum FieldConstants {
     LEFT_SIDE_PERCENTAGE = 'leftSidePercentage',
     RIGHT_SIDE_PERCENTAGE = 'rightSidePercentage',
     SLIDER_PERCENTAGE = 'sliderPercentage',
+    NEW_VOLTAGE_LEVEL = 'newVoltageLevel',
 }
