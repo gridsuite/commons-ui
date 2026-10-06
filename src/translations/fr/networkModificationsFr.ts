@@ -619,4 +619,6 @@ export const networkModificationsFr = {
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
     setModificationNameAndDescriptionError:
         'Erreur lors de la modification du nom et/ou de la description de la modification',
+    createSharedDisabledTooltip:
+        "Il n'est possible de partager qu'une composite non partagée qui ne contient pas elle même de modifications partagées.",
 };
