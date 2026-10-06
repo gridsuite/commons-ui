@@ -64,7 +64,7 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                         forcePopupIcon
                         options={substationOptions}
                         size="small"
-                        allowNewValue={false}
+                        allowNewValue
                         noOptionsText=""
                     />
                 ) : (
