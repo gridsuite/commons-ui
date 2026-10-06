@@ -28,15 +28,7 @@ const getGeneratorsFiltersSchema = () => {
 const getGeneratorsFrequencyReserveSchema = () => {
     return array().of(
         object().shape({
-            [FieldConstants.GENERATORS_FILTERS]: array()
-                .of(
-                    object().shape({
-                        [FieldConstants.ID]: string().required(),
-                        [FieldConstants.NAME]: string().required(),
-                    })
-                )
-                .min(1, YUP_REQUIRED)
-                .required(),
+            [FieldConstants.GENERATORS_FILTERS]: getGeneratorsFiltersSchema().min(1, YUP_REQUIRED).required(),
             [FieldConstants.FREQUENCY_RESERVE]: number()
                 .nullable()
                 .min(0, NORMALIZED_PERCENTAGE)
