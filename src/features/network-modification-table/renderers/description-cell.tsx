@@ -45,12 +45,15 @@ export function DescriptionCell(props: DescriptionCellProps) {
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
             setDescriptionState(descriptionRecord.description);
+            data.description = descriptionRecord.description;
             return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             })
                 .catch((error) => {
+                    // rollback
                     setDescriptionState(savedDescription);
+                    data.description = savedDescription;
                     snackWithFallback(snackError, error, {
                         headerId: `setModificationNameAndDescriptionError`,
                     });
@@ -86,7 +89,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(data.description)}
+                        sx={createEditDescriptionStyle(descriptionState)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>
