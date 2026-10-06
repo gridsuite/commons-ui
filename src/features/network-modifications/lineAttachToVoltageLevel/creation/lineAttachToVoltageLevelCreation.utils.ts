@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, object, string } from 'yup';
+import { InferType, mixed, object, string } from 'yup';
 import { DeepNullable, FieldConstants, ModificationType, sanitizeString } from '../../../../utils';
 import {
     getConnectivityPropertiesData,
@@ -19,8 +19,6 @@ import {
 import { LineCreationDto } from '../../line/creation/lineCreation.types';
 import { VoltageLevelCreationDto } from '../../voltageLevel/creation/voltageLevelCreation.types';
 import { LineAttachToVoltageLevelCreationDto } from './lineAttachToVoltageLevelCreation.types';
-
-const DIRTY_TRIGGER = '_dirtyTrigger';
 
 export const lineAttachToVoltageLevelEmptyAttachmentPoint: VoltageLevelCreationDto = {
     type: ModificationType.VOLTAGE_LEVEL_CREATION,
@@ -50,8 +48,13 @@ export const lineAttachToVoltageLevelCreationFormSchema = object()
         [FieldConstants.LINE2_ID]: string().required(),
         [FieldConstants.LINE2_NAME]: string().nullable(),
         [FieldConstants.CONNECTIVITY]: object().shape(getConnectivityPropertiesValidationSchema(false)),
+        // Full creation payloads produced by the app-supplied AttachmentPointPane/AttachedLinePane/
+        // NewVoltageLevelPane: kept in the form (not external state) so any consumer can read them back
+        // via formToDto.
+        [FieldConstants.ATTACHMENT_POINT_DETAIL]: mixed<VoltageLevelCreationDto>().nullable().default(null),
+        [FieldConstants.ATTACHMENT_LINE]: mixed<LineCreationDto>().required(),
+        [FieldConstants.NEW_VOLTAGE_LEVEL]: mixed<VoltageLevelCreationDto>().nullable().default(null),
         ...getLineToAttachOrSplitFormValidationSchema(),
-        [DIRTY_TRIGGER]: string(),
     })
     .required();
 
@@ -66,8 +69,10 @@ export const lineAttachToVoltageLevelCreationEmptyFormData: DeepNullable<LineAtt
     [FieldConstants.LINE2_ID]: '',
     [FieldConstants.LINE2_NAME]: '',
     [FieldConstants.CONNECTIVITY]: getConnectivityPropertiesEmptyFormData(),
+    [FieldConstants.ATTACHMENT_POINT_DETAIL]: lineAttachToVoltageLevelEmptyAttachmentPoint,
+    [FieldConstants.ATTACHMENT_LINE]: null,
+    [FieldConstants.NEW_VOLTAGE_LEVEL]: null,
     ...getLineToAttachOrSplitEmptyFormData(),
-    [DIRTY_TRIGGER]: '',
 };
 
 export const lineAttachToVoltageLevelCreationDtoToForm = (
@@ -80,14 +85,17 @@ export const lineAttachToVoltageLevelCreationDtoToForm = (
     });
 
     return {
-        [DIRTY_TRIGGER]: '',
         [FieldConstants.LINE1_ID]: lineAttachDto.newLine1Id,
         [FieldConstants.LINE1_NAME]: lineAttachDto.newLine1Name ?? '',
         [FieldConstants.LINE2_ID]: lineAttachDto.newLine2Id,
         [FieldConstants.LINE2_NAME]: lineAttachDto.newLine2Name ?? '',
         [FieldConstants.ATTACHMENT_LINE_ID]: lineAttachDto.attachmentLine?.equipmentId ?? '',
+        [FieldConstants.ATTACHMENT_LINE]: lineAttachDto.attachmentLine ?? null,
         [FieldConstants.ATTACHMENT_POINT_ID]: lineAttachDto.attachmentPointId,
         [FieldConstants.ATTACHMENT_POINT_NAME]: lineAttachDto.attachmentPointName ?? '',
+        [FieldConstants.ATTACHMENT_POINT_DETAIL]:
+            lineAttachDto.attachmentPointDetailInformation ?? lineAttachToVoltageLevelEmptyAttachmentPoint,
+        [FieldConstants.NEW_VOLTAGE_LEVEL]: newVoltageLevel ?? null,
         ...getLineToAttachOrSplitFormData({
             lineToAttachOrSplitId: lineAttachDto.lineToAttachToId,
             percent: lineAttachDto.percent,
@@ -101,20 +109,11 @@ export const lineAttachToVoltageLevelCreationDtoToForm = (
     } as LineAttachToVoltageLevelCreationFormData;
 };
 
-export interface LineAttachToVoltageLevelFormToDtoExtras {
-    attachmentPoint: VoltageLevelCreationDto;
-    attachmentLine: LineCreationDto;
-    newVoltageLevel: VoltageLevelCreationDto | null;
-}
-
-// attachmentPoint/attachmentLine/newVoltageLevel are the full nested-creation payloads (produced by
-// the app-supplied AttachmentPointPane/AttachedLinePane/NewVoltageLevelPane): they cannot be derived
-// from form data alone, since the form only tracks their id/name, not their full creation payload.
 export const lineAttachToVoltageLevelCreationFormToDto = (
-    lineAttachForm: LineAttachToVoltageLevelCreationFormData,
-    { attachmentPoint, attachmentLine, newVoltageLevel }: LineAttachToVoltageLevelFormToDtoExtras
+    lineAttachForm: LineAttachToVoltageLevelCreationFormData
 ): LineAttachToVoltageLevelCreationDto => {
     const currentVoltageLevelId = lineAttachForm[FieldConstants.CONNECTIVITY]?.voltageLevel?.id;
+    const newVoltageLevel = lineAttachForm[FieldConstants.NEW_VOLTAGE_LEVEL] ?? null;
     const isNewVoltageLevel = newVoltageLevel?.equipmentId === currentVoltageLevelId;
     return {
         type: ModificationType.LINE_ATTACH_TO_VOLTAGE_LEVEL,
@@ -122,11 +121,12 @@ export const lineAttachToVoltageLevelCreationFormToDto = (
         percent: lineAttachForm[FieldConstants.SLIDER_PERCENTAGE] ?? 50,
         attachmentPointId: lineAttachForm[FieldConstants.ATTACHMENT_POINT_ID],
         attachmentPointName: sanitizeString(lineAttachForm[FieldConstants.ATTACHMENT_POINT_NAME]),
-        attachmentPointDetailInformation: attachmentPoint,
+        attachmentPointDetailInformation:
+            lineAttachForm[FieldConstants.ATTACHMENT_POINT_DETAIL] ?? lineAttachToVoltageLevelEmptyAttachmentPoint,
         mayNewVoltageLevelInfos: isNewVoltageLevel ? newVoltageLevel : null,
         existingVoltageLevelId: currentVoltageLevelId ?? '',
         bbsOrBusId: lineAttachForm[FieldConstants.CONNECTIVITY]?.busOrBusbarSection?.id ?? '',
-        attachmentLine,
+        attachmentLine: lineAttachForm[FieldConstants.ATTACHMENT_LINE],
         newLine1Id: lineAttachForm[FieldConstants.LINE1_ID],
         newLine1Name: sanitizeString(lineAttachForm[FieldConstants.LINE1_NAME]),
         newLine2Id: lineAttachForm[FieldConstants.LINE2_ID],

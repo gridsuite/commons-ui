@@ -288,5 +288,7 @@ export enum FieldConstants {
     ATTACHMENT_LINE_ID = 'attachmentLineId',
     ATTACHMENT_POINT_ID = 'attachmentPointId',
     ATTACHMENT_POINT_NAME = 'attachmentPointName',
+    ATTACHMENT_POINT_DETAIL = 'attachmentPointDetail',
+    ATTACHMENT_LINE = 'attachmentLine',
     NEW_VOLTAGE_LEVEL = 'newVoltageLevel',
 }

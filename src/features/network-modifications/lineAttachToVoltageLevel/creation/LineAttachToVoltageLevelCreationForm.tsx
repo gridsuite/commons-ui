@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ComponentType, useState } from 'react';
+import { ComponentType, useCallback, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { AddButton, AddButtonMode, TextInput } from '../../../../components/ui';
+import { AddButton, AddButtonMode, TextInput, useCustomFormContext } from '../../../../components/ui';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { FieldConstants } from '../../../../utils';
@@ -16,6 +16,7 @@ import { LineToAttachOrSplitForm, VoltageLevelConnectivityForm } from '../../com
 import { ConnectivityNetworkProps } from '../../common/connectivity/connectivity.type';
 import { LineCreationDto, LineCreationDtoWithId } from '../../line/creation/lineCreation.types';
 import { VoltageLevelCreationDto } from '../../voltageLevel/creation/voltageLevelCreation.types';
+import { lineAttachToVoltageLevelEmptyAttachmentPoint } from './lineAttachToVoltageLevelCreation.utils';
 
 export type VoltageLevelCreationPaneType = ComponentType<{
     open: boolean;
@@ -40,18 +41,13 @@ export interface LineAttachToVoltageLevelCreationFormProps extends Pick<
     lineOptions?: string[];
     isUpdate?: boolean;
 
-    newVoltageLevel?: VoltageLevelCreationDto | null;
+    // Optional: the form already records the new voltage level itself; this only notifies a consumer
+    // that also needs to know, e.g. to add it to a locally-displayed options list.
     onNewVoltageLevelCreated?: (voltageLevel: VoltageLevelCreationDto) => Promise<string>;
     NewVoltageLevelPane?: VoltageLevelCreationPaneType;
 
-    attachmentPoint?: VoltageLevelCreationDto | null;
-    onAttachmentPointModified?: (voltageLevel: VoltageLevelCreationDto) => Promise<string>;
-    onAttachmentPointIdChanged?: (value: string) => void;
-    onAttachmentPointNameChanged?: (value: string) => void;
     AttachmentPointPane?: VoltageLevelCreationPaneType;
 
-    attachmentLine?: LineCreationDtoWithId | null;
-    onAttachedLineCreated?: (params: { lineCreationInfos: LineCreationDto }) => Promise<string>;
     AttachedLinePane?: AttachedLinePaneType;
 }
 
@@ -60,21 +56,21 @@ export function LineAttachToVoltageLevelCreationForm({
     fetchBusesOrBusbarSections,
     lineOptions = [],
     isUpdate = false,
-    newVoltageLevel = null,
-    onNewVoltageLevelCreated = () => new Promise(() => {}),
+    onNewVoltageLevelCreated,
     NewVoltageLevelPane,
-    attachmentPoint = null,
-    onAttachmentPointModified = () => new Promise(() => {}),
-    onAttachmentPointIdChanged,
-    onAttachmentPointNameChanged,
     AttachmentPointPane,
-    attachmentLine = null,
-    onAttachedLineCreated = () => new Promise(() => {}),
     AttachedLinePane,
 }: Readonly<LineAttachToVoltageLevelCreationFormProps>) {
     const [voltageLevelDialogOpen, setVoltageLevelDialogOpen] = useState(false);
     const [attachmentPointDialogOpen, setAttachmentPointDialogOpen] = useState(false);
     const [lineDialogOpen, setLineDialogOpen] = useState(false);
+    const { setValue, getValues } = useCustomFormContext();
+
+    const newVoltageLevel: VoltageLevelCreationDto | null = useWatch({ name: FieldConstants.NEW_VOLTAGE_LEVEL });
+    const attachmentPoint: VoltageLevelCreationDto | null = useWatch({
+        name: FieldConstants.ATTACHMENT_POINT_DETAIL,
+    });
+    const attachmentLine: LineCreationDto | null = useWatch({ name: FieldConstants.ATTACHMENT_LINE });
 
     const voltageLevelIdWatch = useWatch({
         name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
@@ -84,6 +80,106 @@ export function LineAttachToVoltageLevelCreationForm({
     // as equipmentId and equipmentName are synchronized to check if the icon is add or edit
     // other attributes than id and name must be present
     const hasSubstationCreation = attachmentPoint?.substationCreation != null;
+
+    const handleCreateVoltageLevel = useCallback(
+        (voltageLevel: VoltageLevelCreationDto) => {
+            setValue(FieldConstants.NEW_VOLTAGE_LEVEL, voltageLevel, { shouldDirty: true });
+            setValue(
+                FieldConstants.CONNECTIVITY,
+                {
+                    ...getValues(FieldConstants.CONNECTIVITY),
+                    [FieldConstants.VOLTAGE_LEVEL]: { [FieldConstants.ID]: voltageLevel.equipmentId },
+                    [FieldConstants.BUS_OR_BUSBAR_SECTION]: null,
+                },
+                { shouldDirty: true }
+            );
+            return onNewVoltageLevelCreated?.(voltageLevel) ?? new Promise<string>(() => {});
+        },
+        [setValue, getValues, onNewVoltageLevelCreated]
+    );
+
+    const handleAttachmentPointModified = useCallback(
+        (attachmentPointData: VoltageLevelCreationDto) => {
+            setValue(FieldConstants.ATTACHMENT_POINT_DETAIL, attachmentPointData, { shouldDirty: true });
+            setValue(FieldConstants.ATTACHMENT_POINT_ID, attachmentPointData.equipmentId, {
+                shouldValidate: true,
+                shouldDirty: true,
+            });
+            setValue(FieldConstants.ATTACHMENT_POINT_NAME, attachmentPointData.equipmentName, {
+                shouldValidate: true,
+                shouldDirty: true,
+            });
+            return new Promise<string>(() => {});
+        },
+        [setValue]
+    );
+
+    const handleAttachmentPointIdChanged = useCallback(
+        (value: string) => {
+            const current =
+                getValues(FieldConstants.ATTACHMENT_POINT_DETAIL) ?? lineAttachToVoltageLevelEmptyAttachmentPoint;
+            setValue(FieldConstants.ATTACHMENT_POINT_DETAIL, { ...current, equipmentId: value }, { shouldDirty: true });
+        },
+        [setValue, getValues]
+    );
+
+    const handleAttachmentPointNameChanged = useCallback(
+        (value: string) => {
+            const current =
+                getValues(FieldConstants.ATTACHMENT_POINT_DETAIL) ?? lineAttachToVoltageLevelEmptyAttachmentPoint;
+            setValue(
+                FieldConstants.ATTACHMENT_POINT_DETAIL,
+                { ...current, equipmentName: value },
+                { shouldDirty: true }
+            );
+        },
+        [setValue, getValues]
+    );
+
+    const handleAttachedLineCreated = useCallback(
+        ({ lineCreationInfos }: { lineCreationInfos: LineCreationDto }) => {
+            // clean unused (required) fields by a simple copy with casting
+            const {
+                type,
+                equipmentId,
+                equipmentName,
+                r,
+                x,
+                g1,
+                b1,
+                g2,
+                b2,
+                operationalLimitsGroups,
+                selectedOperationalLimitsGroupId1,
+                selectedOperationalLimitsGroupId2,
+                properties,
+            } = lineCreationInfos;
+
+            const preparedLine: LineCreationDto = {
+                type,
+                equipmentId,
+                equipmentName,
+                r,
+                x,
+                g1,
+                b1,
+                g2,
+                b2,
+                operationalLimitsGroups,
+                selectedOperationalLimitsGroupId1,
+                selectedOperationalLimitsGroupId2,
+                properties,
+            } as LineCreationDto;
+
+            setValue(FieldConstants.ATTACHMENT_LINE, preparedLine, { shouldDirty: true });
+            setValue(FieldConstants.ATTACHMENT_LINE_ID, preparedLine.equipmentId, {
+                shouldValidate: true,
+                shouldDirty: true,
+            });
+            return new Promise<string>(() => {});
+        },
+        [setValue]
+    );
 
     return (
         <>
@@ -97,7 +193,7 @@ export function LineAttachToVoltageLevelCreationForm({
                     <TextInput
                         name={FieldConstants.ATTACHMENT_POINT_ID}
                         label="AttachmentPointId"
-                        onChange={onAttachmentPointIdChanged}
+                        onChange={handleAttachmentPointIdChanged}
                         dataTestId="AttachmentPointIDInput"
                     />
                 </GridItem>
@@ -105,7 +201,7 @@ export function LineAttachToVoltageLevelCreationForm({
                     <TextInput
                         name={FieldConstants.ATTACHMENT_POINT_NAME}
                         label="AttachmentPointName"
-                        onChange={onAttachmentPointNameChanged}
+                        onChange={handleAttachmentPointNameChanged}
                         dataTestId="AttachmentPointNameInput"
                     />
                 </GridItem>
@@ -191,7 +287,7 @@ export function LineAttachToVoltageLevelCreationForm({
                 <AttachmentPointPane
                     open
                     onClose={() => setAttachmentPointDialogOpen(false)}
-                    onCreateVoltageLevel={onAttachmentPointModified}
+                    onCreateVoltageLevel={handleAttachmentPointModified}
                     editData={attachmentPoint}
                     isUpdate={isUpdate}
                 />
@@ -200,7 +296,7 @@ export function LineAttachToVoltageLevelCreationForm({
                 <NewVoltageLevelPane
                     open
                     onClose={() => setVoltageLevelDialogOpen(false)}
-                    onCreateVoltageLevel={onNewVoltageLevelCreated}
+                    onCreateVoltageLevel={handleCreateVoltageLevel}
                     editData={isVoltageLevelEdit ? newVoltageLevel : null}
                     isUpdate={isUpdate}
                 />
@@ -209,7 +305,7 @@ export function LineAttachToVoltageLevelCreationForm({
                 <AttachedLinePane
                     open
                     onClose={() => setLineDialogOpen(false)}
-                    onCreateLine={onAttachedLineCreated}
+                    onCreateLine={handleAttachedLineCreated}
                     editData={attachmentLine}
                     isUpdate={isUpdate}
                 />
