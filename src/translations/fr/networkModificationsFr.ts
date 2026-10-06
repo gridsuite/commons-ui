@@ -617,4 +617,6 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
+    createSharedDisabledTooltip:
+        "Il n'est possible de partager qu'une composite non partagée qui ne contient pas elle même de modifications partagées.",
 };
