@@ -6,12 +6,15 @@
  */
 
 import { Dispatch, SetStateAction } from 'react';
+import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
+    BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     ModificationReferenceInfos,
+    NetworkModificationActivations,
     NetworkModificationApplicabilities,
     NetworkModificationMetadata,
     ReferencedCompositeModifications,
@@ -19,6 +22,66 @@ import {
 } from '../../utils';
 
 export const MAX_COMPOSITE_NESTING_DEPTH = 5;
+
+/**
+ * A modification is activated unless an entry says otherwise.
+ */
+export function isActivated(activations: NetworkModificationActivations, modificationUuid: UUID) {
+    return activations[modificationUuid] ?? true;
+}
+
+// Indexes by uuid the global activation every modification of the tree carries, sub modifications included.
+export function collectActivations(modifications: ComposedModificationMetadata[]): NetworkModificationActivations {
+    return modifications.reduce(
+        (activations, modification) => ({
+            ...activations,
+            [modification.uuid]: modification.activated,
+            ...collectActivations(modification.subModifications),
+        }),
+        {}
+    );
+}
+
+// Override server activation when pending one exists.
+export function mergeActivations(
+    serverActivations: NetworkModificationActivations,
+    pendingActivations: NetworkModificationActivations
+): NetworkModificationActivations {
+    return Object.keys(pendingActivations).length === 0
+        ? serverActivations
+        : { ...serverActivations, ...pendingActivations };
+}
+
+/**
+ * Keeps the pending activations the server has yet to report, dropping the ones the fetched modifications now
+ * carry: clearing them on every refresh would flick the switch back to the old value until the change makes it
+ * back. Returns the map it was given when nothing was dropped, to spare a render.
+ */
+export function keepStillPendingActivations(
+    pendingActivations: NetworkModificationActivations,
+    serverActivations: NetworkModificationActivations
+): NetworkModificationActivations {
+    const pendingUuids = Object.keys(pendingActivations);
+    if (pendingUuids.length === 0) {
+        return pendingActivations;
+    }
+    const stillPending = Object.entries(pendingActivations).filter(
+        ([uuid, activated]) => isActivated(serverActivations, uuid as UUID) !== activated
+    );
+    return stillPending.length === pendingUuids.length ? pendingActivations : Object.fromEntries(stillPending);
+}
+
+/**
+ * A modification is applicable on a root network unless its applicability for it is explicitly false:
+ * a root network without an entry is applicable.
+ */
+export function isApplicableOn(
+    applicabilities: NetworkModificationApplicabilities,
+    modificationUuid: UUID,
+    rootNetworkUuid: UUID
+) {
+    return applicabilities[modificationUuid]?.[rootNetworkUuid] ?? true;
+}
 
 // Convert applicability by tag to applicability by root network id.
 function toApplicabilityByRootNetworkUuid(
@@ -59,6 +122,87 @@ export function collectApplicabilities(
     return collectApplicabilitiesByUuid(modifications, uuidByTag);
 }
 
+// Override server applicability when pending one exists.
+export function mergeApplicabilities(
+    serverApplicabilities: NetworkModificationApplicabilities,
+    pendingApplicabilities: NetworkModificationApplicabilities
+): NetworkModificationApplicabilities {
+    if (Object.keys(pendingApplicabilities).length === 0) {
+        return serverApplicabilities;
+    }
+    return Object.entries(pendingApplicabilities).reduce(
+        (merged, [uuid, pendingByRootNetwork]) => ({
+            ...merged,
+            [uuid]: { ...merged[uuid as UUID], ...pendingByRootNetwork },
+        }),
+        serverApplicabilities
+    );
+}
+
+/**
+ * Keeps the pending applicabilities the server has yet to report, the way {@link keepStillPendingActivations}
+ * does for the activations.
+ */
+export function keepStillPendingApplicabilities(
+    pendingApplicabilities: NetworkModificationApplicabilities,
+    serverApplicabilities: NetworkModificationApplicabilities
+): NetworkModificationApplicabilities {
+    const pendingUuids = Object.keys(pendingApplicabilities);
+    if (pendingUuids.length === 0) {
+        return pendingApplicabilities;
+    }
+    let hasChanged = false;
+    const stillPending: NetworkModificationApplicabilities = {};
+    pendingUuids.forEach((modificationUuid) => {
+        const byRootNetwork = Object.entries(pendingApplicabilities[modificationUuid as UUID]).filter(
+            ([rootNetworkUuid, applicable]) =>
+                isApplicableOn(serverApplicabilities, modificationUuid as UUID, rootNetworkUuid as UUID) !== applicable
+        );
+        hasChanged ||= byRootNetwork.length !== Object.keys(pendingApplicabilities[modificationUuid as UUID]).length;
+        if (byRootNetwork.length > 0) {
+            stillPending[modificationUuid as UUID] = Object.fromEntries(byRootNetwork);
+        }
+    });
+    return hasChanged ? stillPending : pendingApplicabilities;
+}
+
+/**
+ * Whether a parent composite of the row is globally deactivated.
+ */
+export function isDeactivatedByAncestor(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations
+) {
+    return row.getParentRows().some((ancestor) => !isActivated(activations, ancestor.original.uuid));
+}
+
+/**
+ * Whether the modification is deactivated, by its own activation or by that of a composite holding it, so that
+ * it applies nowhere and has no per root network choice left to make.
+ */
+export function isDeactivatedItselfOrByAncestor(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations
+) {
+    return !isActivated(activations, row.original.uuid) || isDeactivatedByAncestor(row, activations);
+}
+
+/**
+ * Whether the modification effectively applies on the root network: it has to want it, and so does every
+ * composite it is nested in, both globally and for that root network.
+ */
+export function isAppliedOn(
+    row: Row<ComposedModificationMetadata>,
+    activations: NetworkModificationActivations,
+    applicabilities: NetworkModificationApplicabilities,
+    rootNetworkUuid: UUID
+) {
+    return [row, ...row.getParentRows()].every(
+        ({ original }) =>
+            isActivated(activations, original.uuid) && isApplicableOn(applicabilities, original.uuid, rootNetworkUuid)
+    );
+}
+
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
 // specific node's *position* in the tree
@@ -80,12 +224,12 @@ export function toMessageValues(modification: NetworkModificationMetadata) {
     return messageValues;
 }
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
-export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
@@ -98,6 +242,31 @@ export function containsReferenceModification(modification: ComposedModification
     }
     return modification.subModifications.some(
         (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
+}
+
+export function isReferenceModificationOrInsideOne(
+    modification: BasicComposedModificationMetadata | undefined
+): boolean {
+    return isReferenceModification(modification) || !!modification?.childFromShared;
+}
+
+/**
+ * Tells whether a reference points at a shared modification its reader cannot write into. The server flags as
+ * editable only the references whose permission it resolved, so one without the flag stays read-only.
+ */
+export function isSharedModificationReadOnly(modification: NetworkModificationMetadata | undefined) {
+    return !modification?.editable;
+}
+
+/**
+ * Tells whether a modification is a reference pointing at a shared modification the user can't write into, or
+ * sits inside one.
+ */
+export function isModificationEditLocked(modification: BasicComposedModificationMetadata) {
+    return (
+        (isReferenceModification(modification) && isSharedModificationReadOnly(modification)) ||
+        !!modification.childFromReadOnlyShared
     );
 }
 
@@ -378,11 +547,18 @@ export async function fetchSubModificationsForExpandedRows(
                 const existingMod = findModificationInTree(node.rowKey, tree);
                 // A composite nested inside a reference is itself flagged childFromShared;
                 // propagate the flag to its children so they stay non-clickable as well.
-                const inheritsReference = existingMod?.childFromShared === true;
                 const liveModifications = formatToComposedModification(
                     subMods.filter((m) => !m.stashed),
                     node.uuid
-                ).map((m) => (inheritsReference ? { ...m, childFromShared: true } : m));
+                ).map((m) =>
+                    existingMod?.childFromShared
+                        ? {
+                              ...m,
+                              childFromShared: true,
+                              childFromReadOnlyShared: existingMod.childFromReadOnlyShared,
+                          }
+                        : m
+                );
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
                 const mergedSubs = mergeSubModificationsIntoTree(
@@ -405,9 +581,11 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
+                const childFromReadOnlyShared = node.childFromReadOnlyShared || isSharedModificationReadOnly(node);
                 const liveModifications = formatToComposedModification(children, detail.referencedId).map((m) => ({
                     ...m,
                     childFromShared: true,
+                    childFromReadOnlyShared,
                 }));
 
                 setMods((prev) => {
