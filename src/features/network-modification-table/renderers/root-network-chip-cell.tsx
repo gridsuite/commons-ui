@@ -13,17 +13,12 @@ import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
-    //NetworkModificationActivations,
+    NetworkModificationActivations,
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
-import {
-    isAppliedOn,
-    isApplicableOn,
-    isDeactivatedItselfOrByAncestor,
-    isReferenceModificationOrInsideOne,
-} from '../utils';
+import { isAppliedOn, isApplicableOn, isDeactivatedItselfOrByAncestor } from '../utils';
 
 function addPendingApplicability(
     pendingApplicabilities: NetworkModificationApplicabilities,
@@ -84,7 +79,6 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const data = row.original;
     const modificationUuid = data.uuid;
 
-    //const isSharedContent = isReferenceModificationOrInsideOne(data);
     const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
     }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
@@ -138,14 +132,10 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
         <ActivableChip
             label={rootNetwork.tag}
             tooltipMessage={rootNetwork.name}
-            //isActivated={isModificationApplicable}
             isActivationRequested={isModificationApplicable}
             isActivationEffective={isModificationApplied}
             isDisabled={
-                isLoading ||
-                isDisabled ||
-                rootNetwork.isCreating ||
-                isDeactivatedItselfOrByAncestor(row, activations)
+                isLoading || isDisabled || rootNetwork.isCreating || isDeactivatedItselfOrByAncestor(row, activations)
             }
             onClick={handleModificationActivationByRootNetwork}
         />
