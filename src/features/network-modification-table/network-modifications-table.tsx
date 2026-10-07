@@ -20,12 +20,7 @@ import { DragDropContext, Droppable, DroppableProvided } from '@hello-pangea/dnd
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
-import {
-    NetworkModificationApplicabilities,
-    RootNetworkRowInfo,
-    ComposedModificationMetadata,
-    NetworkModificationMetadata,
-} from '../../utils';
+import { RootNetworkRowInfo, ComposedModificationMetadata, NetworkModificationMetadata } from '../../utils';
 import {
     createHeaderCellStyle,
     MODIFICATION_ROW_HEIGHT,
@@ -33,9 +28,9 @@ import {
 } from './network-modification-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
+import { useModificationsActivation } from './use-modifications-activation';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
-    collectApplicabilities,
     fetchSubModificationsForExpandedRows,
     findAllLoadedContainerModifications,
     findDepth,
@@ -97,18 +92,8 @@ export function NetworkModificationsTable({
         formatToComposedModification(modifications)
     );
 
-    // The tags are read from a ref on purpose: renaming a root network must not retrigger the collect, or the
-    // modifications in hand, still carrying the previous tag, would resolve to no root network at all and read
-    // back as applicable. The next fetch of the modifications brings both sides in step again.
-    const rootNetworksRef = useRef(rootNetworks);
-    useEffect(() => {
-        rootNetworksRef.current = rootNetworks;
-    }, [rootNetworks]);
-
-    const [applicabilities, setApplicabilities] = useState<NetworkModificationApplicabilities>({});
-    useEffect(() => {
-        setApplicabilities(collectApplicabilities(composedModifications, rootNetworksRef.current));
-    }, [composedModifications]);
+    const { activations, setPendingActivations, applicabilities, setPendingApplicabilities } =
+        useModificationsActivation({ modifications: composedModifications, rootNetworks });
 
     // composedModificationsRef is used to access composedModifications data from other useEffects
     // without having to add composedModifications to their dependencies (so it doesn't trigger them)
@@ -129,10 +114,10 @@ export function NetworkModificationsTable({
 
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
-        // depth has to be < to first selected row depth + maxDepth of any selected row
+        // depth has to be < to first selected row depth + sublevelCount of any selected row
         if (rows.length === 0) return false;
         const firstSelectedRowDepth = findDepth(composedModificationsRef.current, rows[0].uuid);
-        return rows.some((row) => firstSelectedRowDepth + (row.maxDepth ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
+        return rows.some((row) => firstSelectedRowDepth + (row.sublevelCount ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
     }, []);
 
     const handleRowSelected = useCallback(
@@ -211,8 +196,10 @@ export function NetworkModificationsTable({
             },
             modifications: {
                 count: modifications.length,
+                activations,
+                setPendingActivations,
                 applicabilities,
-                setApplicabilities,
+                setPendingApplicabilities,
             },
             interaction: {
                 lastClickedRowId,
@@ -234,8 +221,10 @@ export function NetworkModificationsTable({
             currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
+            activations,
+            setPendingActivations,
             applicabilities,
-            setApplicabilities,
+            setPendingApplicabilities,
             lastClickedRowId,
             handleRowSelected,
             modificationToEditLabelRef,
@@ -385,6 +374,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={row.original.childFromReadOnlyShared}
                                             />
                                         );
                                     })}
