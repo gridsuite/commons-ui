@@ -423,9 +423,13 @@ export const networkModificationsEn = {
     b0: 'Fixed part of susceptance',
     fixQAtNominalV: 'Q fixed',
     CreateVsc: 'Create HVDC (VSC)',
+    CreateLcc: 'Create HVDC (LCC)',
     HvdcCreationError: 'Error while creating HVDC line',
+    HvdcLccCreationError: 'Error while creating HVDC (LCC)',
+    ModifyLcc: 'Modify HVDC (LCC)',
     ModifyVsc: 'Modify HVDC (VSC)',
     HvdcModificationError: 'Error while modifying HVDC line',
+    HvdcLccModificationError: 'Error while modifying HVDC LCC line',
     converterStation1: 'Converter station 1',
     converterStation2: 'Converter station 2',
     converterStationId: 'Converter station ID',
@@ -525,6 +529,9 @@ export const networkModificationsEn = {
     connectionName2: 'Connection name 2',
     connectionDirection2: 'Connection direction 2',
     connectionPosition2: 'Connection position 2',
+    connected: 'Connected',
+    disconnected: 'Disconnected',
+    previousConnection: 'Prev. connection',
     minQ: 'Q min',
     maxQ: 'Q max',
     reactiveCapabilityCurve: 'Reactive capability curve',
@@ -613,4 +620,9 @@ export const networkModificationsEn = {
     setModificationNameAndDescriptionError: 'Error when modifying modification name and/or description',
     createSharedDisabledTooltip:
         'You can only share a non-shared composite that does not itself contain any shared changes.',
+
+    powerFactorLabel: 'Power Factor',
+    Filters: 'Filters',
+    shuntCompensatorId: 'Shunt compensator ID',
+    shuntCompensatorName: 'Shunt compensator name',
 };

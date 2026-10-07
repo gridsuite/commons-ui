@@ -19,10 +19,12 @@ import { useSnackMessage } from '../../../hooks';
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
     isDisabled?: boolean;
+    // the dialog stays reachable to read an existing description, only its validation is denied
+    isSaveDisabled?: boolean;
 }
 
 export function DescriptionCell(props: DescriptionCellProps) {
-    const { row, isDisabled = false } = props;
+    const { row, isDisabled = false, isSaveDisabled = false } = props;
     const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
@@ -74,6 +76,11 @@ export function DescriptionCell(props: DescriptionCellProps) {
         setOpenDescModificationDialog(true);
     }, []);
 
+    // As the description is empty and we can't update it, we don't want to render the cell and its button
+    if (empty && isSaveDisabled) {
+        return null;
+    }
+
     return (
         <>
             {openDescModificationDialog && modificationUuid && (
@@ -82,6 +89,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     description={descriptionState ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
+                    disabledSave={isSaveDisabled}
                 />
             )}
             <Tooltip title={descriptionState ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>

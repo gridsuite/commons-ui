@@ -17,6 +17,10 @@ export interface NetworkModificationMetadata {
     description: string;
     messageType: string;
     messageValues: string;
+    // MODIFICATION_REFERENCE only: uuid of the referenced composite modification
+    referencedId?: UUID;
+    // MODIFICATION_REFERENCE only: true when the user may write into the shared modification it points at
+    editable?: boolean;
     applicabilityByRootNetworkTag?: Record<string, boolean>;
 }
 
@@ -26,6 +30,8 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     sublevelCount?: number;
     name?: string;
     childFromShared?: boolean;
+    // Same as above, restricted to the shared modifications the user may not write into
+    childFromReadOnlyShared?: boolean;
 }
 
 export interface ComposedModificationMetadata extends BasicComposedModificationMetadata {
@@ -36,7 +42,6 @@ export interface ReferencedCompositeModifications extends NetworkModificationMet
 }
 
 export interface ModificationReferenceInfos extends NetworkModificationMetadata {
-    referencedId?: UUID;
     referenceType?: string;
     referencedInfos?: BasicComposedModificationMetadata;
 }

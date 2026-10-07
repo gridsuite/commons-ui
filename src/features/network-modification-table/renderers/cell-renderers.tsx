@@ -18,8 +18,8 @@ import { DescriptionCell } from './description-cell';
 import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { networkModificationTableStyles, rootNetworkChipCellSx } from '../network-modification-table-styles';
+import { isModificationEditLocked, isReferenceModification } from '../utils';
 import { ComposedModificationMetadata } from '../../../utils';
-import { isReferenceModification } from '../utils';
 import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
@@ -61,12 +61,25 @@ export function NameHeaderRenderer({ table }: HCtx) {
 }
 
 export function NameCellRenderer({ row, table, column }: CCtx) {
-    return <NameCell row={row} table={table} onChange={column.columnDef.meta?.onChange} />;
+    return (
+        <NameCell
+            row={row}
+            table={table}
+            onChange={column.columnDef.meta?.onChange}
+            isRenameDisabled={isModificationEditLocked(row.original)}
+        />
+    );
 }
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    return <DescriptionCell row={row} isDisabled={meta?.status.isDisabled} />;
+    return (
+        <DescriptionCell
+            row={row}
+            isDisabled={meta?.status.isDisabled}
+            isSaveDisabled={isModificationEditLocked(row.original)}
+        />
+    );
 }
 
 export function ReferenceCellRenderer({ row, table }: CCtx) {
@@ -89,7 +102,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
             currentNodeId={meta.context.currentNodeId}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
-            isDisabled={meta.status.isDisabled}
+            isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
         />
     );
 }
@@ -138,7 +151,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}
                 setPendingApplicabilities={meta.modifications.setPendingApplicabilities}
-                isDisabled={meta.status.isDisabled}
+                isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
             />
         </Box>
     );

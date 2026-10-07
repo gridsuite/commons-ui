@@ -36,9 +36,10 @@ interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
     table: Table<ComposedModificationMetadata>;
     onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
+    isRenameDisabled?: boolean;
 }
 
-export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
+export function NameCell({ row, table, onChange, isRenameDisabled = false }: Readonly<NameCellProps>) {
     const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
@@ -49,6 +50,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     const isComposite = isCompositeModification(row.original);
     const isReferenced = isReferenceModification(row.original);
+    const isCompositeAndRenamable = isComposite && !isRenameDisabled;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -157,6 +159,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const defaultCompositeName: string = useMemo(() => intl.formatMessage({ id: 'CompositeModification' }), [intl]);
 
     // triggers composite name editing from outside the component
+    // i.e., when a composite is being created
     useEffect(() => {
         const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
         if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
@@ -198,20 +201,20 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps =
-        isComposite || isReferenced
-            ? {
-                  ref: labelRef,
-                  onClick: handleLabelClick,
-                  sx: {
-                      cursor: 'text',
-                      '&:hover': {
-                          textDecoration: 'underline dotted',
-                          textDecorationColor: theme.palette.text.secondary,
-                      },
+
+    const renamableCompositeModeProps = isCompositeAndRenamable
+        ? {
+              ref: labelRef,
+              onClick: handleLabelClick,
+              sx: {
+                  cursor: 'text',
+                  '&:hover': {
+                      textDecoration: 'underline dotted',
+                      textDecorationColor: theme.palette.text.secondary,
                   },
-              }
-            : {};
+              },
+          }
+        : {};
     return (
         <Box
             sx={mergeSx(
@@ -275,10 +278,10 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
-                                {...compositeReadModeProps}
+                                {...renamableCompositeModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
-                                    compositeReadModeProps.sx
+                                    renamableCompositeModeProps.sx
                                 )}
                             >
                                 {label}
