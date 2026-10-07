@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { PropsWithChildren } from 'react';
+import { PropsWithChildren, ReactNode } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Box, Button, ButtonProps, Grid, Switch, Typography, TypographyProps } from '@mui/material';
 import { parametersStyles } from '../parameters-style';
@@ -27,13 +27,22 @@ interface SwitchWithLabelProps {
     value: boolean;
     label: string;
     callback?: (event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => void;
+    labelAdornment?: ReactNode;
 }
 
-export function SwitchWithLabel({ value, label, callback }: Readonly<SwitchWithLabelProps>) {
+export function SwitchWithLabel({ value, label, callback, labelAdornment }: Readonly<SwitchWithLabelProps>) {
     return (
         <>
-            <Grid size={8} sx={parametersStyles.parameterName}>
+            <Grid
+                container
+                size={8}
+                sx={{
+                    ...parametersStyles.parameterName,
+                    alignItems: 'center',
+                }}
+            >
                 <FormattedMessage id={label} />
+                {labelAdornment}
             </Grid>
             <Grid container size={4} sx={parametersStyles.controlItem}>
                 <Switch
