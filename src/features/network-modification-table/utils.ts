@@ -10,6 +10,7 @@ import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
+    BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
     ModificationReferenceInfos,
@@ -223,12 +224,12 @@ export function toMessageValues(modification: NetworkModificationMetadata) {
     return messageValues;
 }
 
-export function isCompositeModification(modification: ComposedModificationMetadata | undefined) {
+export function isCompositeModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type;
 }
 
 // TODO GRD-5250 :  Adjust isReferenceModification condition after reference modification types update
-export function isReferenceModification(modification: ComposedModificationMetadata | undefined) {
+export function isReferenceModification(modification: NetworkModificationMetadata | undefined) {
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
@@ -241,6 +242,31 @@ export function containsReferenceModification(modification: ComposedModification
     }
     return modification.subModifications.some(
         (sub) => isReferenceModification(sub) || containsReferenceModification(sub)
+    );
+}
+
+export function isReferenceModificationOrInsideOne(
+    modification: BasicComposedModificationMetadata | undefined
+): boolean {
+    return isReferenceModification(modification) || !!modification?.childFromShared;
+}
+
+/**
+ * Tells whether a reference points at a shared modification its reader cannot write into. The server flags as
+ * editable only the references whose permission it resolved, so one without the flag stays read-only.
+ */
+export function isSharedModificationReadOnly(modification: NetworkModificationMetadata | undefined) {
+    return !modification?.editable;
+}
+
+/**
+ * Tells whether a modification is a reference pointing at a shared modification the user can't write into, or
+ * sits inside one.
+ */
+export function isModificationEditLocked(modification: BasicComposedModificationMetadata) {
+    return (
+        (isReferenceModification(modification) && isSharedModificationReadOnly(modification)) ||
+        !!modification.childFromReadOnlyShared
     );
 }
 
@@ -521,11 +547,18 @@ export async function fetchSubModificationsForExpandedRows(
                 const existingMod = findModificationInTree(node.rowKey, tree);
                 // A composite nested inside a reference is itself flagged childFromShared;
                 // propagate the flag to its children so they stay non-clickable as well.
-                const inheritsReference = existingMod?.childFromShared === true;
                 const liveModifications = formatToComposedModification(
                     subMods.filter((m) => !m.stashed),
                     node.uuid
-                ).map((m) => (inheritsReference ? { ...m, childFromShared: true } : m));
+                ).map((m) =>
+                    existingMod?.childFromShared
+                        ? {
+                              ...m,
+                              childFromShared: true,
+                              childFromReadOnlyShared: existingMod.childFromReadOnlyShared,
+                          }
+                        : m
+                );
 
                 // Preserve already-loaded children of any nested composites within the new sub-list.
                 const mergedSubs = mergeSubModificationsIntoTree(
@@ -548,9 +581,11 @@ export async function fetchSubModificationsForExpandedRows(
                 const detail: ModificationReferenceInfos = await res.json();
 
                 const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
+                const childFromReadOnlyShared = node.childFromReadOnlyShared || isSharedModificationReadOnly(node);
                 const liveModifications = formatToComposedModification(children, detail.referencedId).map((m) => ({
                     ...m,
                     childFromShared: true,
+                    childFromReadOnlyShared,
                 }));
 
                 setMods((prev) => {
