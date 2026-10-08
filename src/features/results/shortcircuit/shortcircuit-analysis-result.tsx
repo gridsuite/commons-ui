@@ -8,9 +8,7 @@
 import { UUID } from 'node:crypto';
 import { useCallback, useEffect, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { Box, LinearProgress } from '@mui/material';
 import { DisplayedColumnsChangedEvent, GridReadyEvent, RowDataUpdatedEvent } from 'ag-grid-community';
-import { RESULTS_LOADING_DELAY } from '../constants';
 import {
     convertFilterValues,
     FROM_COLUMN_TO_FIELD,
@@ -23,16 +21,12 @@ import {
     SCAPagedResults,
     ShortCircuitAnalysisType,
 } from './shortcircuit-analysis-result.type';
-import {
-    FilterEnumsType,
-    ShortCircuitAnalysisResultTable,
-    ShortcircuitColumnFilter,
-} from './shortcircuit-analysis-result-table';
-import { useOpenLoaderShortWait, useSnackMessage } from '../../../hooks';
-import { ComputingType, RunningStatus, snackWithFallback } from '../../../utils';
-import { CustomTablePagination, PaginationConfig, SortConfig } from '../../../components';
-import { RESULT_PAGE_OPTIONS } from '../common/utils';
+import { PaginationConfig, SortConfig } from '../../../components';
 import { GlobalFilters } from '../../global-filter';
+import { FilterEnumsType, ShortcircuitColumnFilter } from './shortcircuit-analysis-result-table';
+import { ShortCircuitAnalysisResultView } from './shortcircuit-analysis-result-view';
+import { useSnackMessage } from '../../../hooks';
+import { ComputingType, RunningStatus, snackWithFallback } from '../../../utils';
 
 export type FetchPagedResultsParams = {
     studyUuid: UUID | null;
@@ -79,7 +73,7 @@ export interface IShortCircuitAnalysisGlobalResultProps {
     onPageChange: (newPage: number) => void;
     onRowsPerPageChange: (newRowsPerPage: number) => void;
 
-    // Fetch callbacks (no fetch inside the component)
+    // Fetch callbacks (no fetch inside the app's components; the fetch lives here)
     fetchPagedResults: (params: FetchPagedResultsParams) => Promise<SCAPagedResults | null>;
     fetchFilterEnumValues: (params: FetchFilterEnumValuesParams) => Promise<string[]>;
 
@@ -134,15 +128,15 @@ export function ShortCircuitAnalysisResult({
 
     const { page, rowsPerPage } = pagination;
 
-    const handleChangePage = useCallback(
-        (_: any, newPage: number) => {
+    const handlePageChange = useCallback(
+        (_: React.MouseEvent<HTMLButtonElement, MouseEvent> | null, newPage: number) => {
             onPageChange(newPage);
         },
         [onPageChange]
     );
 
-    const handleChangeRowsPerPage = useCallback(
-        (event: any) => {
+    const handleRowsPerPageChange = useCallback(
+        (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
             const newRowsPerPage = Number.parseInt(event.target.value, 10);
             onRowsPerPageChange(newRowsPerPage);
         },
@@ -273,35 +267,26 @@ export function ShortCircuitAnalysisResult({
         fetchFilterEnumValues,
     ]);
 
-    const openLoader = useOpenLoaderShortWait({
-        isLoading: analysisStatus === RunningStatus.RUNNING || isFetching,
-        delay: RESULTS_LOADING_DELAY,
-    });
-
     return (
-        <>
-            <Box sx={{ height: '4px' }}>{openLoader && <LinearProgress />}</Box>
-            <ShortCircuitAnalysisResultTable
-                result={result}
-                analysisType={analysisType}
-                isFetching={isFetching}
-                filterEnums={filterEnums}
-                onDisplayedColumnsChanged={onDisplayedColumnsChanged}
-                onRowDataUpdated={onRowDataUpdated}
-                shortCircuitAnalysisStatus={analysisStatus}
-                columnFilters={columnFilters}
-                onGridReady={onGridReady ?? onGridColumnsChanged}
-                onVoltageLevelClick={onVoltageLevelClick}
-            />
-            <CustomTablePagination
-                rowsPerPageOptions={RESULT_PAGE_OPTIONS}
-                count={count}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-                {...customTablePaginationProps}
-            />
-        </>
+        <ShortCircuitAnalysisResultView
+            analysisType={analysisType}
+            result={result}
+            analysisStatus={analysisStatus}
+            isFetching={isFetching}
+            pagination={{
+                count,
+                page,
+                rowsPerPage: rowsPerPage as number,
+                onPageChange: handlePageChange,
+                onRowsPerPageChange: handleRowsPerPageChange,
+            }}
+            filterEnums={filterEnums}
+            columnFilters={columnFilters}
+            onRowDataUpdated={onRowDataUpdated}
+            onDisplayedColumnsChanged={onDisplayedColumnsChanged}
+            onVoltageLevelClick={onVoltageLevelClick}
+            onGridReady={onGridReady ?? onGridColumnsChanged}
+            customTablePaginationProps={customTablePaginationProps}
+        />
     );
 }
