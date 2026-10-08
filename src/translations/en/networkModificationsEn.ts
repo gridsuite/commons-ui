@@ -637,9 +637,6 @@ export const networkModificationsEn = {
     // Delete voltage level on line modification
     DeleteVoltageLevelOnLine: 'Delete a voltage level on a line',
     DeleteVoltageLevelOnLineError: 'Error while deleting a voltage level on a line',
-    ReplacingLine: 'Replacing line',
-    ReplacingLineId: 'ID replacing line',
-    ReplacingLineName: 'Name replacing line',
     createSharedDisabledTooltip:
         'You can only share a non-shared composite that does not itself contain any shared changes.',
 
