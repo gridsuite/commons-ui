@@ -155,7 +155,7 @@ export function LineAttachToVoltageLevelCreationForm({
                 properties,
             } = lineCreationInfos;
 
-            const preparedLine: LineCreationDto = {
+            const preparedLine: Partial<LineCreationDto> = {
                 type,
                 equipmentId,
                 equipmentName,
@@ -169,7 +169,7 @@ export function LineAttachToVoltageLevelCreationForm({
                 selectedOperationalLimitsGroupId1,
                 selectedOperationalLimitsGroupId2,
                 properties,
-            } as LineCreationDto;
+            };
 
             setValue(FieldConstants.ATTACHMENT_LINE, preparedLine, { shouldDirty: true });
             setValue(FieldConstants.ATTACHMENT_LINE_ID, preparedLine.equipmentId, {
