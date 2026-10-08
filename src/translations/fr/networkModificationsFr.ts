@@ -644,9 +644,6 @@ export const networkModificationsFr = {
     // Delete voltage level on line modification
     DeleteVoltageLevelOnLine: 'Supprimer une coupure',
     DeleteVoltageLevelOnLineError: "Erreur lors de la suppression d'une coupure",
-    ReplacingLine: 'Liaison de remplacement',
-    ReplacingLineId: 'ID liaison de remplacement',
-    ReplacingLineName: 'Nom liaison de remplacement',
     createSharedDisabledTooltip:
         "Il n'est possible de partager qu'une composite non partagée qui ne contient pas elle même de modifications partagées.",
 
