@@ -625,6 +625,7 @@ export const networkModificationsEn = {
     modifiedSwitchesSeparatorTitle: 'Modification',
     unModifiedSwitchesSeparatorTitle: 'No-modification',
     SharedModificationsSavedAsCopy: 'Shared modifications will be saved as copy only',
+    setModificationNameAndDescriptionError: 'Error when modifying modification name and/or description',
     createSharedDisabledTooltip:
         'You can only share a non-shared composite that does not itself contain any shared changes.',
 

@@ -157,6 +157,26 @@ export function setModificationMetadata(
     });
 }
 
+export function setModificationNameAndDescription(
+    modificationUuid: UUID | undefined,
+    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+): Promise<Response> {
+    if (!modificationUuid) {
+        return Promise.reject(new Error('modificationUuid is required'));
+    }
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('uuid', modificationUuid);
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}/name-and-description`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
+    });
+}
+
 export function updateModificationStatusByRootNetwork(
     studyUuid: UUID,
     nodeUuid: UUID,
