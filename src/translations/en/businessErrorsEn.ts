@@ -99,6 +99,7 @@ export const businessErrorsEn = {
 
     'monitor.server.differentProcessConfigType':
         'Cannot compare 2 different process config types : {processConfigEntity1Type} vs {processConfigEntity2Type}',
+    'monitor.server.unsupportedProvider': 'The provider must be OLF',
 
     'network.notFound': 'Network {networkId} not found',
     'network.variant.notFound': 'Variant {variantId} for network {networkId} not found',
