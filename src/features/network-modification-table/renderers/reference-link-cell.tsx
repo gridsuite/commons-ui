@@ -69,6 +69,17 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
         [data.uuid, snackInfo, snackError]
     );
 
+    const handleUnshare = useCallback(
+        (event: React.MouseEvent<HTMLElement>) => {
+            event.stopPropagation();
+            setAnchorEl(null);
+            setIsLoading(true);
+            // TODO : appeler endpoint
+            setIsLoading(false);
+        },
+        [data.uuid, snackInfo, snackError]
+    );
+
     return (
         <>
             <CustomTooltip title={<FormattedMessage id="importComposites.shared" />}>
@@ -99,6 +110,12 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
                         <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
                     </ListItemIcon>
                     <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
+                </CustomMenuItem>
+                <CustomMenuItem onClick={handleUnshare} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
+                    <ListItemIcon sx={{ minWidth: 24 }}>
+                        <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
+                    </ListItemIcon>
+                    <ListItemText primary={intl.formatMessage({ id: 'unshare' })} />
                 </CustomMenuItem>
             </Menu>
         </>
