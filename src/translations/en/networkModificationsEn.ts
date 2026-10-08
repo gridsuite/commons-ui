@@ -645,4 +645,7 @@ export const networkModificationsEn = {
     LinesAttachToSplitLines: 'Attaching lines to splitting lines',
     lineAttachedToSplitLineVoltageLevel: 'Voltage level with attached line to place as splitter',
     ReplacingLines: 'Replacing lines',
+    ReplacingLine1: 'Replacing line 1',
+    ReplacingLine2: 'Replacing line 2',
+    LinesAttachToSplitLinesError: 'Error while attaching lines to splitting lines',
 };
