@@ -9,8 +9,8 @@ import { Box, Grid, Stack, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { DirectoryItemsInput, FieldLabel, FloatInput, GridItem, GridSection } from '../../../components';
 import { ElementType, EquipmentType, FieldConstants, PercentageAdornment } from '../../../utils';
-import { FrequencyReservePane } from './frequencyReservePane';
-import { SubstationsGeneratorsOrderingPane } from './substationsGeneratorsOrderingPane';
+import { FrequencyReservePane } from './FrequencyReservePane';
+import { SubstationsGeneratorsOrderingPane } from './SubstationsGeneratorsOrderingPane';
 
 interface GenerationDispatchFormProps {
     substationsIds?: string[];

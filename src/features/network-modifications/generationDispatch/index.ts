@@ -7,7 +7,7 @@
 
 export * from './generationDispatch.types';
 export * from './generationDispatch.utils';
-export * from './frequencyReservePane';
-export * from './substationsAutocomplete';
-export * from './substationsGeneratorsOrderingPane';
-export * from './generationDispatchForm';
+export * from './FrequencyReservePane';
+export * from './SubstationsAutocomplete';
+export * from './SubstationsGeneratorsOrderingPane';
+export * from './GenerationDispatchForm';

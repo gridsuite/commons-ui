@@ -10,7 +10,7 @@ import { useMemo } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { FieldConstants } from '../../../utils';
 import { DndColumn, DndColumnType, DndTable } from '../../../components';
-import { SubstationsAutocomplete } from './substationsAutocomplete';
+import { SubstationsAutocomplete } from './SubstationsAutocomplete';
 
 interface SubstationsGeneratorsOrderingPaneProps {
     substations: string[];
