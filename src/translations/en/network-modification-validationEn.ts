@@ -6,9 +6,16 @@
  */
 import {
     ACTIVE_LIMITS_MIN_MAX_INVALID,
+    ACTIVE_POWER_SETPOINT_MAX_VALUE_ERROR,
+    ACTIVE_POWER_SETPOINT_MIN_VALUE_ERROR,
     CREATE_SUBSTATION_IN_VOLTAGE_LEVEL_IDENTICAL_ID,
+    DC_RESISTANCE_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
     MAXIMUM_SECTION_COUNT_MUST_BE_GREATER_OR_EQUAL_TO_ONE,
     MIN_ACTIVE_POWER_MUST_BE_LESS_OR_EQUAL_TO_MAX_ACTIVE_POWER,
+    NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
+    POWER_FACTOR_INTERVAL_VALUE_ERROR,
+    Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO,
     REACTIVE_LIMITS_MIN_MAX_INVALID,
     SECTION_COUNT_MUST_BE_BETWEEN_ZERO_AND_MAXIMUM_SECTION_COUNT,
     SHORT_CIRCUIT_CURRENT_LIMIT_MUST_BE_GREATER_OR_EQUAL_TO_ZERO,
@@ -47,4 +54,15 @@ export const networkModificationValidationEn = {
     TemporaryLimitDurationUnicityError: 'Temporary limit acceptable durations must be unique in the table',
     LimitSetApplicabilityError: '2 limit sets with the same name must have different application sides.',
     permanentCurrentLimitMustBeGreaterThanZero: 'The permanent current limit value must be greater than 0',
+
+    [ACTIVE_POWER_SETPOINT_MAX_VALUE_ERROR]: 'The active power value must be less than the maximum active power value',
+    [ACTIVE_POWER_SETPOINT_MIN_VALUE_ERROR]: 'The active power value must be greater than 0',
+    [DC_RESISTANCE_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'The DC resistance value must be greater than 0',
+    [MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'The maximum active power value must be greater than 0',
+    [NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO]: 'The DC nominal voltage value must be greater than 0',
+    [POWER_FACTOR_INTERVAL_VALUE_ERROR]: 'The power factor value must be between 0 and 1',
+    [Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO]:
+        'The Qmax available at nominal voltage value must be greater than 0',
+    powerFactorMaxValueError: 'The power factor value must be less than 1',
+    powerFactorMinValueError: 'The power factor value must be greater than -1',
 };
