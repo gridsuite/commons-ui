@@ -640,4 +640,9 @@ export const networkModificationsEn = {
     Filters: 'Filters',
     shuntCompensatorId: 'Shunt compensator ID',
     shuntCompensatorName: 'Shunt compensator name',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Attaching lines to splitting lines',
+    lineAttachedToSplitLineVoltageLevel: 'Voltage level with attached line to place as splitter',
+    ReplacingLines: 'Replacing lines',
 };

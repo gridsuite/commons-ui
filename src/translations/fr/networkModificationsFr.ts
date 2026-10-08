@@ -647,4 +647,9 @@ export const networkModificationsFr = {
     Filters: 'Filtres',
     shuntCompensatorId: 'ID du MCS',
     shuntCompensatorName: 'Nom du MCS',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Transformer un piquage en coupure',
+    lineAttachedToSplitLineVoltageLevel: 'Poste en piquage à passer en coupure',
+    ReplacingLines: 'Liaisons de remplacement',
 };
