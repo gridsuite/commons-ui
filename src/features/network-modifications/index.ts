@@ -21,3 +21,4 @@ export * from './twoWindingsTransformer';
 export * from './static-var-compensator';
 export * from './tabular';
 export * from './limit-sets';
+export * from './balancesAdjustment';
