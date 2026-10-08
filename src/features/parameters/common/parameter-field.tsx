@@ -35,11 +35,11 @@ interface ParameterFieldProps {
     sx?: SxProps;
 }
 
-function formatDefaultValue(value: ParameterValue): string {
+function formatDefaultValue(value?: ParameterValue): string {
     if (Array.isArray(value)) {
         return value.join(', ');
     }
-    return value.toString();
+    return value?.toString() ?? '';
 }
 
 export function ParameterField({
@@ -125,9 +125,9 @@ export function ParameterField({
                 width: '100%',
             }}
         >
-            <Grid size={LABEL_GRID_SIZE}>
+            <Grid container size={LABEL_GRID_SIZE} sx={{ alignItems: 'center' }}>
                 <Typography
-                    component="div"
+                    component="p"
                     sx={{
                         ...parametersStyles.parameterName,
                         display: 'flex',

@@ -29,8 +29,8 @@ export enum ParameterType {
 export type ParameterValue = boolean | string | string[] | number;
 
 export interface ParameterDifference {
-    value: ParameterValue;
-    defaultValue: ParameterValue;
+    value?: ParameterValue;
+    defaultValue?: ParameterValue;
 }
 
 export type SpecificParameterInfos = {
