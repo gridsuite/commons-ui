@@ -5,5 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './lcc';
-export * from './vsc';
+export * from './DeleteAttachingLineForm';
+export * from './DeleteAttachingLineIllustration';
+export * from './deleteAttachingLine.types';
+export * from './deleteAttachingLine.utils';
