@@ -88,6 +88,11 @@ export const useModificationLabelComputer = () => {
                                 ? 'Hvdc'
                                 : modificationMetadata.equipmentType,
                     });
+                case MODIFICATION_TYPES.MODIFICATION_BY_ASSIGNMENT.type:
+                case MODIFICATION_TYPES.BY_FORMULA_MODIFICATION.type:
+                    return intl.formatMessage({
+                        id: modificationMetadata.equipmentType,
+                    });
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
