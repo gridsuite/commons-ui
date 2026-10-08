@@ -296,4 +296,5 @@ export enum FieldConstants {
     ATTACHED_LINE_ID = 'attachedLineId',
     REPLACING_LINE_1_ID = 'replacingLine1Id',
     REPLACING_LINE_1_NAME = 'replacingLine1Name',
+    NEW_VOLTAGE_LEVEL = 'newVoltageLevel',
 }
