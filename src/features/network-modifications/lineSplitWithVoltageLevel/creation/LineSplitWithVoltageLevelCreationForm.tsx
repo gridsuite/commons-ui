@@ -5,10 +5,10 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ComponentType, useState } from 'react';
+import { ComponentType, useCallback, useState } from 'react';
 import { Grid } from '@mui/material';
 import { useWatch } from 'react-hook-form';
-import { AddButton, AddButtonMode, TextInput } from '../../../../components/ui';
+import { AddButton, AddButtonMode, TextInput, useCustomFormContext } from '../../../../components/ui';
 import { GridSection } from '../../../../components/composite/grid/grid-section';
 import { GridItem } from '../../../../components/composite/grid/grid-item';
 import { FieldConstants } from '../../../../utils';
@@ -29,7 +29,8 @@ export interface LineSplitWithVoltageLevelCreationFormProps extends Pick<
     'voltageLevelOptions' | 'fetchBusesOrBusbarSections'
 > {
     lineOptions?: string[];
-    newVoltageLevel?: VoltageLevelCreationDto | null;
+    // Optional: the form already records the new voltage level itself; this only notifies a consumer
+    // that also needs to know, e.g. to add it to a locally-displayed options list.
     onNewVoltageLevelCreated?: (voltageLevel: VoltageLevelCreationDto) => Promise<string>;
     isUpdate?: boolean;
     NewVoltageLevelPane?: NewVoltageLevelPaneType;
@@ -39,18 +40,39 @@ export function LineSplitWithVoltageLevelCreationForm({
     voltageLevelOptions = [],
     fetchBusesOrBusbarSections,
     lineOptions = [],
-    newVoltageLevel = null,
-    onNewVoltageLevelCreated = () => new Promise(() => {}),
+    onNewVoltageLevelCreated,
     isUpdate = false,
     NewVoltageLevelPane,
 }: Readonly<LineSplitWithVoltageLevelCreationFormProps>) {
     const [voltageLevelDialogOpen, setVoltageLevelDialogOpen] = useState(false);
+    const { setValue, getValues } = useCustomFormContext();
+
+    const newVoltageLevel: VoltageLevelCreationDto | null = useWatch({ name: FieldConstants.NEW_VOLTAGE_LEVEL });
 
     const voltageLevelIdWatch = useWatch({
         name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
     });
 
     const isVoltageLevelEdit = newVoltageLevel?.equipmentId === voltageLevelIdWatch;
+
+    const handleCreateVoltageLevel = useCallback(
+        (voltageLevel: VoltageLevelCreationDto) => {
+            setValue(FieldConstants.NEW_VOLTAGE_LEVEL, voltageLevel, { shouldDirty: true });
+            const currentConnectivity = getValues(FieldConstants.CONNECTIVITY);
+            setValue(
+                FieldConstants.CONNECTIVITY,
+                {
+                    ...currentConnectivity,
+                    [FieldConstants.VOLTAGE_LEVEL]: { [FieldConstants.ID]: voltageLevel.equipmentId },
+                    [FieldConstants.BUS_OR_BUSBAR_SECTION]:
+                        currentConnectivity?.[FieldConstants.BUS_OR_BUSBAR_SECTION] ?? null,
+                },
+                { shouldValidate: true, shouldDirty: true }
+            );
+            return onNewVoltageLevelCreated?.(voltageLevel) ?? new Promise<string>(() => {});
+        },
+        [setValue, getValues, onNewVoltageLevelCreated]
+    );
 
     return (
         <>
@@ -99,7 +121,7 @@ export function LineSplitWithVoltageLevelCreationForm({
                 <NewVoltageLevelPane
                     open
                     onClose={() => setVoltageLevelDialogOpen(false)}
-                    onCreateVoltageLevel={onNewVoltageLevelCreated}
+                    onCreateVoltageLevel={handleCreateVoltageLevel}
                     editData={isVoltageLevelEdit ? newVoltageLevel : null}
                     isUpdate={isUpdate}
                 />
