@@ -633,6 +633,10 @@ export const networkModificationsEn = {
     modifiedSwitchesSeparatorTitle: 'Modification',
     unModifiedSwitchesSeparatorTitle: 'No-modification',
     SharedModificationsSavedAsCopy: 'Shared modifications will be saved as copy only',
+
+    // Delete voltage level on line modification
+    DeleteVoltageLevelOnLine: 'Delete a voltage level on a line',
+    DeleteVoltageLevelOnLineError: 'Error while deleting a voltage level on a line',
     createSharedDisabledTooltip:
         'You can only share a non-shared composite that does not itself contain any shared changes.',
 
