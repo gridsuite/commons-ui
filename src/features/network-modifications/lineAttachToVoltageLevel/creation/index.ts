@@ -5,5 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './creation';
-export * from './deletion';
+export * from './LineAttachToVoltageLevelCreationForm';
+export * from './LineAttachToVoltageLevelIllustration';
+export * from './lineAttachToVoltageLevelCreation.types';
+export * from './lineAttachToVoltageLevelCreation.utils';
