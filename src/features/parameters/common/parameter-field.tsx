@@ -134,7 +134,7 @@ export function ParameterField({
                         alignItems: 'center',
                     }}
                 >
-                    <CustomTooltip title={description} key={name}>
+                    <CustomTooltip title={description} key={name} placement="right-end">
                         <span>{label ? <FormattedMessage id={label} /> : name}</span>
                     </CustomTooltip>
                     {parameterDifference && (
@@ -147,6 +147,7 @@ export function ParameterField({
                                     }}
                                 />
                             }
+                            placement="right-end"
                         >
                             <Info
                                 fontSize="small"
