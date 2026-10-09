@@ -256,6 +256,22 @@ export const networkModificationsEn = {
     Line1Name: 'Line 1 name',
     Line2Name: 'Line 2 name',
     LineDivisionError: 'Error while puting a voltage level amidst a line',
+    LineAttachToVoltageLevel: 'Attach a line to another line',
+    LineToAttachTo: 'Existing line',
+    AttachedVoltageLevelId: 'Voltage level',
+    AttachmentPoint: 'Attachment point',
+    AttachmentPointId: 'Attachment point ID',
+    AttachmentPointName: 'Attachment point name',
+    SpecifyAttachmentPoint: 'Add attachment point information (option)',
+    AttachedLine: 'Attached line',
+    AttachedLineId: 'Attached line ID',
+    LineAttachmentError: 'Error while attaching a voltage level to a line',
+    DeleteAttachingLine: 'Delete attaching line',
+    DeleteAttachingLineError: 'Error while deleting an attaching line',
+    LineAttached: 'Attached line',
+    ReplacingLine: 'Replacing line',
+    ReplacingLineId: 'ID replacing line',
+    ReplacingLineName: 'Name replacing line',
     BalancesAdjustment: 'Balances adjustment',
     BalancesAdjustmentError: 'Error while creating a balances adjustment',
     BalancesAdjustmentZone: 'Zone name',
@@ -633,6 +649,10 @@ export const networkModificationsEn = {
     modifiedSwitchesSeparatorTitle: 'Modification',
     unModifiedSwitchesSeparatorTitle: 'No-modification',
     SharedModificationsSavedAsCopy: 'Shared modifications will be saved as copy only',
+
+    // Delete voltage level on line modification
+    DeleteVoltageLevelOnLine: 'Delete a voltage level on a line',
+    DeleteVoltageLevelOnLineError: 'Error while deleting a voltage level on a line',
     createSharedDisabledTooltip:
         'You can only share a non-shared composite that does not itself contain any shared changes.',
 

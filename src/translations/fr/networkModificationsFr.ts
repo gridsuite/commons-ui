@@ -261,6 +261,22 @@ export const networkModificationsFr = {
     Line1Name: 'Nom liaison côté 1',
     Line2Name: 'Nom liaison côté 2',
     LineDivisionError: "Erreur lors de la création d'une coupure",
+    LineAttachToVoltageLevel: 'Créer un piquage',
+    LineToAttachTo: 'Liaison piquée',
+    AttachedVoltageLevelId: 'Poste en piquage',
+    AttachmentPoint: 'Point de piquage',
+    AttachmentPointId: 'ID point de piquage',
+    AttachmentPointName: 'Nom point de piquage',
+    SpecifyAttachmentPoint: 'Spécifier le point de piquage (optionnel)',
+    AttachedLine: 'Liaison de piquage',
+    AttachedLineId: 'ID liaison de piquage',
+    LineAttachmentError: "Erreur lors de la création d'un piquage",
+    DeleteAttachingLine: 'Supprimer un piquage',
+    DeleteAttachingLineError: "Erreur lors de la suppression d'un piquage",
+    LineAttached: 'Liaison de piquage',
+    ReplacingLine: 'Liaison de remplacement',
+    ReplacingLineId: 'ID liaison de remplacement',
+    ReplacingLineName: 'Nom liaison de remplacement',
     BalancesAdjustment: 'Équilibrage bilan',
     BalancesAdjustmentError: "Erreur lors de la création de l'équilibrage bilan",
     BalancesAdjustmentZone: 'Nom de la zone',
@@ -640,6 +656,10 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
+
+    // Delete voltage level on line modification
+    DeleteVoltageLevelOnLine: 'Supprimer une coupure',
+    DeleteVoltageLevelOnLineError: "Erreur lors de la suppression d'une coupure",
     createSharedDisabledTooltip:
         "Il n'est possible de partager qu'une composite non partagée qui ne contient pas elle même de modifications partagées.",
 
