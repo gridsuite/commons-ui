@@ -40,6 +40,7 @@ export const useParametersBackend = <T extends ComputingType>(
         backendFetchProviders,
         backendFetchParameters,
         backendUpdateParameters,
+        backendResetParameters,
         backendFetchSpecificParametersDescription,
         backendFetchDefaultLimitReductions,
     } = backendFunctions;
@@ -142,10 +143,10 @@ export const useParametersBackend = <T extends ComputingType>(
 
     // PARAMETERS RESET
     const resetParameters = useCallback(() => {
-        if (!studyUuid || !backendUpdateParameters) {
+        if (!studyUuid || !backendResetParameters) {
             return;
         }
-        backendUpdateParameters(studyUuid, null)
+        backendResetParameters(studyUuid)
             .then((response) => {
                 if (response.status === 204) {
                     snackWarning({
@@ -161,7 +162,7 @@ export const useParametersBackend = <T extends ComputingType>(
                     headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
-    }, [studyUuid, type, backendUpdateParameters, snackError, snackWarning]);
+    }, [studyUuid, type, backendResetParameters, snackError, snackWarning]);
 
     // PARAMETERS SYNC
     const fetchParameters = useCallback(

@@ -216,3 +216,12 @@ export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newPara
         body: newParams ? JSON.stringify(mapSensitivityAnalysisParameters(newParams)) : null,
     });
 }
+
+export function resetSensitivityAnalysisParameters(parameterUuid: UUID) {
+    console.info('reset security analysis parameters');
+    const setSecurityAnalysisParametersUrl = `${getSensiUrl()}parameters/${parameterUuid}/reset`;
+    console.debug(setSecurityAnalysisParametersUrl);
+    return backendFetch(setSecurityAnalysisParametersUrl, {
+        method: 'PUT',
+    });
+}
