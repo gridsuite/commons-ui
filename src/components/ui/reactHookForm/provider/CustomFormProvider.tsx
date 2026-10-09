@@ -19,6 +19,12 @@ type CustomFormContextProps<TFieldValues extends FieldValues = FieldValues> = {
     isNodeBuilt?: boolean;
     isUpdate?: boolean;
     isDeveloperMode?: boolean;
+    /**
+     * When true, the whole form tree is in view-only mode: every input
+     * consuming this context (directly or via useCustomFormContext) should
+     * render itself disabled/non-editable, with a read-only appearance
+     */
+    readOnly?: boolean;
 };
 
 export type MergedFormContextProps<TFieldValues extends FieldValues = FieldValues> = UseFormReturn<TFieldValues> &
@@ -32,6 +38,7 @@ export const CustomFormContext = createContext<CustomFormContextProps>({
     isNodeBuilt: false,
     isUpdate: false,
     isDeveloperMode: false,
+    readOnly: false,
 });
 
 export function CustomFormProvider<TFieldValues extends FieldValues = FieldValues>(
@@ -45,6 +52,7 @@ export function CustomFormProvider<TFieldValues extends FieldValues = FieldValue
         isNodeBuilt,
         isUpdate,
         isDeveloperMode,
+        readOnly,
         children,
         ...formMethods
     } = props as PropsWithChildren<MergedFormContextProps<FieldValues>>;
@@ -60,8 +68,9 @@ export function CustomFormProvider<TFieldValues extends FieldValues = FieldValue
                         isNodeBuilt,
                         isUpdate,
                         isDeveloperMode,
+                        readOnly,
                     }),
-                    [validationSchema, removeOptional, language, isNodeBuilt, isUpdate, isDeveloperMode]
+                    [validationSchema, removeOptional, language, isNodeBuilt, isUpdate, isDeveloperMode, readOnly]
                 )}
             >
                 {children}
