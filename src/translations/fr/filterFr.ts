@@ -41,6 +41,7 @@ export const filterFr = {
     emptyFilterError: 'Le filtre doit contenir au moins un ouvrage',
     distributionKeyWithMissingIdError: 'ID manquant avec une clé de répartition définie',
     missingDistributionKeyError: 'Clé de répartition manquante',
+    duplicatedEquipmentInFilter: 'Le filtre ne doit pas contenir de doublons',
     filterCsvFileName: 'creationFiltre',
     createNewFilter: 'Créer un filtre',
     createNewCriteriaFilter: 'Créer un filtre par critères',
