@@ -25,3 +25,4 @@ export * from './static-var-compensator';
 export * from './tabular';
 export * from './generationDispatch';
 export * from './limit-sets';
+export * from './scaling';

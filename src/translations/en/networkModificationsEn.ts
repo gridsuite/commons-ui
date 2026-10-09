@@ -667,4 +667,22 @@ export const networkModificationsEn = {
     ReplacingLine1: 'Replacing line 1',
     ReplacingLine2: 'Replacing line 2',
     LinesAttachToSplitLinesError: 'Error while attaching lines to splitting lines',
+
+    Variations: 'Variations',
+    CreateVariation: 'Add Variation',
+    VariationMode: 'Variation mode',
+    ReactiveVariationMode: 'Reactive variation mode',
+    DeltaP: 'Δ P',
+    TargetPText: 'Target P',
+    ProportionalToPMax: 'Proportional to max P',
+    StackingUp: 'Stacking up',
+    RegularDistribution: 'Regular distribution',
+    TanPhiFixed: 'tan(φ) fixed',
+    ConstantQWithoutUnit: 'Constant Q',
+
+    GeneratorScaling: 'Generator scaling',
+    GeneratorScalingError: 'Error while creating a generator scaling',
+
+    LoadScaling: 'Load scaling',
+    LoadScalingError: 'Error while creating a load scaling',
 };

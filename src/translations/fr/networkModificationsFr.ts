@@ -674,4 +674,22 @@ export const networkModificationsFr = {
     ReplacingLine1: 'Liaison de remplacement 1',
     ReplacingLine2: 'Liaison de remplacement 2',
     LinesAttachToSplitLinesError: "Erreur lors de la transformation d'un piquage en coupure",
+
+    Variations: 'Variations',
+    CreateVariation: 'Ajouter Variation',
+    VariationMode: 'Mode de variation',
+    ReactiveVariationMode: 'Mode variation du réactif',
+    DeltaP: 'Δ P',
+    TargetPText: 'P cible',
+    ProportionalToPMax: 'Proportionnel à Pmax',
+    StackingUp: 'Empilement',
+    RegularDistribution: 'Équirépartition',
+    TanPhiFixed: 'tan(φ) fixe',
+    ConstantQWithoutUnit: 'Q constant',
+
+    GeneratorScaling: 'Variation plan de production',
+    GeneratorScalingError: 'Erreur lors de la création de la variation du plan de production',
+
+    LoadScaling: 'Variation plan de consommation',
+    LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
 };
