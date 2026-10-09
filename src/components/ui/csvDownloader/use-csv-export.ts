@@ -9,7 +9,7 @@ import { useCallback } from 'react';
 import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
 import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
-import { getCsvDelimiter, LANG_FRENCH } from '../../../utils';
+import { getCsvDelimiter, isFrenchLanguage } from '../../../utils';
 import { fetchStudyMetadata } from '../../../services';
 
 const NA_VALUE = 'N/A';
@@ -42,7 +42,7 @@ export const useCsvExport = () => {
                         fractionDigits != null && !Number.isNaN(params.value)
                             ? params.value.toFixed(fractionDigits)
                             : params.value;
-                    if (props.language === LANG_FRENCH) {
+                    if (isFrenchLanguage(props.language)) {
                         return roundedValue.toString().replace('.', ',');
                     }
                 }
