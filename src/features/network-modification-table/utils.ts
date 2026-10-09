@@ -5,19 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Dispatch, SetStateAction } from 'react';
 import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
-import { fetchNetworkModification, getNetworkModificationsFromComposite } from '../../services';
 import {
     BasicComposedModificationMetadata,
     ComposedModificationMetadata,
     MODIFICATION_TYPES,
-    ModificationReferenceInfos,
     NetworkModificationActivations,
     NetworkModificationApplicabilities,
     NetworkModificationMetadata,
-    ReferencedCompositeModifications,
     RootNetworkRowInfo,
 } from '../../utils';
 
@@ -203,24 +199,9 @@ export function isAppliedOn(
     );
 }
 
-// Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
-// is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
-// specific node's *position* in the tree
-export const formatToComposedModification = (
-    modifications: NetworkModificationMetadata[],
-    parentCompositeUuid?: UUID
-): ComposedModificationMetadata[] => {
-    return modifications.map((modification) => ({
-        ...modification,
-        subModifications: [],
-        parentCompositeUuid,
-        rowKey: crypto.randomUUID(),
-    }));
-};
-
-// Remove the applicabilities
+// Remove the applicabilities and the content
 export function toMessageValues(modification: NetworkModificationMetadata) {
-    const { applicabilityByRootNetworkTag, ...messageValues } = modification;
+    const { applicabilityByRootNetworkTag, referencedInfos, modificationsInfos, ...messageValues } = modification;
     return messageValues;
 }
 
@@ -233,9 +214,6 @@ export function isReferenceModification(modification: NetworkModificationMetadat
     return modification?.type === MODIFICATION_TYPES.MODIFICATION_REFERENCE.type;
 }
 
-// Only inspects already-loaded subModifications (children fetched on row expansion), so a
-// reference nested under a not-yet-expanded composite won't be detected. Same limitation as the
-// rest of the drag-and-drop forbidden-drop checks, which all reason over the currently loaded tree.
 export function containsReferenceModification(modification: ComposedModificationMetadata | undefined): boolean {
     if (!modification) {
         return false;
@@ -270,25 +248,45 @@ export function isModificationEditLocked(modification: BasicComposedModification
     );
 }
 
-function normalizeReferenceChild(child: NetworkModificationMetadata): NetworkModificationMetadata {
-    return {
-        ...child,
-        messageType: child.messageType ?? child.type,
-        messageValues: child.messageValues ?? '{}',
-    };
-}
+type InheritedFromShared = Pick<BasicComposedModificationMetadata, 'childFromShared' | 'childFromReadOnlyShared'>;
 
-function extractReferenceChildren(detail: ModificationReferenceInfos): NetworkModificationMetadata[] {
-    const referenceInfos = detail?.referencedInfos;
-    if (!referenceInfos) {
-        return [];
-    }
-    if (referenceInfos.type === MODIFICATION_TYPES.COMPOSITE_MODIFICATION.type) {
-        return ((referenceInfos as ReferencedCompositeModifications).modificationsInfos ?? []).map(
-            normalizeReferenceChild
-        );
-    }
-    return [normalizeReferenceChild(referenceInfos)];
+// Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
+// is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
+// specific node's *position* in the tree
+// The modifications come as a whole tree: a composite holds its content, and a reference the shared modification it
+// points to. Both become sub modifications, the content of a shared composite standing right under its reference.
+export function formatToComposedModification(
+    modifications: NetworkModificationMetadata[],
+    parentCompositeUuid?: UUID,
+    inheritedFromShared: InheritedFromShared = {}
+): ComposedModificationMetadata[] {
+    return modifications.map(({ modificationsInfos, referencedInfos, ...modification }) => {
+        let subModifications: ComposedModificationMetadata[] = [];
+        if (isCompositeModification(modification)) {
+            subModifications = formatToComposedModification(
+                modificationsInfos ?? [],
+                modification.uuid,
+                inheritedFromShared
+            );
+        } else if (isReferenceModification(modification) && referencedInfos) {
+            // a shared modification that is not a composite shows as the only sub modification of its reference
+            const sharedContent = isCompositeModification(referencedInfos)
+                ? (referencedInfos.modificationsInfos ?? [])
+                : [referencedInfos];
+            subModifications = formatToComposedModification(sharedContent, modification.referencedId, {
+                childFromShared: true,
+                childFromReadOnlyShared:
+                    !!inheritedFromShared.childFromReadOnlyShared || isSharedModificationReadOnly(modification),
+            });
+        }
+        return {
+            ...modification,
+            subModifications,
+            parentCompositeUuid,
+            ...inheritedFromShared,
+            rowKey: crypto.randomUUID(),
+        };
+    });
 }
 
 // returns the depth of the modification with the given uuid in the given mods tree
@@ -303,38 +301,6 @@ export function findDepth(mods: ComposedModificationMetadata[], uuid: UUID, curr
         }
     }
     return -1;
-}
-
-export function removeUuidsFromTree(
-    mods: ComposedModificationMetadata[],
-    uuidsToRemove: Set<string>
-): ComposedModificationMetadata[] {
-    return mods
-        .filter((m) => !uuidsToRemove.has(m.uuid))
-        .map((m) =>
-            m.subModifications.length > 0
-                ? { ...m, subModifications: removeUuidsFromTree(m.subModifications, uuidsToRemove) }
-                : m
-        );
-}
-/**
- *
- * @param modifications source where the composite and reference modifications are looked for
- * @param containers result : all the composite and reference modifications found with loaded children
- */
-export function findAllLoadedContainerModifications(
-    modifications: ComposedModificationMetadata[],
-    containers: ComposedModificationMetadata[]
-) {
-    modifications.forEach((modification) => {
-        if (
-            (isCompositeModification(modification) || isReferenceModification(modification)) &&
-            modification.subModifications.length > 0
-        ) {
-            containers.push(modification);
-            findAllLoadedContainerModifications(modification.subModifications, containers);
-        }
-    });
 }
 
 export function findModificationInTree(
@@ -385,11 +351,11 @@ export function updateSubModificationsOfACompositeInTree(
 }
 
 /**
- * Recursively merges already-loaded subModifications from the previous tree into a freshly
- * formatted tree (where all subModifications start as []). This ensures that when `modifications`
- * changes, previously fetched children are preserved and do not need to be re-fetched.
+ * Gives every modification of a freshly formatted tree the rowKey it had in the previous one, matched by uuid among
+ * its siblings, so that the rows expanded or selected (both keyed by rowKey) stay so when the modifications are read
+ * again.
  */
-export function mergeSubModificationsIntoTree(
+export function carryOverRowKeys(
     nextMods: ComposedModificationMetadata[],
     prevMods: ComposedModificationMetadata[]
 ): ComposedModificationMetadata[] {
@@ -398,15 +364,10 @@ export function mergeSubModificationsIntoTree(
         if (!prevMod) {
             return nextMod;
         }
-        const carriedOverSubModifications =
-            nextMod.subModifications.length > 0 ? nextMod.subModifications : prevMod.subModifications;
         return {
             ...nextMod,
             rowKey: prevMod.rowKey,
-            subModifications:
-                prevMod.subModifications.length === 0
-                    ? nextMod.subModifications
-                    : mergeSubModificationsIntoTree(carriedOverSubModifications, prevMod.subModifications),
+            subModifications: carryOverRowKeys(nextMod.subModifications, prevMod.subModifications),
         };
     });
 }
@@ -509,97 +470,4 @@ export function moveSubModificationInTree(
     const result = [...modsWithoutTheMovedModification];
     result.splice(insertIdx === -1 ? result.length : insertIdx, 0, { ...movedMod, parentCompositeUuid: undefined });
     return result;
-}
-
-/**
- * @param expandedRowKeys rowKeys of the rows that were just expanded — this is exactly what
- * ExpandedState is keyed by now, since getRowId returns row.rowKey, so no translation is needed
- * at the call site (unlike the previous resolveUuidFromRowId path-parsing scheme, now removed).
- */
-export async function fetchSubModificationsForExpandedRows(
-    expandedRowKeys: UUID[],
-    mods: ComposedModificationMetadata[],
-    setMods: Dispatch<SetStateAction<ComposedModificationMetadata[]>>,
-    force = false
-): Promise<void> {
-    const expandedNodes = expandedRowKeys
-        .map((rowKey) => findModificationInTree(rowKey as UUID, mods))
-        .filter((mod): mod is ComposedModificationMetadata => !!mod);
-
-    const compositeNodesToFetch = expandedNodes.filter(
-        (mod) => isCompositeModification(mod) && (force || mod.subModifications.length === 0)
-    );
-
-    if (compositeNodesToFetch.length > 0) {
-        // Two different tree positions (rowKeys) can point at the same composite uuid — e.g. the
-        // same shared composite unfolded through two different references at once. Dedupe the
-        // network call by uuid, but apply the result to every node position independently below,
-        // so each occurrence gets its own freshly-generated child rowKeys and none collide.
-        const uniqueUuidsToFetch = [...new Set(compositeNodesToFetch.map((m) => m.uuid))];
-        const subModsByUuid = await getNetworkModificationsFromComposite(uniqueUuidsToFetch);
-
-        setMods((prev) =>
-            compositeNodesToFetch.reduce((tree, node) => {
-                const subMods = subModsByUuid[node.uuid];
-                if (!subMods) {
-                    return tree;
-                }
-                const existingMod = findModificationInTree(node.rowKey, tree);
-                // A composite nested inside a reference is itself flagged childFromShared;
-                // propagate the flag to its children so they stay non-clickable as well.
-                const liveModifications = formatToComposedModification(
-                    subMods.filter((m) => !m.stashed),
-                    node.uuid
-                ).map((m) =>
-                    existingMod?.childFromShared
-                        ? {
-                              ...m,
-                              childFromShared: true,
-                              childFromReadOnlyShared: existingMod.childFromReadOnlyShared,
-                          }
-                        : m
-                );
-
-                // Preserve already-loaded children of any nested composites within the new sub-list.
-                const mergedSubs = mergeSubModificationsIntoTree(
-                    liveModifications,
-                    existingMod?.subModifications ?? []
-                );
-                return updateSubModificationsOfACompositeInTree(node.rowKey, mergedSubs, tree);
-            }, prev)
-        );
-    }
-
-    const referenceNodesToFetch = expandedNodes.filter(
-        (mod) => isReferenceModification(mod) && (force || mod.subModifications.length === 0)
-    );
-
-    await Promise.all(
-        referenceNodesToFetch.map(async (node) => {
-            try {
-                const res = await fetchNetworkModification(node.uuid as UUID);
-                const detail: ModificationReferenceInfos = await res.json();
-
-                const children = extractReferenceChildren(detail).filter((m) => !m.stashed);
-                const childFromReadOnlyShared = node.childFromReadOnlyShared || isSharedModificationReadOnly(node);
-                const liveModifications = formatToComposedModification(children, detail.referencedId).map((m) => ({
-                    ...m,
-                    childFromShared: true,
-                    childFromReadOnlyShared,
-                }));
-
-                setMods((prev) => {
-                    // Preserve rowKeys and already-loaded children of nested composites on a forced re-fetch.
-                    const existingMod = findModificationInTree(node.rowKey, prev);
-                    const mergedSubs = mergeSubModificationsIntoTree(
-                        liveModifications,
-                        existingMod?.subModifications ?? []
-                    );
-                    return updateSubModificationsOfACompositeInTree(node.rowKey, mergedSubs, prev);
-                });
-            } catch (error) {
-                console.error(`Failed to load reference children for ${node.uuid}`, error);
-            }
-        })
-    );
 }

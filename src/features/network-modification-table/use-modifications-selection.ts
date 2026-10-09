@@ -65,7 +65,7 @@ function collectSelection(flatRows: Row<ComposedModificationMetadata>[]): Compos
     return acc;
 }
 
-function propagateSelectionToLoadedDescendants(
+function propagateSelectionToDescendants(
     selection: RowSelectionState,
     roots: ComposedModificationMetadata[]
 ): RowSelectionState {
@@ -151,7 +151,7 @@ export function useModificationsSelection({
 
     useEffect(() => {
         setRowSelection((prev) => {
-            const propagated = propagateSelectionToLoadedDescendants(prev, modifications);
+            const propagated = propagateSelectionToDescendants(prev, modifications);
             const allRowKeys = collectAllRowKeys(modifications);
             return pruneStaleSelection(propagated, allRowKeys);
         });
