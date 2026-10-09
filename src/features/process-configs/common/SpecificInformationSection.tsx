@@ -7,18 +7,15 @@
 
 import { Button, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { Control } from 'react-hook-form';
 import { FormSection } from './FormSection';
 import { ModificationsSubSection } from './ModificationsSubSection';
 import { ProvidersParametersSubSection } from './ProvidersParametersSubSection';
-import type { ProcessConfigFormValues } from './process-config-form.types';
 
 type SpecificInformationSectionProps = {
-    control: Control<ProcessConfigFormValues>;
     onPrefill?: () => void;
 };
 
-export function SpecificInformationSection({ control, onPrefill }: Readonly<SpecificInformationSectionProps>) {
+export function SpecificInformationSection({ onPrefill }: Readonly<SpecificInformationSectionProps>) {
     return (
         <FormSection
             id="specific-information-heading"
@@ -38,7 +35,7 @@ export function SpecificInformationSection({ control, onPrefill }: Readonly<Spec
             }
         >
             <ModificationsSubSection />
-            <ProvidersParametersSubSection control={control} />
+            <ProvidersParametersSubSection />
         </FormSection>
     );
 }

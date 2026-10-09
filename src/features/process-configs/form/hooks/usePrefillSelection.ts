@@ -6,19 +6,20 @@
  */
 
 import { useCallback, useState } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { ElementAttributes, ElementType, FieldConstants } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
-import type { FetchProcessConfigHandler, ProcessConfigFormValues } from '../../common/process-config-form.types';
+import type { FetchProcessConfigHandler } from '../../common/process-config-form.types';
+import { ProcessType } from '../../common';
 
 type UsePrefillSelectionParams = {
-    form: UseFormReturn<ProcessConfigFormValues>;
     onFetchProcessConfig?: FetchProcessConfigHandler;
-    selectedProcessType: string;
+    selectedProcessType: ProcessType | '';
 };
 
-export function usePrefillSelection({ form, onFetchProcessConfig, selectedProcessType }: UsePrefillSelectionParams) {
+export function usePrefillSelection({ onFetchProcessConfig, selectedProcessType }: UsePrefillSelectionParams) {
     const [isSelectorOpen, setIsSelectorOpen] = useState(false);
+    const { getValues, reset } = useFormContext();
 
     const openSelector = useCallback(() => setIsSelectorOpen(true), []);
     const closeSelector = useCallback(() => setIsSelectorOpen(false), []);
@@ -47,21 +48,21 @@ export function usePrefillSelection({ form, onFetchProcessConfig, selectedProces
                 return;
             }
 
-            const currentDirectory = form.getValues(FieldConstants.DIRECTORY);
-            const currentName = form.getValues(FieldConstants.NAME);
+            const currentDirectory = getValues(FieldConstants.DIRECTORY);
+            const currentName = getValues(FieldConstants.NAME);
 
-            form.reset(
+            reset(
                 {
                     ...getProcessConfigFormDefaultValues('create'),
                     ...prefillValues,
-                    processType: selectedProcessType as ProcessConfigFormValues['processType'],
+                    processType: selectedProcessType,
                     [FieldConstants.NAME]: currentName,
                     [FieldConstants.DIRECTORY]: currentDirectory,
                 },
                 { keepDefaultValues: true }
             );
         },
-        [closeSelector, form, onFetchProcessConfig, selectedProcessType]
+        [closeSelector, getValues, onFetchProcessConfig, reset, selectedProcessType]
     );
 
     return { isSelectorOpen, openSelector, itemFilter, handleSelect };

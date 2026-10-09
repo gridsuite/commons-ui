@@ -49,7 +49,7 @@ export function ProcessConfigEditionDialog({
     } = formMethods;
     const { snackError } = useSnackMessage();
 
-    const selectedProcessType = useWatch({ control, name: 'processType' });
+    const selectedProcessType = useWatch({ control, name: FieldConstants.PROCESS_TYPE });
 
     const handleSave = useCallback<SubmitHandler<ProcessConfigFormValues>>(
         async (values) => {
@@ -81,12 +81,7 @@ export function ProcessConfigEditionDialog({
             disabledSave={isLoading || isDisabledValidationButton(errors)}
             isDataFetching={isLoading}
         >
-            <ProcessConfigForm
-                form={formMethods}
-                mode="edit"
-                initialElementName={processConfigName}
-                activeDirectory={directory}
-            />
+            <ProcessConfigForm mode="edit" initialElementName={processConfigName} activeDirectory={directory} />
         </CustomMuiDialog>
     );
 }
