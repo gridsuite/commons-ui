@@ -17,6 +17,7 @@ export * from './battery';
 export * from './shunt-compensator';
 export * from './hvdcLine';
 export * from './line';
+export * from './linesAttachToSplittingLines';
 export * from './lineAttachToVoltageLevel';
 export * from './lineSplitWithVoltageLevel';
 export * from './twoWindingsTransformer';
