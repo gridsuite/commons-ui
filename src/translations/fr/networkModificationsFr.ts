@@ -467,6 +467,7 @@ export const networkModificationsFr = {
     side1RectifierSide2Inverter: 'Flux (1->2)',
     side1InverterSide2Rectifier: 'Flux (2->1)',
     copyLink: 'Copier le lien',
+    unshare: 'Départager',
     linkCopied: 'Lien copié',
     linkCopyError: 'Erreur lors de la copie du lien',
     // Voltage level

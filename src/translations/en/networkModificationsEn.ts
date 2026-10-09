@@ -461,6 +461,7 @@ export const networkModificationsEn = {
     side1RectifierSide2Inverter: 'Flow (Side1->Side2)',
     side1InverterSide2Rectifier: 'Flow (Side2->Side1)',
     copyLink: 'Copy link',
+    unshare: 'Unshare',
     linkCopied: 'Link copied',
     linkCopyError: 'Error while attempting to copy link',
     // Voltage level creation
