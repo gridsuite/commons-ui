@@ -6,7 +6,7 @@
  */
 
 import * as yup from 'yup';
-import { FieldConstants, REACTIVE_VARIATION_MODES, VARIATION_LIST_EMPTY, YUP_REQUIRED } from '../../../../../../utils';
+import { FieldConstants, REACTIVE_VARIATION_MODES, VARIATION_LIST_EMPTY, YUP_REQUIRED } from '../../../../utils';
 
 export const getLoadScalingVariationSchema = () =>
     yup

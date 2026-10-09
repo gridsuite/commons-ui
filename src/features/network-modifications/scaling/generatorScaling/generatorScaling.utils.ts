@@ -6,10 +6,14 @@
  */
 
 import * as yup from 'yup';
-import { FieldConstants, ModificationType } from '../../../../../utils';
-import { getGeneratorScalingVariationsSchema } from './variation/variation.utils';
-import { variationScalingDtoToForm, variationScalingFormToDto } from '../common/variationScaling.utils';
-import { VariationScalingDto, VariationScalingFormData } from '../common/variationScaling.type';
+import { FieldConstants, ModificationType } from '../../../../utils';
+import { getGeneratorScalingVariationsSchema } from './generatorScalingVariation.utils';
+import {
+    variationScalingDtoToForm,
+    variationScalingFormToDto,
+    VariationScalingDto,
+    VariationScalingFormData,
+} from '../common';
 
 export const generatorScalingFormSchema = yup
     .object()

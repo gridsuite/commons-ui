@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { FieldConstants, ModificationType } from '../../../../../utils';
+import { FieldConstants, ModificationType } from '../../../../utils';
 import { Variations, VariationType } from './variation.type';
 
 export interface VariationScalingFormData {

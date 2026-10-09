@@ -7,8 +7,8 @@
 
 import * as yup from 'yup';
 
-import { FieldConstants, VARIATION_LIST_EMPTY, VARIATION_MODES, YUP_REQUIRED } from '../../../../../../utils';
-import { IDENTIFIER_LIST } from '../../common/variation.type';
+import { FieldConstants, VARIATION_LIST_EMPTY, VARIATION_MODES, YUP_REQUIRED } from '../../../../utils';
+import { IDENTIFIER_LIST } from '../common';
 
 export const getGeneratorScalingVariationSchema = () =>
     yup

@@ -6,10 +6,10 @@
  */
 
 import { Grid, Theme } from '@mui/material';
-import { ExpandableInput, GridItem, GridSection, RadioInput } from '../../../../../components';
-import { FieldConstants, VARIATION_MODES, VARIATION_TYPES } from '../../../../../utils';
-import { getGeneratorScalingVariationEmptyForm } from './variation/variation.utils';
-import { VariationForm } from './variation/VariationForm';
+import { ExpandableInput, GridItem, GridSection, RadioInput } from '../../../../components';
+import { FieldConstants, VARIATION_MODES, VARIATION_TYPES } from '../../../../utils';
+import { getGeneratorScalingVariationEmptyForm } from './generatorScalingVariation.utils';
+import { GeneratorScalingVariationForm } from './GeneratorScalingVariationForm';
 
 const styles = {
     padding: (theme: Theme) => ({
@@ -25,7 +25,7 @@ export function GeneratorScalingForm() {
     const variationsField = (
         <ExpandableInput
             name={FieldConstants.VARIATIONS}
-            Field={VariationForm}
+            Field={GeneratorScalingVariationForm}
             addButtonLabel="CreateVariation"
             initialValue={getGeneratorScalingVariationEmptyForm(VARIATION_MODES.PROPORTIONAL_TO_PMAX.id)}
         />

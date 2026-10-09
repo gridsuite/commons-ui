@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { VARIATION_TYPES } from '../../../../../utils';
+import { VARIATION_TYPES } from '../../../../utils';
 
 export const IDENTIFIER_LIST = 'IDENTIFIER_LIST';
 

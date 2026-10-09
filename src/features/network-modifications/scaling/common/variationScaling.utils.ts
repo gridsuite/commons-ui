@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { FieldConstants, ModificationType, VARIATION_TYPES } from '../../../../../utils';
+import { FieldConstants, ModificationType, VARIATION_TYPES } from '../../../../utils';
 import { VariationScalingDto, VariationScalingFormData } from './variationScaling.type';
 
 export const emptyVariationScalingFormData: VariationScalingFormData = {

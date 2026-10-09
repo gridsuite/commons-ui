@@ -17,11 +17,11 @@ import {
     snackWithFallback,
     VARIATION_MODES,
     VARIATION_TYPES,
-} from '../../../../../../utils';
-import { DirectoryItemsInput, FloatInput, GridItem, SelectInput } from '../../../../../../components';
-import { IDENTIFIER_LIST, ItemFilterType, VariationType } from '../../common/variation.type';
-import { useSnackMessage } from '../../../../../../hooks';
-import { fetchElementsInfos } from '../../../../../../services';
+} from '../../../../utils';
+import { DirectoryItemsInput, FloatInput, GridItem, SelectInput } from '../../../../components';
+import { IDENTIFIER_LIST, ItemFilterType, VariationType } from '../common';
+import { useSnackMessage } from '../../../../hooks';
+import { fetchElementsInfos } from '../../../../services';
 
 const GENERATORS = [EquipmentType.GENERATOR];
 
@@ -30,7 +30,7 @@ interface GeneratorScalingVariationFormProps {
     index: number;
 }
 
-export function VariationForm({ name, index }: GeneratorScalingVariationFormProps) {
+export function GeneratorScalingVariationForm({ name, index }: GeneratorScalingVariationFormProps) {
     const { snackError } = useSnackMessage();
     const filterFieldName = useMemo(() => `${name}.${index}.${FieldConstants.FILTERS}`, [name, index]);
 

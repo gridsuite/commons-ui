@@ -15,9 +15,9 @@ import {
     FieldConstants,
     REACTIVE_VARIATION_MODES,
     VARIATION_TYPES,
-} from '../../../../../../utils';
-import { IDENTIFIER_LIST, ItemFilterType, VariationType } from '../../common/variation.type';
-import { DirectoryItemsInput, FloatInput, GridItem, SelectInput } from '../../../../../../components';
+} from '../../../../utils';
+import { IDENTIFIER_LIST, ItemFilterType, VariationType } from '../common';
+import { DirectoryItemsInput, FloatInput, GridItem, SelectInput } from '../../../../components';
 
 const LOADS = [EquipmentType.LOAD];
 
@@ -26,7 +26,7 @@ interface LoadScalingVariationFormProps {
     index: number;
 }
 
-export function VariationForm({ name, index }: LoadScalingVariationFormProps) {
+export function LoadScalingVariationForm({ name, index }: LoadScalingVariationFormProps) {
     const variationMode = useWatch({
         name: `${name}.${index}.${FieldConstants.VARIATION_MODE}`,
     });

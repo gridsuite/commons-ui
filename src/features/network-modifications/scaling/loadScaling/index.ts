@@ -5,4 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './variation.utils';
+export * from './loadScaling.utils';
+export * from './LoadScalingForm';
