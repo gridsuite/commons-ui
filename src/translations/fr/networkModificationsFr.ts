@@ -651,4 +651,12 @@ export const networkModificationsFr = {
     Filters: 'Filtres',
     shuntCompensatorId: 'ID du MCS',
     shuntCompensatorName: 'Nom du MCS',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Transformer un piquage en coupure',
+    lineAttachedToSplitLineVoltageLevel: 'Poste en piquage à passer en coupure',
+    ReplacingLines: 'Liaisons de remplacement',
+    ReplacingLine1: 'Liaison de remplacement 1',
+    ReplacingLine2: 'Liaison de remplacement 2',
+    LinesAttachToSplitLinesError: "Erreur lors de la transformation d'un piquage en coupure",
 };
