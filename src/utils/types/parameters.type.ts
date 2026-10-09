@@ -26,6 +26,13 @@ export enum ParameterType {
     COUNTRIES = 'COUNTRIES',
 }
 
+export type ParameterValue = boolean | string | string[] | number;
+
+export interface ParameterDifference {
+    value?: ParameterValue;
+    defaultValue?: ParameterValue;
+}
+
 export type SpecificParameterInfos = {
     name: string;
     type: ParameterType;
