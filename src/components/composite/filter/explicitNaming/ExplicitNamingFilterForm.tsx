@@ -44,7 +44,7 @@ export const explicitNamingFilterSchema = {
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
         .test('unique', 'duplicatedEquipmentInFilter', (array) => {
-            return array && array.length === new Set(array.map((row) => row[FieldConstants.EQUIPMENT_ID])).size;
+            return array?.length === new Set(array?.map((row) => row[FieldConstants.EQUIPMENT_ID])).size;
         })
         .when([FieldConstants.EQUIPMENT_TYPE], {
             is: (equipmentType: string) => isInjection(equipmentType),
@@ -232,22 +232,20 @@ export function ExplicitNamingFilterForm({
     }) as FilterTableRow[] | undefined;
 
     const duplicatedEquipmentIds = useMemo(() => {
-        const duplicatedElementIds: string[] = [];
         const equipmentIds = (watchedEquipmentRows ?? [])
             .map((row) => row[FieldConstants.EQUIPMENT_ID]?.trim())
             .filter(Boolean);
 
-        equipmentIds.reduce((acc, equipmentId) => {
-            if (
-                acc.indexOf(equipmentId) === -1 &&
-                equipmentIds.indexOf(equipmentId) !== equipmentIds.lastIndexOf(equipmentId)
-            ) {
-                acc.push(equipmentId);
-            }
+        const counts = equipmentIds.reduce<Record<string, number>>((acc, equipmentId) => {
+            acc[equipmentId] = (acc[equipmentId] ?? 0) + 1;
             return acc;
-        }, duplicatedElementIds);
+        }, {});
 
-        return new Set(duplicatedElementIds);
+        return new Set(
+            Object.entries(counts)
+                .filter(([, count]) => count > 1)
+                .map(([equipmentId]) => equipmentId)
+        );
     }, [watchedEquipmentRows]);
 
     const getRowClass = useCallback(
