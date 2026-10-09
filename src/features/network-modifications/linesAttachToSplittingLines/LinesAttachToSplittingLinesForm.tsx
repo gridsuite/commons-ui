@@ -18,20 +18,17 @@ interface LinesAttachToSplitLinesFormProps {
 }
 
 export function LinesAttachToSplittingLinesForm({
-    voltageLevelOptions,
+    voltageLevelOptions = [],
     fetchBusesOrBusbarSections,
-    lineOptions,
+    lineOptions = [],
 }: Readonly<LinesAttachToSplitLinesFormProps>) {
-    const availableLineOptions = lineOptions ?? [];
-    const availableVoltageLevelOptions = voltageLevelOptions ?? [];
-
     const lineToAttachTo1Field = (
         <AutocompleteInput
             allowNewValue
-            forcePopupIcon={availableLineOptions.length > 0}
+            forcePopupIcon={lineOptions.length > 0}
             name={FieldConstants.LINE_TO_ATTACH_TO_1_ID}
             label="Line1"
-            options={availableLineOptions}
+            options={lineOptions}
             size="small"
         />
     );
@@ -39,10 +36,10 @@ export function LinesAttachToSplittingLinesForm({
     const lineToAttachTo2Field = (
         <AutocompleteInput
             allowNewValue
-            forcePopupIcon={availableLineOptions.length > 0}
+            forcePopupIcon={lineOptions.length > 0}
             name={FieldConstants.LINE_TO_ATTACH_TO_2_ID}
             label="Line2"
-            options={availableLineOptions}
+            options={lineOptions}
             size="small"
         />
     );
@@ -50,10 +47,10 @@ export function LinesAttachToSplittingLinesForm({
     const attachedLineField = (
         <AutocompleteInput
             allowNewValue
-            forcePopupIcon={availableLineOptions.length > 0}
+            forcePopupIcon={lineOptions.length > 0}
             name={FieldConstants.ATTACHED_LINE_ID}
             label="LineAttached"
-            options={availableLineOptions}
+            options={lineOptions}
             size="small"
         />
     );
@@ -61,7 +58,7 @@ export function LinesAttachToSplittingLinesForm({
     const connectivityForm = (
         <VoltageLevelConnectivityForm
             voltageLevelSelectLabel="AttachedVoltageLevelId"
-            voltageLevelOptions={availableVoltageLevelOptions}
+            voltageLevelOptions={voltageLevelOptions}
             fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
         />
     );
