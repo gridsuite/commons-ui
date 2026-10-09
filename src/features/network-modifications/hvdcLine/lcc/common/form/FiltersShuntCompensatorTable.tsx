@@ -58,13 +58,13 @@ export function FiltersShuntCompensatorTable({ id }: Readonly<FiltersShuntCompen
                 label: 'maxQAtNominalV',
                 dataKey: FieldConstants.MAX_Q_AT_NOMINAL_V,
                 initialValue: null,
-                width: '30%',
+                width: '25%',
             },
             {
                 label: 'connected',
                 dataKey: FieldConstants.SHUNT_COMPENSATOR_SELECTED,
                 initialValue: true,
-                width: '10%',
+                width: '15%',
             },
         ].map((column) => ({
             ...column,
