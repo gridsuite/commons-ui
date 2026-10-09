@@ -35,7 +35,7 @@ export function LimitViolationResult({
     const gridRef = useRef<AgGridReact>(null);
 
     const openLoaderTab = useOpenLoaderShortWait({
-        isLoading: computationStatus === RunningStatus.RUNNING || isLoadingResult,
+        isLoading: computationStatus === RunningStatus.RUNNING || computationStatus === RunningStatus.PRELOADING || isLoadingResult,
         delay: RESULTS_LOADING_DELAY,
     });
 
