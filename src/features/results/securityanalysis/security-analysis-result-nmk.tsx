@@ -38,6 +38,7 @@ const styles = {
 
 export function SecurityAnalysisResultNmk({
     result,
+    count,
     columnDefs,
     nmkType,
     paginationProps,
@@ -47,6 +48,7 @@ export function SecurityAnalysisResultNmk({
     onGridReady,
 }: SecurityAnalysisResultNmkProps) {
     const content = result?.content ?? null;
+    const totalCount = count ?? result?.totalElements ?? 0;
 
     const theme = useTheme();
     const intl: IntlShape = useIntl();
@@ -108,7 +110,11 @@ export function SecurityAnalysisResultNmk({
                 />
             </Box>
             <Box>
-                <CustomTablePagination rowsPerPageOptions={RESULT_PAGE_OPTIONS} {...paginationProps} />
+                <CustomTablePagination
+                    rowsPerPageOptions={RESULT_PAGE_OPTIONS}
+                    {...paginationProps}
+                    count={paginationProps.count ?? totalCount}
+                />
             </Box>
         </Box>
     );

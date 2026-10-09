@@ -6,19 +6,19 @@
  */
 
 import { Key } from 'react';
-import { ColDef } from 'ag-grid-community';
-import { GsLangUser } from '../../../utils';
+import { ColDef, GridReadyEvent } from 'ag-grid-community';
+import { GsLangUser, RunningStatus } from '../../../utils';
 
 export interface LimitViolationResultProps {
     result: OverloadedEquipment[] | undefined;
     columnDefs: ColDef<any>[];
     isLoadingResult: boolean;
     tableName: string;
-    computationStatus: string;
+    computationStatus: RunningStatus;
     computationSubType: string;
     exportCsvResetKey: Key;
     language: GsLangUser;
-    onGridReady?: (params: any) => void;
+    onGridReady?: (params: GridReadyEvent) => void;
 }
 
 export interface OverloadedEquipment {
