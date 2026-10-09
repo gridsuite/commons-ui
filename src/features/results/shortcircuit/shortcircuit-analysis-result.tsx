@@ -274,7 +274,8 @@ export function ShortCircuitAnalysisResult({
     ]);
 
     const openLoader = useOpenLoaderShortWait({
-        isLoading: analysisStatus === RunningStatus.RUNNING || isFetching,
+        isLoading:
+            analysisStatus === RunningStatus.RUNNING || analysisStatus === RunningStatus.PRELOADING || isFetching,
         delay: RESULTS_LOADING_DELAY,
     });
 
