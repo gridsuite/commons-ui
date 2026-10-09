@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { Alert, Grid, Stack } from '@mui/material';
-import { ColDef, ValueParserParams } from 'ag-grid-community';
+import { ColDef, RowClassParams, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
@@ -43,6 +43,9 @@ export const explicitNamingFilterSchema = {
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
+        .test('unique', 'duplicatedEquipmentInFilter', (array) => {
+            return array?.length === new Set(array?.map((row) => row[FieldConstants.EQUIPMENT_ID])).size;
+        })
         .when([FieldConstants.EQUIPMENT_TYPE], {
             is: (equipmentType: string) => isInjection(equipmentType),
             then: (innerSchema) =>
@@ -99,7 +102,7 @@ export function ExplicitNamingFilterForm({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
+    const { getValues, setValue, isDeveloperMode, language, formState } = useCustomFormContext();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -224,6 +227,39 @@ export function ExplicitNamingFilterForm({
             );
     };
 
+    const watchedEquipmentRows = useWatch({
+        name: FILTER_EQUIPMENTS_ATTRIBUTES,
+    }) as FilterTableRow[] | undefined;
+
+    const duplicatedEquipmentIds = useMemo(() => {
+        const equipmentIds = (watchedEquipmentRows ?? [])
+            .map((row) => row[FieldConstants.EQUIPMENT_ID]?.trim())
+            .filter(Boolean);
+
+        const counts = equipmentIds.reduce<Record<string, number>>((acc, equipmentId) => {
+            acc[equipmentId] = (acc[equipmentId] ?? 0) + 1;
+            return acc;
+        }, {});
+
+        return new Set(
+            Object.entries(counts)
+                .filter(([, count]) => count > 1)
+                .map(([equipmentId]) => equipmentId)
+        );
+    }, [watchedEquipmentRows]);
+
+    const getRowClass = useCallback(
+        (params: RowClassParams<FilterTableRow>) => {
+            if (!formState?.isSubmitted) {
+                return undefined;
+            }
+            const equipmentId = params.data?.[FieldConstants.EQUIPMENT_ID]?.trim();
+
+            return equipmentId && duplicatedEquipmentIds.has(equipmentId) ? 'duplicate-equipment-row' : undefined;
+        },
+        [formState?.isSubmitted, duplicatedEquipmentIds]
+    );
+
     return (
         <Stack
             spacing={2}
@@ -312,6 +348,12 @@ export function ExplicitNamingFilterForm({
                                 headerCheckbox: true,
                             }}
                             alwaysShowVerticalScroll
+                            getRowClass={getRowClass}
+                            cssProps={{
+                                '& .ag-row.duplicate-equipment-row .ag-cell': {
+                                    backgroundColor: '#ac1717',
+                                },
+                            }}
                             csvProps={{
                                 fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
                                 language,
