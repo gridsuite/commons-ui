@@ -10,9 +10,14 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
-import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
+import {
+    fetchAppsMetadata,
+    fetchNetworkModification,
+    isExploreMetadata,
+    unshareNetworkModification,
+} from '../../../services';
 import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
-import { CustomMenuItem, CustomTooltip } from '../../../components';
+import { CustomMenuItem, CustomTooltip, ErrorMessage } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
 export interface ReferenceLinkCellProps {
@@ -74,10 +79,15 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
             event.stopPropagation();
             setAnchorEl(null);
             setIsLoading(true);
-            // TODO : appeler endpoint
-            setIsLoading(false);
+            unshareNetworkModification(data.uuid)
+                .catch((error: ErrorMessage) => {
+                    snackWithFallback(snackError, error, { headerId: 'UnshareError' });
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         },
-        [data.uuid, snackInfo, snackError]
+        [data.uuid, unshareNetworkModification, snackError]
     );
 
     return (

@@ -94,6 +94,7 @@ export const networkModificationsEn = {
     ConverterStation1Tab: 'Converter station 1',
     ConverterStation2Tab: 'Converter station 2',
 
+    UnshareError: 'An error occurred while unsharing the modification',
     ModificationReadError: 'An error occurred while fetching the modification',
     CompositeModification: 'Composite modification',
     CreateSubstation: 'Create substation',

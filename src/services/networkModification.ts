@@ -37,6 +37,17 @@ export function fetchNetworkModification(modificationUuid: UUID) {
     return backendFetch(modificationFetchUrl);
 }
 
+export function unshareNetworkModification(modificationUuid: UUID): Promise<Response> {
+    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}/unshare`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
+}
+
 export function fetchBusBarSectionsForNewCoupler(
     voltageLevelId: string,
     busBarCount: number,

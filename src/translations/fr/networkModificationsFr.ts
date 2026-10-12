@@ -98,6 +98,7 @@ export const networkModificationsFr = {
     ConverterStation1Tab: 'Station 1',
     ConverterStation2Tab: 'Station 2',
 
+    UnshareError: 'Une erreur est survenue lors du départage de la modification',
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CompositeModification: 'Modification composite',
     CreateSubstation: 'Créer un site',
