@@ -319,7 +319,6 @@ export const networkModificationsFr = {
     CreateGenerator: 'Créer un groupe',
     GeneratorCreationError: "Erreur lors de la création d'un groupe",
     VoltageRegulationText: 'Réglage de tension',
-    GenerationDispatch: 'Démarrage de groupes',
     generatorMinimumActivePowerMaxValueError: 'La puissance active min doit être inférieure à la puissance active max',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'La valeur de la puissance imposée doit être comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
@@ -515,6 +514,22 @@ export const networkModificationsFr = {
         "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
     Undefined: 'Non défini',
 
+    // Generation dispatch
+    GenerationDispatch: 'Démarrage de groupes',
+    GenerationDispatchError: 'Erreur lors de la création du démarrage de groupes',
+    LossCoefficient: 'Coefficient de pertes',
+    ReduceMaxP: 'Abattement Pmax',
+    DefaultOutageRate: 'Taux indisponibilité par défaut',
+    GeneratorsWithoutOutage: 'Groupes sans abattement indispo',
+    GeneratorsWithFixedActivePower: 'Groupes non ajustables',
+    GeneratorFilter: 'FILTRE GROUPE',
+    FrequencyReserve: 'RESERVE FREQUENCE (%)',
+    frequencyReserve: 'Réserve fréquence',
+    GeneratorsFiltersFrequencyReserveToolTip:
+        'Les saisies sont appliquées dans l’ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un groupe est inclus dans plusieurs filtres)',
+    GeneratorsOrdering: 'Hiérarchie des sites',
+    GeneratorAvailability: 'Indisponibilité groupes',
+
     // Tabular creation / modification - dialog
     TabularCreation: 'Création tabulaire',
     TabularModification: 'Modification tabulaire',
@@ -651,4 +666,30 @@ export const networkModificationsFr = {
     Filters: 'Filtres',
     shuntCompensatorId: 'ID du MCS',
     shuntCompensatorName: 'Nom du MCS',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Transformer un piquage en coupure',
+    lineAttachedToSplitLineVoltageLevel: 'Poste en piquage à passer en coupure',
+    ReplacingLines: 'Liaisons de remplacement',
+    ReplacingLine1: 'Liaison de remplacement 1',
+    ReplacingLine2: 'Liaison de remplacement 2',
+    LinesAttachToSplitLinesError: "Erreur lors de la transformation d'un piquage en coupure",
+
+    Variations: 'Variations',
+    CreateVariation: 'Ajouter Variation',
+    VariationMode: 'Mode de variation',
+    ReactiveVariationMode: 'Mode variation du réactif',
+    DeltaP: 'Δ P',
+    TargetPText: 'P cible',
+    ProportionalToPMax: 'Proportionnel à Pmax',
+    StackingUp: 'Empilement',
+    RegularDistribution: 'Équirépartition',
+    TanPhiFixed: 'tan(φ) fixe',
+    ConstantQWithoutUnit: 'Q constant',
+
+    GeneratorScaling: 'Variation plan de production',
+    GeneratorScalingError: 'Erreur lors de la création de la variation du plan de production',
+
+    LoadScaling: 'Variation plan de consommation',
+    LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
 };

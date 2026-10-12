@@ -313,7 +313,6 @@ export const networkModificationsEn = {
     CreateGenerator: 'Create generator',
     GeneratorCreationError: 'Error while creating generator',
     VoltageRegulationText: 'Voltage regulation',
-    GenerationDispatch: 'Generation dispatch',
     generatorMinimumActivePowerMaxValueError: 'Minimum active power must be inferior to maximum active power',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'Planned active power set point must be between minimum and maximum active power values',
@@ -509,6 +508,22 @@ export const networkModificationsEn = {
     notBuiltNodeTooltipVlTopoModif: 'Switches list from last built node in current branch',
     Undefined: 'Undefined',
 
+    // Generation dispatch
+    GenerationDispatch: 'Generation dispatch',
+    GenerationDispatchError: 'Error while creating a generation dispatch',
+    LossCoefficient: 'Loss coefficient',
+    ReduceMaxP: 'Reduce maxP',
+    DefaultOutageRate: 'Default outage rate',
+    GeneratorsWithoutOutage: 'Generators without outage simulation',
+    GeneratorsWithFixedActivePower: 'Generators with fixed active power',
+    GeneratorFilter: 'GENERATOR FILTER',
+    FrequencyReserve: 'FREQUENCY RESERVE (%)',
+    frequencyReserve: 'Frequency reserve',
+    GeneratorsFiltersFrequencyReserveToolTip:
+        'User entries are applied one after another starting at the top of the list. If a generator is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
+    GeneratorsOrdering: 'Substations hierarchy',
+    GeneratorAvailability: 'Generator availability',
+
     // Tabular creation / modification - dialog
     TabularCreation: 'Tabular creation',
     TabularModification: 'Tabular modification',
@@ -644,4 +659,30 @@ export const networkModificationsEn = {
     Filters: 'Filters',
     shuntCompensatorId: 'Shunt compensator ID',
     shuntCompensatorName: 'Shunt compensator name',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Attaching lines to splitting lines',
+    lineAttachedToSplitLineVoltageLevel: 'Voltage level with attached line to place as splitter',
+    ReplacingLines: 'Replacing lines',
+    ReplacingLine1: 'Replacing line 1',
+    ReplacingLine2: 'Replacing line 2',
+    LinesAttachToSplitLinesError: 'Error while attaching lines to splitting lines',
+
+    Variations: 'Variations',
+    CreateVariation: 'Add Variation',
+    VariationMode: 'Variation mode',
+    ReactiveVariationMode: 'Reactive variation mode',
+    DeltaP: 'Δ P',
+    TargetPText: 'Target P',
+    ProportionalToPMax: 'Proportional to max P',
+    StackingUp: 'Stacking up',
+    RegularDistribution: 'Regular distribution',
+    TanPhiFixed: 'tan(φ) fixed',
+    ConstantQWithoutUnit: 'Constant Q',
+
+    GeneratorScaling: 'Generator scaling',
+    GeneratorScalingError: 'Error while creating a generator scaling',
+
+    LoadScaling: 'Load scaling',
+    LoadScalingError: 'Error while creating a load scaling',
 };
