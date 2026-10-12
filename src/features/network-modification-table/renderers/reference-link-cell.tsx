@@ -87,7 +87,7 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
                     setIsLoading(false);
                 });
         },
-        [data.uuid, unshareNetworkModification, snackError]
+        [data.uuid, snackError]
     );
 
     return (
