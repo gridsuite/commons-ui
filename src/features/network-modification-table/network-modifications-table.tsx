@@ -114,10 +114,10 @@ export function NetworkModificationsTable({
 
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
-        // depth has to be < to first selected row depth + maxDepth of any selected row
+        // depth has to be < to first selected row depth + sublevelCount of any selected row
         if (rows.length === 0) return false;
         const firstSelectedRowDepth = findDepth(composedModificationsRef.current, rows[0].uuid);
-        return rows.some((row) => firstSelectedRowDepth + (row.maxDepth ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
+        return rows.some((row) => firstSelectedRowDepth + (row.sublevelCount ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
     }, []);
 
     const handleRowSelected = useCallback(
@@ -374,6 +374,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={row.original.childFromReadOnlyShared}
                                             />
                                         );
                                     })}

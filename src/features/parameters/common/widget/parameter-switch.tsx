@@ -5,15 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid, SwitchProps } from '@mui/material';
+import { ReactNode } from 'react';
 import { SwitchWithLabel } from '../parameters';
 
 export interface ParameterSwitchProps extends Pick<SwitchProps, 'onChange'> {
     label: string;
     value: boolean;
+    labelAdornment?: ReactNode;
     key?: string;
 }
 
-export function ParameterSwitch({ label, value, onChange, key }: Readonly<ParameterSwitchProps>) {
+export function ParameterSwitch({ label, value, onChange, labelAdornment, key }: Readonly<ParameterSwitchProps>) {
     return (
         <Grid
             container
@@ -24,7 +26,7 @@ export function ParameterSwitch({ label, value, onChange, key }: Readonly<Parame
                 justifyContent: 'space-between',
             }}
         >
-            <SwitchWithLabel value={value} label={label} callback={onChange} />
+            <SwitchWithLabel value={value} label={label} callback={onChange} labelAdornment={labelAdornment} />
         </Grid>
     );
 }

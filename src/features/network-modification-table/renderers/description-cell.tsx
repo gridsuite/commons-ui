@@ -21,10 +21,12 @@ export interface DescriptionCellProps {
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     isDisabled?: boolean;
+    // the dialog stays reachable to read an existing description, only its validation is denied
+    isSaveDisabled?: boolean;
 }
 
 export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
-    const { row, studyUuid, currentNodeId, isDisabled = false } = props;
+    const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -54,6 +56,11 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
         setOpenDescModificationDialog(true);
     }, []);
 
+    // As the description is empty and we can't update it, we don't want to render the cell and its button
+    if (empty && isSaveDisabled) {
+        return null;
+    }
+
     return (
         <>
             {openDescModificationDialog && modificationUuid && (
@@ -62,6 +69,7 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
+                    disabledSave={isSaveDisabled}
                 />
             )}
             <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
