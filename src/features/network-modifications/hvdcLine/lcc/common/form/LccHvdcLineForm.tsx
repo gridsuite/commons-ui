@@ -6,7 +6,6 @@
  */
 
 import { Box, Stack } from '@mui/material';
-import { mergeSx } from '../../../../../../utils';
 import { ConnectivityNetworkProps, tabbedFormStyles } from '../../../../common';
 import { UseTabsReturn } from '../../../../../../hooks';
 import { LccHvdcLineDialogHeader } from './LccHvdcLineDialogHeader';
@@ -40,7 +39,7 @@ export function LccHvdcLineForm({
                 tabIndexesWithError={tabsWithError}
                 onTabChange={onTabChange}
             />
-            <Box sx={mergeSx(tabbedFormStyles.scrollableContent, { paddingLeft: 1.5 })}>
+            <Box sx={tabbedFormStyles.scrollableContent}>
                 <LccHvdcLineDialogTabsContent
                     tabIndex={selectedTab}
                     isModification={isModification}
