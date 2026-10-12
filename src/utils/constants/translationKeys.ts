@@ -50,3 +50,5 @@ export const MAX_P_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'maxPMustBeGreaterOrEqualT
 export const NOMINAL_V_MUST_BE_GREATER_OR_EQUAL_TO_ZERO = 'nominalVMustBeGreaterOrEqualToZero';
 export const POWER_FACTOR_INTERVAL_VALUE_ERROR = 'powerFactorIntervalValueError';
 export const Q_MAX_AT_NOMINAL_V_MUST_BE_GREATER_THAN_ZERO = 'qMaxAtNominalVMustBeGreaterThanZero';
+
+export const VARIATION_LIST_EMPTY = 'EmptyList.variations';

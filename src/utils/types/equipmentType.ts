@@ -174,6 +174,42 @@ export const RATIO_REGULATION_MODES = {
     },
 } as const;
 
+export const PROPORTIONAL = { id: 'PROPORTIONAL', label: 'Proportional' } as const;
+
+export const REGULAR_DISTRIBUTION = {
+    id: 'REGULAR_DISTRIBUTION',
+    label: 'RegularDistribution',
+} as const;
+
+export const VENTILATION = { id: 'VENTILATION', label: 'Ventilation' } as const;
+
+export const VARIATION_MODES = {
+    PROPORTIONAL,
+    PROPORTIONAL_TO_PMAX: {
+        id: 'PROPORTIONAL_TO_PMAX',
+        label: 'ProportionalToPMax',
+    },
+    REGULAR_DISTRIBUTION,
+    STACKING_UP: { id: 'STACKING_UP', label: 'StackingUp' },
+    VENTILATION,
+} as const;
+
+export const VARIATION_TYPES = {
+    DELTA_P: { id: 'DELTA_P', label: 'DeltaP' },
+    TARGET_P: { id: 'TARGET_P', label: 'TargetPText' },
+} as const;
+
+export const ACTIVE_VARIATION_MODES = {
+    PROPORTIONAL,
+    REGULAR_DISTRIBUTION,
+    VENTILATION,
+} as const;
+
+export const REACTIVE_VARIATION_MODES = {
+    CONSTANT_Q: { id: 'CONSTANT_Q', label: 'ConstantQWithoutUnit' },
+    TAN_PHI_FIXED: { id: 'TAN_PHI_FIXED', label: 'TanPhiFixed' },
+} as const;
+
 export const UNDEFINED_CONNECTION_DIRECTION = 'UNDEFINED';
 // Relevant ConnectablePosition.Direction Powsybl enum values
 export const CONNECTION_DIRECTIONS = [
