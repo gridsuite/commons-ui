@@ -4,13 +4,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { FormattedMessage } from 'react-intl';
 import { Grid } from '@mui/material';
 import { useCallback, useEffect } from 'react';
 import { FieldConstants } from '../../../../../../utils';
 import { fetchDefaultCountry } from '../../../../../../services';
-import { AutocompleteInput, TextInput } from '../../../../../../components/ui';
+import { AutocompleteInput, TextInput, useCustomFormContext } from '../../../../../../components/ui';
 import { SubstationCreationSection, SubstationCreationSectionProps } from './SubstationCreationSection';
 import { AddButton } from '../../../../../../components/ui/addButton';
 
@@ -20,7 +20,7 @@ export interface SubstationTabContentProps extends Pick<SubstationCreationSectio
 
 export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<SubstationTabContentProps>) {
     const watchAddSubstationCreation = useWatch({ name: FieldConstants.ADD_SUBSTATION_CREATION });
-    const { setValue, getValues } = useFormContext();
+    const { setValue, getValues, isReadOnly } = useCustomFormContext();
 
     const handleDeleteSubstationCreation = useCallback(() => {
         setValue(FieldConstants.ADD_SUBSTATION_CREATION, false);
@@ -71,16 +71,20 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
                     <TextInput name={FieldConstants.SUBSTATION_ID} label="SUBSTATION" />
                 )}
             </Grid>
-            <Grid
-                sx={{
-                    mt: 0.75,
-                }}
-            >
-                <FormattedMessage id="Or" />
-            </Grid>
-            <Grid>
-                <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
-            </Grid>
+            {!isReadOnly && (
+                <>
+                    <Grid
+                        sx={{
+                            mt: 0.75,
+                        }}
+                    >
+                        <FormattedMessage id="Or" />
+                    </Grid>
+                    <Grid>
+                        <AddButton label="CreateSubstation" onClick={handleCreateSubstation} />
+                    </Grid>
+                </>
+            )}
         </Grid>
     );
 }
