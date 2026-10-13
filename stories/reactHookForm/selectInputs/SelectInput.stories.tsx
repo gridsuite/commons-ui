@@ -50,5 +50,5 @@ type Story = StoryObj<typeof meta>;
 
 export const Selected: Story = {};
 export const Disabled: Story = { args: { disabled: true } };
-export const SelectedReadOnly: Story = { parameters: { isReadOnly: true }};
+export const SelectedReadOnly: Story = { parameters: { isReadOnly: true } };
 export const DisabledReadOnly: Story = { args: { disabled: true }, parameters: { isReadOnly: true } };
