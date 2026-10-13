@@ -9,55 +9,51 @@ import { array, boolean, InferType, number, object, string } from 'yup';
 import { FieldConstants, ModificationType, YUP_REQUIRED } from '../../../utils';
 import { BalanceType, BalancesAdjustmentDto, ShiftEquipmentType, ShiftType } from './balancesAdjustment.types';
 
-export const balancesAdjustmentFormSchema = (countryCodes: string[]) =>
-    object()
-        .shape({
-            [FieldConstants.BALANCES_ADJUSTMENT]: object().shape({
-                [FieldConstants.BALANCES_ADJUSTMENT_ZONES]: array()
-                    .of(
-                        object().shape({
-                            [FieldConstants.SELECTED]: boolean().required(),
-                            [FieldConstants.BALANCES_ADJUSTMENT_ZONE]: string().required(),
-                            [FieldConstants.BALANCES_ADJUSTMENT_COUNTRIES]: array()
-                                .of(string().oneOf(countryCodes).required())
-                                .min(1, YUP_REQUIRED)
-                                .required(),
-                            [FieldConstants.BALANCES_ADJUSTMENT_SHIFT_EQUIPMENT_TYPE]: string()
-                                .oneOf(Object.values(ShiftEquipmentType))
-                                .required(),
-                            [FieldConstants.BALANCES_ADJUSTMENT_SHIFT_TYPE]: string()
-                                .oneOf(Object.values(ShiftType))
-                                .required(),
-                            [FieldConstants.BALANCES_ADJUSTMENT_TARGET]: number().integer().required(),
-                        })
-                    )
+export const balancesAdjustmentFormSchema = object()
+    .shape({
+        [FieldConstants.BALANCES_ADJUSTMENT]: object().shape({
+            [FieldConstants.BALANCES_ADJUSTMENT_ZONES]: array()
+                .of(
+                    object().shape({
+                        [FieldConstants.SELECTED]: boolean().required(),
+                        [FieldConstants.BALANCES_ADJUSTMENT_ZONE]: string().required(),
+                        [FieldConstants.BALANCES_ADJUSTMENT_COUNTRIES]: array()
+                            .of(string().required())
+                            .min(1, YUP_REQUIRED)
+                            .required(),
+                        [FieldConstants.BALANCES_ADJUSTMENT_SHIFT_EQUIPMENT_TYPE]: string()
+                            .oneOf(Object.values(ShiftEquipmentType))
+                            .required(),
+                        [FieldConstants.BALANCES_ADJUSTMENT_SHIFT_TYPE]: string()
+                            .oneOf(Object.values(ShiftType))
+                            .required(),
+                        [FieldConstants.BALANCES_ADJUSTMENT_TARGET]: number().integer().required(),
+                    })
+                )
+                .required(),
+            [FieldConstants.BALANCES_ADJUSTMENT_ADVANCED]: object().shape({
+                [FieldConstants.BALANCES_ADJUSTMENT_WITH_LOAD_FLOW]: boolean().required(),
+                [FieldConstants.BALANCES_ADJUSTMENT_WITH_RATIO_TAP_CHANGERS]: boolean().required(),
+                [FieldConstants.BALANCES_ADJUSTMENT_SUBTRACT_LOAD_FLOW_BALANCING]: boolean().required(),
+                [FieldConstants.BALANCES_ADJUSTMENT_MAX_NUMBER_ITERATIONS]: number().integer().positive().required(),
+                [FieldConstants.BALANCES_ADJUSTMENT_THRESHOLD_NET_POSITION]: number().positive().required(),
+                [FieldConstants.BALANCES_ADJUSTMENT_COUNTRIES_TO_BALANCE]: array()
+                    .of(string().required())
+                    .when(FieldConstants.BALANCES_ADJUSTMENT_WITH_LOAD_FLOW, {
+                        is: (withLoadFlow: boolean) => withLoadFlow,
+                        then: (schema) => schema.min(1, YUP_REQUIRED),
+                        otherwise: (schema) => schema.optional(),
+                    })
                     .required(),
-                [FieldConstants.BALANCES_ADJUSTMENT_ADVANCED]: object().shape({
-                    [FieldConstants.BALANCES_ADJUSTMENT_WITH_LOAD_FLOW]: boolean().required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_WITH_RATIO_TAP_CHANGERS]: boolean().required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_SUBTRACT_LOAD_FLOW_BALANCING]: boolean().required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_MAX_NUMBER_ITERATIONS]: number()
-                        .integer()
-                        .positive()
-                        .required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_THRESHOLD_NET_POSITION]: number().positive().required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_COUNTRIES_TO_BALANCE]: array()
-                        .of(string().oneOf(countryCodes).required())
-                        .when(FieldConstants.BALANCES_ADJUSTMENT_WITH_LOAD_FLOW, {
-                            is: (withLoadFlow: boolean) => withLoadFlow,
-                            then: (schema) => schema.min(1, YUP_REQUIRED),
-                            otherwise: (schema) => schema.optional(),
-                        })
-                        .required(),
-                    [FieldConstants.BALANCES_ADJUSTMENT_BALANCE_TYPE]: string()
-                        .oneOf(Object.values(BalanceType))
-                        .required(),
-                }),
+                [FieldConstants.BALANCES_ADJUSTMENT_BALANCE_TYPE]: string()
+                    .oneOf(Object.values(BalanceType))
+                    .required(),
             }),
-        })
-        .required();
+        }),
+    })
+    .required();
 
-export type BalancesAdjustmentFormData = InferType<ReturnType<typeof balancesAdjustmentFormSchema>>;
+export type BalancesAdjustmentFormData = InferType<typeof balancesAdjustmentFormSchema>;
 
 export const balancesAdjustmentEmptyFormData: BalancesAdjustmentFormData = {
     [FieldConstants.BALANCES_ADJUSTMENT]: {

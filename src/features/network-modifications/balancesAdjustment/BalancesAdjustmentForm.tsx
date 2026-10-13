@@ -6,8 +6,9 @@
  */
 
 import { Box, Tab, Tabs, Stack } from '@mui/material';
-import { FormattedMessage } from 'react-intl';
-import { UseTabsReturn } from '../../../hooks';
+import { FormattedMessage, useIntl } from 'react-intl';
+import { UseTabsReturn, useLocalizedCountries } from '../../../hooks';
+import { GsLang } from '../../../utils';
 import { tabbedFormStyles } from '../common';
 import { getTabIndicatorStyle, getTabStyle } from '../../parameters/parameters-style';
 import { BalancesAdjustmentTab } from './balancesAdjustment.constants';
@@ -15,13 +16,13 @@ import { BalancesAdjustmentTable } from './BalancesAdjustmentTable';
 import { BalancesAdjustmentAdvancedContent } from './BalancesAdjustmentAdvancedContent';
 
 export interface BalancesAdjustmentFormProps {
-    countryCodes: string[];
-    translate: (countryCode: string) => string;
     useTabsReturn: UseTabsReturn<BalancesAdjustmentTab>;
 }
 
-export function BalancesAdjustmentForm({ countryCodes, translate, useTabsReturn }: BalancesAdjustmentFormProps) {
+export function BalancesAdjustmentForm({ useTabsReturn }: BalancesAdjustmentFormProps) {
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
+    const { locale } = useIntl();
+    const { countryCodes, translate } = useLocalizedCountries(locale as GsLang);
 
     return (
         <Stack spacing={2} sx={tabbedFormStyles.container}>
