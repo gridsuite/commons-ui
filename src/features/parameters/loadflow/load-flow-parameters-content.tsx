@@ -56,12 +56,14 @@ function LoadFlowParametersContent({
     params,
     defaultLimitReductions,
 }: Readonly<LoadFlowParametersContentProps>) {
+    const parametersDifferences = params?.parametersDifferences;
+
     return (
         <Box sx={styles.wrapper}>
             <Grid container sx={styles.container}>
                 <Grid sx={styles.maxWidth}>
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
-                        <LoadFlowGeneralParameters />
+                        <LoadFlowGeneralParameters parametersDifferences={parametersDifferences} />
                     </TabPanel>
                     <TabPanel value={selectedTab} index={TabValues.LIMIT_REDUCTIONS}>
                         <Grid container sx={{ width: '100%' }}>
@@ -79,10 +81,13 @@ function LoadFlowParametersContent({
                         </Grid>
                     </TabPanel>
                     <TabPanel value={selectedTab} index={TabValues.ADVANCED}>
-                        <LoadFlowAdvancedParameters />
+                        <LoadFlowAdvancedParameters parametersDifferences={parametersDifferences} />
                     </TabPanel>
                     <TabPanel value={selectedTab} index={TabValues.PROVIDER_SPECIFIC}>
-                        <LoadFlowProviderSpecificParameters specificParameters={specificParameters} />
+                        <LoadFlowProviderSpecificParameters
+                            specificParameters={specificParameters}
+                            parametersDifferences={parametersDifferences}
+                        />
                     </TabPanel>
                 </Grid>
             </Grid>
