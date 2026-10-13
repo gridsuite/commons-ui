@@ -16,7 +16,7 @@ const options = [
     { id: 'paused', label: 'Paused' },
     { id: 'archived', label: 'Archived' },
 ];
-function Form({ children }: PropsWithChildren<{}>) {
+function Form({ isReadOnly = false, children }: PropsWithChildren<{}> & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { status: 'active' } });
     return (
         <CustomFormProvider
@@ -24,6 +24,7 @@ function Form({ children }: PropsWithChildren<{}>) {
             validationSchema={yup.object().shape({
                 status: yup.string().required(),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -36,8 +37,8 @@ const meta = {
     tags: ['autodocs'],
     args: { name: 'status', label: 'Status', options },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -49,3 +50,5 @@ type Story = StoryObj<typeof meta>;
 
 export const Selected: Story = {};
 export const Disabled: Story = { args: { disabled: true } };
+export const SelectedReadOnly: Story = { parameters: { isReadOnly: true }};
+export const DisabledReadOnly: Story = { args: { disabled: true }, parameters: { isReadOnly: true } };
