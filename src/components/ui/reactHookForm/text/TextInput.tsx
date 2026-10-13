@@ -60,7 +60,7 @@ export function TextInput({
     disabled,
     dataTestId,
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate, isReadOnly } = useCustomFormContext();
     const {
         field: { onChange: onChangeRhf, value, ref },
         fieldState: { error },
@@ -95,6 +95,8 @@ export function TextInput({
           });
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
+    const hasValue =
+        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
 
     return (
         <Field
@@ -109,7 +111,7 @@ export function TextInput({
             disabled={disabled}
             slotProps={{
                 input: {
-                    endAdornment: (
+                    endAdornment: isReadOnly ? null : (
                         <InputAdornment position="end">
                             {clearable && transformedValue !== undefined && transformedValue !== '' && (
                                 <IconButton onClick={handleClearValue} size="small">
@@ -119,11 +121,17 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
+                    readOnly: isReadOnly,
+                    onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                },
+                inputLabel: {
+                    shrink: isReadOnly ? hasValue : undefined,
                 },
                 ...slotProps,
             }}
             inputRef={ref}
             {...(clearable &&
+                !isReadOnly &&
                 adornment && {
                     handleClearValue,
                 })}
