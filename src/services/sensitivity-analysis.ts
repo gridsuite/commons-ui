@@ -219,9 +219,9 @@ export function updateSensitivityAnalysisParameters(parameterUuid: UUID, newPara
 
 export function resetSensitivityAnalysisParameters(parameterUuid: UUID) {
     console.info('reset security analysis parameters');
-    const setSecurityAnalysisParametersUrl = `${getSensiUrl()}parameters/${parameterUuid}/reset`;
-    console.debug(setSecurityAnalysisParametersUrl);
-    return backendFetch(setSecurityAnalysisParametersUrl, {
+    const url = `${getStudyUrl(parameterUuid)}/sensitivity-analysis/parameters/reset`;
+    console.debug(url);
+    return backendFetch(url, {
         method: 'PUT',
     });
 }
