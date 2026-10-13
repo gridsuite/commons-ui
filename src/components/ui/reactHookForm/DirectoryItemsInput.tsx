@@ -109,7 +109,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
     });
 
     const formContext = useCustomFormContext();
-    const { getValues, validationSchema, setError, clearErrors, getFieldState } = formContext;
+    const { getValues, validationSchema, setError, clearErrors, getFieldState, isReadOnly } = formContext;
     const watchedElements = useWatch({ name }) as FieldValues[] | undefined;
 
     const {
@@ -265,7 +265,7 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                     displayEmpty
                     notched={hasElements}
                     open={false} // disable the MUI select menu
-                    onClick={handleClickInput}
+                    onClick={!isReadOnly ? handleClickInput : undefined}
                     sx={mergeSx(styles.selectDirectoryElements, { minWidth: selectWidth }, fullHeightSx)}
                     input={
                         <OutlinedInput
@@ -311,8 +311,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                 return (
                                     <ChipComponent
                                         key={item.id}
-                                        onDelete={(e) => handleDeleteChip(e, index)}
-                                        onClick={(e) => handleClickChip(e, index)}
+                                        onDelete={!isReadOnly ? (e) => handleDeleteChip(e, index) : undefined}
+                                        onClick={!isReadOnly ? (e) => handleClickChip(e, index) : undefined}
                                         label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
                                         {...(equipmentTypeShortLabel && {
                                             helperText: intl.formatMessage({
