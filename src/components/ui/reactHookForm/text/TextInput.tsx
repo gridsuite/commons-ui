@@ -110,7 +110,9 @@ export function TextInput({
             onChange={handleValueChanged}
             disabled={disabled}
             slotProps={{
+                ...slotProps,
                 input: {
+                    ...slotProps?.input,
                     endAdornment: isReadOnly ? null : (
                         <InputAdornment position="end">
                             {clearable && transformedValue !== undefined && transformedValue !== '' && (
@@ -125,9 +127,9 @@ export function TextInput({
                     onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
+                    ...slotProps?.inputLabel,
                     shrink: isReadOnly ? hasValue : undefined,
                 },
-                ...slotProps,
             }}
             inputRef={ref}
             {...(clearable &&
