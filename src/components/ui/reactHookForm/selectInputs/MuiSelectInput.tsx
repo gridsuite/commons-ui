@@ -8,6 +8,7 @@
 import { FormattedMessage } from 'react-intl';
 import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useCustomFormContext } from '../provider';
 
 export type MuiSelectInputProps = SelectProps & {
     name: string;
@@ -33,9 +34,10 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
     } = useController({
         name,
     });
+    const { isReadOnly } = useCustomFormContext();
 
     return (
-        <Select value={value} onChange={onChange} {...props}>
+        <Select value={value} onChange={onChange} {...props} inputProps={{ ...props.inputProps, readOnly: isReadOnly }}>
             {options.map(renderMenuItem)}
         </Select>
     );
