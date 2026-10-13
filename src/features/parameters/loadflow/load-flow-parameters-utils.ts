@@ -37,8 +37,8 @@ import {
     VOLTAGE_INIT_MODE,
     WRITE_SLACK_BUS,
 } from './constants';
-import { ParameterValue } from './load-flow-parameters-type';
 import { advancedParams } from './load-flow-advanced-parameters';
+import { ParameterValue } from '../../../utils';
 
 export enum TabValues {
     GENERAL = 'General',
