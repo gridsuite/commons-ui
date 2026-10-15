@@ -103,7 +103,8 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
         isEditingRef.current = false;
         setIsEditing(false);
         setInputBaseWidthPx(null);
-    }, []);
+            meta?.interaction.onHighlightConsumed();
+    }, [meta]);
 
     const updateName = useCallback(
         (newName: string) => {
