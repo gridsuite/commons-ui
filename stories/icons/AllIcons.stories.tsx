@@ -7,12 +7,14 @@
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack, SvgIcon } from '@mui/material';
-import { ArrowsInputIcon } from '../../src';
-import { ArrowsOutputIcon } from '../../src';
-import { LeftPanelCloseIcon } from '../../src';
-import { LeftPanelOpenIcon } from '../../src';
-import { EditNoteIcon } from '../../src';
-import { LinkOffIcon } from '../../src';
+import {
+    ArrowsInputIcon,
+    ArrowsOutputIcon,
+    LeftPanelCloseIcon,
+    LeftPanelOpenIcon,
+    EditNoteIcon,
+    LinkOffIcon,
+} from '../../src';
 
 const meta = {
     component: SvgIcon,
