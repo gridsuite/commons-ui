@@ -298,6 +298,7 @@ export const parametersEn = {
     // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
+    resetPccMinParametersError: 'An error occurred while reseting the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
 
     Dynawo: 'Dynawo',

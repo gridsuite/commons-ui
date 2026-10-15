@@ -42,7 +42,7 @@ export function PccMinParametersInLine({
         resetPccMinParameters(studyUuid).catch((error) => {
             snackError({
                 messageTxt: error.message,
-                headerId: 'updatePccMinParametersError',
+                headerId: 'resetPccMinParametersError',
             });
         });
     }, [studyUuid, snackError]);
