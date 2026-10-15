@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useState } from 'react';
+import type { UUID } from 'node:crypto';
 import { IconButton, ListItemIcon, ListItemText, Menu } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
@@ -24,9 +25,16 @@ import { LinkOffIcon } from '../../../components';
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
+    studyUuid: UUID | null;
+    currentNodeId: UUID | null;
 }
 
-export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceLinkCellProps>) {
+export function ReferenceLinkCell({
+    studyUuid,
+    currentNodeId,
+    row,
+    disabled = false,
+}: Readonly<ReferenceLinkCellProps>) {
     const data = row.original;
     const intl = useIntl();
     const { snackInfo, snackError } = useSnackMessage();
@@ -80,7 +88,7 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
             event.stopPropagation();
             setAnchorEl(null);
             setIsLoading(true);
-            unshareNetworkModification(data.uuid)
+            unshareNetworkModification(studyUuid, currentNodeId, data.uuid)
                 .catch((error: ErrorMessage) => {
                     snackWithFallback(snackError, error, { headerId: 'UnshareError' });
                 })
