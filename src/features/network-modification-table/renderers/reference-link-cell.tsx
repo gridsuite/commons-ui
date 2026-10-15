@@ -18,9 +18,8 @@ import {
     unshareNetworkModification,
 } from '../../../services';
 import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
-import { CustomMenuItem, CustomTooltip, ErrorMessage } from '../../../components';
+import { CustomMenuItem, CustomTooltip, ErrorMessage, LinkOffIcon } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
-import { LinkOffIcon } from '../../../components';
 
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
@@ -96,7 +95,7 @@ export function ReferenceLinkCell({
                     setIsLoading(false);
                 });
         },
-        [data.uuid, snackError]
+        [currentNodeId, data.uuid, snackError, studyUuid]
     );
 
     return (
