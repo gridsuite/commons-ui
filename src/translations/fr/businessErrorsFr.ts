@@ -102,6 +102,7 @@ export const businessErrorsFr = {
 
     'monitor.server.differentProcessConfigType':
         'Impossible de comparer 2 configurations de processus de type différent : {processConfigEntity1Type} vs {processConfigEntity2Type}',
+    'monitor.server.unsupportedProvider': 'Le simulateur doit être Open Load Flow',
 
     'network.notFound': 'Réseau {networkId} non trouvé',
     'network.variant.notFound': 'Variante {variantId} pour le réseau {networkId} non trouvé',
