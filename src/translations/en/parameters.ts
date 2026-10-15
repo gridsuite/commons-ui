@@ -170,6 +170,7 @@ export const parametersEn = {
     Or: 'or',
 
     updateVoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
+    resetVoltageInitParametersError: 'An error occurred while reseting the voltage profile initialization parameters',
     VoltageInitParametersGeneralTabLabel: 'General',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Automatically apply voltage init modification',
     VoltageInitParametersGeneralSaveInfo:

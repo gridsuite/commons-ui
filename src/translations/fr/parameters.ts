@@ -176,6 +176,8 @@ export const parametersFr = {
 
     updateVoltageInitParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'initialisation du plan de tension",
+    resetVoltageInitParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'initialisation du plan de tension",
     VoltageInitParametersGeneralTabLabel: 'Général',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Appliquer automatiquement la modification du plan de tension',
     VoltageInitParametersGeneralSaveInfo:
