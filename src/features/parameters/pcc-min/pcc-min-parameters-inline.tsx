@@ -12,7 +12,7 @@ import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { UsePccMinParametersForm } from './use-pcc-min-parameters-form';
 import { PccMinParametersForm } from './pcc-min-parameters-form';
-import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
+import { fetchPccMinParameters, resetPccMinParameters } from '../../../services/pcc-min';
 import { ElementType, mapPccMinParameters, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { fromPccMinParametersFormToParamValuesEnriched, fromPccMinParamsDataToFormValues } from './pcc-min-form-utils';
@@ -38,14 +38,13 @@ export function PccMinParametersInLine({
 
     const { formState, handleSubmit, reset, getValues } = pccMinMethods.formMethods;
 
-    const resetPccMinParameters = useCallback(() => {
-        updatePccMinParameters(studyUuid, null) // null means Reset
-            .catch((error) => {
-                snackError({
-                    messageTxt: error.message,
-                    headerId: 'updatePccMinParametersError',
-                });
+    const resetPccMinParams = useCallback(() => {
+        resetPccMinParameters(studyUuid).catch((error) => {
+            snackError({
+                messageTxt: error.message,
+                headerId: 'updatePccMinParametersError',
             });
+        });
     }, [studyUuid, snackError]);
 
     useEffect(() => {
@@ -83,7 +82,7 @@ export function PccMinParametersInLine({
                         mapPccMinParameters(fromPccMinParametersFormToParamValuesEnriched(params)),
                 }}
                 selectParameterHandler={handleLoadParameters}
-                resetHandler={resetPccMinParameters}
+                resetHandler={resetPccMinParams}
                 validateHandler={handleSubmit(pccMinMethods.onSaveInline)}
             >
                 <PccMinParametersForm />
