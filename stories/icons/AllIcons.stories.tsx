@@ -7,11 +7,12 @@
 
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Stack, SvgIcon } from '@mui/material';
-import { ArrowsInputIcon } from '../../src/components/ui/icons/ArrowsInputIcon';
-import { ArrowsOutputIcon } from '../../src/components/ui/icons/ArrowsOutputIcon';
-import { LeftPanelCloseIcon } from '../../src/components/ui/icons/LeftPanelCloseIcon';
-import { LeftPanelOpenIcon } from '../../src/components/ui/icons/LeftPanelOpenIcon';
+import { ArrowsInputIcon } from '../../src';
+import { ArrowsOutputIcon } from '../../src';
+import { LeftPanelCloseIcon } from '../../src';
+import { LeftPanelOpenIcon } from '../../src';
 import { EditNoteIcon } from '../../src';
+import { LinkOffIcon } from '../../src';
 
 const meta = {
     component: SvgIcon,
@@ -38,6 +39,7 @@ export const AllIcons: Story = {
             <ArrowsOutputIcon fontSize={args.fontSize} />
             <EditNoteIcon fontSize={args.fontSize} empty />
             <EditNoteIcon fontSize={args.fontSize} />
+            <LinkOffIcon fontSize={args.fontSize} />
         </Stack>
     ),
 };

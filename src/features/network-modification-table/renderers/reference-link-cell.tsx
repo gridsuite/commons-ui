@@ -19,6 +19,7 @@ import {
 import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
 import { CustomMenuItem, CustomTooltip, ErrorMessage } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
+import { LinkOffIcon } from '../../../components';
 
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
@@ -123,7 +124,7 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
                 </CustomMenuItem>
                 <CustomMenuItem onClick={handleUnshare} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
                     <ListItemIcon sx={{ minWidth: 24 }}>
-                        <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
+                        <LinkOffIcon sx={{ fontSize: 18 }} />
                     </ListItemIcon>
                     <ListItemText primary={intl.formatMessage({ id: 'unshare' })} />
                 </CustomMenuItem>
