@@ -50,6 +50,7 @@ export const parametersEn = {
     descLfCountriesToBalance: 'Balancing countries',
     inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
+    defaultValue: 'Default: {value}',
 
     General: 'General',
     LimitReductions: 'Limit reductions',
