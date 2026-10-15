@@ -117,6 +117,7 @@ export enum FieldConstants {
     PLANNED_ACTIVE_POWER_SET_POINT = 'plannedActivePowerSetPoint',
     PLANNED_OUTAGE_RATE = 'plannedOutageRate',
     PREVIOUS_VALUE = 'previousValue',
+    PROCESS_TYPE = 'processType',
     PROPERTY_NAME = 'propertyName',
     PROPERTY_OPERATOR = 'propertyOperator',
     PROPERTY = 'PROPERTY',
