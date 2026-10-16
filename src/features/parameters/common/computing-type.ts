@@ -32,6 +32,8 @@ export const formatComputingTypeLabel = (type: ComputingType): string | undefine
             return 'DynamicMarginCalculation';
         case ComputingType.STATE_ESTIMATION:
             return 'StateEstimation';
+        case ComputingType.LOGICAL_CONTROLS:
+            return 'LogicalControls';
         case ComputingType.PCC_MIN:
             return 'PccMin';
         default:
