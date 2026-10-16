@@ -46,7 +46,7 @@ export const businessErrorsFr = {
     'modification.sharedWriteForbidden':
         "Vous n'avez pas les droits d'écriture sur l'une des modifications partagées de cette étude.",
     'modification.rootNetworkTagsForbiddenByShared':
-        "Action interdite : l'étude contient au moins une modification partagée pour laquelle vous n'avez pas les droits de modification et qui n'est pas définie sur l'ensemble des réseaux racines utilisés. {allowedTagsCount, plural, =0 {Aucune balise n'est autorisée.} one {La balise autorisée est {allowedTags}.} other {Les balises autorisées sont {allowedTags}.}}",
+        "Action interdite : l'étude contient au moins une modification partagée pour laquelle vous n'avez pas les droits de modification et qui n'est pas définie sur l'ensemble des réseaux racines utilisés. {allowedTagsCount, plural, =0 {Aucune nouvelle balise n'est autorisée.} one {La balise autorisée est {allowedTags}.} other {Les balises autorisées sont {allowedTags}.}}",
     'useradmin.permissionDenied': "Vous n'avez pas la permission d'effectuer cette action.",
     'useradmin.userNotFound': 'Utilisateur introuvable.',
     'useradmin.userAlreadyExists': "L'utilisateur existe déjà.",
