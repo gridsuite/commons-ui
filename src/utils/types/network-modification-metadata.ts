@@ -35,7 +35,7 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     name?: string;
     // Uuid of the closest shared modification holding it, at any depth, if any
     parentSharedUuid?: UUID;
-    // Whether it sits inside a shared modification the user may not write into, at any depth
+    // Same as above, restricted to the shared modifications the user may not write into
     childFromReadOnlyShared?: boolean;
 }
 
