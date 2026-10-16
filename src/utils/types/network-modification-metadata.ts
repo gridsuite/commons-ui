@@ -33,7 +33,8 @@ export interface BasicComposedModificationMetadata extends NetworkModificationMe
     parentCompositeUuid?: UUID;
     sublevelCount?: number;
     name?: string;
-    childFromShared?: boolean;
+    // Uuid of the closest shared modification holding it, at any depth, if any
+    parentSharedUuid?: UUID;
     // Same as above, restricted to the shared modifications the user may not write into
     childFromReadOnlyShared?: boolean;
 }
