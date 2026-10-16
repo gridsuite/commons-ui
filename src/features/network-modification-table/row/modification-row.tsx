@@ -28,8 +28,6 @@ interface ModificationRowProps {
     handleCellClick?: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled: boolean;
     highlightedModificationUuid: string | null;
-    // TODO temporary before implementing readOnly form
-    isFormOpeningLocked?: boolean;
 }
 
 export function ModificationRow({
@@ -38,7 +36,6 @@ export function ModificationRow({
     handleCellClick,
     isRowDragDisabled,
     highlightedModificationUuid,
-    isFormOpeningLocked = false,
 }: Readonly<ModificationRowProps>) {
     const isHighlighted = row.original.uuid === highlightedModificationUuid;
     const theme = useTheme();
@@ -47,11 +44,11 @@ export function ModificationRow({
 
     const handleCellClickCallback = useCallback(
         (columnId: string) => {
-            if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id && !isFormOpeningLocked) {
+            if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id) {
                 handleCellClick?.(row.original);
             }
         },
-        [handleCellClick, row.original, isFormOpeningLocked]
+        [handleCellClick, row.original]
     );
 
     return (

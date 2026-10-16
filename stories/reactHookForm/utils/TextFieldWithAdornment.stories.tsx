@@ -9,7 +9,7 @@ import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import * as yup from 'yup';
 import { useForm } from 'react-hook-form';
-import { CustomFormProvider, TextFieldWithAdornment } from '../../../src';
+import { CustomFormProvider, TextFieldWithAdornment, type TextFieldWithAdornmentProps } from '../../../src';
 
 function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: {} });
@@ -41,7 +41,7 @@ const meta = {
 } satisfies Meta<typeof TextFieldWithAdornment>;
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<TextFieldWithAdornmentProps>;
 
 export const EndAdornment: Story = {};
 export const StartAdornment: Story = {
