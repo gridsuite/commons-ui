@@ -6,16 +6,17 @@
  */
 
 import { useCallback, useEffect, useState } from 'react';
-import { useWatch, type UseFormReturn } from 'react-hook-form';
-import { Option } from '../../../../utils';
+import { useFormContext, useWatch } from 'react-hook-form';
+import { FieldConstants, Option } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
 import type { ProcessConfigFormValues } from '../../common/process-config-form.types';
 import { deepEqual, withoutProcessType } from '../utils/form.utils';
 
-export function useProcessTypeGuard(form: UseFormReturn<ProcessConfigFormValues>) {
-    const { control } = form;
-
-    const selectedProcessType = useWatch({ control, name: 'processType' });
+export function useProcessTypeGuard() {
+    const selectedProcessType = useWatch<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>({
+        name: FieldConstants.PROCESS_TYPE,
+    });
+    const { getValues, reset } = useFormContext<ProcessConfigFormValues>();
 
     const defaultValues = getProcessConfigFormDefaultValues('create');
 
@@ -45,7 +46,7 @@ export function useProcessTypeGuard(form: UseFormReturn<ProcessConfigFormValues>
             }
 
             const hasOtherChanges = !deepEqual(
-                withoutProcessType(form.getValues()),
+                withoutProcessType(getValues()),
                 withoutProcessType(defaultValues as ProcessConfigFormValues)
             );
 
@@ -57,7 +58,7 @@ export function useProcessTypeGuard(form: UseFormReturn<ProcessConfigFormValues>
             setPendingProcessType(nextProcessType);
             return false;
         },
-        [form, confirmedProcessType, defaultValues]
+        [confirmedProcessType, getValues, defaultValues]
     );
 
     const cancelProcessTypeChange = useCallback(() => {
@@ -68,13 +69,13 @@ export function useProcessTypeGuard(form: UseFormReturn<ProcessConfigFormValues>
         if (!pendingProcessType) {
             return;
         }
-        form.reset({
+        reset({
             ...defaultValues,
-            processType: pendingProcessType as ProcessConfigFormValues['processType'],
+            processType: pendingProcessType as ProcessConfigFormValues[FieldConstants.PROCESS_TYPE],
         });
         setConfirmedProcessType(pendingProcessType);
         setPendingProcessType(null);
-    }, [form, defaultValues, pendingProcessType]);
+    }, [pendingProcessType, reset, defaultValues]);
 
     return {
         selectedProcessType,
