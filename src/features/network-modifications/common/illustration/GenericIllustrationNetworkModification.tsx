@@ -80,3 +80,4 @@ export function GenericIllustrationNetworkModification({
         </AccordionIllustration>
     );
 }
+export default GenericIllustrationNetworkModification;

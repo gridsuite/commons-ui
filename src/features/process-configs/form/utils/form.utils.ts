@@ -5,9 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { FieldConstants } from '../../../../utils';
 import { ProcessConfigFormValues } from '../../common';
 
-export function withoutProcessType(values: ProcessConfigFormValues): Omit<ProcessConfigFormValues, 'processType'> {
+export function withoutProcessType(
+    values: ProcessConfigFormValues
+): Omit<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE> {
     const { processType, ...rest } = values;
     return rest;
 }
