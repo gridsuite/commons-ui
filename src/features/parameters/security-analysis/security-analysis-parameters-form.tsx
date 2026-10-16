@@ -30,7 +30,7 @@ export function SecurityAnalysisParametersForm({
 }: Readonly<SecurityAnalysisParametersFormProps>) {
     return (
         <Stack sx={parametersStyles.scrollableGrid}>
-            <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" sx={{ paddingBottom: 1 }} />
+            <ProviderParam options={securityAnalysisMethods.formattedProviders} id="Sa" />
             <SecurityAnalysisParametersContent
                 securityAnalysisMethods={securityAnalysisMethods}
                 showContingencyCount={showContingencyCount}
