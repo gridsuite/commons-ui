@@ -26,7 +26,7 @@ const parameterField = (field: ProcessConfigParameterField) =>
     yup
         .array()
         .of(parameterSelectionSchema)
-        .when('processType', {
+        .when(FieldConstants.PROCESS_TYPE, {
             is: (value: unknown) => getProcessTypesRequiringParameter(field).includes(value as ProcessType),
             then: (schema) => schema.required().length(1, YUP_REQUIRED),
             otherwise: (schema) => schema,
