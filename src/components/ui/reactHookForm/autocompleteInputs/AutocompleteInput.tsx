@@ -12,7 +12,7 @@ import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousVa
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
-const readOnlyAutocompleteProps = {
+export const readOnlyAutocompleteProps = {
     readOnly: true, // seems logical
     disableClearable: true, // remove clear button
     popupIcon: null, // remove icon for the popup Menu

@@ -9,8 +9,12 @@ import { SyntheticEvent } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { genHelperError } from '../../../components/ui/reactHookForm/utils';
-import { AutocompleteInputProps } from '../../../components/ui/reactHookForm/autocompleteInputs';
+import {
+    AutocompleteInputProps,
+    readOnlyAutocompleteProps,
+} from '../../../components/ui/reactHookForm/autocompleteInputs';
 import { balancesAdjustmentStyles } from './balancesAdjustment.styles';
+import { useCustomFormContext } from '../../../components';
 
 export interface CountriesAutocompleteProps extends Pick<
     AutocompleteProps<string, true, false, false>,
@@ -33,6 +37,7 @@ export function CountriesAutocomplete({
     translate,
     ...props
 }: Readonly<CountriesAutocompleteProps>) {
+    const { isReadOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -41,6 +46,7 @@ export function CountriesAutocomplete({
     const handleChange = (_event: SyntheticEvent, newValue: string[]) => {
         onChange(newValue);
     };
+    const hasValue = value !== null;
 
     return (
         <Autocomplete
@@ -50,6 +56,7 @@ export function CountriesAutocomplete({
             value={value ?? []}
             onChange={handleChange}
             options={countryCodes}
+            {...(isReadOnly ? readOnlyAutocompleteProps : {})}
             size="small"
             limitTags={2}
             sx={balancesAdjustmentStyles.autocomplete}
@@ -60,6 +67,14 @@ export function CountriesAutocomplete({
                     slotProps={{
                         ...params.slotProps,
                         htmlInput: { ...params.slotProps.htmlInput },
+                        input: {
+                            ...params.slotProps.input,
+                            readOnly: isReadOnly,
+                            onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                        },
+                        inputLabel: {
+                            shrink: isReadOnly ? hasValue : undefined,
+                        },
                     }}
                     label={label}
                     {...genHelperError(error?.message)}
