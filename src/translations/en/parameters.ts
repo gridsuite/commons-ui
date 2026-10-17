@@ -171,6 +171,7 @@ export const parametersEn = {
     Or: 'or',
 
     updateVoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
+    resetVoltageInitParametersError: 'An error occurred while reseting the voltage profile initialization parameters',
     VoltageInitParametersGeneralTabLabel: 'General',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Automatically apply voltage init modification',
     VoltageInitParametersGeneralSaveInfo:
@@ -298,6 +299,7 @@ export const parametersEn = {
     // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
+    resetPccMinParametersError: 'An error occurred while reseting the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
 
     Dynawo: 'Dynawo',

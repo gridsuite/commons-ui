@@ -70,3 +70,10 @@ export function updatePccMinParameters(studyUuid: UUID | null, newParams: PccMin
         body: newParams == null ? null : JSON.stringify(mapPccMinParameters(newParams)),
     });
 }
+
+export function resetPccMinParameters(studyUuid: UUID | null) {
+    console.info('reset study pcc min parameters');
+    const url = `${getStudyUrl(studyUuid)}/pcc-min/parameters/reset`;
+    console.debug(url);
+    return backendFetch(url, { method: 'POST' });
+}
