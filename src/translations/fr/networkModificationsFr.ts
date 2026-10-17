@@ -671,10 +671,13 @@ export const networkModificationsFr = {
     modifiedSwitchesSeparatorTitle: 'OC modifiés',
     unModifiedSwitchesSeparatorTitle: 'OC non-modifiés',
     SharedModificationsSavedAsCopy: 'Les modifications partagées seront enregistrées sous forme de copie uniquement',
+    setModificationNameAndDescriptionError:
+        'Erreur lors de la modification du nom et/ou de la description de la modification',
 
     // Delete voltage level on line modification
     DeleteVoltageLevelOnLine: 'Supprimer une coupure',
     DeleteVoltageLevelOnLineError: "Erreur lors de la suppression d'une coupure",
+
     createSharedDisabledTooltip:
         "Il n'est possible de partager qu'une composite non partagée qui ne contient pas elle même de modifications partagées.",
 

@@ -5,47 +5,67 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
-import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationMetadata } from '../../../services';
-import { ComposedModificationMetadata } from '../../../utils';
+import { setModificationNameAndDescription } from '../../../services';
+import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
+import { useSnackMessage } from '../../../hooks';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     isDisabled?: boolean;
     // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
 }
 
-export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
-    const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
+export function DescriptionCell(props: DescriptionCellProps) {
+    const { row, isDisabled = false, isSaveDisabled = false } = props;
+    const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
     const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
-    const empty = !description;
+    const [descriptionState, setDescriptionState] = useState(description);
+    const empty = useMemo(() => !descriptionState, [descriptionState]);
+
+    const savedDescription = useMemo(() => {
+        return description;
+    }, [description]);
+
+    useEffect(() => {
+        setDescriptionState(savedDescription);
+    }, [savedDescription]);
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            setDescriptionState(descriptionRecord.description);
+            data.description = descriptionRecord.description;
+            return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
-            }).finally(() => {
-                setIsLoading(false);
-            });
+            })
+                .catch((error) => {
+                    // rollback
+                    setDescriptionState(savedDescription);
+                    data.description = savedDescription;
+                    snackWithFallback(snackError, error, {
+                        headerId: `setModificationNameAndDescriptionError`,
+                    });
+                    throw error;
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
         },
-        [studyUuid, currentNodeId, modificationUuid, data.type]
+        [modificationUuid, data, savedDescription, snackError]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -66,18 +86,18 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={description ?? ''}
+                    description={descriptionState ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                     disabledSave={isSaveDisabled}
                 />
             )}
-            <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
+            <Tooltip title={descriptionState ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
                 <span>
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(data.description)}
+                        sx={createEditDescriptionStyle(descriptionState)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>

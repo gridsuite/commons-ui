@@ -76,8 +76,6 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
     return (
         <DescriptionCell
             row={row}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
             isDisabled={meta?.status.isDisabled}
             isSaveDisabled={isModificationEditLocked(row.original)}
         />
