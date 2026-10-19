@@ -23,7 +23,7 @@ export function VoltageInitParametersEditionDialog({
     description,
     activeDirectory,
     language,
-    isDeveloperMode,
+    isDeveloperMode = false,
 }: Readonly<ParametersEditionDialogProps>) {
     const voltageInitMethods = useVoltageInitParametersForm({
         parametersUuid: id,
