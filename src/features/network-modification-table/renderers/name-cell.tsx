@@ -51,6 +51,7 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
     const isComposite = isCompositeModification(row.original);
     const isReferenced = isReferenceModification(row.original);
     const isCompositeAndRenamable = isComposite && !isRenameDisabled;
+    const isReferenceAndRenamable = isReferenced && !isRenameDisabled;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -202,19 +203,20 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
         ));
     };
 
-    const renamableCompositeModeProps = isCompositeAndRenamable
-        ? {
-              ref: labelRef,
-              onClick: handleLabelClick,
-              sx: {
-                  cursor: 'text',
-                  '&:hover': {
-                      textDecoration: 'underline dotted',
-                      textDecorationColor: theme.palette.text.secondary,
+    const renamableCompositeModeProps =
+        isCompositeAndRenamable || isReferenceAndRenamable
+            ? {
+                  ref: labelRef,
+                  onClick: handleLabelClick,
+                  sx: {
+                      cursor: 'text',
+                      '&:hover': {
+                          textDecoration: 'underline dotted',
+                          textDecorationColor: theme.palette.text.secondary,
+                      },
                   },
-              },
-          }
-        : {};
+              }
+            : {};
     return (
         <Box
             sx={mergeSx(

@@ -32,30 +32,16 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
-    const [descriptionState, setDescriptionState] = useState(description);
-    const empty = useMemo(() => !descriptionState, [descriptionState]);
-
-    const savedDescription = useMemo(() => {
-        return description;
-    }, [description]);
-
-    useEffect(() => {
-        setDescriptionState(savedDescription);
-    }, [savedDescription]);
+    const empty = useMemo(() => !description, [description]);
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            setDescriptionState(descriptionRecord.description);
-            data.description = descriptionRecord.description;
             return setModificationNameAndDescription(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             })
                 .catch((error) => {
-                    // rollback
-                    setDescriptionState(savedDescription);
-                    data.description = savedDescription;
                     snackWithFallback(snackError, error, {
                         headerId: `setModificationNameAndDescriptionError`,
                     });
@@ -65,7 +51,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, data, savedDescription, snackError]
+        [modificationUuid, data, snackError]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -86,18 +72,18 @@ export function DescriptionCell(props: DescriptionCellProps) {
             {openDescModificationDialog && modificationUuid && (
                 <DescriptionModificationDialog
                     open
-                    description={descriptionState ?? ''}
+                    description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
                     disabledSave={isSaveDisabled}
                 />
             )}
-            <Tooltip title={descriptionState ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
+            <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
                 <span>
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(descriptionState)}
+                        sx={createEditDescriptionStyle(description)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>
