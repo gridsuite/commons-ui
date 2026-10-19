@@ -40,6 +40,7 @@ export interface RenderTableAndExportCsvProps {
     overlayNoRowsTemplate: string | undefined;
     skipColumnHeaders: boolean;
     exportCsvResetKey?: Key;
+    withTooltip?: boolean;
     onGridReady?: (params: GridReadyEvent) => void;
 }
 
@@ -54,6 +55,7 @@ export function RenderTableAndExportCsv({
     overlayNoRowsTemplate,
     skipColumnHeaders = false,
     exportCsvResetKey,
+    withTooltip = false,
     onGridReady,
 }: RenderTableAndExportCsvProps) {
     const isRowsEmpty = !rows || rows.length === 0;
@@ -76,6 +78,7 @@ export function RenderTableAndExportCsv({
                     skipColumnHeaders={skipColumnHeaders}
                     getData={(params: any) => gridRef.current?.api?.exportDataAsCsv(params)}
                     resetKey={exportCsvResetKey}
+                    withTooltip={withTooltip}
                 />
             </Box>
             {rows && (

@@ -23,4 +23,5 @@ export type CsvDownloadProps = {
 
 export type CsvExportProps = CsvDownloadProps & {
     disabled: boolean;
+    withTooltip?: boolean;
 };
