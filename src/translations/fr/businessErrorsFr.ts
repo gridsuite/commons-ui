@@ -118,12 +118,8 @@ export const businessErrorsFr = {
     'modification.notFound': 'La modification {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
-    'modification.deletion.argument.error':
-        "Modification suppression : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
     'modification.duplication.argument.error':
         "Modification duplication : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
-    'modification.with_group.deletion.forbidden':
-        'Suppression non autorisée : la modification {modificationId} appartient au groupe {groupId}',
     'modification.description.missing': 'La description de la modification réseau est manquante',
     'modification.composite.move.cycle.error':
         'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
