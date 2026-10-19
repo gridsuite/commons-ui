@@ -23,6 +23,7 @@ export function VoltageInitParametersEditionDialog({
     description,
     activeDirectory,
     language,
+    isDeveloperMode,
 }: Readonly<ParametersEditionDialogProps>) {
     const voltageInitMethods = useVoltageInitParametersForm({
         parametersUuid: id,
@@ -68,7 +69,7 @@ export function VoltageInitParametersEditionDialog({
             {voltageInitMethods.paramsLoading ? (
                 <LinearProgress />
             ) : (
-                <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} />
+                <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} isDeveloperMode={isDeveloperMode} />
             )}
         </CustomMuiDialog>
     );
