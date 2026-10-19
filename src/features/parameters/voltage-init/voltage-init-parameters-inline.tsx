@@ -21,6 +21,7 @@ import {
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
 import { snackWithFallback } from '../../../utils/error';
+import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 
 export function VoltageInitParametersInLine({
     studyUuid,
@@ -62,7 +63,7 @@ export function VoltageInitParametersInLine({
     );
 
     const resetVoltageInitParams = useCallback(() => {
-        resetVoltageInitParameters(studyUuid).catch((error) => {
+        resetVoltageInitParameters(studyUuid, DEFAULT_GENERAL_APPLY_MODIFICATIONS).catch((error) => {
             snackWithFallback(snackError, error, { headerId: 'resetVoltageInitParametersError' });
         });
     }, [studyUuid, snackError]);

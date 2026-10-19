@@ -170,7 +170,7 @@ export const parametersEn = {
     Or: 'or',
 
     updateVoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
-    resetVoltageInitParametersError: 'An error occurred while reseting the voltage profile initialization parameters',
+    resetVoltageInitParametersError: 'An error occurred while resetting the voltage profile initialization parameters',
     VoltageInitParametersGeneralTabLabel: 'General',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Automatically apply voltage init modification',
     VoltageInitParametersGeneralSaveInfo:
@@ -281,16 +281,19 @@ export const parametersEn = {
     fetchLoadFlowProvidersError: 'An error occurred while fetching the load flow providers',
     fetchLoadFlowSpecificParametersError: 'An error occured when fetching the load flow specific parameters',
     updateLoadFlowParametersError: 'An error occurred while updating the load flow parameters',
+    resetLoadFlowParametersError: 'An error occurred while resetting the load flow parameters',
     // SecurityAnalysis
     fetchSecurityAnalysisParametersError: 'An error occured when fetching the security analysis parameters',
     fetchSecurityAnalysisProvidersError: 'An error occured when fetching security analysis provider list',
     updateSecurityAnalysisParametersError: 'An error occurred while updating the security analysis parameters',
+    resetSecurityAnalysisParametersError: 'An error occurred while resetting the security analysis parameters',
     getSecurityAnalysisContingenciesCountError:
         'An error occurred while estimating security analysis contingencies count',
     // SensitivityAnalysis
     fetchSensitivityAnalysisParametersError: 'An error occured when fetching the sensitivity analysis parameters',
     fetchSensitivityAnalysisProvidersError: 'An error occured when fetching sensitivity analysis provider list',
     updateSensitivityAnalysisParametersError: 'An error occurred while updating the sensitivity analysis parameters',
+    resetSensitivityAnalysisParametersError: 'An error occurred while resetting the sensitivity analysis parameters',
     getSensitivityAnalysisFactorsCountError: 'An error occured while estimating sensitivity analysis computations',
     // Other
     resetLoadFlowParametersWarning:

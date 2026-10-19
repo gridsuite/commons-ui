@@ -111,11 +111,11 @@ export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams:
     });
 }
 
-export function resetSecurityAnalysisParameters(studyUuid: UUID) {
+export function resetSecurityAnalysisParameters(parameterUuid: UUID) {
     console.info('reset security analysis parameters');
-    const resetSecurityAnalysisParametersUrl = `${getStudyUrl(studyUuid)}/security-analysis/parameters/reset`;
+    const resetSecurityAnalysisParametersUrl = `${getSecurityAnalysisUrl()}parameters/${parameterUuid}/reset`;
     console.debug(resetSecurityAnalysisParametersUrl);
     return backendFetch(resetSecurityAnalysisParametersUrl, {
-        method: 'POST',
+        method: 'PUT',
     });
 }

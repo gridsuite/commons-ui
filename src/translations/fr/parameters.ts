@@ -294,6 +294,8 @@ export const parametersFr = {
         'Une erreur est survenue lors de la récupération des paramètres spécifiques de calcul de répartition',
     updateLoadFlowParametersError:
         'Une erreur est survenue lors de la mise à jour des paramètres de calcul de répartition',
+    resetLoadFlowParametersError:
+        'Une erreur est survenue lors de la réinitialisation des paramètres de calcul de répartition',
     // SecurityAnalysis
     fetchSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sécurité",
@@ -301,6 +303,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
     updateSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    resetSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sécurité",
     getSecurityAnalysisContingenciesCountError:
         "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
     // SensitivityAnalysis
@@ -310,6 +314,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sensibilité",
     updateSensitivityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sensibilité",
+    resetSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sensibilité",
     getSensitivityAnalysisFactorsCountError: "Une erreur est survenue lors de l'estimation du nombre de calculs",
     // Other
     resetLoadFlowParametersWarning:

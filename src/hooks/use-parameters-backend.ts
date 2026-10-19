@@ -159,7 +159,7 @@ export const useParametersBackend = <T extends ComputingType>(
             })
             .catch((error) => {
                 snackWithFallback(snackError, error, {
-                    headerId: `update${formatComputingTypeLabel(type)}ParametersError`,
+                    headerId: `reset${formatComputingTypeLabel(type)}ParametersError`,
                 });
             });
     }, [studyUuid, type, backendResetParameters, snackError, snackWarning]);

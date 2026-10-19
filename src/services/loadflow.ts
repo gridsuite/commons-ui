@@ -56,9 +56,9 @@ export function setLoadFlowParameters(parameterUuid: UUID, newParams: any) {
 
 export function resetLoadFlowParameters(parameterUuid: UUID) {
     console.info('reset load flow parameters');
-    const setLoadFlowParametersUrl = `${getLoadFlowUrl()}parameters/${parameterUuid}/reset`;
-    console.debug(setLoadFlowParametersUrl);
-    return backendFetch(setLoadFlowParametersUrl, {
+    const uri = `${getLoadFlowUrl()}parameters/${parameterUuid}/reset`;
+    console.debug(uri);
+    return backendFetch(uri, {
         method: 'PUT',
     });
 }
