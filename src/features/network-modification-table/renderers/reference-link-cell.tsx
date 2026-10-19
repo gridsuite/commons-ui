@@ -10,8 +10,8 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
-import { fetchAppsMetadata, fetchNetworkModification, isExploreMetadata } from '../../../services';
-import { ComposedModificationMetadata, ModificationReferenceInfos, snackWithFallback } from '../../../utils';
+import { fetchAppsMetadata, isExploreMetadata } from '../../../services';
+import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { CustomMenuItem, CustomTooltip } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
@@ -21,7 +21,7 @@ export interface ReferenceLinkCellProps {
 }
 
 export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceLinkCellProps>) {
-    const data = row.original;
+    const { referencedId } = row.original;
     const intl = useIntl();
     const { snackInfo, snackError } = useSnackMessage();
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -43,12 +43,8 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
             event.stopPropagation();
             setAnchorEl(null);
             setIsLoading(true);
-            Promise.all([
-                fetchNetworkModification(data.uuid).then((res) => res.json()) as Promise<ModificationReferenceInfos>,
-                fetchAppsMetadata(),
-            ])
-                .then(([referenceInfos, metadata]) => {
-                    const referencedId = referenceInfos?.referencedId;
+            fetchAppsMetadata()
+                .then((metadata) => {
                     const exploreUrl = metadata?.find(isExploreMetadata)?.url;
 
                     if (!referencedId || !exploreUrl) {
@@ -66,7 +62,7 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
                 .catch((error) => snackWithFallback(snackError, error, { headerId: 'linkCopyError' }))
                 .finally(() => setIsLoading(false));
         },
-        [data.uuid, snackInfo, snackError]
+        [referencedId, snackInfo, snackError]
     );
 
     return (
