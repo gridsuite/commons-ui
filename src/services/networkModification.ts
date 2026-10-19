@@ -96,18 +96,6 @@ export function updateNetworkModificationsMetadata(
     });
 }
 
-export function getNetworkModificationsFromComposite(
-    compositeModificationUuids: string[],
-    onlyMetadata: boolean = true
-): Promise<Record<UUID, NetworkModificationMetadata[]>> {
-    const urlSearchParams = new URLSearchParams();
-    compositeModificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
-    urlSearchParams.append('onlyMetadata', String(onlyMetadata));
-    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
-    console.debug(url);
-    return backendFetchJson(url);
-}
-
 /** Moves modifications into nodeUuid, all coming from originNodeUuid (defaults to nodeUuid) */
 export function moveModifications(
     studyUuid: UUID | null,
