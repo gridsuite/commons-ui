@@ -12,6 +12,7 @@ import { useCSVReader } from 'react-papaparse';
 import type { ParseConfig, ParseResult } from 'papaparse';
 import { getCsvDelimiter, hasNonEmptyRows } from '../../../utils';
 import { CsvPickerConfirmationDialog } from './csv-picker-confirmation-dialog';
+import { useCustomFormContext } from '../reactHookForm';
 
 type CsvPickerCallbacks<TData> =
     | {
@@ -64,6 +65,8 @@ export function CsvPicker<TData = unknown>({
         results: ParseResult<TData>;
         file: File;
     } | null>(null);
+
+    const { isReadOnly } = useCustomFormContext();
 
     const handleUploadAccepted = useCallback(
         (results: ParseResult<TData>, acceptedFile: File) => {
@@ -130,15 +133,17 @@ export function CsvPicker<TData = unknown>({
                                 </Typography>
                             </Tooltip>
                         </Grid>
-                        <Grid size="auto">
-                            <Button
-                                {...getRootProps()}
-                                variant={selectedFile ? 'contained' : 'text'}
-                                disabled={disabled}
-                            >
-                                <FormattedMessage id={label} />
-                            </Button>
-                        </Grid>
+                        {!isReadOnly && (
+                            <Grid size="auto">
+                                <Button
+                                    {...getRootProps()}
+                                    variant={selectedFile ? 'contained' : 'text'}
+                                    disabled={disabled}
+                                >
+                                    <FormattedMessage id={label} />
+                                </Button>
+                            </Grid>
+                        )}
                     </Grid>
                 )}
             </CSVReader>
