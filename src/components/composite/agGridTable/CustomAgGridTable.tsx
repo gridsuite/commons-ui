@@ -292,19 +292,18 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         {...props}
                     />
                 </Box>
-                {!isReadOnly && (
-                    <BottomTableButtons
-                        name={name}
-                        handleAddRow={handleAddRow}
-                        handleDeleteRows={handleDeleteRows}
-                        handleMoveRowDown={handleMoveRowDown}
-                        handleMoveRowUp={handleMoveRowUp}
-                        disableUp={noRowSelected || isFirstSelected || isSortApplied}
-                        disableDown={noRowSelected || isLastSelected || isSortApplied}
-                        disableDelete={noRowSelected}
-                        csvProps={csvProps && { ...csvProps, hasTableData }}
-                    />
-                )}
+
+                <BottomTableButtons
+                    name={name}
+                    handleAddRow={handleAddRow}
+                    handleDeleteRows={handleDeleteRows}
+                    handleMoveRowDown={handleMoveRowDown}
+                    handleMoveRowUp={handleMoveRowUp}
+                    disableUp={noRowSelected || isFirstSelected || isSortApplied}
+                    disableDown={noRowSelected || isLastSelected || isSortApplied}
+                    disableDelete={noRowSelected}
+                    csvProps={csvProps && { ...csvProps, hasTableData }}
+                />
             </>
         );
     }
