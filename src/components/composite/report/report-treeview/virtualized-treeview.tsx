@@ -70,9 +70,9 @@ export function VirtualizedTreeview({
     );
 
     const toTreeNodes = useCallback(
-        (item: ReportTree, depth: number, newExpandedTreeReports: string[]): ReportItem[] => {
+        (item: ReportTree, depth: number, newExpandedTreeReports: Set<string>): ReportItem[] => {
             const result: ReportItem[] = [];
-            const collapsed = !newExpandedTreeReports.includes(item.id);
+            const collapsed = !newExpandedTreeReports.has(item.id);
             if (item.id) {
                 result.push({
                     collapsed,
@@ -95,7 +95,7 @@ export function VirtualizedTreeview({
     );
 
     const nodes = useMemo(
-        () => toTreeNodes(reportTree, 0, expandedTreeReports),
+        () => toTreeNodes(reportTree, 0, new Set(expandedTreeReports)),
         [reportTree, toTreeNodes, expandedTreeReports]
     );
 
@@ -129,7 +129,7 @@ export function VirtualizedTreeview({
             const updatedExpandedTreeReports = Array.from(newExpandedTreeReports);
             setExpandedTreeReports(updatedExpandedTreeReports);
 
-            const expandedNodes = toTreeNodes(reportTree, 0, updatedExpandedTreeReports);
+            const expandedNodes = toTreeNodes(reportTree, 0, newExpandedTreeReports);
             expandedNodes.forEach((node, index) => {
                 if (node.label.toLowerCase().includes(newSearchTerm.toLowerCase())) {
                     matches.push(index);
