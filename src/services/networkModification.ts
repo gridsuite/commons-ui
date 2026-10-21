@@ -146,6 +146,8 @@ export function setModificationMetadata(
 }
 
 export function setModificationNameAndDescription(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | undefined,
     modificationUuid: UUID | undefined,
     metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
 ): Promise<Response> {
@@ -154,7 +156,7 @@ export function setModificationNameAndDescription(
     }
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('uuid', modificationUuid);
-    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}/name-and-description`;
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/${safeEncodeURIComponent(modificationUuid)}/name-and-description`;
     return backendFetch(url, {
         method: 'PUT',
         headers: {

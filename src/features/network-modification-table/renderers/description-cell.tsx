@@ -9,22 +9,26 @@ import { useCallback, useMemo, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
+import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationNameAndDescription } from '../../../services';
+import { setModificationNameAndDescription, updateElement } from '../../../services';
 import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 import { useSnackMessage } from '../../../hooks';
+import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
+    studyUuid: UUID | null;
+    currentNodeId?: UUID;
     isDisabled?: boolean;
     // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
 }
 
 export function DescriptionCell(props: DescriptionCellProps) {
-    const { row, isDisabled = false, isSaveDisabled = false } = props;
+    const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
     const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
@@ -37,7 +41,22 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationNameAndDescription(modificationUuid, {
+            if (isReferenceModification(data)) {
+                return updateElement(data.referencedId, {
+                    elementUuid: data.referencedId,
+                    description: descriptionRecord.description,
+                })
+                    .catch((error) => {
+                        snackWithFallback(snackError, error, {
+                            headerId: `setModificationNameAndDescriptionError`,
+                        });
+                        throw error;
+                    })
+                    .finally(() => {
+                        setIsLoading(false);
+                    });
+            }
+            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             })
@@ -51,7 +70,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, data, snackError]
+        [modificationUuid, data, snackError, currentNodeId, studyUuid]
     );
 
     const handleDescDialogClose = useCallback(() => {
