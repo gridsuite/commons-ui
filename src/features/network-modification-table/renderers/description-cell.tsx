@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
@@ -13,9 +13,8 @@ import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { setModificationNameAndDescription, updateElement } from '../../../services';
-import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
+import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
-import { useSnackMessage } from '../../../hooks';
 import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
@@ -29,14 +28,13 @@ export interface DescriptionCellProps {
 
 export function DescriptionCell(props: DescriptionCellProps) {
     const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
-    const { snackError } = useSnackMessage();
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
     const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
-    const empty = useMemo(() => !description, [description]);
+    const empty = !description;
 
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
@@ -45,32 +43,18 @@ export function DescriptionCell(props: DescriptionCellProps) {
                 return updateElement(data.referencedId, {
                     elementUuid: data.referencedId,
                     description: descriptionRecord.description,
-                })
-                    .catch((error) => {
-                        snackWithFallback(snackError, error, {
-                            headerId: `setModificationNameAndDescriptionError`,
-                        });
-                        throw error;
-                    })
-                    .finally(() => {
-                        setIsLoading(false);
-                    });
+                }).finally(() => {
+                    setIsLoading(false);
+                });
             }
             return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
-            })
-                .catch((error) => {
-                    snackWithFallback(snackError, error, {
-                        headerId: `setModificationNameAndDescriptionError`,
-                    });
-                    throw error;
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                });
+            }).finally(() => {
+                setIsLoading(false);
+            });
         },
-        [modificationUuid, data, snackError, currentNodeId, studyUuid]
+        [modificationUuid, data, currentNodeId, studyUuid]
     );
 
     const handleDescDialogClose = useCallback(() => {
