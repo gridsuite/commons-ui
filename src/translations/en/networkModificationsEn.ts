@@ -701,4 +701,5 @@ export const networkModificationsEn = {
 
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',
+    ReadOnlyForm: 'This form is read only',
 };

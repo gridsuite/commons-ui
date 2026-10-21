@@ -708,4 +708,5 @@ export const networkModificationsFr = {
 
     LoadScaling: 'Variation plan de consommation',
     LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
+    ReadOnlyForm: 'Ce formulaire est en lecture seule',
 };
