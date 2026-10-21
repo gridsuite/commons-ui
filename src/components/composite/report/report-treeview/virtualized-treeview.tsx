@@ -85,7 +85,7 @@ export function VirtualizedTreeview({
                 });
                 if (!collapsed) {
                     item.subReports.forEach((subReport) => {
-                        result.push(...toTreeNodes(subReport, depth + 1, newExpandedTreeReports));
+                        toTreeNodes(subReport, depth + 1, newExpandedTreeReports).forEach((node) => result.push(node));
                     });
                 }
             }
