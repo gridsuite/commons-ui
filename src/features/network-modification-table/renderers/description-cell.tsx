@@ -26,7 +26,7 @@ export interface DescriptionCellProps {
     isSaveDisabled?: boolean;
 }
 
-export function DescriptionCell(props: DescriptionCellProps) {
+export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
     const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);

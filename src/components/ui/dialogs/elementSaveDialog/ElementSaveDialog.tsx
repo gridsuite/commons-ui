@@ -222,13 +222,7 @@ export function ElementSaveDialog({
         }
         const name =
             defaultName ?? `${intl.formatMessage({ id: prefixIdForGeneratedName })}-${new Date().toISOString()}`;
-        reset(
-            {
-                ...emptyFormData,
-                [FieldConstants.NAME]: name,
-            },
-            { keepDefaultValues: true }
-        );
+        reset({ ...emptyFormData, [FieldConstants.NAME]: name }, { keepDefaultValues: true });
     }, [prefixIdForGeneratedName, intl, reset, isCreateMode, defaultName]);
 
     // Destination folder initialization for create mode
