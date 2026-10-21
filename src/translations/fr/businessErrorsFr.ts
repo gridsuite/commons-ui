@@ -107,6 +107,7 @@ export const businessErrorsFr = {
 
     'modification.container.notFound':
         'Le container de modification {containerId} de type {containerType} est introuvable',
+    'modification.container.none': "La modification {modificationId} n'a pas de conteneur",
     'modification.container.badType':
         'Le type du container {containerId} est invalide : type actuel {} -> type attendu {expectedContainerType}',
     'modification.container.type.notFound':

@@ -105,6 +105,7 @@ export const businessErrorsEn = {
     'network.variant.notFound': 'Variant {variantId} for network {networkId} not found',
 
     'modification.container.notFound': 'Modification container {containerId} of type {containerType} not found',
+    'modification.container.none': 'Modification {modificationId} has no container',
     'modification.container.badType':
         'Modification container type of {containerId} is invalid : actual type {containerType} -> expected type {expectedContainerType}',
     'modification.container.type.notFound': 'Modification container type of {modificationId} not found',
