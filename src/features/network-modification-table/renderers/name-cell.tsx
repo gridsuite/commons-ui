@@ -8,7 +8,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
-import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowRight, KeyboardArrowDown, Lock } from '@mui/icons-material';
 import { CustomTooltip } from '../../../components';
 import {
     createNameCellLabelBoxSx,
@@ -37,9 +37,16 @@ interface NameCellProps {
     table: Table<ComposedModificationMetadata>;
     onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
     isRenameDisabled?: boolean;
+    isReadOnly?: boolean;
 }
 
-export function NameCell({ row, table, onChange, isRenameDisabled = false }: Readonly<NameCellProps>) {
+export function NameCell({
+    row,
+    table,
+    onChange,
+    isRenameDisabled = false,
+    isReadOnly = false,
+}: Readonly<NameCellProps>) {
     const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
@@ -288,6 +295,14 @@ export function NameCell({ row, table, onChange, isRenameDisabled = false }: Rea
                             >
                                 {label}
                             </Box>
+                        </CustomTooltip>
+                    )}
+                    {isReadOnly && (
+                        <CustomTooltip title={intl.formatMessage({ id: 'readOnlySharedModification' })}>
+                            <Lock
+                                aria-label={intl.formatMessage({ id: 'readOnlySharedModification' })}
+                                sx={networkModificationTableStyles.readOnlyLockIcon}
+                            />
                         </CustomTooltip>
                     )}
                 </Box>
