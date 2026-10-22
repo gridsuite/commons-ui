@@ -115,6 +115,8 @@ import {
     genericValidationFr,
     networkModificationValidationEn,
     networkModificationValidationFr,
+    exportNetworkEn,
+    exportNetworkFr,
 } from '../../src';
 
 import { demoInputsEn, demoInputsFr } from './components/translation';
@@ -144,6 +146,7 @@ const messages = {
         ...translations.en,
         ...networkModificationValidationEn,
         ...genericValidationEn,
+        ...exportNetworkEn,
     },
     fr: {
         ...reportViewerFr,
@@ -169,6 +172,7 @@ const messages = {
         ...translations.fr,
         ...networkModificationValidationFr,
         ...genericValidationFr,
+        ...exportNetworkFr,
     },
 };
 

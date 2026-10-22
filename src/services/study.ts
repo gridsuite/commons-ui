@@ -10,6 +10,7 @@ import { backendFetch, backendFetchJson, safeEncodeURIComponent } from './utils'
 import { NetworkVisualizationParameters } from '../features/parameters/network-visualizations/network-visualizations.types';
 import { type ShortCircuitParametersInfos } from '../features/parameters/short-circuit/short-circuit-parameters.type';
 import { VoltageInitStudyParameters } from '../features/parameters/voltage-init/voltage-init.type';
+import { ExportFormatProperties } from '../features/export-network/exportNetwork.types';
 
 export const PREFIX_STUDY_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/study`;
 
@@ -67,4 +68,11 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         },
         body: JSON.stringify(newParams),
     });
+}
+
+export function getAvailableExportFormats(): Promise<Record<string, ExportFormatProperties>> {
+    console.info('get export formats');
+    const getExportFormatsUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/export-network-formats`;
+    console.debug(getExportFormatsUrl);
+    return backendFetchJson(getExportFormatsUrl);
 }
