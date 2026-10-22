@@ -66,8 +66,7 @@ export function snackWithFallback(
 }
 
 /**
- * Same as snackWithFallback, but warns, instead of reporting an error, when the error carries one of the given
- * business error codes.
+ * Like snackWithFallback, but as a warning for the given business error codes.
  */
 export function snackWarningOrFallback(
     snackError: UseSnackMessageReturn['snackError'],
