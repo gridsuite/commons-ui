@@ -136,7 +136,9 @@ export function AutocompleteInput({
                         input: {
                             ...formProps?.slotProps?.input,
                             ...params.slotProps.input,
-                            onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                            ...(isReadOnly && !hasValue && {
+                                onMouseDown: (event: any) => event.preventDefault(),
+                            }),
                         },
                         htmlInput: {
                             ...formProps?.slotProps?.htmlInput,

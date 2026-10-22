@@ -70,7 +70,10 @@ export function CountriesAutocomplete({
                         input: {
                             ...params.slotProps.input,
                             readOnly: isReadOnly,
-                            onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                            ...(isReadOnly &&
+                                !hasValue && {
+                                    onMouseDown: (event: any) => event.preventDefault(),
+                                }),
                         },
                         inputLabel: {
                             shrink: isReadOnly ? hasValue : undefined,
