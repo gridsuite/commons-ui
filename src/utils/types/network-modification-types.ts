@@ -22,6 +22,11 @@ export type AttributeModification<T> = {
  */
 export type NetworkModificationApplicabilities = Record<UUID, Record<UUID, boolean>>;
 
+/**
+ * Global activation of each network modification, keyed by uuid.
+ */
+export type NetworkModificationActivations = Record<UUID, boolean>;
+
 export interface RootNetworkRowInfo {
     rootNetworkUuid: UUID;
     name: string;

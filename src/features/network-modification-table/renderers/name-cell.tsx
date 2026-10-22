@@ -8,16 +8,15 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
 import { Box, IconButton, InputBase, useTheme } from '@mui/material';
-import { KeyboardArrowRight, KeyboardArrowDown } from '@mui/icons-material';
+import { KeyboardArrowRight, KeyboardArrowDown, Lock } from '@mui/icons-material';
 import { CustomTooltip } from '../../../components';
 import {
-    createModificationNameCellStyle,
     createNameCellLabelBoxSx,
     createNameCellRootStyle,
     networkModificationTableStyles,
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
-import { isCompositeModification, toMessageValues } from '../utils';
+import { isCompositeModification, isReferenceModification, toMessageValues } from '../utils';
 import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
 
@@ -37,9 +36,17 @@ interface NameCellProps {
     row: Row<ComposedModificationMetadata>;
     table: Table<ComposedModificationMetadata>;
     onChange?: (modification: ComposedModificationMetadata, newValue: string) => Promise<unknown>;
+    isRenameDisabled?: boolean;
+    isReadOnly?: boolean;
 }
 
-export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
+export function NameCell({
+    row,
+    table,
+    onChange,
+    isRenameDisabled = false,
+    isReadOnly = false,
+}: Readonly<NameCellProps>) {
     const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
@@ -49,6 +56,9 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const { depth } = row;
 
     const isComposite = isCompositeModification(row.original);
+    const isReferenced = isReferenceModification(row.original);
+    const isCompositeAndRenamable = isComposite && !isRenameDisabled;
+    const isReferenceAndRenamable = isReferenced && !isRenameDisabled;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {
@@ -65,7 +75,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
 
     // Composite name as carried by the server data.
     const savedCompositeName = useMemo(() => {
-        if (!isComposite) {
+        if (!isComposite && !isReferenced) {
             return '';
         }
         try {
@@ -73,7 +83,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
         } catch {
             return '';
         }
-    }, [isComposite, row.original.messageValues]);
+    }, [isComposite, isReferenced, row.original.messageValues]);
 
     // Single source of truth for the name: optimistic on rename, re-synced from the server.
     const [compositeName, setCompositeName] = useState(savedCompositeName);
@@ -157,6 +167,7 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
     const defaultCompositeName: string = useMemo(() => intl.formatMessage({ id: 'CompositeModification' }), [intl]);
 
     // triggers composite name editing from outside the component
+    // i.e., when a composite is being created
     useEffect(() => {
         const modificationToEditLabel = meta?.interaction.modificationToEditLabel.current;
         if (isComposite && !isEditingRef.current && modificationToEditLabel === row.original.uuid) {
@@ -198,19 +209,21 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
             <DepthBox key={i} firstLevel={i === 0} displayAsFolder={isComposite && i === depthLevelCount - 1} />
         ));
     };
-    const compositeReadModeProps = isComposite
-        ? {
-              ref: labelRef,
-              onClick: handleLabelClick,
-              sx: {
-                  cursor: 'text',
-                  '&:hover': {
-                      textDecoration: 'underline dotted',
-                      textDecorationColor: theme.palette.text.secondary,
+
+    const renamableCompositeModeProps =
+        isCompositeAndRenamable || isReferenceAndRenamable
+            ? {
+                  ref: labelRef,
+                  onClick: handleLabelClick,
+                  sx: {
+                      cursor: 'text',
+                      '&:hover': {
+                          textDecoration: 'underline dotted',
+                          textDecorationColor: theme.palette.text.secondary,
+                      },
                   },
-              },
-          }
-        : {};
+              }
+            : {};
     return (
         <Box
             sx={mergeSx(
@@ -274,15 +287,22 @@ export function NameCell({ row, table, onChange }: Readonly<NameCellProps>) {
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
                             <Box
-                                {...compositeReadModeProps}
+                                {...renamableCompositeModeProps}
                                 sx={mergeSx(
                                     networkModificationTableStyles.modificationLabel,
-                                    createModificationNameCellStyle(row.original.activated),
-                                    compositeReadModeProps.sx
+                                    renamableCompositeModeProps.sx
                                 )}
                             >
                                 {label}
                             </Box>
+                        </CustomTooltip>
+                    )}
+                    {isReadOnly && (
+                        <CustomTooltip title={intl.formatMessage({ id: 'readOnlySharedModification' })}>
+                            <Lock
+                                aria-label={intl.formatMessage({ id: 'readOnlySharedModification' })}
+                                sx={networkModificationTableStyles.readOnlyLockIcon}
+                            />
                         </CustomTooltip>
                     )}
                 </Box>

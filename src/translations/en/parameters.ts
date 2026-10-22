@@ -50,6 +50,7 @@ export const parametersEn = {
     descLfCountriesToBalance: 'Balancing countries',
     inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
+    defaultValue: 'Default: {value}',
 
     General: 'General',
     LimitReductions: 'Limit reductions',
@@ -197,7 +198,7 @@ export const parametersEn = {
     VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
     AdjustExistingLimits: 'Adjust existing limits',
     AdjustExistingLimitsInfo:
-        'Please enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
+        'Enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
     SetDefaultLimits: 'Default values to fill missing limits',
     allExcept: 'All except',
     noneExcept: 'None except',

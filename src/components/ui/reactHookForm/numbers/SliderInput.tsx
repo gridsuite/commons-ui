@@ -46,7 +46,7 @@ export function SliderInput({
             min={min}
             max={max}
             step={step}
-            value={value}
+            value={value ?? min ?? 0}
             onChange={handleValueChange}
             marks={marks}
             valueLabelDisplay={valueLabelDisplay}

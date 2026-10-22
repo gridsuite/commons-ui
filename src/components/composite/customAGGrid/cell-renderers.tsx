@@ -76,7 +76,7 @@ const formatNumericCell = (value: number, fractionDigits?: number) => {
 const formatCell = (props: any) => {
     let value = props?.valueFormatted || props.value;
     let tooltipValue;
-    if (value != null && props.colDef.context?.numeric && props.colDef.context?.fractionDigits) {
+    if (value != null && props.colDef.context?.numeric && props.colDef.context?.fractionDigits != null) {
         // only numeric rounded cells have a tooltip (their raw numeric value)
         tooltipValue = value;
         value = Number.parseFloat(value).toFixed(props.colDef.context.fractionDigits);
@@ -154,6 +154,7 @@ export function MessageLogCellRenderer({
     param,
     highlightColor,
     currentHighlightColor,
+    textColor,
     searchTerm,
     currentResultIndex,
     searchResults,
@@ -161,6 +162,7 @@ export function MessageLogCellRenderer({
     param: ICellRendererParams;
     highlightColor?: string;
     currentHighlightColor?: string;
+    textColor?: string;
     searchTerm?: string;
     currentResultIndex?: number;
     searchResults?: number[];
@@ -208,6 +210,7 @@ export function MessageLogCellRenderer({
                                         searchResults[currentResultIndex] === param.node.rowIndex
                                             ? currentHighlightColor
                                             : highlightColor,
+                                    ...(textColor && { color: textColor }),
                                 }}
                             >
                                 {part}

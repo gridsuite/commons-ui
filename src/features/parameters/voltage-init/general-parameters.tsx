@@ -7,7 +7,9 @@
 import { useFormContext, useWatch } from 'react-hook-form';
 import { ChangeEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
-import { Box, Grid, Alert } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Info } from '@mui/icons-material';
+
 import {
     GENERAL,
     GENERAL_APPLY_MODIFICATIONS,
@@ -15,9 +17,10 @@ import {
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     UPDATE_BUS_VOLTAGE,
 } from './constants';
-import { LineSeparator, ParameterFloat, ParameterSwitch } from '../common';
+import { ParameterFloat, ParameterSwitch } from '../common';
 import { parametersStyles } from '../parameters-style';
 import { ReactivePowerAdornment } from '../../../utils/constants/adornments';
+import { CustomTooltip } from '../../../components';
 
 export interface GeneralParametersProps {
     withApplyModifications: boolean;
@@ -55,23 +58,19 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
     return (
         <Grid>
             {withApplyModifications && (
-                <>
-                    <Alert sx={parametersStyles.adjustExistingLimitsInfo} severity="info" variant="outlined">
-                        <FormattedMessage id="VoltageInitParametersGeneralSaveInfo" />
-                    </Alert>
-                    <ParameterSwitch
-                        value={applyModificationsWatched}
-                        label="VoltageInitParametersGeneralApplyModificationsLabel"
-                        onChange={setApplyModificationsValue}
-                    />
-                    <Box
-                        sx={{
-                            my: 2,
-                        }}
-                    >
-                        <LineSeparator />
-                    </Box>
-                </>
+                <ParameterSwitch
+                    value={applyModificationsWatched}
+                    label="VoltageInitParametersGeneralApplyModificationsLabel"
+                    onChange={setApplyModificationsValue}
+                    labelAdornment={
+                        <CustomTooltip
+                            title={<FormattedMessage id="VoltageInitParametersGeneralSaveInfo" />}
+                            sx={parametersStyles.tooltip}
+                        >
+                            <Info fontSize="small" color="info" />
+                        </CustomTooltip>
+                    }
+                />
             )}
             <ParameterSwitch
                 value={updateBusVoltageWatched}

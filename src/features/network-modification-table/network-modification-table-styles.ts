@@ -7,14 +7,12 @@
 
 import { VirtualItem } from '@tanstack/react-virtual';
 import { SxProps, Theme } from '@mui/material';
-import { CSSProperties } from 'react';
 import { MuiStyles } from '../../utils';
 
 const HIGHLIGHT_COLOR_BASE = 'rgba(144, 202, 249, 0.16)';
 const HIGHLIGHT_COLOR_HOVER = 'rgba(144, 202, 249, 0.24)';
 const ROW_HOVER_COLOR = 'rgba(144, 202, 249, 0.08)';
 const DRAG_OPACITY = 0.5;
-const DEACTIVATED_OPACITY = 0.4;
 
 export const MODIFICATION_ROW_HEIGHT = 41;
 export const DEPTH_CELL_WIDTH: number = 32;
@@ -100,6 +98,17 @@ export const networkModificationTableStyles = {
         width: '16px',
         height: '16px',
     },
+    disabledDragHandle: (theme) => ({
+        cursor: 'not-allowed',
+        color: theme.palette.text.disabled,
+    }),
+    readOnlyLockIcon: (theme) => ({
+        flexShrink: 0,
+        width: '14px',
+        height: '14px',
+        marginLeft: theme.spacing(0.5),
+        color: theme.palette.text.secondary,
+    }),
     modificationLabel: {
         textOverflow: 'ellipsis',
         overflow: 'hidden',
@@ -256,16 +265,11 @@ export const createRowSx = (
     }),
 });
 
-export const createModificationNameCellStyle = (activated: boolean): CSSProperties => ({
-    opacity: activated ? 1 : DEACTIVATED_OPACITY,
-});
-
-export const createRootNetworkChipCellSx = (activated: boolean): SxProps => ({
+export const rootNetworkChipCellSx: SxProps = {
     width: '100%',
     display: 'flex',
     justifyContent: 'center',
-    opacity: activated ? 1 : DEACTIVATED_OPACITY,
-});
+};
 
 export const createEditDescriptionStyle = (description: string | undefined): SxProps => ({
     opacity: description ? 1 : 0,

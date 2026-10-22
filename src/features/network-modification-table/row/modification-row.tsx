@@ -28,6 +28,8 @@ interface ModificationRowProps {
     handleCellClick?: (modification: ComposedModificationMetadata) => void;
     isRowDragDisabled: boolean;
     highlightedModificationUuid: string | null;
+    // TODO temporary before implementing readOnly form
+    isFormOpeningLocked?: boolean;
 }
 
 export function ModificationRow({
@@ -36,6 +38,7 @@ export function ModificationRow({
     handleCellClick,
     isRowDragDisabled,
     highlightedModificationUuid,
+    isFormOpeningLocked = false,
 }: Readonly<ModificationRowProps>) {
     const isHighlighted = row.original.uuid === highlightedModificationUuid;
     const theme = useTheme();
@@ -44,15 +47,19 @@ export function ModificationRow({
 
     const handleCellClickCallback = useCallback(
         (columnId: string) => {
-            if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id) {
+            if (columnId === BASE_MODIFICATION_TABLE_COLUMNS.NAME.id && !isFormOpeningLocked) {
                 handleCellClick?.(row.original);
             }
         },
-        [handleCellClick, row.original]
+        [handleCellClick, row.original, isFormOpeningLocked]
     );
 
     return (
-        <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
+        <Draggable
+            draggableId={row.id}
+            index={virtualRow.index}
+            isDragDisabled={isRowDragDisabled || !!row.original.childFromReadOnlyShared}
+        >
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
                 const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
                 return (

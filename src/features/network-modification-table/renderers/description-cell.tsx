@@ -8,25 +8,30 @@
 import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationMetadata } from '../../../services';
+import { setModificationNameAndDescription, updateElement } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
+import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
-    data: ComposedModificationMetadata;
+    row: Row<ComposedModificationMetadata>;
     studyUuid: UUID | null;
     currentNodeId?: UUID;
     isDisabled?: boolean;
+    // the dialog stays reachable to read an existing description, only its validation is denied
+    isSaveDisabled?: boolean;
 }
 
-export function DescriptionCell(props: DescriptionCellProps) {
-    const { data, studyUuid, currentNodeId, isDisabled = false } = props;
+export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
+    const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
+    const data = row.original;
     const modificationUuid = data.uuid;
     const { description } = data;
     const empty = !description;
@@ -34,14 +39,22 @@ export function DescriptionCell(props: DescriptionCellProps) {
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            if (isReferenceModification(data)) {
+                return updateElement(data.referencedId, {
+                    elementUuid: data.referencedId,
+                    description: descriptionRecord.description,
+                }).finally(() => {
+                    setIsLoading(false);
+                });
+            }
+            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {
                 setIsLoading(false);
             });
         },
-        [studyUuid, currentNodeId, modificationUuid, data.type]
+        [modificationUuid, data, currentNodeId, studyUuid]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -52,6 +65,11 @@ export function DescriptionCell(props: DescriptionCellProps) {
         setOpenDescModificationDialog(true);
     }, []);
 
+    // As the description is empty and we can't update it, we don't want to render the cell and its button
+    if (empty && isSaveDisabled) {
+        return null;
+    }
+
     return (
         <>
             {openDescModificationDialog && modificationUuid && (
@@ -60,6 +78,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
+                    disabledSave={isSaveDisabled}
                 />
             )}
             <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
@@ -67,7 +86,7 @@ export function DescriptionCell(props: DescriptionCellProps) {
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(data.description)}
+                        sx={createEditDescriptionStyle(description)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>

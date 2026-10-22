@@ -7,25 +7,12 @@
 
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Box, Table, TableBody, TableCell, TableHead, TableRow, useTheme } from '@mui/material';
-import {
-    ColumnDef,
-    ExpandedState,
-    flexRender,
-    getCoreRowModel,
-    getExpandedRowModel,
-    Updater,
-    useReactTable,
-} from '@tanstack/react-table';
+import { ColumnDef, flexRender, getCoreRowModel, getExpandedRowModel, useReactTable } from '@tanstack/react-table';
 import { DragDropContext, Droppable, DroppableProvided } from '@hello-pangea/dnd';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import { UUID } from 'node:crypto';
 import { NetworkModificationEditorNameHeaderProps } from './renderers';
-import {
-    NetworkModificationApplicabilities,
-    RootNetworkRowInfo,
-    ComposedModificationMetadata,
-    NetworkModificationMetadata,
-} from '../../utils';
+import { RootNetworkRowInfo, ComposedModificationMetadata, NetworkModificationMetadata } from '../../utils';
 import {
     createHeaderCellStyle,
     MODIFICATION_ROW_HEIGHT,
@@ -33,18 +20,15 @@ import {
 } from './network-modification-table-styles';
 import { AUTO_EXTENSIBLE_COLUMNS } from './columns-definition';
 import { useModificationsDragAndDrop } from './use-modifications-drag-and-drop';
+import { useModificationsActivation } from './use-modifications-activation';
 import { useModificationsSelection } from './use-modifications-selection';
 import {
-    collectApplicabilities,
-    fetchSubModificationsForExpandedRows,
-    findAllLoadedContainerModifications,
+    carryOverRowKeys,
     findDepth,
     formatToComposedModification,
     isCompositeModification,
     isReferenceModification,
     MAX_COMPOSITE_NESTING_DEPTH,
-    mergeSubModificationsIntoTree,
-    removeUuidsFromTree,
 } from './utils';
 import { ModificationRow } from './row';
 
@@ -91,24 +75,12 @@ export function NetworkModificationsTable({
 
     const containerRef = useRef<HTMLDivElement | null>(null);
 
-    const [expanded, setExpanded] = useState<ExpandedState>({});
-
     const [composedModifications, setComposedModifications] = useState<ComposedModificationMetadata[]>(
         formatToComposedModification(modifications)
     );
 
-    // The tags are read from a ref on purpose: renaming a root network must not retrigger the collect, or the
-    // modifications in hand, still carrying the previous tag, would resolve to no root network at all and read
-    // back as applicable. The next fetch of the modifications brings both sides in step again.
-    const rootNetworksRef = useRef(rootNetworks);
-    useEffect(() => {
-        rootNetworksRef.current = rootNetworks;
-    }, [rootNetworks]);
-
-    const [applicabilities, setApplicabilities] = useState<NetworkModificationApplicabilities>({});
-    useEffect(() => {
-        setApplicabilities(collectApplicabilities(composedModifications, rootNetworksRef.current));
-    }, [composedModifications]);
+    const { activations, setPendingActivations, applicabilities, setPendingApplicabilities } =
+        useModificationsActivation({ modifications: composedModifications, rootNetworks });
 
     // composedModificationsRef is used to access composedModifications data from other useEffects
     // without having to add composedModifications to their dependencies (so it doesn't trigger them)
@@ -129,10 +101,10 @@ export function NetworkModificationsTable({
 
     const isAssemblyDepthExceeded = useCallback((rows: ComposedModificationMetadata[]): boolean => {
         // the new assembled composite will be created where the first selected row is so :
-        // depth has to be < to first selected row depth + maxDepth of any selected row
+        // depth has to be < to first selected row depth + sublevelCount of any selected row
         if (rows.length === 0) return false;
         const firstSelectedRowDepth = findDepth(composedModificationsRef.current, rows[0].uuid);
-        return rows.some((row) => firstSelectedRowDepth + (row.maxDepth ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
+        return rows.some((row) => firstSelectedRowDepth + (row.sublevelCount ?? 0) >= MAX_COMPOSITE_NESTING_DEPTH);
     }, []);
 
     const handleRowSelected = useCallback(
@@ -148,58 +120,11 @@ export function NetworkModificationsTable({
     });
 
     useEffect(() => {
-        const prevMods = composedModificationsRef.current;
-        // Uuids now at the top level have an authoritative position there. Any stale
-        // carried-over child with the same uuid (cut out of a composite, pasted at root)
-        // must be stripped, otherwise it renders twice → duplicate nodes in the tree.
-        const newTopLevelUuids = new Set(modifications.map((m) => m.uuid));
-
-        // Carry over already-fetched children (avoids an empty flash during the re-fetch),
-        // then deep-filter out any uuid that moved to the top level
-        // also carries the previous rowKey forward for every matched node, so expanded/selection
-        // state (keyed by rowKey) survives this refresh untouched.
-        const nextMods = mergeSubModificationsIntoTree(formatToComposedModification(modifications), prevMods).map(
-            (mod) =>
-                mod.subModifications.length > 0
-                    ? { ...mod, subModifications: removeUuidsFromTree(mod.subModifications, newTopLevelUuids) }
-                    : mod
+        // When the modification tree is updated, we keep the rowKeys so that the expanded and selected rows stay so.
+        setComposedModifications(
+            carryOverRowKeys(formatToComposedModification(modifications), composedModificationsRef.current)
         );
-        setComposedModifications(nextMods);
-
-        // Re-fetch authoritative children for every composite or reference that already had loaded children,
-        // correcting anything stale that was temporarily preserved above.
-        // Source of truth: prevMods — nextMods children may have been filtered just above.
-        // The rowKeys collected here are still valid in nextMods since the merge above preserved them.
-        const loadedContainers: ComposedModificationMetadata[] = [];
-        findAllLoadedContainerModifications(prevMods, loadedContainers);
-        if (loadedContainers.length > 0) {
-            fetchSubModificationsForExpandedRows(
-                loadedContainers.map((m) => m.rowKey),
-                nextMods,
-                setComposedModifications,
-                true
-            );
-        }
     }, [modifications]);
-
-    const handleExpandRow = useCallback((updater: Updater<ExpandedState>) => {
-        setExpanded((prevExpanded: ExpandedState) => {
-            const nextExpanded: ExpandedState = typeof updater === 'function' ? updater(prevExpanded) : updater;
-
-            const prevRecord = prevExpanded === true ? {} : prevExpanded;
-            const nextRecord = nextExpanded === true ? {} : nextExpanded;
-            const newlyExpandedRowKeys = Object.keys(nextRecord).filter(
-                (id) => nextRecord[id] && !prevRecord[id]
-            ) as UUID[];
-
-            setComposedModifications((prevMods) => {
-                fetchSubModificationsForExpandedRows(newlyExpandedRowKeys, prevMods, setComposedModifications);
-                return [...prevMods];
-            });
-
-            return nextExpanded;
-        });
-    }, []);
 
     const tableMeta = useMemo(
         () => ({
@@ -211,8 +136,10 @@ export function NetworkModificationsTable({
             },
             modifications: {
                 count: modifications.length,
+                activations,
+                setPendingActivations,
                 applicabilities,
-                setApplicabilities,
+                setPendingApplicabilities,
             },
             interaction: {
                 lastClickedRowId,
@@ -234,8 +161,10 @@ export function NetworkModificationsTable({
             currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
+            activations,
+            setPendingActivations,
             applicabilities,
-            setApplicabilities,
+            setPendingApplicabilities,
             lastClickedRowId,
             handleRowSelected,
             modificationToEditLabelRef,
@@ -251,7 +180,7 @@ export function NetworkModificationsTable({
     const table = useReactTable<ComposedModificationMetadata>({
         data: composedModifications,
         columns,
-        state: { expanded, rowSelection },
+        state: { rowSelection },
         getCoreRowModel: getCoreRowModel(),
         getExpandedRowModel: getExpandedRowModel(),
         getSubRows: (originalRow) => originalRow.subModifications,
@@ -260,7 +189,6 @@ export function NetworkModificationsTable({
         enableRowSelection: true,
         enableSubRowSelection: true,
         enableExpanding: true,
-        onExpandedChange: handleExpandRow,
         onRowSelectionChange,
         meta: tableMeta,
     });
@@ -314,7 +242,7 @@ export function NetworkModificationsTable({
         };
         collectDescendants(composedModificationsRef.current);
 
-        setExpanded((prev) => {
+        table.setExpanded((prev) => {
             if (prev === true) {
                 return prev;
             }
@@ -385,6 +313,7 @@ export function NetworkModificationsTable({
                                                 handleCellClick={handleCellClick}
                                                 isRowDragDisabled={isRowDragDisabled}
                                                 highlightedModificationUuid={highlightedModificationUuid}
+                                                isFormOpeningLocked={row.original.childFromReadOnlyShared}
                                             />
                                         );
                                     })}

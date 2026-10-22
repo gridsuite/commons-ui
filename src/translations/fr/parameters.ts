@@ -52,6 +52,7 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays réglant',
     inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
+    defaultValue: 'Par défaut: {value}',
 
     General: 'Général',
     LimitReductions: 'Abattements',
@@ -205,7 +206,7 @@ export const parametersFr = {
     voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
     AdjustExistingLimits: 'Modifier les limites existantes',
     AdjustExistingLimitsInfo:
-        'Merci de saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
+        'Saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
     SetDefaultLimits: 'Valeurs par défaut pour compléter les limites manquantes',
     allExcept: 'Tous sauf',
     noneExcept: 'Aucun sauf',
