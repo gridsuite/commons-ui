@@ -94,7 +94,14 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
     if (isReferenceModification(row.original)) {
-        return <ReferenceLinkCell row={row} disabled={meta?.status.isDisabled} />;
+        return (
+            <ReferenceLinkCell
+                row={row}
+                studyUuid={meta?.context.studyUuid ?? null}
+                currentNodeId={meta?.context.currentNodeId ?? null}
+                disabled={meta?.status.isDisabled}
+            />
+        );
     }
     return null;
 }

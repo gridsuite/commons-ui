@@ -10,7 +10,7 @@ import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponen
 import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
-export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
+export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | null | undefined) =>
     `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 export enum ModificationContainerType {
@@ -35,6 +35,21 @@ export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
     return backendFetch(modificationFetchUrl);
+}
+
+export function unshareNetworkModification(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | null,
+    modificationUuid: UUID
+): Promise<Response> {
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/${safeEncodeURIComponent(modificationUuid)}/unshare`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
 }
 
 export function fetchBusBarSectionsForNewCoupler(
