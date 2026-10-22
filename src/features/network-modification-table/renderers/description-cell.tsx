@@ -12,9 +12,10 @@ import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationMetadata } from '../../../services';
+import { setModificationNameAndDescription, updateElement } from '../../../services';
 import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
+import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
@@ -38,14 +39,22 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
             setIsLoading(true);
-            return setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            if (isReferenceModification(data)) {
+                return updateElement(data.referencedId, {
+                    elementUuid: data.referencedId,
+                    description: descriptionRecord.description,
+                }).finally(() => {
+                    setIsLoading(false);
+                });
+            }
+            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {
                 setIsLoading(false);
             });
         },
-        [studyUuid, currentNodeId, modificationUuid, data.type]
+        [modificationUuid, data, currentNodeId, studyUuid]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -77,7 +86,7 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     <IconButton
                         onClick={handleModifyDescription}
                         disabled={isLoading || isDisabled}
-                        sx={createEditDescriptionStyle(data.description)}
+                        sx={createEditDescriptionStyle(description)}
                     >
                         <EditNoteIcon empty={empty} />
                     </IconButton>
