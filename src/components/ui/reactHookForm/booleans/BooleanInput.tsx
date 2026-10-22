@@ -7,7 +7,7 @@
 
 import { type ChangeEvent, type JSX, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, FormControlLabel, type FormControlLabelProps, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { useCustomFormContext } from '../provider';
 import { readOnlyFormControlLabelStyle } from '../styles/styles';
@@ -21,6 +21,7 @@ export type BooleanInputProps<TInput extends InputTypes> = {
     formProps?: InputProps<TInput>;
     Input: TInput;
     dataTestId?: string;
+    labelProps?: Omit<FormControlLabelProps, 'label' | 'control'>;
 };
 
 export function BooleanInput<TInput extends InputTypes>({
@@ -29,6 +30,7 @@ export function BooleanInput<TInput extends InputTypes>({
     formProps,
     Input,
     dataTestId,
+    labelProps,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
     const { onChange, slotProps, disabled, ...otherFormProps } = formProps ?? { onChange: undefined };
@@ -68,6 +70,7 @@ export function BooleanInput<TInput extends InputTypes>({
                 // must restore label color and opacity otherwise disabled Input is detected
                 // by FormControlLabel.
                 sx={isReadOnly ? readOnlyFormControlLabelStyle : undefined}
+                {...labelProps}
             />
         );
     }
