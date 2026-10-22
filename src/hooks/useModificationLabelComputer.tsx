@@ -58,6 +58,13 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
     };
 };
 
+const computeEquipmentTypeToMessageDescriptor = (equipmentType: string) => {
+    if (equipmentType === EquipmentType.HVDC_LINE) {
+        return { id: 'Hvdc' };
+    }
+    return { id: equipmentType };
+};
+
 export const useModificationLabelComputer = () => {
     const intl = useIntl();
 
@@ -82,17 +89,11 @@ export const useModificationLabelComputer = () => {
                         id: `network_modifications.tabular.${modificationMetadata.tabularModificationType}`,
                     });
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
-                    return intl.formatMessage({
-                        id:
-                            modificationMetadata.equipmentType === EquipmentType.HVDC_LINE
-                                ? 'Hvdc'
-                                : modificationMetadata.equipmentType,
-                    });
                 case MODIFICATION_TYPES.MODIFICATION_BY_ASSIGNMENT.type:
                 case MODIFICATION_TYPES.BY_FORMULA_MODIFICATION.type:
-                    return intl.formatMessage({
-                        id: modificationMetadata.equipmentType,
-                    });
+                    return intl.formatMessage(
+                        computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType)
+                    );
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
