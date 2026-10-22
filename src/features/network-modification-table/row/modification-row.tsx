@@ -55,7 +55,11 @@ export function ModificationRow({
     );
 
     return (
-        <Draggable draggableId={row.id} index={virtualRow.index} isDragDisabled={isRowDragDisabled}>
+        <Draggable
+            draggableId={row.id}
+            index={virtualRow.index}
+            isDragDisabled={isRowDragDisabled || !!row.original.childFromReadOnlyShared}
+        >
             {(provided: DraggableProvided, snapshot: DraggableStateSnapshot) => {
                 const { style, ...draggablePropsWithoutStyle } = provided.draggableProps;
                 return (
