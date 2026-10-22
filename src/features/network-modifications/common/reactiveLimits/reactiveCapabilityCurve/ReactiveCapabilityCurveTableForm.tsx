@@ -14,7 +14,7 @@ import { INSERT, REMOVE } from './reactiveCapability.utils';
 import { ReactiveCapabilityCurvePoints } from '../reactiveLimits.type';
 import { ReactiveCapabilityCurveRowForm } from './ReactiveCapabilityCurveRowForm';
 import { FieldConstants } from '../../../../../utils';
-import { ErrorInput, MidFormError } from '../../../../../components/ui';
+import { ErrorInput, MidFormError, useCustomFormContext } from '../../../../../components/ui';
 
 const MIN_LENGTH = 2;
 interface ReactiveCapabilityCurveTableFormProps {
@@ -33,6 +33,7 @@ export function ReactiveCapabilityCurveTableForm({
     disabled = false,
 }: Readonly<ReactiveCapabilityCurveTableFormProps>) {
     const { fields: rows, insert, remove } = useFieldArray({ name: `${id}` });
+    const { isReadOnly } = useCustomFormContext();
 
     const insertRow = useCallback(
         (index: number) => {
@@ -98,16 +99,18 @@ export function ReactiveCapabilityCurveTableForm({
                         }}
                     >
                         <ReactiveCapabilityCurveRowForm id={id} index={index} labelSuffix={labelSuffix} />
-                        <Grid size={1}>
-                            <IconButton
-                                key={value.id}
-                                onClick={() => handleRemoveRow(index)}
-                                disabled={disabled || index === 0 || index === displayedValues.length - 1}
-                            >
-                                <DeleteIcon />
-                            </IconButton>
-                        </Grid>
-                        {index === displayedValues.length - 1 && (
+                        {!isReadOnly && (
+                            <Grid size={1}>
+                                <IconButton
+                                    key={value.id}
+                                    onClick={() => handleRemoveRow(index)}
+                                    disabled={disabled || index === 0 || index === displayedValues.length - 1}
+                                >
+                                    <DeleteIcon />
+                                </IconButton>
+                            </Grid>
+                        )}
+                        {!isReadOnly && index === displayedValues.length - 1 && (
                             <Grid size={1}>
                                 <IconButton
                                     key={value.id}
