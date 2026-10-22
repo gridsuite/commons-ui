@@ -30,7 +30,12 @@ export function VoltageInitParametersForm({
     const { selectedTab, handleTabChange, tabIndexesWithError } = voltageInitMethods;
 
     return (
-        <Stack sx={parametersStyles.scrollableGrid}>
+        <Stack
+            sx={(theme) => ({
+                ...parametersStyles.scrollableGrid(theme),
+                paddingTop: 0,
+            })}
+        >
             <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                 <Tab
                     label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}

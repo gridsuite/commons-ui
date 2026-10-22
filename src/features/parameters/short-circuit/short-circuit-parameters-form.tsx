@@ -16,7 +16,13 @@ interface ShortCircuitParametersFormProps {
 
 export function ShortCircuitParametersForm({ shortCircuitMethods }: Readonly<ShortCircuitParametersFormProps>) {
     return (
-        <Grid container sx={parametersStyles.scrollableGrid}>
+        <Grid
+            container
+            sx={(theme) => ({
+                ...parametersStyles.scrollableGrid(theme),
+                paddingTop: 0,
+            })}
+        >
             <ShortCircuitParametersContent shortCircuitMethods={shortCircuitMethods} />
         </Grid>
     );
