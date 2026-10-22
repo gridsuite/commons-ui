@@ -37,3 +37,4 @@ export * from './specificParameters';
 export * from './use-unique-name-validation-en';
 export * from './processConfigEn';
 export * from './generic-validationEn';
+export * from './exportNetworkEn';
