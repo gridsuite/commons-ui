@@ -25,6 +25,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { CustomTooltip } from '../../ui/tooltip/CustomTooltip';
 import { MultipleSelectionDialog } from '../../ui/dialogs/multipleSelectionDialog/MultipleSelectionDialog';
 import type { MuiStyles } from '../../../utils/styles';
+import { Parameter } from './flatParameters.types';
 
 const styles = {
     paramList: {
@@ -90,14 +91,6 @@ function longestCommonPrefix(stringList: string[]) {
     });
     return prefix;
 }
-
-export type Parameter = {
-    type: 'BOOLEAN' | 'DOUBLE' | 'INTEGER' | 'STRING_LIST' | 'STRING';
-    description?: string;
-    name: string;
-    possibleValues: string[];
-    defaultValue: any;
-};
 
 export interface FlatParametersProps {
     paramsAsArray: Parameter[];
