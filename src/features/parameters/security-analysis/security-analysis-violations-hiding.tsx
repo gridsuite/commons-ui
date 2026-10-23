@@ -7,10 +7,8 @@
 
 import { Grid, Typography } from '@mui/material';
 import { useIntl } from 'react-intl';
-import { Info as InfoIcon } from '@mui/icons-material';
-import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
-import { FloatInput } from '../../../components/ui';
+import { CustomTooltipInfo, FloatInput } from '../../../components/ui';
 import {
     FLOW_PROPORTIONAL_THRESHOLD,
     HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
@@ -64,9 +62,7 @@ function SecurityAnalysisFields({
                     />
                 </Grid>
             )}
-            <CustomTooltip title={intl.formatMessage({ id: tooltipInfoId })}>
-                <InfoIcon />
-            </CustomTooltip>
+            <CustomTooltipInfo tooltipProps={{ title: intl.formatMessage({ id: tooltipInfoId }) }} />
         </Grid>
     );
 }
@@ -126,12 +122,12 @@ export function ViolationsHidingParameters() {
                             id: 'securityAnalysis.violationsHiding',
                         })}
                     </Typography>
-                    <CustomTooltip
-                        sx={parametersStyles.tooltip}
-                        title={intl.formatMessage({ id: 'securityAnalysis.toolTip.violationsHiding' })}
-                    >
-                        <InfoIcon />
-                    </CustomTooltip>
+                    <CustomTooltipInfo
+                        tooltipProps={{
+                            sx: parametersStyles.tooltip,
+                            title: intl.formatMessage({ id: 'securityAnalysis.toolTip.violationsHiding' }),
+                        }}
+                    />
                 </Grid>
             </Grid>
 

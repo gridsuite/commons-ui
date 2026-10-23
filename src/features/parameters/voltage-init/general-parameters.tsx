@@ -8,7 +8,6 @@ import { useFormContext, useWatch } from 'react-hook-form';
 import { ChangeEvent, useCallback } from 'react';
 import { FormattedMessage } from 'react-intl';
 import { Grid } from '@mui/material';
-import { Info } from '@mui/icons-material';
 
 import {
     GENERAL,
@@ -20,7 +19,7 @@ import {
 import { ParameterFloat, ParameterSwitch } from '../common';
 import { parametersStyles } from '../parameters-style';
 import { ReactivePowerAdornment } from '../../../utils/constants/adornments';
-import { CustomTooltip } from '../../../components';
+import { CustomTooltipInfo } from '../../../components/ui/tooltip/CustomTooltipInfo';
 
 export interface GeneralParametersProps {
     withApplyModifications: boolean;
@@ -63,12 +62,12 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
                     label="VoltageInitParametersGeneralApplyModificationsLabel"
                     onChange={setApplyModificationsValue}
                     labelAdornment={
-                        <CustomTooltip
-                            title={<FormattedMessage id="VoltageInitParametersGeneralSaveInfo" />}
-                            sx={parametersStyles.tooltip}
-                        >
-                            <Info fontSize="small" color="info" />
-                        </CustomTooltip>
+                        <CustomTooltipInfo
+                            tooltipProps={{
+                                title: <FormattedMessage id="VoltageInitParametersGeneralSaveInfo" />,
+                                sx: parametersStyles.tooltip,
+                            }}
+                        />
                     }
                 />
             )}
