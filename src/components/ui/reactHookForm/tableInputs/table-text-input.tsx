@@ -61,7 +61,9 @@ export function TableTextInput({
                     onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
                 },
                 inputLabel: {
-                    shrink: isReadOnly ? hasValue : undefined,
+                    ...(isReadOnly && {
+                        shrink: hasValue,
+                    }),
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}

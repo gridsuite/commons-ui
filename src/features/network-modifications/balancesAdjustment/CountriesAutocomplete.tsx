@@ -46,7 +46,7 @@ export function CountriesAutocomplete({
     const handleChange = (_event: SyntheticEvent, newValue: string[]) => {
         onChange(newValue);
     };
-    const hasValue = value !== null;
+    const hasValue = value != null && (!Array.isArray(value) || value.length > 0);
 
     return (
         <Autocomplete
@@ -56,7 +56,6 @@ export function CountriesAutocomplete({
             value={value ?? []}
             onChange={handleChange}
             options={countryCodes}
-            {...(isReadOnly ? readOnlyAutocompleteProps : {})}
             size="small"
             limitTags={2}
             sx={balancesAdjustmentStyles.autocomplete}
@@ -76,7 +75,9 @@ export function CountriesAutocomplete({
                                 }),
                         },
                         inputLabel: {
-                            shrink: isReadOnly ? hasValue : undefined,
+                            ...(isReadOnly && {
+                                shrink: hasValue,
+                            }),
                         },
                     }}
                     label={label}
@@ -87,6 +88,7 @@ export function CountriesAutocomplete({
             autoHighlight
             disableCloseOnSelect
             {...props}
+            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
         />
     );
 }
