@@ -150,6 +150,7 @@ export function AutocompleteInput({
                         inputLabel: {
                             shrink: isReadOnly ? hasValue : undefined,
                         },
+                        formHelperText: { component: 'div' },
                     }}
                 />
             )}

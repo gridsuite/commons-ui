@@ -130,6 +130,7 @@ export function TextInput({
                     ...slotProps?.inputLabel,
                     shrink: isReadOnly ? hasValue : undefined,
                 },
+                formHelperText: { component: 'div' },
             }}
             inputRef={ref}
             {...(clearable &&
