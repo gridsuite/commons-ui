@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
+import { backendFetch, backendFetchJson, getRequestParamFromList, safeEncodeURIComponent } from './utils';
 import { ElementAttributes } from '../utils/types/types';
 import { NewFilterType } from '../components/composite/filter/filter.type';
 import { ElementType } from '../utils';
@@ -121,5 +121,25 @@ export function updateParameter(
         method: 'put',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newParameter),
+    });
+}
+
+export function updateElement(
+    modificationUuid: UUID | undefined,
+    metadata: Partial<ElementAttributes>
+): Promise<Response> {
+    if (!modificationUuid) {
+        return Promise.reject(new Error('modificationUuid is required'));
+    }
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('uuid', modificationUuid);
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${safeEncodeURIComponent(modificationUuid)}`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
     });
 }
