@@ -274,7 +274,7 @@ export function formatToComposedModification(
                 ? (referencedInfos.modificationsInfos ?? [])
                 : [referencedInfos];
             subModifications = formatToComposedModification(sharedContent, modification.referencedId, {
-                parentSharedUuid: referencedInfos.uuid,
+                parentSharedUuid: modification.referencedId,
                 childFromReadOnlyShared:
                     !!inheritedFromShared.childFromReadOnlyShared || isSharedModificationReadOnly(modification),
             });
