@@ -131,6 +131,7 @@ export function AutocompleteInput({
                             ...params.slotProps.htmlInput,
                             readOnly,
                         },
+                        formHelperText: { component: 'div' },
                     }}
                 />
             )}
