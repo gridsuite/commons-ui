@@ -112,7 +112,8 @@ export function NameCell({
         isEditingRef.current = false;
         setIsEditing(false);
         setInputBaseWidthPx(null);
-    }, []);
+            meta?.interaction.onHighlightConsumed();
+    }, [meta]);
 
     const updateName = useCallback(
         (newName: string) => {
