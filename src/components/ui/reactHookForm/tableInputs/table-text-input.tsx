@@ -8,6 +8,7 @@
 import { InputBaseComponentProps, TextField } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { genHelperError } from '../utils';
+import { useCustomFormContext } from '../provider';
 
 interface TableTextInputProps {
     name: string;
@@ -27,6 +28,7 @@ export function TableTextInput({
         field: { onChange, value, ref },
         fieldState: { error },
     } = useController({ name });
+    const { isReadOnly } = useCustomFormContext();
 
     const outputTransform = (str: string) => {
         return str?.trim() === '' ? '' : str;
@@ -35,6 +37,7 @@ export function TableTextInput({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange(outputTransform(e.target.value));
     };
+    const hasValue = typeof value === 'string' ? value.trim().length > 0 : value != null;
 
     return (
         <TextField
@@ -54,6 +57,16 @@ export function TableTextInput({
                         },
                         ...inputProps,
                     },
+                    readOnly: isReadOnly,
+                    ...(isReadOnly &&
+                        !hasValue && {
+                            onMouseDown: (event: any) => event.preventDefault(),
+                        }),
+                },
+                inputLabel: {
+                    ...(isReadOnly && {
+                        shrink: hasValue,
+                    }),
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}

@@ -8,28 +8,45 @@
 import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
+import {
+    genHelperError,
+    identity,
+    isFieldRequired,
+    FieldLabel,
+    HelperPreviousValue,
+    DistributiveOmit,
+    PropsWithoutInputReadOnly,
+} from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
+type AutocompleteInputFormProps = PropsWithoutInputReadOnly<
+    DistributiveOmit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>
+>;
+
+export const readOnlyAutocompleteProps = {
+    readOnly: true, // seems logical
+    disableClearable: true, // remove clear button
+    popupIcon: null, // remove icon for the popup Menu
+};
 export interface AutocompleteInputProps extends Omit<
     AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
     // we already defined them in our custom Autocomplete
-    'value' | 'onChange' | 'renderInput'
+    'value' | 'onChange' | 'renderInput' | 'readOnly'
 > {
     name: string;
     options: Option[];
     label?: string;
     outputTransform?: (value: Option | null) => Option | null;
     inputTransform?: (value: Option | null) => Option | null;
-    readOnly?: boolean;
     previousValue?: string;
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
-    formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
+    formProps?: AutocompleteInputFormProps;
     disabledTooltip?: boolean;
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
     dataTestId?: string;
+    selectMode?: boolean;
 }
 
 export function AutocompleteInput({
@@ -38,7 +55,6 @@ export function AutocompleteInput({
     options,
     outputTransform = identity, // transform materialUi input value before sending it to react hook form, mostly used to deal with select fields that need to return a string
     inputTransform = identity, // transform react hook form value before sending it to materialUi input, mostly used to deal with select fields that need to return a string
-    readOnly = false,
     previousValue,
     allowNewValue,
     onChangeCallback, // method called when input value is changing
@@ -46,9 +62,10 @@ export function AutocompleteInput({
     disabledTooltip,
     onCheckNewValue,
     dataTestId,
+    selectMode = false, // if we need to use Autocomplete as a Select
     ...props
 }: AutocompleteInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate, isReadOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -83,7 +100,7 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
-
+    const hasValue = typeof selectedValues === 'string' ? selectedValues.trim().length > 0 : selectedValues != null;
     return (
         <Autocomplete
             data-testid={dataTestId}
@@ -126,16 +143,32 @@ export function AutocompleteInput({
                     slotProps={{
                         ...formProps?.slotProps,
                         ...params.slotProps,
+                        input: {
+                            ...formProps?.slotProps?.input,
+                            ...params.slotProps.input,
+                            ...(isReadOnly &&
+                                !hasValue && {
+                                    onMouseDown: (event: any) => event.preventDefault(),
+                                }),
+                        },
                         htmlInput: {
                             ...formProps?.slotProps?.htmlInput,
                             ...params.slotProps.htmlInput,
-                            readOnly,
+                            // forced to set readOnly here on htmlInput instead of input otherwise
+                            // selectMode=true allows to type characters in the input
+                            readOnly: isReadOnly || selectMode,
+                        },
+                        inputLabel: {
+                            ...(isReadOnly && {
+                                shrink: hasValue,
+                            }),
                         },
                         formHelperText: { component: 'div' },
                     }}
                 />
             )}
             {...props}
+            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
         />
     );
 }

@@ -9,8 +9,12 @@ import { SyntheticEvent } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { genHelperError } from '../../../components/ui/reactHookForm/utils';
-import { AutocompleteInputProps } from '../../../components/ui/reactHookForm/autocompleteInputs';
+import {
+    AutocompleteInputProps,
+    readOnlyAutocompleteProps,
+} from '../../../components/ui/reactHookForm/autocompleteInputs';
 import { balancesAdjustmentStyles } from './balancesAdjustment.styles';
+import { useCustomFormContext } from '../../../components';
 
 export interface CountriesAutocompleteProps extends Pick<
     AutocompleteProps<string, true, false, false>,
@@ -33,6 +37,7 @@ export function CountriesAutocomplete({
     translate,
     ...props
 }: Readonly<CountriesAutocompleteProps>) {
+    const { isReadOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -41,6 +46,7 @@ export function CountriesAutocomplete({
     const handleChange = (_event: SyntheticEvent, newValue: string[]) => {
         onChange(newValue);
     };
+    const hasValue = value != null && (!Array.isArray(value) || value.length > 0);
 
     return (
         <Autocomplete
@@ -60,6 +66,19 @@ export function CountriesAutocomplete({
                     slotProps={{
                         ...params.slotProps,
                         htmlInput: { ...params.slotProps.htmlInput },
+                        input: {
+                            ...params.slotProps.input,
+                            readOnly: isReadOnly,
+                            ...(isReadOnly &&
+                                !hasValue && {
+                                    onMouseDown: (event: any) => event.preventDefault(),
+                                }),
+                        },
+                        inputLabel: {
+                            ...(isReadOnly && {
+                                shrink: hasValue,
+                            }),
+                        },
                     }}
                     label={label}
                     {...genHelperError(error?.message)}
@@ -69,6 +88,7 @@ export function CountriesAutocomplete({
             autoHighlight
             disableCloseOnSelect
             {...props}
+            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
         />
     );
 }

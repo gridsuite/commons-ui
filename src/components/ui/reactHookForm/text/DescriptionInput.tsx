@@ -34,19 +34,20 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
     const {
         field: { value },
     } = useController({ name });
-    const formContext = useCustomFormContext();
+    const { setValue, isReadOnly } = useCustomFormContext();
 
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
     const updateModification = useCallback(
         (descriptionRecord: Record<string, string>) => {
+            if (isReadOnly) return;
             const newDescription = descriptionRecord?.description ?? '';
-            formContext.setValue(name, newDescription, {
+            setValue(name, newDescription, {
                 shouldValidate: true,
                 shouldDirty: true,
             });
         },
-        [formContext, name]
+        [isReadOnly, name, setValue]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -54,8 +55,8 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
     }, [setOpenDescModificationDialog]);
 
     const handleModifyDescription = useCallback(() => {
-        setOpenDescModificationDialog(true);
-    }, [setOpenDescModificationDialog]);
+        if (!isReadOnly) setOpenDescModificationDialog(true);
+    }, [isReadOnly]);
 
     const descriptionLines = value?.split('\n');
     if (descriptionLines?.length > 3) {
@@ -65,7 +66,7 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
     const tooltipBox = value ? <Box sx={styles.descriptionTooltip}> {descriptionLines?.join('\n')} </Box> : undefined;
     const icon = (
         <CustomTooltip title={tooltipBox}>
-            <IconButton onClick={handleModifyDescription} sx={styles.coloredButton}>
+            <IconButton disabled={isReadOnly} onClick={handleModifyDescription} sx={styles.coloredButton}>
                 <EditNoteIcon empty={!value} />
             </IconButton>
         </CustomTooltip>

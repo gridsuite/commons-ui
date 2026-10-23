@@ -6,9 +6,10 @@
  */
 
 import { ReactElement } from 'react';
-import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
+import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
+import { DistributiveOmit, PropsWithoutInputReadOnly } from '../utils';
 import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
 import { genHelperError, identity, isFieldRequired } from '../utils/functions';
@@ -16,6 +17,10 @@ import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
 import { HelperPreviousValue } from '../utils/HelperPreviousValue';
+
+type TextInputFormProps = PropsWithoutInputReadOnly<
+    DistributiveOmit<TextFieldWithAdornmentProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>
+>;
 
 export interface TextInputProps {
     name: string;
@@ -33,10 +38,7 @@ export interface TextInputProps {
     onChange?: (value: string) => void;
     previousValue?: Input;
     clearable?: boolean;
-    formProps?: Omit<
-        TextFieldWithAdornmentProps | TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
+    formProps?: TextInputFormProps;
     disabledTooltip?: boolean;
     disabled?: boolean;
     dataTestId?: string;
@@ -60,7 +62,7 @@ export function TextInput({
     disabled,
     dataTestId,
 }: TextInputProps) {
-    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { validationSchema, getValues, removeOptional, isNodeBuilt, isUpdate, isReadOnly } = useCustomFormContext();
     const {
         field: { onChange: onChangeRhf, value, ref },
         fieldState: { error },
@@ -95,6 +97,8 @@ export function TextInput({
           });
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
+    const hasValue =
+        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
 
     return (
         <Field
@@ -108,8 +112,10 @@ export function TextInput({
             onChange={handleValueChanged}
             disabled={disabled}
             slotProps={{
+                ...slotProps,
                 input: {
-                    endAdornment: (
+                    ...slotProps?.input,
+                    endAdornment: isReadOnly ? null : (
                         <InputAdornment position="end">
                             {clearable && transformedValue !== undefined && transformedValue !== '' && (
                                 <IconButton onClick={handleClearValue} size="small">
@@ -119,12 +125,23 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
+                    readOnly: isReadOnly,
+                    ...(isReadOnly &&
+                        !hasValue && {
+                            onMouseDown: (event: any) => event.preventDefault(),
+                        }),
+                },
+                inputLabel: {
+                    ...slotProps?.inputLabel,
+                    ...(isReadOnly && {
+                        shrink: hasValue,
+                    }),
                 },
                 formHelperText: { component: 'div' },
-                ...slotProps,
             }}
             inputRef={ref}
             {...(clearable &&
+                !isReadOnly &&
                 adornment && {
                     handleClearValue,
                 })}
