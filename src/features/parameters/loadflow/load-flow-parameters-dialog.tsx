@@ -13,6 +13,7 @@ import {
     getLoadFlowDefaultLimitReductions,
     getLoadFlowProviders,
     getLoadFlowSpecificParametersDescription,
+    resetLoadFlowParameters,
     setLoadFlowParameters,
 } from '../../../services';
 import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
@@ -44,6 +45,7 @@ export function LoadFlowParametersEditionDialog({
             backendFetchProviders: getLoadFlowProviders,
             backendFetchParameters: fetchLoadFlowParameters,
             backendUpdateParameters: setLoadFlowParameters,
+            backendResetParameters: resetLoadFlowParameters,
             backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
             backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
         }
