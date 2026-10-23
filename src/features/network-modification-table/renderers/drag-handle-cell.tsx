@@ -8,14 +8,22 @@
 import { DragIndicator } from '@mui/icons-material';
 import { Box } from '@mui/material';
 import { networkModificationTableStyles } from '../network-modification-table-styles';
+import { mergeSx } from '../../../utils';
 
 interface DragHandleCellProps {
     isRowDragDisabled: boolean;
+    // Shown but inactive, e.g. for the content of a shared modification the user can't write into
+    isLocked?: boolean;
 }
 
-export function DragHandleCell({ isRowDragDisabled }: Readonly<DragHandleCellProps>) {
+export function DragHandleCell({ isRowDragDisabled, isLocked = false }: Readonly<DragHandleCellProps>) {
     return (
-        <Box sx={networkModificationTableStyles.dragHandle}>
+        <Box
+            sx={mergeSx(
+                networkModificationTableStyles.dragHandle,
+                isLocked ? networkModificationTableStyles.disabledDragHandle : undefined
+            )}
+        >
             {!isRowDragDisabled && (
                 <DragIndicator fontSize="small" sx={networkModificationTableStyles.dragIndicatorIcon} />
             )}

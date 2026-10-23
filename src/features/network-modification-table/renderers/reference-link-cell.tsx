@@ -5,22 +5,31 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useState } from 'react';
+import type { UUID } from 'node:crypto';
 import { IconButton, ListItemIcon, ListItemText, Menu } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
-import { fetchAppsMetadata, isExploreMetadata } from '../../../services';
+import { fetchAppsMetadata, isExploreMetadata, unshareNetworkModification } from '../../../services';
 import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
-import { CustomMenuItem, CustomTooltip } from '../../../components';
+import { CustomMenuItem, CustomTooltip, ErrorMessage, LinkOffIcon } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
 
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
+    studyUuid: UUID | null;
+    currentNodeId: UUID | null;
 }
 
-export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceLinkCellProps>) {
+export function ReferenceLinkCell({
+    studyUuid,
+    currentNodeId,
+    row,
+    disabled = false,
+}: Readonly<ReferenceLinkCellProps>) {
+    const data = row.original;
     const { referencedId } = row.original;
     const intl = useIntl();
     const { snackInfo, snackError } = useSnackMessage();
@@ -65,6 +74,22 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
         [referencedId, snackInfo, snackError]
     );
 
+    const handleUnshare = useCallback(
+        (event: React.MouseEvent<HTMLElement>) => {
+            event.stopPropagation();
+            setAnchorEl(null);
+            setIsLoading(true);
+            unshareNetworkModification(studyUuid, currentNodeId, data.uuid)
+                .catch((error: ErrorMessage) => {
+                    snackWithFallback(snackError, error, { headerId: 'UnshareError' });
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                });
+        },
+        [currentNodeId, data.uuid, snackError, studyUuid]
+    );
+
     return (
         <>
             <CustomTooltip title={<FormattedMessage id="importComposites.shared" />}>
@@ -95,6 +120,12 @@ export function ReferenceLinkCell({ row, disabled = false }: Readonly<ReferenceL
                         <LinkRoundedIcon sx={{ fontSize: 18, transform: 'rotate(-50deg)' }} />
                     </ListItemIcon>
                     <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
+                </CustomMenuItem>
+                <CustomMenuItem onClick={handleUnshare} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
+                    <ListItemIcon sx={{ minWidth: 24 }}>
+                        <LinkOffIcon sx={{ fontSize: 18 }} />
+                    </ListItemIcon>
+                    <ListItemText primary={intl.formatMessage({ id: 'unshare' })} />
                 </CustomMenuItem>
             </Menu>
         </>
