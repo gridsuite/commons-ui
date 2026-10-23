@@ -328,11 +328,8 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                             chipSx
                                         )}
                                         {...(otherChipProps as CP)}
-                                        // put this after otherChipProps spread to avoid overwrite those props in read only mode
-                                        {...(!isReadOnly && {
-                                            onDelete: (e) => handleDeleteChip(e, index),
-                                            onClick: (e) => handleClickChip(e, index),
-                                        })}
+                                        onDelete={isReadOnly ? undefined : (e) => handleDeleteChip(e, index)}
+                                        onClick={isReadOnly ? undefined : (e) => handleClickChip(e, index)}
                                     />
                                 );
                             })}

@@ -123,7 +123,7 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
-                    readOnly: isReadOnly,
+                    readOnly: isReadOnly || (typeof slotProps?.input !== 'function' && slotProps?.input?.readOnly),
                     ...(isReadOnly &&
                         !hasValue && {
                             onMouseDown: (event: any) => event.preventDefault(),
