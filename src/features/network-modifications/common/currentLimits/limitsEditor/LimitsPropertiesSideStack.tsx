@@ -88,7 +88,7 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                         key={`${property.name}`}
                         limitsProperty={property}
                         onDelete={() => remove(index)}
-                        disabled={disabled}
+                        disabled={disabled || isReadOnly}
                         showTooltip
                     />
                 ))}

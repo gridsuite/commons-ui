@@ -52,12 +52,13 @@ export function TableNumericalInput({
 
     const clearable = useMemo(
         () =>
+            !isReadOnly &&
             // We add the clear button only if the field is clearable and the previous value is different from the current one
             isClearable &&
             (previousValue === Number.MAX_VALUE
                 ? validateValueIsANumber(value)
                 : previousValue !== undefined && previousValue !== value),
-        [isClearable, previousValue, value]
+        [isClearable, isReadOnly, previousValue, value]
     );
 
     const outputTransform = (str?: string | number) => {
@@ -134,7 +135,10 @@ export function TableNumericalInput({
                         ...inputProps,
                     },
                     readOnly: isReadOnly,
-                    onMouseDown: isReadOnly && !hasValue ? (event: any) => event.preventDefault() : undefined,
+                    ...(isReadOnly &&
+                        !hasValue && {
+                            onMouseDown: (event: any) => event.preventDefault(),
+                        }),
                 },
                 inputLabel: {
                     ...(isReadOnly && {

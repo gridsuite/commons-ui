@@ -46,7 +46,10 @@ export function SubstationTab({ substationOptions, showDeleteButton }: Readonly<
     }, [setValue, getValues, watchAddSubstationCreation]);
 
     return watchAddSubstationCreation ? (
-        <SubstationCreationSection showDeleteButton={showDeleteButton} onDelete={handleDeleteSubstationCreation} />
+        <SubstationCreationSection
+            showDeleteButton={!isReadOnly && showDeleteButton}
+            onDelete={handleDeleteSubstationCreation}
+        />
     ) : (
         <Grid
             container

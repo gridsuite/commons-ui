@@ -37,7 +37,12 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
     const { isReadOnly } = useCustomFormContext();
 
     return (
-        <Select value={value} onChange={onChange} {...props} inputProps={{ ...props.inputProps, readOnly: isReadOnly }}>
+        <Select
+            value={value}
+            onChange={onChange}
+            {...props}
+            inputProps={{ ...props.inputProps, readOnly: isReadOnly || props.inputProps?.readOnly }}
+        >
             {options.map(renderMenuItem)}
         </Select>
     );

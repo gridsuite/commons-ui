@@ -75,7 +75,6 @@ export function CheckboxNullableInput({
                         indeterminate={nullDisabled ? undefined : value === null}
                         onChange={handleChangeValue}
                         value="checked"
-                        disabled={isReadOnly}
                         slotProps={{
                             input: {
                                 'aria-label': 'primary checkbox',
@@ -83,6 +82,7 @@ export function CheckboxNullableInput({
                             ...slotProps,
                         }}
                         {...otherFormProps}
+                        disabled={isReadOnly || formProps?.disabled}
                     />
                 }
                 label={

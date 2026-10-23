@@ -88,7 +88,7 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
-    const hasValue = selectedValues !== null;
+    const hasValue = selectedValues != null;
 
     return (
         <Autocomplete

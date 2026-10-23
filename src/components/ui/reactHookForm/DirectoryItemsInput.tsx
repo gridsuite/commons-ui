@@ -311,8 +311,6 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                 return (
                                     <ChipComponent
                                         key={item.id}
-                                        onDelete={!isReadOnly ? (e) => handleDeleteChip(e, index) : undefined}
-                                        onClick={!isReadOnly ? (e) => handleClickChip(e, index) : undefined}
                                         label={elementName || intl.formatMessage({ id: 'elementNotFound' })}
                                         {...(equipmentTypeShortLabel && {
                                             helperText: intl.formatMessage({
@@ -330,6 +328,11 @@ export function DirectoryItemsInput<CP extends OverflowableChipProps = Overflowa
                                             chipSx
                                         )}
                                         {...(otherChipProps as CP)}
+                                        // put this after otherChipProps spread to avoid overwrite those props in read only mode
+                                        {...(!isReadOnly && {
+                                            onDelete: (e) => handleDeleteChip(e, index),
+                                            onClick: (e) => handleClickChip(e, index),
+                                        })}
                                     />
                                 );
                             })}
