@@ -449,14 +449,14 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         resetButtonMessageId={resetButtonMessageId}
                     />
                 ) : null}
-                {multiselect && (
+                {!isReadOnly && multiselect && (
                     <DndTableBottomRightButtons
                         arrayFormName={name}
                         handleAddButton={handleAddRowsButton}
                         handleDeleteButton={deleteSelectedRows}
                         handleMoveUpButton={moveUpSelectedRows}
                         handleMoveDownButton={moveDownSelectedRows}
-                        disableAddingRows={formDisableAddingRows}
+                        disableAddingRows={disableAddingRows}
                         showMoveArrow={showMoveArrow}
                         disabled={disabled}
                     />
