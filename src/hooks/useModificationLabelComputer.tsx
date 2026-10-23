@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useIntl, IntlShape } from 'react-intl';
+import { useIntl } from 'react-intl';
 import { useCallback } from 'react';
 import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
@@ -58,14 +58,11 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
     };
 };
 
-const computeEquipmentTypeToMessageDescriptor = (equipmentType: string, intl: IntlShape) => {
+const computeEquipmentTypeToMessageDescriptor = (equipmentType: string) => {
     if (equipmentType === EquipmentType.HVDC_LINE) {
-        return intl.formatMessage({ id: 'Hvdc' });
+        return { id: 'Hvdc' };
     }
-    if (!equipmentType) {
-        return '';
-    }
-    return intl.formatMessage({ id: equipmentType });
+    return { id: equipmentType };
 };
 
 export const useModificationLabelComputer = () => {
@@ -94,7 +91,12 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
                 case MODIFICATION_TYPES.MODIFICATION_BY_ASSIGNMENT.type:
                 case MODIFICATION_TYPES.BY_FORMULA_MODIFICATION.type:
-                    return computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType, intl);
+                    if (!modificationMetadata.equipmentType) {
+                        return '';
+                    }
+                    return intl.formatMessage(
+                        computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType)
+                    );
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
