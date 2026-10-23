@@ -14,17 +14,15 @@ import {
     isFieldRequired,
     FieldLabel,
     HelperPreviousValue,
-    SlotPropsWithoutInputReadOnly,
+    DistributiveOmit,
+    PropsWithoutInputReadOnly,
 } from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
 
-type AutocompleteInputFormProps = Omit<
-    TextFieldProps,
-    'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps' | 'slotProps'
-> & {
-    slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<TextFieldProps['slotProps']>>;
-};
+type AutocompleteInputFormProps = PropsWithoutInputReadOnly<
+    DistributiveOmit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>
+>;
 
 export const readOnlyAutocompleteProps = {
     readOnly: true, // seems logical

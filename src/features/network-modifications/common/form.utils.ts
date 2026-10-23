@@ -7,13 +7,13 @@
 
 import { FilledTextFieldProps, StandardTextFieldProps } from '@mui/material';
 
-export const filledTextField: FilledTextFieldProps = {
+export const filledTextField = {
     variant: 'filled',
-};
+} satisfies FilledTextFieldProps;
 
-export const standardTextField: StandardTextFieldProps = {
+export const standardTextField = {
     variant: 'standard',
-};
+} satisfies StandardTextFieldProps;
 
 export const italicFontTextField = {
     style: { fontStyle: 'italic' },

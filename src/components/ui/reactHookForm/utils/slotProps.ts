@@ -10,6 +10,16 @@ type WithoutReadOnly<T> = T extends (...args: infer Args) => infer Result
       ? Omit<T, 'readOnly'> & { readOnly?: never }
       : T;
 
-export type SlotPropsWithoutInputReadOnly<T> = {
-    [Key in keyof T]: Key extends 'input' ? WithoutReadOnly<NonNullable<T[Key]>> : T[Key];
-};
+export type SlotPropsWithoutInputReadOnly<T> = T extends object
+    ? {
+          [Key in keyof T]: Key extends 'input' ? WithoutReadOnly<NonNullable<T[Key]>> : T[Key];
+      }
+    : T;
+
+export type DistributiveOmit<T, Keys extends PropertyKey> = T extends unknown ? Omit<T, Keys> : never;
+
+export type PropsWithoutInputReadOnly<T> = T extends { slotProps?: infer SlotProps }
+    ? Omit<T, 'slotProps'> & {
+          slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<SlotProps>>;
+      }
+    : T;
