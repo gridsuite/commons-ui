@@ -88,8 +88,7 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
-    const hasValue = selectedValues != null;
-
+    const hasValue = typeof selectedValues === 'string' ? selectedValues.trim().length > 0 : selectedValues != null;
     return (
         <Autocomplete
             data-testid={dataTestId}
