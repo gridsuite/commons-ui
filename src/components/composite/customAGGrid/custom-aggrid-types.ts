@@ -16,6 +16,7 @@ export enum TableType {
     Spreadsheet = 'Spreadsheet',
     Logs = 'Logs',
     StateEstimation = 'StateEstimation',
+    LogicalControls = 'LogicalControls',
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
     ProcessExecutionHistory = 'ProcessExecutionHistory',
