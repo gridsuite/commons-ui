@@ -36,6 +36,9 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
 
     const handleKeyPress = useCallback(
         (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (isReadOnly) {
+                return;
+            }
             if (event.key === 'Enter') {
                 setNameEditorError('');
                 setValueEditorError('');
@@ -65,7 +68,7 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                 setIsEditing(false);
             }
         },
-        [append, intl, limitsProperties, propertyName, propertyValue]
+        [append, intl, isReadOnly, limitsProperties, propertyName, propertyValue]
     );
 
     const handleOnChange = useCallback((value: string) => {
