@@ -51,7 +51,7 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                             value={option.id}
                             key={option.id}
                             label={<FieldLabel label={option.label} />}
-                            disabled={option.disabled}
+                            disabled={isReadOnly || option.disabled}
                             // must restore label color and opacity otherwise disabled Input is detected
                             // by FormControlLabel.
                             sx={isReadOnly ? readOnlyFormControlLabelStyle : undefined}

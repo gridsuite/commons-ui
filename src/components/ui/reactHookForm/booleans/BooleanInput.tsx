@@ -56,9 +56,9 @@ export function BooleanInput<TInput extends InputTypes>({
             inputRef={ref}
             slotProps={{ input: { 'aria-label': 'primary checkbox' }, ...slotProps }}
             data-testid={dataTestId}
-            disabled={isReadOnly || disabled}
             {...(otherFormProps as any)}
             {...props}
+            disabled={isReadOnly || disabled} // override props.disabled if isReadOnly
         />
     );
 

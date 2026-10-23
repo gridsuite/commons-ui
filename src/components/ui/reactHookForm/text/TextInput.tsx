@@ -128,7 +128,9 @@ export function TextInput({
                 },
                 inputLabel: {
                     ...slotProps?.inputLabel,
-                    shrink: isReadOnly ? hasValue : undefined,
+                    ...(isReadOnly && {
+                        shrink: hasValue,
+                    }),
                 },
                 formHelperText: { component: 'div' },
             }}

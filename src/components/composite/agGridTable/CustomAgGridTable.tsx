@@ -6,7 +6,7 @@
  */
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { type FieldValues, useFieldArray, type UseFieldArrayReturn } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type {
     CellEditingStoppedEvent,
@@ -22,6 +22,7 @@ import { BottomTableButtons } from './BottomTableButtons';
 import { type CsvProps } from './agGridTable-utils';
 import { FieldConstants, hasNonEmptyRows } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
+import { useCustomFormContext } from '../../ui';
 
 const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEndEvent) => {
     if (!overNode) {
@@ -108,7 +109,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         const [newRowAdded, setNewRowAdded] = useState(false);
         const [isSortApplied, setIsSortApplied] = useState(false);
 
-        const { control, getValues, watch, clearErrors } = useFormContext();
+        const { control, getValues, watch, clearErrors, isReadOnly } = useCustomFormContext();
         const useFieldArrayOutput = useFieldArray({
             control,
             name,
@@ -272,8 +273,8 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         rowData={rowData}
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
-                        rowSelection={rowSelection ?? { mode: 'multiRow' }}
-                        selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
+                        rowSelection={!isReadOnly ? (rowSelection ?? { mode: 'multiRow' }) : undefined}
+                        selectionColumnDef={{ rowDrag: !isReadOnly, width: 80, pinned: 'left' }}
                         onRowDragMove={onRowDragMove}
                         onRowDragEnd={onRowDragEnd}
                         onRowDragLeave={clearRowDropPositionIndicator}
@@ -291,6 +292,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         {...props}
                     />
                 </Box>
+
                 <BottomTableButtons
                     name={name}
                     handleAddRow={handleAddRow}

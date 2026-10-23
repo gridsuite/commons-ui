@@ -105,7 +105,6 @@ export function AutocompleteInput({
                 },
             })}
             options={options}
-            {...(isReadOnly ? readOnlyAutocompleteProps : {})}
             renderInput={(params) => (
                 <TextField
                     {...(label && {
@@ -149,13 +148,16 @@ export function AutocompleteInput({
                             readOnly: isReadOnly || selectMode,
                         },
                         inputLabel: {
-                            shrink: isReadOnly ? hasValue : undefined,
+                            ...(isReadOnly && {
+                                shrink: hasValue,
+                            }),
                         },
                         formHelperText: { component: 'div' },
                     }}
                 />
             )}
             {...props}
+            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
         />
     );
 }

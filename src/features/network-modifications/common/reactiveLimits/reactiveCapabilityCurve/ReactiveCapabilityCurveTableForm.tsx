@@ -100,27 +100,30 @@ export function ReactiveCapabilityCurveTableForm({
                     >
                         <ReactiveCapabilityCurveRowForm id={id} index={index} labelSuffix={labelSuffix} />
                         {!isReadOnly && (
-                            <Grid size={1}>
-                                <IconButton
-                                    key={value.id}
-                                    onClick={() => handleRemoveRow(index)}
-                                    disabled={disabled || index === 0 || index === displayedValues.length - 1}
-                                >
-                                    <DeleteIcon />
-                                </IconButton>
-                            </Grid>
-                        )}
-                        {!isReadOnly && index === displayedValues.length - 1 && (
-                            <Grid size={1}>
-                                <IconButton
-                                    key={value.id}
-                                    onClick={() => handleInsertRow()}
-                                    disabled={disabled}
-                                    style={{ top: '-1em' }}
-                                >
-                                    <AddIcon />
-                                </IconButton>
-                            </Grid>
+                            <>
+                                <Grid size={1}>
+                                    <IconButton
+                                        key={value.id}
+                                        onClick={() => handleRemoveRow(index)}
+                                        disabled={disabled || index === 0 || index === displayedValues.length - 1}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
+                                </Grid>
+
+                                {index === displayedValues.length - 1 && (
+                                    <Grid size={1}>
+                                        <IconButton
+                                            key={value.id}
+                                            onClick={() => handleInsertRow()}
+                                            disabled={disabled}
+                                            style={{ top: '-1em' }}
+                                        >
+                                            <AddIcon />
+                                        </IconButton>
+                                    </Grid>
+                                )}
+                            </>
                         )}
                     </Grid>
                 );
