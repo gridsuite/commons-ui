@@ -35,8 +35,13 @@ import { ReferenceLinkCell } from './reference-link-cell';
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
 type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
 
-export function DragHandleRenderer({ table }: CCtx) {
-    return <DragHandleCell isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false} />;
+export function DragHandleRenderer({ row, table }: CCtx) {
+    return (
+        <DragHandleCell
+            isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false}
+            isLocked={!!row.original.childFromReadOnlyShared}
+        />
+    );
 }
 
 export function SelectHeaderRenderer({ table }: HCtx) {
@@ -67,6 +72,7 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
             table={table}
             onChange={column.columnDef.meta?.onChange}
             isRenameDisabled={isModificationEditLocked(row.original)}
+            isReadOnly={isModificationEditLocked(row.original)}
         />
     );
 }
@@ -88,7 +94,14 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
     if (isReferenceModification(row.original)) {
-        return <ReferenceLinkCell row={row} disabled={meta?.status.isDisabled} />;
+        return (
+            <ReferenceLinkCell
+                row={row}
+                studyUuid={meta?.context.studyUuid ?? null}
+                currentNodeId={meta?.context.currentNodeId ?? null}
+                disabled={meta?.status.isDisabled}
+            />
+        );
     }
     return null;
 }

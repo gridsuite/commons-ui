@@ -94,6 +94,7 @@ export const networkModificationsEn = {
     ConverterStation1Tab: 'Converter station 1',
     ConverterStation2Tab: 'Converter station 2',
 
+    UnshareError: 'An error occurred while unsharing the modification',
     ModificationReadError: 'An error occurred while fetching the modification',
     CompositeModification: 'Composite modification',
     CreateSubstation: 'Create substation',
@@ -477,6 +478,7 @@ export const networkModificationsEn = {
     side1RectifierSide2Inverter: 'Flow (Side1->Side2)',
     side1InverterSide2Rectifier: 'Flow (Side2->Side1)',
     copyLink: 'Copy link',
+    unshare: 'Unshare',
     linkCopied: 'Link copied',
     linkCopyError: 'Error while attempting to copy link',
     // Voltage level creation
