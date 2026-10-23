@@ -9,6 +9,7 @@ import { ReactElement } from 'react';
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
+import { SlotPropsWithoutInputReadOnly } from '../utils';
 import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
 import { genHelperError, identity, isFieldRequired } from '../utils/functions';
@@ -16,6 +17,13 @@ import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
 import { HelperPreviousValue } from '../utils/HelperPreviousValue';
+
+type TextInputFormProps = Omit<
+    TextFieldWithAdornmentProps,
+    'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps' | 'slotProps'
+> & {
+    slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<TextFieldProps['slotProps']>>;
+};
 
 export interface TextInputProps {
     name: string;
@@ -33,10 +41,7 @@ export interface TextInputProps {
     onChange?: (value: string) => void;
     previousValue?: Input;
     clearable?: boolean;
-    formProps?: Omit<
-        TextFieldWithAdornmentProps | TextFieldProps,
-        'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'
-    >;
+    formProps?: TextInputFormProps;
     disabledTooltip?: boolean;
     disabled?: boolean;
     dataTestId?: string;
@@ -123,7 +128,7 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
-                    readOnly: isReadOnly || (typeof slotProps?.input !== 'function' && slotProps?.input?.readOnly),
+                    readOnly: isReadOnly,
                     ...(isReadOnly &&
                         !hasValue && {
                             onMouseDown: (event: any) => event.preventDefault(),

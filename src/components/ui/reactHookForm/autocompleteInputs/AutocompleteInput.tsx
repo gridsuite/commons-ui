@@ -8,9 +8,23 @@
 import { useMemo } from 'react';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError, identity, isFieldRequired, FieldLabel, HelperPreviousValue } from '../utils';
+import {
+    genHelperError,
+    identity,
+    isFieldRequired,
+    FieldLabel,
+    HelperPreviousValue,
+    SlotPropsWithoutInputReadOnly,
+} from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
+
+type AutocompleteInputFormProps = Omit<
+    TextFieldProps,
+    'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps' | 'slotProps'
+> & {
+    slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<TextFieldProps['slotProps']>>;
+};
 
 export const readOnlyAutocompleteProps = {
     readOnly: true, // seems logical
@@ -30,7 +44,7 @@ export interface AutocompleteInputProps extends Omit<
     previousValue?: string;
     allowNewValue?: boolean;
     onChangeCallback?: () => void;
-    formProps?: Omit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>;
+    formProps?: AutocompleteInputFormProps;
     disabledTooltip?: boolean;
     onCheckNewValue?: (value: Option | null) => boolean; // if return false, do not apply the new value
     dataTestId?: string;

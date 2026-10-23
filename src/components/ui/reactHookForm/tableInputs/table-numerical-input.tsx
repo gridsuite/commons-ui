@@ -10,12 +10,13 @@ import { useController } from 'react-hook-form';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
-import { genHelperError } from '../utils';
+import { genHelperError, SlotPropsWithoutInputReadOnly } from '../utils';
 import { useCustomFormContext } from '../provider';
 
-export interface TableNumericalInputProps extends StandardTextFieldProps {
+export interface TableNumericalInputProps extends Omit<StandardTextFieldProps, 'slotProps'> {
     name: string;
     inputProps?: InputBaseComponentProps;
+    slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<StandardTextFieldProps['slotProps']>>;
     previousValue?: number;
     valueModified: boolean;
     adornment?: { text: string };
