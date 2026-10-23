@@ -64,30 +64,3 @@ export function snackWithFallback(
         });
     }
 }
-
-/**
- * Like snackWithFallback, but as a warning for the given business error codes.
- */
-export function snackWarningOrFallback(
-    snackError: UseSnackMessageReturn['snackError'],
-    snackWarning: UseSnackMessageReturn['snackWarning'],
-    error: unknown,
-    warningBusinessErrorCodes: string[],
-    headerInputs?: HeaderSnackInputs,
-    warningAutoHideDuration?: number
-) {
-    if (
-        error instanceof ProblemDetailError &&
-        error.businessErrorCode &&
-        warningBusinessErrorCodes.includes(error.businessErrorCode)
-    ) {
-        snackWarning({
-            messageId: error.businessErrorCode,
-            messageValues: error.businessErrorValues,
-            autoHideDuration: warningAutoHideDuration,
-            ...headerInputs,
-        });
-    } else {
-        snackWithFallback(snackError, error, headerInputs);
-    }
-}
