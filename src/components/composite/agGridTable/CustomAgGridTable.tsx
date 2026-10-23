@@ -6,7 +6,7 @@
  */
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { type FieldValues, useFieldArray, type UseFieldArrayReturn } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type {
     CellEditingStoppedEvent,
