@@ -6,7 +6,6 @@
  */
 
 import { Chip, Grid, SxProps, Typography } from '@mui/material';
-import { Info } from '@mui/icons-material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../components/ui/tooltip/CustomTooltip';
 import { parametersStyles } from '../parameters-style';
@@ -14,6 +13,7 @@ import { ParameterDifference, ParameterType, ParameterValue } from '../../../uti
 import {
     AutocompleteInput,
     CountriesInput,
+    CustomTooltipInfo,
     FloatInput,
     IntegerInput,
     MuiSelectInput,
@@ -134,30 +134,24 @@ export function ParameterField({
                         alignItems: 'center',
                     }}
                 >
-                    <CustomTooltip title={description} key={name} placement="right-end">
+                    <CustomTooltip title={description} key={name} placement="right">
                         <span>{label ? <FormattedMessage id={label} /> : name}</span>
                     </CustomTooltip>
                     {parameterDifference && (
-                        <CustomTooltip
-                            title={
-                                <FormattedMessage
-                                    id="defaultValue"
-                                    values={{
-                                        value: formatDefaultValue(parameterDifference.defaultValue),
-                                    }}
-                                />
-                            }
-                            placement="right-end"
-                        >
-                            <Info
-                                fontSize="small"
-                                color="info"
-                                sx={{
-                                    ml: 0.5,
-                                }}
-                                data-testid={`${id}.${name}.default-value-info`}
-                            />
-                        </CustomTooltip>
+                        <CustomTooltipInfo
+                            tooltipProps={{
+                                title: (
+                                    <FormattedMessage
+                                        id="defaultValue"
+                                        values={{
+                                            value: formatDefaultValue(parameterDifference.defaultValue),
+                                        }}
+                                    />
+                                ),
+                                sx: parametersStyles.tooltipInfo,
+                            }}
+                            dataTestId={`${id}.${name}.default-value-info`}
+                        />
                     )}
                 </Typography>
             </Grid>
