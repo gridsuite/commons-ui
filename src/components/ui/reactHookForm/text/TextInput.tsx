@@ -120,6 +120,7 @@ export function TextInput({
                         </InputAdornment>
                     ),
                 },
+                formHelperText: { component: 'div' },
                 ...slotProps,
             }}
             inputRef={ref}
