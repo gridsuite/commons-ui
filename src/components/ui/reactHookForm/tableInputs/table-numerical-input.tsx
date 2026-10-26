@@ -10,7 +10,7 @@ import { useController } from 'react-hook-form';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
-import { genHelperError, SlotPropsWithoutInputReadOnly } from '../utils';
+import { genHelperError, getReadOnlySlotProps, SlotPropsWithoutInputReadOnly } from '../utils';
 import { useCustomFormContext } from '../provider';
 
 export interface TableNumericalInputProps extends Omit<StandardTextFieldProps, 'slotProps'> {
@@ -92,8 +92,10 @@ export function TableNumericalInput({
     };
 
     const { slotProps, ...otherProps } = props;
-    const hasValue =
-        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
+    const readOnlySlotProps = useMemo(
+        () => getReadOnlySlotProps(isReadOnly, transformedValue),
+        [isReadOnly, transformedValue]
+    );
 
     return (
         <TextField
@@ -104,7 +106,13 @@ export function TableNumericalInput({
             fullWidth
             inputRef={ref}
             slotProps={{
+                ...slotProps,
+                htmlInput: {
+                    ...slotProps?.htmlInput,
+                    ...readOnlySlotProps.htmlInput,
+                },
                 input: {
+                    ...slotProps?.input,
                     endAdornment: (
                         <InputAdornment position="end">
                             {transformedValue && adornment?.text}
@@ -135,18 +143,12 @@ export function TableNumericalInput({
                         lang: 'en-US', // to have '.' as decimal separator
                         ...inputProps,
                     },
-                    readOnly: isReadOnly,
-                    ...(isReadOnly &&
-                        !hasValue && {
-                            onMouseDown: (event: any) => event.preventDefault(),
-                        }),
+                    ...readOnlySlotProps.input,
                 },
                 inputLabel: {
-                    ...(isReadOnly && {
-                        shrink: hasValue,
-                    }),
+                    ...slotProps?.inputLabel,
+                    ...readOnlySlotProps.inputLabel,
                 },
-                ...slotProps,
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...otherProps}

@@ -5,14 +5,14 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { ReactElement } from 'react';
+import { ReactElement, useMemo } from 'react';
 import { IconButton, InputAdornment, TextField } from '@mui/material';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useController } from 'react-hook-form';
 import { DistributiveOmit, PropsWithoutInputReadOnly } from '../utils';
 import { TextFieldWithAdornment, TextFieldWithAdornmentProps } from '../utils/TextFieldWithAdornment';
 import { FieldLabel } from '../utils/FieldLabel';
-import { genHelperError, identity, isFieldRequired } from '../utils/functions';
+import { genHelperError, getReadOnlySlotProps, identity, isFieldRequired } from '../utils/functions';
 import { useCustomFormContext } from '../provider/useCustomFormContext';
 
 import { Input } from '../../../../utils/types/types';
@@ -97,8 +97,10 @@ export function TextInput({
           });
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
-    const hasValue =
-        typeof transformedValue === 'string' ? transformedValue.trim().length > 0 : transformedValue != null;
+    const readOnlySlotProps = useMemo(
+        () => getReadOnlySlotProps(isReadOnly, transformedValue),
+        [isReadOnly, transformedValue]
+    );
 
     return (
         <Field
@@ -113,6 +115,10 @@ export function TextInput({
             disabled={disabled}
             slotProps={{
                 ...slotProps,
+                htmlInput: {
+                    ...slotProps?.htmlInput,
+                    ...readOnlySlotProps.htmlInput,
+                },
                 input: {
                     ...slotProps?.input,
                     endAdornment: isReadOnly ? null : (
@@ -125,17 +131,11 @@ export function TextInput({
                             {customAdornment && { ...customAdornment }}
                         </InputAdornment>
                     ),
-                    readOnly: isReadOnly,
-                    ...(isReadOnly &&
-                        !hasValue && {
-                            onMouseDown: (event: any) => event.preventDefault(),
-                        }),
+                    ...readOnlySlotProps.input,
                 },
                 inputLabel: {
                     ...slotProps?.inputLabel,
-                    ...(isReadOnly && {
-                        shrink: hasValue,
-                    }),
+                    ...readOnlySlotProps.inputLabel,
                 },
                 formHelperText: { component: 'div' },
             }}

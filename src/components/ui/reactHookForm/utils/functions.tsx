@@ -50,3 +50,38 @@ export const toFloatOrNullValue = (value: string) => {
     const tmp = value?.replace(',', '.') || '';
     return parseFloat(tmp) || null;
 };
+
+export function hasInputValue(value: unknown) {
+    if (typeof value === 'string') {
+        return value.trim().length > 0;
+    }
+    if (Array.isArray(value)) {
+        return value.length > 0;
+    }
+    return value != null;
+}
+
+const preventFocus = (event: any) => event.preventDefault();
+
+export function getReadOnlySlotProps(isReadOnly: boolean | undefined, value: unknown) {
+    if (!isReadOnly) {
+        return { input: {}, inputLabel: {} };
+    }
+    return {
+        // prevents an empty read-only field from getting focus
+        htmlInput: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
+        input: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
+        inputLabel: { shrink: hasInputValue(value) },
+    };
+}
+
+export function getReadOnlyAutocompleteProps(isReadOnly: boolean | undefined) {
+    if (isReadOnly) {
+        return {
+            readOnly: true, // seems logical
+            disableClearable: true, // remove clear button
+            popupIcon: null, // remove icon for the popup Menu
+        };
+    }
+    return {};
+}

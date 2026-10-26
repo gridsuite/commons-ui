@@ -7,7 +7,8 @@
 
 import { InputBaseComponentProps, TextField } from '@mui/material';
 import { useController } from 'react-hook-form';
-import { genHelperError } from '../utils';
+import { useMemo } from 'react';
+import { genHelperError, getReadOnlySlotProps } from '../utils';
 import { useCustomFormContext } from '../provider';
 
 interface TableTextInputProps {
@@ -37,7 +38,7 @@ export function TableTextInput({
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         onChange(outputTransform(e.target.value));
     };
-    const hasValue = typeof value === 'string' ? value.trim().length > 0 : value != null;
+    const readOnlySlotProps = useMemo(() => getReadOnlySlotProps(isReadOnly, value), [isReadOnly, value]);
 
     return (
         <TextField
@@ -49,6 +50,9 @@ export function TableTextInput({
             fullWidth
             inputRef={ref}
             slotProps={{
+                htmlInput: {
+                    ...readOnlySlotProps.htmlInput,
+                },
                 input: {
                     disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
                     inputProps: {
@@ -57,16 +61,10 @@ export function TableTextInput({
                         },
                         ...inputProps,
                     },
-                    readOnly: isReadOnly,
-                    ...(isReadOnly &&
-                        !hasValue && {
-                            onMouseDown: (event: any) => event.preventDefault(),
-                        }),
+                    ...readOnlySlotProps.input,
                 },
                 inputLabel: {
-                    ...(isReadOnly && {
-                        shrink: hasValue,
-                    }),
+                    ...readOnlySlotProps.inputLabel,
                 },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}

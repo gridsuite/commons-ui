@@ -16,6 +16,8 @@ import {
     HelperPreviousValue,
     DistributiveOmit,
     PropsWithoutInputReadOnly,
+    getReadOnlyAutocompleteProps,
+    getReadOnlySlotProps,
 } from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
@@ -24,11 +26,6 @@ type AutocompleteInputFormProps = PropsWithoutInputReadOnly<
     DistributiveOmit<TextFieldProps, 'value' | 'onChange' | 'inputRef' | 'inputProps' | 'InputProps'>
 >;
 
-export const readOnlyAutocompleteProps = {
-    readOnly: true, // seems logical
-    disableClearable: true, // remove clear button
-    popupIcon: null, // remove icon for the popup Menu
-};
 export interface AutocompleteInputProps extends Omit<
     AutocompleteProps<Option, boolean | undefined, boolean | undefined, boolean | undefined>,
     // we already defined them in our custom Autocomplete
@@ -100,7 +97,10 @@ export function AutocompleteInput({
     };
 
     const selectedValues = useMemo(() => inputTransform(value), [inputTransform, value]);
-    const hasValue = typeof selectedValues === 'string' ? selectedValues.trim().length > 0 : selectedValues != null;
+    const readOnlySlotProps = useMemo(
+        () => getReadOnlySlotProps(isReadOnly || selectMode, selectedValues),
+        [isReadOnly, selectMode, selectedValues]
+    );
     return (
         <Autocomplete
             data-testid={dataTestId}
@@ -143,32 +143,27 @@ export function AutocompleteInput({
                     slotProps={{
                         ...formProps?.slotProps,
                         ...params.slotProps,
-                        input: {
-                            ...formProps?.slotProps?.input,
-                            ...params.slotProps.input,
-                            ...(isReadOnly &&
-                                !hasValue && {
-                                    onMouseDown: (event: any) => event.preventDefault(),
-                                }),
-                        },
                         htmlInput: {
                             ...formProps?.slotProps?.htmlInput,
                             ...params.slotProps.htmlInput,
-                            // forced to set readOnly here on htmlInput instead of input otherwise
-                            // selectMode=true allows to type characters in the input
-                            readOnly: isReadOnly || selectMode,
+                            ...readOnlySlotProps.htmlInput,
+                        },
+                        input: {
+                            ...formProps?.slotProps?.input,
+                            ...params.slotProps.input,
+                            ...readOnlySlotProps.input,
                         },
                         inputLabel: {
-                            ...(isReadOnly && {
-                                shrink: hasValue,
-                            }),
+                            ...formProps?.slotProps?.inputLabel,
+                            ...params.slotProps.inputLabel,
+                            ...readOnlySlotProps.inputLabel,
                         },
                         formHelperText: { component: 'div' },
                     }}
                 />
             )}
             {...props}
-            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
+            {...getReadOnlyAutocompleteProps(isReadOnly)}
         />
     );
 }

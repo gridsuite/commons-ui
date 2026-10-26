@@ -5,14 +5,15 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
-import { genHelperError } from '../../../components/ui/reactHookForm/utils';
 import {
-    AutocompleteInputProps,
-    readOnlyAutocompleteProps,
-} from '../../../components/ui/reactHookForm/autocompleteInputs';
+    genHelperError,
+    getReadOnlyAutocompleteProps,
+    getReadOnlySlotProps,
+} from '../../../components/ui/reactHookForm/utils';
+import { type AutocompleteInputProps } from '../../../components/ui/reactHookForm/autocompleteInputs';
 import { balancesAdjustmentStyles } from './balancesAdjustment.styles';
 import { useCustomFormContext } from '../../../components';
 
@@ -46,7 +47,7 @@ export function CountriesAutocomplete({
     const handleChange = (_event: SyntheticEvent, newValue: string[]) => {
         onChange(newValue);
     };
-    const hasValue = value != null && (!Array.isArray(value) || value.length > 0);
+    const readOnlySlotProps = useMemo(() => getReadOnlySlotProps(isReadOnly, value), [isReadOnly, value]);
 
     return (
         <Autocomplete
@@ -65,19 +66,17 @@ export function CountriesAutocomplete({
                     {...params}
                     slotProps={{
                         ...params.slotProps,
-                        htmlInput: { ...params.slotProps.htmlInput },
+                        htmlInput: {
+                            ...params.slotProps.htmlInput,
+                            ...readOnlySlotProps.htmlInput,
+                        },
                         input: {
                             ...params.slotProps.input,
-                            readOnly: isReadOnly,
-                            ...(isReadOnly &&
-                                !hasValue && {
-                                    onMouseDown: (event: any) => event.preventDefault(),
-                                }),
+                            ...readOnlySlotProps.input,
                         },
                         inputLabel: {
-                            ...(isReadOnly && {
-                                shrink: hasValue,
-                            }),
+                            ...params.slotProps.inputLabel,
+                            ...readOnlySlotProps.inputLabel,
                         },
                     }}
                     label={label}
@@ -88,7 +87,7 @@ export function CountriesAutocomplete({
             autoHighlight
             disableCloseOnSelect
             {...props}
-            {...(isReadOnly && readOnlyAutocompleteProps)} // override props.disabled if isReadOnly
+            {...getReadOnlyAutocompleteProps(isReadOnly)}
         />
     );
 }
