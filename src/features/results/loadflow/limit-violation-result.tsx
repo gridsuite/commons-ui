@@ -44,7 +44,6 @@ export function LimitViolationResult({
 
     const defaultColDef = useMemo(
         () => ({
-            filter: true,
             sortable: true,
             resizable: true,
             lockPinned: true,
