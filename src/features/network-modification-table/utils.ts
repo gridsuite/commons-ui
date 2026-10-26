@@ -226,7 +226,7 @@ export function containsReferenceModification(modification: ComposedModification
 export function isReferenceModificationOrInsideOne(
     modification: BasicComposedModificationMetadata | undefined
 ): boolean {
-    return isReferenceModification(modification) || !!modification?.childFromShared;
+    return isReferenceModification(modification) || !!modification?.parentSharedUuid;
 }
 
 /**
@@ -248,7 +248,7 @@ export function isModificationEditLocked(modification: BasicComposedModification
     );
 }
 
-type InheritedFromShared = Pick<BasicComposedModificationMetadata, 'childFromShared' | 'childFromReadOnlyShared'>;
+type InheritedFromShared = Pick<BasicComposedModificationMetadata, 'parentSharedUuid' | 'childFromReadOnlyShared'>;
 
 // Every ComposedModificationMetadata carries a `rowKey`: a random id generated once when the node
 // is created, decorrelated from the business `uuid`. It is the ONLY identity used to locate a
@@ -274,7 +274,7 @@ export function formatToComposedModification(
                 ? (referencedInfos.modificationsInfos ?? [])
                 : [referencedInfos];
             subModifications = formatToComposedModification(sharedContent, modification.referencedId, {
-                childFromShared: true,
+                parentSharedUuid: modification.referencedId,
                 childFromReadOnlyShared:
                     !!inheritedFromShared.childFromReadOnlyShared || isSharedModificationReadOnly(modification),
             });
