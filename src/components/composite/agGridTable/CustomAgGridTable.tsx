@@ -292,7 +292,6 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         {...props}
                     />
                 </Box>
-
                 <BottomTableButtons
                     name={name}
                     handleAddRow={handleAddRow}

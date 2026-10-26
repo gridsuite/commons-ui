@@ -60,8 +60,8 @@ export function CheckboxNullableInput({
     const { slotProps, ...otherFormProps } = formProps ?? {};
     const labelStyle = useMemo(() => {
         return {
-            ...(style ? { color: style.color } : {}),
-            ...(isReadOnly ? readOnlyFormControlLabelStyle : {}),
+            ...(style && { color: style.color }),
+            ...(isReadOnly && readOnlyFormControlLabelStyle),
         };
     }, [isReadOnly, style]);
 
