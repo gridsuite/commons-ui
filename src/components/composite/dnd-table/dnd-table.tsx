@@ -315,7 +315,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 arrayFormName={name}
                                 handleClickCheck={selectAllRows}
                                 handleClickUncheck={unselectAllRows}
-                                disabled={disabled || currentRows.length === 0}
+                                disabled={isReadOnly || disabled || currentRows.length === 0}
                             />
                         </TableCell>
                     )}

@@ -80,6 +80,7 @@ export function DescriptionInput({ name }: Readonly<DescriptionInputProps>) {
                     description={value ?? ''}
                     onClose={handleDescDialogClose}
                     updateForm={updateModification}
+                    isReadOnly={isReadOnly}
                 />
             )}
             <Box

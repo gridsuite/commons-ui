@@ -147,7 +147,7 @@ export function CsvPicker<TData = unknown>({
                     </Grid>
                 )}
             </CSVReader>
-            {onAppend && onReplace && (
+            {!isReadOnly && onAppend && onReplace && (
                 <CsvPickerConfirmationDialog
                     pendingImport={pendingImport}
                     onReplace={(r, f) => {

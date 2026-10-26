@@ -9,6 +9,8 @@ import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } fro
 import { type FieldValues, useFieldArray, type UseFieldArrayReturn } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type {
+    ColDef,
+    ColGroupDef,
     CellEditingStoppedEvent,
     ColumnState,
     RowDataUpdatedEvent,
@@ -33,6 +35,14 @@ const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEnd
     const overNodeHeight = overNode.rowHeight ?? 0;
     const overNodeMiddle = overNodeTop + overNodeHeight / 2;
     return y < overNodeMiddle ? 'above' : 'below';
+};
+
+const makeColumnReadOnly = (columnDef: ColDef | ColGroupDef): ColDef | ColGroupDef => {
+    if ('children' in columnDef) {
+        return { ...columnDef, children: columnDef.children.map(makeColumnReadOnly) };
+    }
+
+    return { ...columnDef, editable: false };
 };
 
 const style = (customProps: any) => ({
@@ -199,6 +209,9 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
 
         const onCellEditingStopped = useCallback(
             (event: CellEditingStoppedEvent) => {
+                if (isReadOnly) {
+                    return;
+                }
                 const rowIndex = getIndex(event.data);
                 if (rowIndex === -1) {
                     return;
@@ -209,7 +222,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                 // TODO remove when yup will be set up for tabular form
                 clearErrors(name);
             },
-            [getIndex, update, clearErrors, name]
+            [getIndex, update, clearErrors, isReadOnly, name]
         );
 
         const onSortChanged = useCallback((event: SortChangedEvent) => {
@@ -290,6 +303,11 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                         theme="legacy"
                         {...props}
+                        columnDefs={
+                            isReadOnly
+                                ? (props.columnDefs?.map(makeColumnReadOnly) ?? props.columnDefs)
+                                : props.columnDefs
+                        }
                     />
                 </Box>
                 <BottomTableButtons
