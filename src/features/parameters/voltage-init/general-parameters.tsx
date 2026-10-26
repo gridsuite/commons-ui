@@ -65,7 +65,7 @@ export function GeneralParameters({ withApplyModifications }: Readonly<GeneralPa
                         <CustomTooltipInfo
                             tooltipProps={{
                                 title: <FormattedMessage id="VoltageInitParametersGeneralSaveInfo" />,
-                                sx: parametersStyles.tooltip,
+                                sx: parametersStyles.tooltipInfo,
                             }}
                         />
                     }

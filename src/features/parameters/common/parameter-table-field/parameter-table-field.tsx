@@ -11,6 +11,7 @@ import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
 import { useCallback, useMemo, useRef } from 'react';
 import { CustomTooltipInfo } from '../../../../components/ui/tooltip/CustomTooltipInfo';
 import { DndTable, DndTableProps, getDefaultRowData } from '../../../../components/composite/dnd-table';
+import { parametersStyles } from '../../parameters-style';
 
 export type ParameterDndTableFieldProps = {
     label?: string;
@@ -101,7 +102,7 @@ export function ParameterTableField({
                         <CustomTooltipInfo
                             tooltipProps={{
                                 title: typeof title === 'string' ? <FormattedMessage id={title} /> : title,
-                                sx: { marginLeft: 0.5 },
+                                sx: parametersStyles.tooltipInfo,
                                 ...otherTooltipProps,
                             }}
                         />

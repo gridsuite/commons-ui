@@ -16,7 +16,7 @@ export type CustomTooltipInfoProps = {
 
 export function CustomTooltipInfo({ tooltipProps, infoProps, dataTestId }: Readonly<CustomTooltipInfoProps>) {
     return (
-        <CustomTooltip placement="right-end" {...tooltipProps}>
+        <CustomTooltip placement="right" {...tooltipProps}>
             <Info fontSize="small" color="info" {...infoProps} data-testid={dataTestId} />
         </CustomTooltip>
     );

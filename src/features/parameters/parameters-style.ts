@@ -92,7 +92,7 @@ export const parametersStyles = {
         marginRight: theme.spacing(2),
         marginLeft: theme.spacing(1),
     }),
-    tooltip: (theme) => ({
+    tooltipInfo: (theme) => ({
         marginLeft: theme.spacing(0.5),
     }),
     text: (theme) => ({

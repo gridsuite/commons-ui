@@ -124,7 +124,7 @@ export function ViolationsHidingParameters() {
                     </Typography>
                     <CustomTooltipInfo
                         tooltipProps={{
-                            sx: parametersStyles.tooltip,
+                            sx: parametersStyles.tooltipInfo,
                             title: intl.formatMessage({ id: 'securityAnalysis.toolTip.violationsHiding' }),
                         }}
                     />

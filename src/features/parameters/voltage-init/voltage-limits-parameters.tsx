@@ -20,6 +20,7 @@ import { FILTERS } from '../../../utils/constants/filterConstant';
 import { VoltageAdornment } from '../../../utils/constants/adornments';
 import { ParameterTableField } from '../common/parameter-table-field';
 import { CustomTooltipInfo } from '../../../components/ui/tooltip/CustomTooltipInfo';
+import { parametersStyles } from '../parameters-style';
 
 export function VoltageLimitsParameters() {
     const intl = useIntl();
@@ -30,7 +31,7 @@ export function VoltageLimitsParameters() {
                     title: intl.formatMessage({
                         id: 'VoltageLevelFilterTooltip',
                     }),
-                    sx: { marginLeft: 0.5 },
+                    sx: parametersStyles.tooltipInfo,
                 }}
             />
         );
