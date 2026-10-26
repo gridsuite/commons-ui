@@ -84,7 +84,6 @@ export type UserDetail = {
     maxAllowedVoltageInit?: number;
     maxAllowedPccMin?: number;
     maxAllowedStateEstimation?: number;
-    maxAllowedBalanceAdjustement?: number;
     maxAllowedDynamicSimulation?: number;
     maxAllowedDynamicSecurity?: number;
     maxAllowedDynamicMargin?: number;
