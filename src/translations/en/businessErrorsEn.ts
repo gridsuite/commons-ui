@@ -45,6 +45,8 @@ export const businessErrorsEn = {
     'study.maxOperationTypeExceeded': 'Max number of operation reached',
     'modification.sharedWriteForbidden':
         'You are not allowed to write on one of the shared modifications this study uses.',
+    'modification.rootNetworkTagsForbiddenByShared':
+        'Forbidden action: the study contains at least one shared modification you are not allowed to modify and which is not defined on all the root networks used. {allowedTagsCount, plural, =0 {No new tag is allowed.} one {The allowed tag is {allowedTags}.} other {The allowed tags are {allowedTags}.}}',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',

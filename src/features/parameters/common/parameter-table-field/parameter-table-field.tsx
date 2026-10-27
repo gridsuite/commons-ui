@@ -8,10 +8,10 @@
 import { Grid, SxProps, TooltipProps, Typography } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { FieldValues, useFieldArray, useFormContext } from 'react-hook-form';
-import { Info as InfoIcon } from '@mui/icons-material';
 import { useCallback, useMemo, useRef } from 'react';
-import { CustomTooltip } from '../../../../components/ui/tooltip/CustomTooltip';
+import { CustomTooltipInfo } from '../../../../components/ui/tooltip/CustomTooltipInfo';
 import { DndTable, DndTableProps, getDefaultRowData } from '../../../../components/composite/dnd-table';
+import { parametersStyles } from '../../parameters-style';
 
 export type ParameterDndTableFieldProps = {
     label?: string;
@@ -99,13 +99,13 @@ export function ParameterTableField({
                         <FormattedMessage id={label} />
                     </Typography>
                     {tooltipProps && (
-                        <CustomTooltip
-                            title={typeof title === 'string' ? <FormattedMessage id={title} /> : title}
-                            sx={{ marginLeft: 1 }}
-                            {...otherTooltipProps}
-                        >
-                            <InfoIcon />
-                        </CustomTooltip>
+                        <CustomTooltipInfo
+                            tooltipProps={{
+                                title: typeof title === 'string' ? <FormattedMessage id={title} /> : title,
+                                sx: parametersStyles.tooltipInfo,
+                                ...otherTooltipProps,
+                            }}
+                        />
                     )}
                 </Grid>
             )}

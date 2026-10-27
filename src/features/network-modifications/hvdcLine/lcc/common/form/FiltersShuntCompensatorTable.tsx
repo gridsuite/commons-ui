@@ -21,7 +21,7 @@ import { useIntl } from 'react-intl';
 import { useMemo, useState } from 'react';
 import { useFieldArray } from 'react-hook-form';
 import { FieldConstants, ReactivePowerAdornment } from '../../../../../../utils';
-import { FloatInput, SwitchInput, TextInput } from '../../../../../../components';
+import { FloatInput, SwitchInput, TextInput, useCustomFormContext } from '../../../../../../components';
 
 interface FiltersShuntCompensatorTableProps {
     id: string;
@@ -33,6 +33,7 @@ export function FiltersShuntCompensatorTable({ id }: Readonly<FiltersShuntCompen
         append: handleAddRow,
         remove: handleRemoveRow,
     } = useFieldArray({ name: `${id}.${FieldConstants.FILTERS_SHUNT_COMPENSATOR_TABLE}` });
+    const { isReadOnly } = useCustomFormContext();
     const [isHover, setIsHover] = useState<Record<number, boolean>>({});
     const handleHover = (rowIndex: number, hoverState: boolean) => {
         setIsHover((prev) => ({
@@ -90,19 +91,21 @@ export function FiltersShuntCompensatorTable({ id }: Readonly<FiltersShuntCompen
                                 <Box>{column.label}</Box>
                             </TableCell>
                         ))}
-                        <TableCell sx={{ width: '10%', textAlign: 'right' }}>
-                            <Tooltip
-                                title={intl.formatMessage({
-                                    id: 'AddRows',
-                                })}
-                            >
-                                <span>
-                                    <IconButton onClick={() => handleAddRow(newRowData)}>
-                                        <AddCircleIcon />
-                                    </IconButton>
-                                </span>
-                            </Tooltip>
-                        </TableCell>
+                        {!isReadOnly && (
+                            <TableCell sx={{ width: '10%', textAlign: 'right' }}>
+                                <Tooltip
+                                    title={intl.formatMessage({
+                                        id: 'AddRows',
+                                    })}
+                                >
+                                    <span>
+                                        <IconButton onClick={() => handleAddRow(newRowData)}>
+                                            <AddCircleIcon />
+                                        </IconButton>
+                                    </span>
+                                </Tooltip>
+                            </TableCell>
+                        )}
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -138,19 +141,21 @@ export function FiltersShuntCompensatorTable({ id }: Readonly<FiltersShuntCompen
                                     )}
                                 </TableCell>
                             ))}
-                            <TableCell>
-                                {isHover[index] && (
-                                    <Tooltip
-                                        title={intl.formatMessage({
-                                            id: 'DeleteRows',
-                                        })}
-                                    >
-                                        <IconButton onClick={() => handleRemoveRow(index)}>
-                                            <DeleteIcon />
-                                        </IconButton>
-                                    </Tooltip>
-                                )}
-                            </TableCell>
+                            {!isReadOnly && (
+                                <TableCell>
+                                    {isHover[index] && (
+                                        <Tooltip
+                                            title={intl.formatMessage({
+                                                id: 'DeleteRows',
+                                            })}
+                                        >
+                                            <IconButton onClick={() => handleRemoveRow(index)}>
+                                                <DeleteIcon />
+                                            </IconButton>
+                                        </Tooltip>
+                                    )}
+                                </TableCell>
+                            )}
                         </TableRow>
                     ))}
                 </TableBody>
