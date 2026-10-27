@@ -46,7 +46,7 @@ export const useCsvExport = () => {
                         return roundedValue.toString().replace('.', ',');
                     }
                 }
-                if (props.useFormatter && params.column.getColDef().valueFormatter) {
+                if (props.withFormatter && params.column.getColDef().valueFormatter) {
                     // export formatted value (to support translation for instance)
                     return params.formatValue(params.value);
                 }

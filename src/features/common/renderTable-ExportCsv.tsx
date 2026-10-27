@@ -78,7 +78,7 @@ export function RenderTableAndExportCsv({
                     skipColumnHeaders={skipColumnHeaders}
                     getData={(params: any) => gridRef.current?.api?.exportDataAsCsv(params)}
                     resetKey={exportCsvResetKey}
-                    useFormatter={formattedExport}
+                    withFormatter={formattedExport}
                 />
             </Box>
             {rows && (

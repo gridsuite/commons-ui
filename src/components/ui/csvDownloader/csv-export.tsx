@@ -18,7 +18,7 @@ export function CsvExport({
     skipColumnHeaders = false,
     skipPinnedBottom = false,
     language,
-    useFormatter = false,
+    withFormatter = false,
     getData,
     resetKey,
 }: CsvExportProps): JSX.Element {
@@ -32,7 +32,7 @@ export function CsvExport({
             skipColumnHeaders,
             skipPinnedBottom,
             language,
-            useFormatter,
+            withFormatter,
             getData,
         });
     }, [
@@ -43,7 +43,7 @@ export function CsvExport({
         skipColumnHeaders,
         skipPinnedBottom,
         language,
-        useFormatter,
+        withFormatter,
         getData,
     ]);
     return <ManagedExportCsvButton disabled={disabled} exportCsv={exportCsv} resetKey={resetKey} />;
