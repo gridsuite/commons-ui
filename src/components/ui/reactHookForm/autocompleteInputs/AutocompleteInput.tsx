@@ -18,7 +18,6 @@ import {
     PropsWithoutInputReadOnly,
     getReadOnlyAutocompleteProps,
     getReadOnlySlotProps,
-    getSelectModeSlotProps,
 } from '../utils';
 import { useCustomFormContext } from '../provider';
 import { Option } from '../../../../utils';
@@ -102,10 +101,6 @@ export function AutocompleteInput({
         () => getReadOnlySlotProps(isReadOnly, selectedValues),
         [isReadOnly, selectedValues]
     );
-    const selectModeSlotProps = useMemo(
-        () => getSelectModeSlotProps(selectMode, selectedValues),
-        [selectMode, selectedValues]
-    );
     return (
         <Autocomplete
             data-testid={dataTestId}
@@ -151,7 +146,7 @@ export function AutocompleteInput({
                         htmlInput: {
                             ...formProps?.slotProps?.htmlInput,
                             ...params.slotProps.htmlInput,
-                            ...selectModeSlotProps.htmlInput,
+                            ...(selectMode && { readOnly: true }),
                         },
                         input: {
                             ...formProps?.slotProps?.input,

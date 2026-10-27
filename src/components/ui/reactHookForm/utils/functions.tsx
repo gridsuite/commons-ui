@@ -74,15 +74,6 @@ export function getReadOnlySlotProps(isReadOnly: boolean | undefined, value: unk
     };
 }
 
-export function getSelectModeSlotProps(selectMode: boolean | undefined, value: unknown) {
-    if (!selectMode) {
-        return { htmlInput: {} };
-    }
-    return {
-        htmlInput: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
-    };
-}
-
 export function getReadOnlyAutocompleteProps(isReadOnly: boolean | undefined) {
     if (isReadOnly) {
         return {
