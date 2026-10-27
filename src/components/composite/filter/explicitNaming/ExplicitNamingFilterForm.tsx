@@ -352,7 +352,7 @@ export function ExplicitNamingFilterForm({
                             getRowClass={getRowClass}
                             cssProps={{
                                 '& .ag-row.duplicate-equipment-row .ag-cell': {
-                                    backgroundColor: '#ac1717',
+                                    backgroundColor: 'error.main',
                                 },
                             }}
                             csvProps={{
