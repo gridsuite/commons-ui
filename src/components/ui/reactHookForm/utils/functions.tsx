@@ -69,9 +69,17 @@ export function getReadOnlySlotProps(isReadOnly: boolean | undefined, value: unk
     }
     return {
         // prevents an empty read-only field from getting focus
-        htmlInput: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
         input: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
         inputLabel: { shrink: hasInputValue(value) },
+    };
+}
+
+export function getSelectModeSlotProps(selectMode: boolean | undefined, value: unknown) {
+    if (!selectMode) {
+        return { htmlInput: {} };
+    }
+    return {
+        htmlInput: { readOnly: true, ...(!hasInputValue(value) && { onMouseDown: preventFocus }) },
     };
 }
 

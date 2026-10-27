@@ -66,10 +66,6 @@ export function CountriesAutocomplete({
                     {...params}
                     slotProps={{
                         ...params.slotProps,
-                        htmlInput: {
-                            ...params.slotProps.htmlInput,
-                            ...readOnlySlotProps.htmlInput,
-                        },
                         input: {
                             ...params.slotProps.input,
                             ...readOnlySlotProps.input,
