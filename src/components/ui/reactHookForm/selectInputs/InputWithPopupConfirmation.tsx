@@ -13,6 +13,7 @@ export function InputWithPopupConfirmation({
     name,
     shouldOpenPopup, // condition to open popup confirmation
     onValueChange, // function applying the changes on EVERY value change, be it confirmed through the popup or not
+    title,
     message,
     validateButtonLabel,
     ...props
@@ -51,6 +52,7 @@ export function InputWithPopupConfirmation({
                 }}
             />
             <PopupConfirmationDialog
+                title={title}
                 message={message}
                 openConfirmationPopup={openPopup}
                 setOpenConfirmationPopup={setOpenPopup}
