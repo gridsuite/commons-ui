@@ -505,4 +505,9 @@ export const parametersFr = {
 
     // Tooltips
     'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
+
+    networkModificationRenamingError: "Une erreur est survenue lors du renommage de l'étude",
+    ModificationNameAlreadyExists:
+        'Cette modification partagée ne peut être renommée car un objet de son dossier dans GridExplore possède déjà ce nom',
+    ModificationNameCannotBeEmpty: 'Le nom ne peut pas être vide pour une modification partagée',
 };

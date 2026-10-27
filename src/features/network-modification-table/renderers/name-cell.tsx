@@ -4,11 +4,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
+import type { UUID } from 'node:crypto';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Box, IconButton, InputBase, useTheme } from '@mui/material';
-import { KeyboardArrowRight, KeyboardArrowDown, Lock } from '@mui/icons-material';
+import { Alert, Box, IconButton, InputBase, useTheme } from '@mui/material';
+import { KeyboardArrowDown, KeyboardArrowRight, Lock } from '@mui/icons-material';
 import { CustomTooltip } from '../../../components';
 import {
     createNameCellLabelBoxSx,
@@ -17,8 +18,15 @@ import {
 } from '../network-modification-table-styles';
 import { DepthBox } from './depth-box';
 import { isCompositeModification, isReferenceModification, toMessageValues } from '../utils';
-import { useModificationLabelComputer, useSnackMessage } from '../../../hooks';
-import { ComposedModificationMetadata, mergeSx, NetworkModificationMetadata, snackWithFallback } from '../../../utils';
+import { useDebounce, useModificationLabelComputer, useSnackMessage } from '../../../hooks';
+import {
+    ComposedModificationMetadata,
+    ElementType,
+    mergeSx,
+    NetworkModificationMetadata,
+    snackWithFallback,
+} from '../../../utils';
+import { elementAlreadyExists } from '../../../services';
 
 const MIN_CHAR_WIDTH = 30;
 
@@ -47,6 +55,8 @@ export function NameCell({
     isRenameDisabled = false,
     isReadOnly = false,
 }: Readonly<NameCellProps>) {
+    const [error, setError] = useState<string | undefined>();
+    const [isCheckingUnicity, setIsCheckingUnicity] = useState(false);
     const { meta } = table.options;
     const intl = useIntl();
     const theme = useTheme();
@@ -112,6 +122,7 @@ export function NameCell({
         isEditingRef.current = false;
         setIsEditing(false);
         setInputBaseWidthPx(null);
+        setError(undefined);
     }, []);
 
     const updateName = useCallback(
@@ -120,9 +131,9 @@ export function NameCell({
             // it); persistence is delegated to the consumer via onChange, and we
             // roll back to the server value if it fails.
             setCompositeName(newName);
-            Promise.resolve(onChange?.(row.original, newName)).catch((error) => {
+            Promise.resolve(onChange?.(row.original, newName)).catch((renameError) => {
                 setCompositeName(savedCompositeName); // rollback
-                snackWithFallback(snackError, error, { headerId: 'networkModificationRenamingError' });
+                snackWithFallback(snackError, renameError, { headerId: 'networkModificationRenamingError' });
             });
         },
         [onChange, row.original, savedCompositeName, snackError]
@@ -130,7 +141,7 @@ export function NameCell({
 
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
     const handleBlur = useCallback(() => {
-        if (!isEditingRef.current) {
+        if (!isEditingRef.current || error || isCheckingUnicity) {
             return;
         }
         const trimmed = draftName.trim();
@@ -138,7 +149,7 @@ export function NameCell({
             updateName(trimmed);
         }
         stopEditing();
-    }, [compositeName, draftName, updateName, stopEditing]);
+    }, [compositeName, draftName, error, updateName, stopEditing, isCheckingUnicity]);
 
     const beginEditingName = useCallback((originalName: string) => {
         // Init draft with current saved name
@@ -164,6 +175,53 @@ export function NameCell({
         });
     }, []);
 
+    const updateValidity = useCallback(
+        (name: string, elementUuid: UUID, isCurrent: () => boolean) => {
+            elementAlreadyExists(elementUuid, null, name, ElementType.MODIFICATION)
+                .then((exists) => {
+                    if (!isCurrent()) {
+                        return;
+                    }
+                    if (exists) {
+                        setError(intl.formatMessage({ id: 'ModificationNameAlreadyExists' }));
+                    } else {
+                        setError(undefined);
+                    }
+                })
+                .catch((validationError) => {
+                    if (isCurrent()) {
+                        snackWithFallback(snackError, validationError, {
+                            headerId: 'networkModificationRenamingError',
+                        });
+                    }
+                })
+                .finally(() => {
+                    if (isCurrent()) {
+                        setIsCheckingUnicity(false);
+                    }
+                });
+        },
+        [intl, snackError]
+    );
+
+    const debouncedUpdateValidity = useDebounce(updateValidity, 700);
+
+    useEffect(() => {
+        let active = true;
+        const trimmed = draftName.trim();
+        if (isEditing && isReferenced && trimmed !== '' && trimmed !== compositeName && row.original.referencedId) {
+            setIsCheckingUnicity(true);
+            debouncedUpdateValidity(trimmed, row.original.referencedId, () => active && isEditingRef.current);
+        } else {
+            setIsCheckingUnicity(false);
+            setError(undefined);
+        }
+        return () => {
+            active = false;
+            debouncedUpdateValidity.clear();
+        };
+    }, [isEditing, isReferenced, draftName, compositeName, row.original.referencedId, debouncedUpdateValidity]);
+
     const defaultCompositeName: string = useMemo(() => intl.formatMessage({ id: 'CompositeModification' }), [intl]);
 
     // triggers composite name editing from outside the component
@@ -188,19 +246,19 @@ export function NameCell({
 
     const handleKeyDown = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !error && !isCheckingUnicity) {
                 const trimmed = draftName.trim();
                 if (trimmed !== '' && trimmed !== compositeName) {
                     updateName(trimmed);
                 }
                 stopEditing();
                 inputRef.current?.blur();
-            } else if (e.key === 'Escape') {
+            } else if (e.key === 'Escape' && !error && !isCheckingUnicity) {
                 stopEditing();
                 inputRef.current?.blur();
             }
         },
-        [compositeName, draftName, updateName, stopEditing]
+        [compositeName, draftName, error, updateName, stopEditing, isCheckingUnicity]
     );
 
     const renderDepthBox = () => {
@@ -255,34 +313,39 @@ export function NameCell({
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
                     {isEditing ? (
-                        <Box
-                            sx={mergeSx(networkModificationTableStyles.modificationLabel, {
-                                display: 'inline-flex',
-                                width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
-                                maxWidth: '100%',
-                                flexShrink: 0,
-                            })}
-                        >
-                            <InputBase
-                                inputRef={inputRef}
-                                value={draftName}
-                                onChange={(e) => setDraftName(e.target.value)}
-                                onBlur={handleBlur}
-                                onKeyDown={handleKeyDown}
-                                onMouseDown={(e) => e.stopPropagation()}
-                                sx={{
-                                    width: '100%',
-                                    fontSize: 'inherit',
-                                    fontFamily: 'inherit',
-                                    color: 'inherit',
-                                    '& .MuiInputBase-input': {
-                                        border: `1px solid ${theme.palette.primary.main}`,
-                                        borderRadius: `${theme.shape.borderRadius}px`,
-                                        backgroundColor: theme.palette.background.paper,
-                                    },
-                                }}
-                            />
-                        </Box>
+                        <>
+                            <Box
+                                sx={mergeSx(networkModificationTableStyles.modificationLabel, {
+                                    display: 'inline-flex',
+                                    width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
+                                    maxWidth: '100%',
+                                    flexShrink: 0,
+                                })}
+                            >
+                                <InputBase
+                                    inputRef={inputRef}
+                                    error={!!error}
+                                    title={error}
+                                    value={draftName}
+                                    onChange={(e) => setDraftName(e.target.value)}
+                                    onBlur={handleBlur}
+                                    onKeyDown={handleKeyDown}
+                                    onMouseDown={(e) => e.stopPropagation()}
+                                    sx={{
+                                        width: '100%',
+                                        fontSize: 'inherit',
+                                        fontFamily: 'inherit',
+                                        color: 'inherit',
+                                        '& .MuiInputBase-input': {
+                                            border: `1px solid ${error ? theme.palette.error.main : theme.palette.primary.main}`,
+                                            borderRadius: `${theme.shape.borderRadius}px`,
+                                            backgroundColor: theme.palette.background.paper,
+                                        },
+                                    }}
+                                />
+                            </Box>
+                            {error && <Alert severity="error">{error}</Alert>}
+                        </>
                     ) : (
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
