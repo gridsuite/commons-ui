@@ -41,7 +41,7 @@ export const filterEn = {
     emptyFilterError: 'Filter should contain at least one equipment',
     distributionKeyWithMissingIdError: 'Missing ID with defined distribution key',
     missingDistributionKeyError: 'Missing distribution key',
-    duplicatedEquipmentInFilter: 'Filter should not contain duplicated elements',
+    duplicatedEquipmentInFilter: 'Filter should not contain duplicates',
     filterCsvFileName: 'filterCreation',
     createNewFilter: 'Create a filter',
     createNewCriteriaFilter: 'Create a criteria based filter',
