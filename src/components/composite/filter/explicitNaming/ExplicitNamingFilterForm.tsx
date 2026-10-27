@@ -243,6 +243,7 @@ export function ExplicitNamingFilterForm({
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     onValueChange={resetOnTypeChange}
+                    title="changeEquipmentTypeTitle"
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={{ width: 400, maxWidth: '100%' }}
