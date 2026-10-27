@@ -13,6 +13,7 @@ import type {
     ColGroupDef,
     CellEditingStoppedEvent,
     ColumnState,
+    GridReadyEvent,
     RowDataUpdatedEvent,
     RowDragCancelEvent,
     RowDragEndEvent,
@@ -101,6 +102,7 @@ export type CustomAgGridTableProps = Required<Pick<CustomAGGridProps, 'columnDef
         | 'overrideLocales'
         | 'loading'
         | 'getRowClass'
+        | 'onGridReady'
     > & {
         name: string;
         makeDefaultRowData: any;
@@ -197,8 +199,9 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
             setNewRowAdded(true);
         };
 
-        const onGridReady = (params: any) => {
+        const onGridReady = (params: GridReadyEvent) => {
             setGridApi(params);
+            props.onGridReady?.(params);
         };
 
         const onRowDataUpdated = (event: RowDataUpdatedEvent) => {
@@ -286,7 +289,6 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                 <Box className={theme.aggrid.theme} sx={style(cssProps).grid}>
                     <CustomAGGrid
                         rowData={rowData}
-                        onGridReady={onGridReady}
                         cacheOverflowSize={10}
                         rowSelection={!isReadOnly ? (rowSelection ?? { mode: 'multiRow' }) : undefined}
                         selectionColumnDef={{ rowDrag: !isReadOnly, width: 80, pinned: 'left' }}
@@ -305,6 +307,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                         theme="legacy"
                         {...props}
+                        onGridReady={onGridReady}
                         columnDefs={
                             isReadOnly
                                 ? (props.columnDefs?.map(makeColumnReadOnly) ?? props.columnDefs)

@@ -9,7 +9,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { Alert, Grid, Stack } from '@mui/material';
-import { ColDef, RowClassParams, ValueParserParams } from 'ag-grid-community';
+import { ColDef, GridApi, RowClassParams, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
@@ -181,6 +181,7 @@ export function ExplicitNamingFilterForm({
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
+    const [gridApi, setGridApi] = useState<GridApi<FilterTableRow> | null>(null);
 
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
@@ -247,6 +248,32 @@ export function ExplicitNamingFilterForm({
                 .map(([equipmentId]) => equipmentId)
         );
     }, [watchedEquipmentRows]);
+
+    useEffect(() => {
+        if (!gridApi || gridApi.isDestroyed() || !formState?.isSubmitted) {
+            return;
+        }
+
+        let firstDuplicateIndex: number | null = null;
+        gridApi.forEachNodeAfterFilterAndSort((node) => {
+            const equipmentId = node.data?.[FieldConstants.EQUIPMENT_ID]?.trim();
+            if (
+                firstDuplicateIndex === null &&
+                node.rowIndex !== null &&
+                equipmentId &&
+                duplicatedEquipmentIds.has(equipmentId)
+            ) {
+                firstDuplicateIndex = node.rowIndex;
+            }
+        });
+
+        if (firstDuplicateIndex === null) {
+            return;
+        }
+
+        gridApi.paginationGoToPage(Math.floor(firstDuplicateIndex / gridApi.paginationGetPageSize()));
+        gridApi.ensureIndexVisible(firstDuplicateIndex, 'top');
+    }, [gridApi, duplicatedEquipmentIds, formState?.isSubmitted, formState?.submitCount]);
 
     const getRowClass = useCallback(
         (params: RowClassParams<FilterTableRow>) => {
@@ -337,6 +364,7 @@ export function ExplicitNamingFilterForm({
                     <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
                         <CustomAgGridTable
                             ref={tableRef}
+                            onGridReady={({ api }) => setGridApi(api)}
                             name={FILTER_EQUIPMENTS_ATTRIBUTES}
                             columnDefs={columnDefs}
                             defaultColDef={defaultColDef}
