@@ -7,20 +7,20 @@
 
 import type { PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
-import { Grid, TextField } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useController, useForm } from 'react-hook-form';
 import * as yup from 'yup';
-import { CustomFormProvider, ExpandableInput } from '../../../src';
+import { CustomFormProvider, ExpandableInput, TextInput } from '../../../src';
 
 function Row({ name, index }: { name: string; index: number }) {
     const { field } = useController({ name: `${name}.${index}.label` });
     return (
         <Grid size={10}>
-            <TextField {...field} size="small" fullWidth />
+            <TextInput {...field} />
         </Grid>
     );
 }
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { rows: [{ label: 'First row' }, { label: 'Second row' }] } });
     return (
         <CustomFormProvider
@@ -31,6 +31,7 @@ function Form({ children }: PropsWithChildren) {
                     .required()
                     .of(yup.object().shape({ label: yup.string().required() })),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -43,8 +44,8 @@ const meta = {
     tags: ['autodocs'],
     args: { name: 'rows', Field: Row, addButtonLabel: 'Add row', initialValue: { label: 'New row' } },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -57,3 +58,4 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
 export const DisabledAdd: Story = { args: { disabled: true } };
+export const ReadOnlyAdd: Story = { parameters: { isReadOnly: true } };

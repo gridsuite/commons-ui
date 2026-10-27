@@ -12,9 +12,10 @@ import * as yup from 'yup';
 import { ExpandingTextField, CustomFormProvider } from '../../../src';
 
 function Form({
+    isReadOnly = false,
     children,
     text = 'A long description designed to take up significant space in the demo field. It should be long enough to ensure that the content exceeds the visible area and requires scrolling after the expected number of lines.',
-}: PropsWithChildren<{ text?: string }>) {
+}: PropsWithChildren<{ text?: string }> & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { description: text } });
     return (
         <CustomFormProvider
@@ -22,6 +23,7 @@ function Form({
             validationSchema={yup.object().shape({
                 description: yup.string().required(),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -34,8 +36,8 @@ const meta = {
     tags: ['autodocs'],
     args: { name: 'description', label: 'Description' },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -48,3 +50,4 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Compact: Story = { args: { minRows: 1, rows: 2, maxCharactersNumber: 120 } };
 export const Disabled: Story = { args: { disabled: true } };
+export const ReadOnly: Story = { parameters: { isReadOnly: true } };
