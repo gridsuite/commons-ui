@@ -5,4 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+export * from './networkReduction.types';
+export * from './networkReduction.utils';
 export * from './NetworkReductionForm';
