@@ -259,18 +259,6 @@ function UserInformationDialog({ openDialog, userProfile, onClose }: UserInforma
                                     fontWeight: 'bold',
                                 }}
                             >
-                                <FormattedMessage id="user-information-dialog/number-of-balanceAdjustement-per-user" />
-                            </Typography>
-                        </Grid>
-                        <Grid size={6}>
-                            <Typography>{userDetails?.maxAllowedBalanceAdjustement}</Typography>
-                        </Grid>
-                        <Grid size={6}>
-                            <Typography
-                                sx={{
-                                    fontWeight: 'bold',
-                                }}
-                            >
                                 <FormattedMessage id="user-information-dialog/number-of-dynamicSimulation-per-user" />
                             </Typography>
                         </Grid>

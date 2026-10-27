@@ -8,7 +8,7 @@
 
 import { type ReactNode, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { type FieldValues, type UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
+import { type FieldValues, type UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { Alert, Button, Grid, Stack } from '@mui/material';
 import { ColDef } from 'ag-grid-community';
 import type { ParseConfig, ParseResult } from 'papaparse';
@@ -23,6 +23,7 @@ import {
     InputWithPopupConfirmation,
     NumericEditor,
     suppressNonNumericKeyboardEvent,
+    useCustomFormContext,
 } from '../../../components';
 import { useSnackMessage, useStateBoolean } from '../../../hooks';
 import { fetchStudyMetadata } from '../../../services';
@@ -77,7 +78,7 @@ export function TabularForm({
     const language = intl.locale as GsLang;
     const { snackWarning } = useSnackMessage();
     const [isFetching, setIsFetching] = useState<boolean>(dataFetching);
-    const { setValue, clearErrors, setError, getValues } = useFormContext();
+    const { setValue, clearErrors, setError, getValues, isReadOnly } = useCustomFormContext();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
     const propertiesDialogOpen = useStateBoolean(false);
     const [predefinedEquipmentProperties, setPredefinedEquipmentProperties] = useState<PredefinedEquipmentProperties>(
@@ -440,7 +441,7 @@ export function TabularForm({
                 const columnDef: ColDef = {
                     field: field.id,
                     headerName: intl.formatMessage({ id: field.id }) + (field.required ? ' (*)' : ''),
-                    editable: true,
+                    editable: !isReadOnly,
                     singleClickEdit: true,
                 };
                 if (field.id === TabularFieldConstants.EQUIPMENT_ID) {
@@ -476,11 +477,11 @@ export function TabularForm({
                     headerName: propertyName,
                     // property values are always kept as strings (see parseConfig)
                     cellDataType: 'text',
-                    editable: true,
+                    editable: !isReadOnly,
                     singleClickEdit: true,
                 }))
             );
-    }, [csvFields, selectedProperties, intl]);
+    }, [csvFields, selectedProperties, intl, isReadOnly]);
 
     const makeDefaultRowData = useCallback(() => {
         const row: Record<string, any> = { [FieldConstants.AG_GRID_ROW_UUID]: uuid4() };
@@ -546,39 +547,41 @@ export function TabularForm({
                             alignItems: 'center',
                         }}
                     >
-                        <Grid
-                            container
-                            sx={{
-                                alignItems: 'center',
-                            }}
-                        >
-                            <Grid>
-                                <Button
-                                    variant="contained"
-                                    onClick={() => {
-                                        propertiesDialogOpen.setTrue();
-                                    }}
-                                >
-                                    <FormattedMessage id="DefinePropertiesButton" />
-                                </Button>
+                        {!isReadOnly && (
+                            <Grid
+                                container
+                                sx={{
+                                    alignItems: 'center',
+                                }}
+                            >
+                                <Grid>
+                                    <Button
+                                        variant="contained"
+                                        onClick={() => {
+                                            propertiesDialogOpen.setTrue();
+                                        }}
+                                    >
+                                        <FormattedMessage id="DefinePropertiesButton" />
+                                    </Button>
+                                </Grid>
+                                <Grid>
+                                    <CsvDownloadButton
+                                        data={getTemplateData}
+                                        fileName={csvProps.fileName}
+                                        language={language}
+                                        labelId="GenerateCSV"
+                                        variant="contained"
+                                    />
+                                </Grid>
+                                {renderActions?.({
+                                    dialogMode,
+                                    equipmentType,
+                                    csvColumns,
+                                    commentLines,
+                                    predefinedEquipmentProperties,
+                                })}
                             </Grid>
-                            <Grid>
-                                <CsvDownloadButton
-                                    data={getTemplateData}
-                                    fileName={csvProps.fileName}
-                                    language={language}
-                                    labelId="GenerateCSV"
-                                    variant="contained"
-                                />
-                            </Grid>
-                            {renderActions?.({
-                                dialogMode,
-                                equipmentType,
-                                csvColumns,
-                                commentLines,
-                                predefinedEquipmentProperties,
-                            })}
-                        </Grid>
+                        )}
                         <Grid sx={{ flex: 1, minWidth: 0 }}>
                             <CsvPicker<Record<string, unknown>>
                                 label="UploadCSV"

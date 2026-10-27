@@ -12,6 +12,7 @@ import { useIntl } from 'react-intl';
 import { IconButton, ToggleButton } from '@mui/material';
 import { ArrowDownward, ArrowUpward, HorizontalRule } from '@mui/icons-material';
 import { MuiStyles } from '../../../../../utils';
+import { useCustomFormContext } from '../../../../../components';
 
 const styles = {
     container: {
@@ -60,6 +61,7 @@ export function FeederBayDirectionCellRenderer({ name, disabled }: Readonly<Feed
         field: { value },
     } = useController({ name });
     const intl = useIntl();
+    const { isReadOnly } = useCustomFormContext();
 
     const translatedLabel = useMemo(() => {
         const valueToFind = value ?? 'UNDEFINED'; // null ou undefined → 'UNDEFINED'
@@ -75,8 +77,14 @@ export function FeederBayDirectionCellRenderer({ name, disabled }: Readonly<Feed
         });
     }, [value, setValue, name]);
     return (
-        <ToggleButton value={value} onClick={handleClick} disabled={disabled} size="small" sx={styles.container}>
-            <IconButton onClick={handleClick} size="small" disabled={disabled}>
+        <ToggleButton
+            value={value}
+            onClick={handleClick}
+            disabled={isReadOnly || disabled}
+            size="small"
+            sx={styles.container}
+        >
+            <IconButton onClick={handleClick} size="small" disabled={isReadOnly || disabled}>
                 {DIRECTION_ICONS[value] || <HorizontalRule />}
             </IconButton>
             <span>{translatedLabel}</span>

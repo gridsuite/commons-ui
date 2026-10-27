@@ -13,7 +13,7 @@ import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/pro
 import { FloatInput } from '../../../src/components/ui/reactHookForm/numbers/FloatInput';
 import { IntegerInput } from '../../../src/components/ui/reactHookForm/numbers/IntegerInput';
 
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { voltage: 225.5, count: 12 } });
     return (
         <CustomFormProvider
@@ -22,6 +22,7 @@ function Form({ children }: PropsWithChildren) {
                 voltage: yup.number().required(),
                 count: yup.number().required(),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -33,8 +34,8 @@ const meta = {
     component: FloatInput,
     tags: ['autodocs'],
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -49,6 +50,20 @@ export const Integer: Story = {
     args: { name: 'count' },
     render: () => <IntegerInput name="count" label="Number of elements" />,
 };
+
 export const Clearable: Story = {
     args: { clearable: true, name: 'voltage', label: 'Voltage', adornment: { position: 'end', text: 'kV' } },
+};
+export const FloatReadOnly: Story = {
+    args: { name: 'voltage', label: 'Voltage', adornment: { position: 'end', text: 'kV' } },
+    parameters: { isReadOnly: true },
+};
+export const IntegerReadOnly: Story = {
+    args: { name: 'count' },
+    parameters: { isReadOnly: true },
+    render: () => <IntegerInput name="count" label="Number of elements" />,
+};
+export const ClearableReadOnly: Story = {
+    args: { clearable: true, name: 'voltage', label: 'Voltage', adornment: { position: 'end', text: 'kV' } },
+    parameters: { isReadOnly: true },
 };

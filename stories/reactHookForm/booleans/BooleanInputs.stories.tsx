@@ -13,10 +13,10 @@ import * as yup from 'yup';
 import { CustomFormProvider } from '../../../src/components/ui/reactHookForm/provider/CustomFormProvider';
 import { BooleanInput } from '../../../src/components/ui/reactHookForm/booleans/BooleanInput';
 
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { enabled: true } });
     return (
-        <CustomFormProvider {...methods} validationSchema={yup.object() as any}>
+        <CustomFormProvider {...methods} validationSchema={yup.object() as any} isReadOnly={isReadOnly}>
             {children}
         </CustomFormProvider>
     );
@@ -34,8 +34,8 @@ const meta = {
         },
     },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -51,5 +51,15 @@ export const CheckboxField: Story = {
 };
 export const SwitchField: Story = {
     args: { name: 'enabled', Input: Switch, label: 'Switch' },
+    render: (args) => <BooleanInput {...args} />,
+};
+export const CheckboxFieldReadOnly: Story = {
+    args: { name: 'enabled', Input: Checkbox, label: 'CheckBox' },
+    parameters: { isReadOnly: true },
+    render: (args) => <BooleanInput {...args} />,
+};
+export const SwitchFieldReadOnly: Story = {
+    args: { name: 'enabled', Input: Switch, label: 'Switch' },
+    parameters: { isReadOnly: true },
     render: (args) => <BooleanInput {...args} />,
 };
