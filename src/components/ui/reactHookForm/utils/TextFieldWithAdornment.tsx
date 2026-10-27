@@ -10,6 +10,7 @@ import { Clear as ClearIcon } from '@mui/icons-material';
 import { IconButton, InputAdornment, TextField, TextFieldProps } from '@mui/material';
 
 import { Input } from '../../../../utils/types/types';
+import { useCustomFormContext } from '../provider';
 
 export type TextFieldWithAdornmentProps = TextFieldProps & {
     // variant already included in TextFieldProps
@@ -21,7 +22,7 @@ export type TextFieldWithAdornmentProps = TextFieldProps & {
 
 export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const { adornmentPosition, adornmentText, value, variant, handleClearValue, slotProps, ...otherProps } = props;
-
+    const { isReadOnly } = useCustomFormContext();
     const [isFocused, setIsFocused] = useState(false);
 
     const getAdornmentStyle = useCallback((innerVariant: 'standard' | 'filled' | 'outlined') => {
@@ -66,22 +67,24 @@ export function TextFieldWithAdornment(props: TextFieldWithAdornmentProps) {
     const withEndAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
-                  startAdornment: value && handleClearValue ? getClearAdornment('start') : undefined,
+                  ...slotProps?.input,
+                  startAdornment: value && handleClearValue && !isReadOnly ? getClearAdornment('start') : undefined,
                   endAdornment: getTextAdornment('end'),
                   sx: { textAlign: 'end' },
               }
             : undefined;
-    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
+    }, [value, isFocused, slotProps?.input, handleClearValue, isReadOnly, getClearAdornment, getTextAdornment]);
 
     const withStartAdornmentText = useCallback(() => {
         return value !== '' || isFocused
             ? {
+                  ...slotProps?.input,
                   startAdornment: getTextAdornment('start'),
-                  endAdornment: value && handleClearValue && getClearAdornment('end'),
+                  endAdornment: value && handleClearValue && !isReadOnly && getClearAdornment('end'),
                   sx: { textAlign: 'start' },
               }
             : undefined;
-    }, [value, handleClearValue, getClearAdornment, isFocused, getTextAdornment]);
+    }, [value, isFocused, slotProps?.input, getTextAdornment, handleClearValue, isReadOnly, getClearAdornment]);
 
     return (
         <TextField

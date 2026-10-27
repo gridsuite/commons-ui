@@ -54,8 +54,8 @@ export const networkModificationsFr = {
     'network_modifications.TABULAR_MODIFICATION': 'Modification tabulaire ({computedLabel})',
     'network_modifications.tabular.GENERATOR_MODIFICATION': 'générateurs',
     'network_modifications.tabular.LOAD_MODIFICATION': 'consommations',
-    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification par formule {computedLabel}',
-    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification par filtre {computedLabel}',
+    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification par formule ({computedLabel})',
+    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification par filtre ({computedLabel})',
     'network_modifications.tabular.LINE_MODIFICATION': 'lignes',
     'network_modifications.tabular.BATTERY_MODIFICATION': 'batteries',
     'network_modifications.tabular.VOLTAGE_LEVEL_MODIFICATION': 'postes',
@@ -710,4 +710,5 @@ export const networkModificationsFr = {
 
     LoadScaling: 'Variation plan de consommation',
     LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
+    ReadOnlyForm: 'Ce formulaire est en lecture seule',
 };

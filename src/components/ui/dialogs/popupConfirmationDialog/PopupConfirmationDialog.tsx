@@ -10,6 +10,7 @@ import { FormattedMessage } from 'react-intl';
 import { CancelButton } from '../../../ui/reactHookForm/utils/CancelButton';
 
 export interface PopupConfirmationDialogProps {
+    title?: string;
     message: string;
     isTranslationNeeded?: boolean;
     validateButtonLabel?: string;
@@ -19,6 +20,7 @@ export interface PopupConfirmationDialogProps {
 }
 
 export function PopupConfirmationDialog({
+    title,
     message,
     isTranslationNeeded = true,
     validateButtonLabel,
@@ -28,7 +30,9 @@ export function PopupConfirmationDialog({
 }: PopupConfirmationDialogProps) {
     return (
         <Dialog open={openConfirmationPopup} aria-labelledby="dialog-title-change-equipment-type">
-            <DialogTitle id="dialog-title-change-equipment-type">Confirmation</DialogTitle>
+            <DialogTitle id="dialog-title-change-equipment-type">
+                {title ? <FormattedMessage id={title} /> : 'Confirmation'}
+            </DialogTitle>
             <DialogContent>
                 <DialogContentText>
                     {message && (isTranslationNeeded ? <FormattedMessage id={message} /> : message)}

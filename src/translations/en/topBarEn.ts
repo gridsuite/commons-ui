@@ -60,7 +60,6 @@ export const topBarEn = {
     'user-information-dialog/number-of-voltageInit-per-user': 'Number of voltage initialization',
     'user-information-dialog/number-of-pccMin-per-user': 'Number of PCC N-1',
     'user-information-dialog/number-of-stateEstimation-per-user': 'Number of state estimation',
-    'user-information-dialog/number-of-balanceAdjustement-per-user': 'Number of balance adjustment',
     'user-information-dialog/number-of-dynamicSimulation-per-user': 'Number of dynamic simulations',
     'user-information-dialog/number-of-dynamicSecurity-per-user': 'Number of dynamic security analysis',
     'user-information-dialog/number-of-dynamicMargin-per-user': 'Number of dynamic margin',
