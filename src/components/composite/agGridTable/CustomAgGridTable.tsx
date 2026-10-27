@@ -6,9 +6,11 @@
  */
 
 import { forwardRef, useCallback, useEffect, useImperativeHandle, useState } from 'react';
-import { type FieldValues, useFieldArray, type UseFieldArrayReturn, useFormContext } from 'react-hook-form';
+import { type FieldValues, useFieldArray, type UseFieldArrayReturn } from 'react-hook-form';
 import { Box, useTheme } from '@mui/material';
 import type {
+    ColDef,
+    ColGroupDef,
     CellEditingStoppedEvent,
     ColumnState,
     RowDataUpdatedEvent,
@@ -22,6 +24,7 @@ import { BottomTableButtons } from './BottomTableButtons';
 import { type CsvProps } from './agGridTable-utils';
 import { FieldConstants, hasNonEmptyRows } from '../../../utils';
 import { CustomAGGrid, type CustomAGGridProps } from '../customAGGrid';
+import { useCustomFormContext } from '../../ui';
 
 const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEndEvent) => {
     if (!overNode) {
@@ -32,6 +35,14 @@ const getDropIndicatorPosition = ({ overNode, y }: RowDragMoveEvent | RowDragEnd
     const overNodeHeight = overNode.rowHeight ?? 0;
     const overNodeMiddle = overNodeTop + overNodeHeight / 2;
     return y < overNodeMiddle ? 'above' : 'below';
+};
+
+const makeColumnReadOnly = (columnDef: ColDef | ColGroupDef): ColDef | ColGroupDef => {
+    if ('children' in columnDef) {
+        return { ...columnDef, children: columnDef.children.map(makeColumnReadOnly) };
+    }
+
+    return { ...columnDef, editable: false, rowDrag: false };
 };
 
 const style = (customProps: any) => ({
@@ -108,7 +119,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
         const [newRowAdded, setNewRowAdded] = useState(false);
         const [isSortApplied, setIsSortApplied] = useState(false);
 
-        const { control, getValues, watch, clearErrors } = useFormContext();
+        const { control, getValues, watch, clearErrors, isReadOnly } = useCustomFormContext();
         const useFieldArrayOutput = useFieldArray({
             control,
             name,
@@ -198,6 +209,9 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
 
         const onCellEditingStopped = useCallback(
             (event: CellEditingStoppedEvent) => {
+                if (isReadOnly) {
+                    return;
+                }
                 const rowIndex = getIndex(event.data);
                 if (rowIndex === -1) {
                     return;
@@ -208,7 +222,7 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                 // TODO remove when yup will be set up for tabular form
                 clearErrors(name);
             },
-            [getIndex, update, clearErrors, name]
+            [getIndex, update, clearErrors, isReadOnly, name]
         );
 
         const onSortChanged = useCallback((event: SortChangedEvent) => {
@@ -272,8 +286,8 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         rowData={rowData}
                         onGridReady={onGridReady}
                         cacheOverflowSize={10}
-                        rowSelection={rowSelection ?? { mode: 'multiRow' }}
-                        selectionColumnDef={{ rowDrag: true, width: 80, pinned: 'left' }}
+                        rowSelection={!isReadOnly ? (rowSelection ?? { mode: 'multiRow' }) : undefined}
+                        selectionColumnDef={{ rowDrag: !isReadOnly, width: 80, pinned: 'left' }}
                         onRowDragMove={onRowDragMove}
                         onRowDragEnd={onRowDragEnd}
                         onRowDragLeave={clearRowDropPositionIndicator}
@@ -289,6 +303,11 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                         stopEditingWhenCellsLoseFocus={stopEditingWhenCellsLoseFocus}
                         theme="legacy"
                         {...props}
+                        columnDefs={
+                            isReadOnly
+                                ? (props.columnDefs?.map(makeColumnReadOnly) ?? props.columnDefs)
+                                : props.columnDefs
+                        }
                     />
                 </Box>
                 <BottomTableButtons
