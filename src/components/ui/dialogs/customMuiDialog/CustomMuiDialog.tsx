@@ -15,10 +15,14 @@ import {
     DialogContent,
     DialogProps,
     DialogTitle,
+    Grid,
     LinearProgress,
+    Tooltip,
 } from '@mui/material';
+import { LockOutlined } from '@mui/icons-material';
 import { SubmitButton } from '../../../ui/reactHookForm/utils/SubmitButton';
 import { CancelButton } from '../../../ui/reactHookForm/utils/CancelButton';
+import { CloseButton } from '../../../ui/reactHookForm/utils/CloseButton';
 import { CustomFormProvider, MergedFormContextProps } from '../../../ui/reactHookForm/provider/CustomFormProvider';
 import { PopupConfirmationDialog } from '../popupConfirmationDialog/PopupConfirmationDialog';
 import type { MuiStyles } from '../../../../utils/styles';
@@ -172,20 +176,47 @@ export function CustomMuiDialog<T extends FieldValues = FieldValues>({
             <Dialog sx={dialogSx} open={open} onClose={handleClose} fullWidth maxWidth={dialogWidth} {...dialogProps}>
                 {isDataFetching && <LinearProgress />}
                 <DialogTitle data-testid="DialogTitle">
-                    <FormattedMessage id={titleId} />
-                    {subtitle}
+                    <Grid
+                        container
+                        spacing={2}
+                        sx={{
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <Grid
+                            size={12}
+                            sx={{
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <FormattedMessage id={titleId} />
+                            {formContext.isReadOnly && (
+                                <Tooltip title={<FormattedMessage id="ReadOnlyForm" />}>
+                                    <LockOutlined />
+                                </Tooltip>
+                            )}
+                        </Grid>
+                        {subtitle && <Grid size={12}>{subtitle}</Grid>}
+                    </Grid>
                 </DialogTitle>
                 <DialogContent sx={unscrollableFullHeight ? unscrollableDialogStyles.unscrollableContainer : null}>
                     {children}
                 </DialogContent>
                 <DialogActions>
-                    <CancelButton onClick={handleCancel} data-testid="CancelButton" />
-                    <SubmitButton
-                        variant="outlined"
-                        disabled={disabledSave}
-                        onClick={formContext?.handleSubmit(handleValidate, handleValidationError)}
-                        data-testid="ValidateButton"
-                    />
+                    {formContext.isReadOnly ? (
+                        <CloseButton onClick={handleCancel} data-testid="CloseButton" />
+                    ) : (
+                        <>
+                            <CancelButton onClick={handleCancel} data-testid="CancelButton" />
+                            <SubmitButton
+                                variant="outlined"
+                                disabled={disabledSave}
+                                onClick={formContext?.handleSubmit(handleValidate, handleValidationError)}
+                                data-testid="ValidateButton"
+                            />
+                        </>
+                    )}
                 </DialogActions>
             </Dialog>
             {confirmationMessageKey && (

@@ -116,6 +116,7 @@ export function ExpertFilterForm({ isEditing }: Readonly<ExpertFilterFormProps>)
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     onValueChange={resetOnTypeChange}
+                    title="changeEquipmentTypeTitle"
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={elementEditionStyles.textField}

@@ -29,6 +29,7 @@ export const filterFr = {
     'filter.expert': 'Par critères',
     'filter.explicitNaming': 'Par nommage',
     equipmentType: "Type d'ouvrage",
+    changeEquipmentTypeTitle: "Changer le type d'ouvrage",
     changeTypeMessage: "Le type d'ouvrage sera modifié et la configuration actuelle sera perdue.",
     PropertyValues: 'Valeurs de la propriété',
     PropertyValues1: 'Valeurs de la propriété 1',
