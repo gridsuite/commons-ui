@@ -7,7 +7,7 @@
 
 import { createPortal } from 'react-dom';
 import { useCallback, useMemo, useRef, useState } from 'react';
-import { UseFieldArrayReturn, useFormContext, useWatch } from 'react-hook-form';
+import { UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import {
     Box,
     Checkbox,
@@ -29,7 +29,7 @@ import { DndColumn, MAX_ROWS_NUMBER, SELECTED } from './dnd-table.type';
 import { DndTableBottomLeftButtons } from './dnd-table-bottom-left-buttons';
 import { DndTableBottomRightButtons } from './dnd-table-bottom-right-buttons';
 import { DndTableAddRowsDialog } from './dnd-table-add-rows-dialog';
-import { ErrorInput, FieldErrorAlert } from '../../ui';
+import { ErrorInput, FieldErrorAlert, useCustomFormContext } from '../../ui';
 import { mergeSx, MuiStyles } from '../../../utils/styles';
 import { DndTableRow } from './dnd-table-row';
 
@@ -146,7 +146,10 @@ export function DndTable(props: Readonly<DndTableProps>) {
     } = props;
     const intl = useIntl();
 
-    const { getValues, setValue, setError, clearErrors } = useFormContext();
+    const { getValues, setValue, setError, clearErrors, isReadOnly } = useCustomFormContext();
+    const formDisableAddingRows = isReadOnly || disableAddingRows;
+    const formDisableDragAndDrop = isReadOnly || disableDragAndDrop;
+    const formDisabledDeletion = isReadOnly || disabledDeletion;
 
     const {
         fields: currentRows, // don't use it to access form data ! check doc
@@ -303,7 +306,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
         return (
             <TableHead>
                 <TableRow>
-                    {!disableDragAndDrop && (
+                    {!formDisableDragAndDrop && (
                         <TableCell sx={{ width: '3%' }}>{/* empty cell for the drag and drop column */}</TableCell>
                     )}
                     {multiselect && (
@@ -312,7 +315,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                 arrayFormName={name}
                                 handleClickCheck={selectAllRows}
                                 handleClickUncheck={unselectAllRows}
-                                disabled={disabled || currentRows.length === 0}
+                                disabled={isReadOnly || disabled || currentRows.length === 0}
                             />
                         </TableCell>
                     )}
@@ -330,7 +333,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                             </Box>
                         </TableCell>
                     ))}
-                    {!disableAddingRows && !multiselect && (
+                    {!formDisableAddingRows && !multiselect && (
                         <TableCell sx={{ width: '5rem', textAlign: 'center' }}>
                             <CustomTooltip
                                 title={intl.formatMessage({
@@ -368,7 +371,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         key={row.id}
                         draggableId={row.id.toString()}
                         index={index}
-                        isDragDisabled={disableDragAndDrop}
+                        isDragDisabled={formDisableDragAndDrop}
                     >
                         {(provided, snapshot) => {
                             cellIdxRef.current = 0;
@@ -380,13 +383,13 @@ export function DndTable(props: Readonly<DndTableProps>) {
                                     tableName={name}
                                     columnsDefinition={columnsDefinition}
                                     index={index}
-                                    disableDragAndDrop={disableDragAndDrop}
+                                    disableDragAndDrop={formDisableDragAndDrop}
                                     disabled={disabled}
                                     previousValues={previousValues}
                                     disableTableCell={disableTableCell}
                                     getPreviousValue={getPreviousValue}
                                     isValueModified={isValueModified}
-                                    disabledDeletion={disabledDeletion}
+                                    disabledDeletion={formDisabledDeletion}
                                     onChangeRow={handleChangeRow}
                                     onDeleteRow={handleDeleteRow}
                                     multiselect={multiselect}
@@ -431,10 +434,14 @@ export function DndTable(props: Readonly<DndTableProps>) {
                 <ErrorInput name={name} InputField={FieldErrorAlert} />
             </Grid>
             <Grid container size={12}>
-                {handleResetButton && handleUploadButton && resetButtonMessageId && uploadButtonMessageId ? (
+                {!isReadOnly &&
+                handleResetButton &&
+                handleUploadButton &&
+                resetButtonMessageId &&
+                uploadButtonMessageId ? (
                     <DndTableBottomLeftButtons
                         withResetButton={withResetButton}
-                        disableUploadButton={disableAddingRows}
+                        disableUploadButton={formDisableAddingRows}
                         disabled={disabled}
                         handleUploadButton={handleUploadButton}
                         uploadButtonMessageId={uploadButtonMessageId}
@@ -442,7 +449,7 @@ export function DndTable(props: Readonly<DndTableProps>) {
                         resetButtonMessageId={resetButtonMessageId}
                     />
                 ) : null}
-                {multiselect && (
+                {!isReadOnly && multiselect && (
                     <DndTableBottomRightButtons
                         arrayFormName={name}
                         handleAddButton={handleAddRowsButton}

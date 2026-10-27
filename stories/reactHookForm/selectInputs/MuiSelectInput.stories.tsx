@@ -11,10 +11,10 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { MuiSelectInput, CustomFormProvider } from '../../../src';
 
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { priority: 'medium' } });
     return (
-        <CustomFormProvider {...methods} validationSchema={yup.object() as any}>
+        <CustomFormProvider {...methods} validationSchema={yup.object() as any} isReadOnly={isReadOnly}>
             {children}
         </CustomFormProvider>
     );
@@ -26,8 +26,8 @@ const meta: Meta = {
     tags: ['autodocs'],
     args: { name: 'priority', options: ['low', 'medium', 'high'], fullWidth: true, size: 'small' },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -39,3 +39,4 @@ type Story = StoryObj;
 
 export const Small: Story = {};
 export const Medium: Story = { args: { size: 'medium' } };
+export const ReadOnly: Story = { parameters: { isReadOnly: true } };

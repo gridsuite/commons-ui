@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Switch, SwitchProps } from '@mui/material';
+import { type FormControlLabelProps, Switch, SwitchProps } from '@mui/material';
 import { BooleanInput } from './BooleanInput';
 
 export interface SwitchInputProps {
@@ -13,9 +13,10 @@ export interface SwitchInputProps {
     label?: string;
     formProps?: SwitchProps;
     dataTestId?: string;
+    labelProps?: Omit<FormControlLabelProps, 'label' | 'control'>;
 }
 
-export function SwitchInput({ name, label, formProps, dataTestId, ...props }: SwitchInputProps) {
+export function SwitchInput({ name, label, formProps, dataTestId, labelProps, ...props }: SwitchInputProps) {
     return (
         <BooleanInput
             name={name}
@@ -23,6 +24,7 @@ export function SwitchInput({ name, label, formProps, dataTestId, ...props }: Sw
             formProps={formProps}
             Input={Switch}
             dataTestId={dataTestId}
+            labelProps={labelProps}
             {...props}
         />
     );

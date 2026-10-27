@@ -57,8 +57,9 @@ export function NameCell({
 
     const isComposite = isCompositeModification(row.original);
     const isReferenced = isReferenceModification(row.original);
-    const isCompositeAndRenamable = isComposite && !isRenameDisabled;
-    const isReferenceAndRenamable = isReferenced && !isRenameDisabled;
+    const canRename = !isRenameDisabled && onChange !== undefined && !isReadOnly;
+    const isCompositeAndRenamable = isComposite && canRename;
+    const isReferenceAndRenamable = isReferenced && canRename;
 
     const getModificationLabel = useCallback(
         (modification: ComposedModificationMetadata, formatBold: boolean = true) => {

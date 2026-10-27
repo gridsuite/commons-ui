@@ -12,7 +12,7 @@ import { useFieldArray } from 'react-hook-form';
 import { LimitsTagChip } from '../LimitsTagChip';
 import { LimitsProperty } from '../limits.types';
 import { usePredefinedProperties } from '../../../../../hooks';
-import { AddButton } from '../../../../../components';
+import { AddButton, useCustomFormContext } from '../../../../../components';
 
 export interface LimitsPropertiesSideStackProps {
     name: string;
@@ -20,7 +20,7 @@ export interface LimitsPropertiesSideStackProps {
 }
 export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPropertiesSideStackProps>) {
     const { fields: limitsProperties, append, remove } = useFieldArray<{ [key: string]: LimitsProperty[] }>({ name });
-
+    const { isReadOnly } = useCustomFormContext();
     const [isEditing, setIsEditing] = useState<boolean>(false);
     const [hovered, setHovered] = useState<boolean>(false);
     const [propertyName, setPropertyName] = useState<string>('');
@@ -36,6 +36,9 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
 
     const handleKeyPress = useCallback(
         (event: React.KeyboardEvent<HTMLInputElement>) => {
+            if (isReadOnly) {
+                return;
+            }
             if (event.key === 'Enter') {
                 setNameEditorError('');
                 setValueEditorError('');
@@ -65,7 +68,7 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                 setIsEditing(false);
             }
         },
-        [append, intl, limitsProperties, propertyName, propertyValue]
+        [append, intl, isReadOnly, limitsProperties, propertyName, propertyValue]
     );
 
     const handleOnChange = useCallback((value: string) => {
@@ -88,11 +91,13 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                         key={`${property.name}`}
                         limitsProperty={property}
                         onDelete={() => remove(index)}
-                        disabled={disabled}
+                        disabled={disabled || isReadOnly}
                         showTooltip
                     />
                 ))}
-                {!isEditing && <AddButton disabled={disabled} label="AddProperty" onClick={() => setIsEditing(true)} />}
+                {!isEditing && !isReadOnly && (
+                    <AddButton disabled={disabled} label="AddProperty" onClick={() => setIsEditing(true)} />
+                )}
             </Stack>
             {isEditing && !disabled ? (
                 <Box
@@ -132,15 +137,17 @@ export function LimitsPropertiesSideStack({ name, disabled }: Readonly<LimitsPro
                         error={valueEditorError !== ''}
                         helperText={valueEditorError}
                     />
-                    <IconButton
-                        sx={{ verticalAlign: 'center' }}
-                        onClick={() => {
-                            setIsEditing(false);
-                            setNameEditorError('');
-                        }}
-                    >
-                        <Delete visibility={hovered ? 'visible' : 'hidden'} />
-                    </IconButton>
+                    {!isReadOnly && (
+                        <IconButton
+                            sx={{ verticalAlign: 'center' }}
+                            onClick={() => {
+                                setIsEditing(false);
+                                setNameEditorError('');
+                            }}
+                        >
+                            <Delete visibility={hovered ? 'visible' : 'hidden'} />
+                        </IconButton>
+                    )}
                 </Box>
             ) : (
                 ''
