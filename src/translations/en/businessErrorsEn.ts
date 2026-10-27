@@ -116,12 +116,8 @@ export const businessErrorsEn = {
     'modification.notFound': 'Modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',
-    'modification.deletion.argument.error':
-        'Modification deletion : invalid arguments (need to specify the group id or give a list of modifications ids)',
     'modification.duplication.argument.error':
         'Modification duplication : invalid arguments (need to specify the group id or give a list of modifications ids)',
-    'modification.with_group.deletion.forbidden':
-        'Unauthorized deletion: modification {modificationId} is owned by group {groupId}',
     'modification.description.missing': 'Missing network modification description',
     'modification.composite.move.cycle.error':
         'Moving composite modification {compositeModificationId} into {modificationId} would create a cycle',
