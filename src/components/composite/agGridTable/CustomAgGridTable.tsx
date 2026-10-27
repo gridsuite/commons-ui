@@ -42,7 +42,7 @@ const makeColumnReadOnly = (columnDef: ColDef | ColGroupDef): ColDef | ColGroupD
         return { ...columnDef, children: columnDef.children.map(makeColumnReadOnly) };
     }
 
-    return { ...columnDef, editable: false };
+    return { ...columnDef, editable: false, rowDrag: false };
 };
 
 const style = (customProps: any) => ({
