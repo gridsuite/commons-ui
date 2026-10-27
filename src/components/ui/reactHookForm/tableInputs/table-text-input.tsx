@@ -50,9 +50,6 @@ export function TableTextInput({
             fullWidth
             inputRef={ref}
             slotProps={{
-                htmlInput: {
-                    ...readOnlySlotProps.htmlInput,
-                },
                 input: {
                     disableInjectingGlobalStyles: true, // disable auto-fill animations and increase rendering perf
                     inputProps: {

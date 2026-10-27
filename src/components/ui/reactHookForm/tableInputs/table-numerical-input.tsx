@@ -107,10 +107,6 @@ export function TableNumericalInput({
             inputRef={ref}
             slotProps={{
                 ...slotProps,
-                htmlInput: {
-                    ...slotProps?.htmlInput,
-                    ...readOnlySlotProps.htmlInput,
-                },
                 input: {
                     ...slotProps?.input,
                     endAdornment: (

@@ -115,10 +115,6 @@ export function TextInput({
             disabled={disabled}
             slotProps={{
                 ...slotProps,
-                htmlInput: {
-                    ...slotProps?.htmlInput,
-                    ...readOnlySlotProps.htmlInput,
-                },
                 input: {
                     ...slotProps?.input,
                     endAdornment: isReadOnly ? null : (
