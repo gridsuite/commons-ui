@@ -81,6 +81,8 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': "Ajout d'un jeu de barre dans le poste {computedLabel}",
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
+    'network_modifications.NETWORK_REDUCTION': 'Extraction réseau',
+    NetworkReduction: 'Extraction réseau',
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
