@@ -6,15 +6,17 @@
  */
 
 import { IconButton, InputAdornment, InputBaseComponentProps, StandardTextFieldProps, TextField } from '@mui/material';
-import { useController, useFormContext } from 'react-hook-form';
+import { useController } from 'react-hook-form';
 import { Clear as ClearIcon } from '@mui/icons-material';
 import { useMemo } from 'react';
 import { validateValueIsANumber } from '../../../../utils';
-import { genHelperError } from '../utils';
+import { genHelperError, getReadOnlySlotProps, SlotPropsWithoutInputReadOnly } from '../utils';
+import { useCustomFormContext } from '../provider';
 
-export interface TableNumericalInputProps extends StandardTextFieldProps {
+export interface TableNumericalInputProps extends Omit<StandardTextFieldProps, 'slotProps'> {
     name: string;
     inputProps?: InputBaseComponentProps;
+    slotProps?: SlotPropsWithoutInputReadOnly<NonNullable<StandardTextFieldProps['slotProps']>>;
     previousValue?: number;
     valueModified: boolean;
     adornment?: { text: string };
@@ -33,7 +35,7 @@ export function TableNumericalInput({
     hideErrorMessage,
     ...props
 }: Readonly<TableNumericalInputProps>) {
-    const { trigger } = useFormContext();
+    const { trigger, isReadOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -51,12 +53,13 @@ export function TableNumericalInput({
 
     const clearable = useMemo(
         () =>
+            !isReadOnly &&
             // We add the clear button only if the field is clearable and the previous value is different from the current one
             isClearable &&
             (previousValue === Number.MAX_VALUE
                 ? validateValueIsANumber(value)
                 : previousValue !== undefined && previousValue !== value),
-        [isClearable, previousValue, value]
+        [isClearable, isReadOnly, previousValue, value]
     );
 
     const outputTransform = (str?: string | number) => {
@@ -89,6 +92,10 @@ export function TableNumericalInput({
     };
 
     const { slotProps, ...otherProps } = props;
+    const readOnlySlotProps = useMemo(
+        () => getReadOnlySlotProps(isReadOnly, transformedValue),
+        [isReadOnly, transformedValue]
+    );
 
     return (
         <TextField
@@ -99,7 +106,9 @@ export function TableNumericalInput({
             fullWidth
             inputRef={ref}
             slotProps={{
+                ...slotProps,
                 input: {
+                    ...slotProps?.input,
                     endAdornment: (
                         <InputAdornment position="end">
                             {transformedValue && adornment?.text}
@@ -130,8 +139,12 @@ export function TableNumericalInput({
                         lang: 'en-US', // to have '.' as decimal separator
                         ...inputProps,
                     },
+                    ...readOnlySlotProps.input,
                 },
-                ...slotProps,
+                inputLabel: {
+                    ...slotProps?.inputLabel,
+                    ...readOnlySlotProps.inputLabel,
+                },
             }}
             {...(hideErrorMessage ? {} : genHelperError(error?.message))}
             {...otherProps}

@@ -29,6 +29,7 @@ export const filterEn = {
     'filter.expert': 'Criteria based',
     'filter.explicitNaming': 'Explicit naming',
     equipmentType: 'Equipment type',
+    changeEquipmentTypeTitle: 'Change equipment type',
     changeTypeMessage: 'The equipment type will be changed and the current configuration will be erased.',
     PropertyValues: 'Property values',
     PropertyValues1: 'Property values 1',
