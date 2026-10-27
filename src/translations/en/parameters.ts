@@ -189,7 +189,7 @@ export const parametersEn = {
         'User entries are applied one after another starting at the top of the list. If a voltage level is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
     UniqueFilterInputError: 'You must select one filter',
     EquipmentSelection: 'Equipment selection',
-    ExpertSelection: 'Expert selection',
+    ExpertSelection: 'Expert',
     PenaltyInvestReaPos: 'Capacitive reactive investment',
     PenaltyInvestReaNeg: ' Inductive reactive investment',
     PenaltyActivePower: 'Active losses',
