@@ -24,7 +24,7 @@ export function ExpertParameters() {
                 name={`${EXPERT}.${PENALTY_INVEST_REA_POS}`}
                 style={parametersStyles.parameterName}
                 label="PenaltyInvestReaPos"
-                adornment={ActivePowerAdornment}
+                adornment={ReactivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
             />
