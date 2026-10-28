@@ -12,19 +12,20 @@ import { mergeSx } from '../../../utils';
 
 interface DragHandleCellProps {
     isRowDragDisabled: boolean;
-    // Shown but inactive, e.g. for the content of a shared modification the user can't write into
+    // e.g. for the content of a shared modification the user can't write into
     isLocked?: boolean;
 }
 
 export function DragHandleCell({ isRowDragDisabled, isLocked = false }: Readonly<DragHandleCellProps>) {
+    const isDragDisabled = isRowDragDisabled || isLocked;
     return (
         <Box
             sx={mergeSx(
                 networkModificationTableStyles.dragHandle,
-                isLocked ? networkModificationTableStyles.disabledDragHandle : undefined
+                isDragDisabled ? networkModificationTableStyles.disabledDragHandle : undefined
             )}
         >
-            {!isRowDragDisabled && (
+            {!isDragDisabled && (
                 <DragIndicator fontSize="small" sx={networkModificationTableStyles.dragIndicatorIcon} />
             )}
         </Box>
