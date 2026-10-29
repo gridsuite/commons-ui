@@ -486,7 +486,4 @@ export const parametersEn = {
 
     // Tooltips
     'tooltip.reset': 'User default parameters',
-
-    networkModificationRenamingError: 'An error occurred while renaming the modification',
-    ModificationNameAlreadyExists: 'This name is already used in GridExplore',
 };

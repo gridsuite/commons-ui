@@ -330,7 +330,6 @@ export function NameCell({
                             <InputBase
                                 inputRef={inputRef}
                                 error={!!error}
-                                title={error}
                                 value={draftName}
                                 onChange={(e) => setDraftName(e.target.value)}
                                 onBlur={handleBlur}

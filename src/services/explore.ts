@@ -128,16 +128,14 @@ export function elementAlreadyExists(
     elementUuid: UUID | null | undefined,
     directoryUuid: UUID | null | undefined,
     elementName: string,
-    elementType?: ElementType
+    elementType: ElementType
 ): Promise<boolean> {
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('elementName', elementName);
     if (directoryUuid) {
         urlSearchParams.append('directoryUuid', directoryUuid);
     }
-    if (elementType) {
-        urlSearchParams.append('elementType', elementType);
-    }
+    urlSearchParams.append('elementType', elementType);
     if (elementUuid) {
         urlSearchParams.append('elementUuid', elementUuid);
     }

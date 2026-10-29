@@ -510,7 +510,4 @@ export const parametersFr = {
 
     // Tooltips
     'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
-
-    networkModificationRenamingError: 'Une erreur est survenue lors du renommage de la modification',
-    ModificationNameAlreadyExists: 'Ce nom est déjà utilisé dans GridExplore',
 };
