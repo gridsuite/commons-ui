@@ -124,7 +124,7 @@ export function NameCell({
         setIsEditing(false);
         setInputBaseWidthPx(null);
         setError(undefined);
-    }, []);
+    }, [error, isCheckingUnicity]);
 
     const updateName = useCallback(
         (newName: string) => {
@@ -142,11 +142,11 @@ export function NameCell({
 
     // onBlur: only commits if editing wasn't already closed by Enter/Escape
     const handleBlur = useCallback(() => {
-        if (!isEditingRef.current || error || isCheckingUnicity) {
+        if (!isEditingRef.current) {
             return;
         }
         const trimmed = draftName.trim();
-        if (trimmed !== '' && trimmed !== compositeName) {
+        if (!error && !isCheckingUnicity && trimmed !== '' && trimmed !== compositeName) {
             updateName(trimmed);
         }
         stopEditing();
@@ -254,7 +254,7 @@ export function NameCell({
                 }
                 stopEditing();
                 inputRef.current?.blur();
-            } else if (e.key === 'Escape' && !error && !isCheckingUnicity) {
+            } else if (e.key === 'Escape') {
                 stopEditing();
                 inputRef.current?.blur();
             }
