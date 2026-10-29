@@ -10,21 +10,26 @@ import { ElementType, EquipmentType, FieldConstants } from '../../../utils';
 
 export function NetworkReductionForm() {
     return (
-        <GridItem size={12}>
-            <Grid container spacing={2} sx={{ alignItems: 'center' }}>
-                <Grid size={6}>
-                    <FieldLabel label="NetworkReductionVoltageLevelFilters" />
-                </Grid>
-                <Grid size={6}>
-                    <DirectoryItemsInput
-                        name={`${FieldConstants.FILTERS}`}
-                        equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
-                        elementType={ElementType.FILTER}
-                        label="filter"
-                        titleId="FiltersListsSelection"
-                    />
-                </Grid>
+        <Grid
+            container
+            spacing={2}
+            sx={{
+                alignItems: 'center',
+                pt: 2,
+            }}
+        >
+            <Grid size={4}>
+                <FieldLabel label="NetworkReductionVoltageLevelFilters" />
             </Grid>
-        </GridItem>
+            <Grid size={8}>
+                <DirectoryItemsInput
+                    name={FieldConstants.FILTERS}
+                    equipmentTypes={[EquipmentType.VOLTAGE_LEVEL]}
+                    elementType={ElementType.FILTER}
+                    label="filter"
+                    titleId="FiltersListsSelection"
+                />
+            </Grid>
+        </Grid>
     );
 }
