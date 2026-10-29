@@ -512,6 +512,5 @@ export const parametersFr = {
     'tooltip.reset': 'Paramètres par défaut du profil utilisateur',
 
     networkModificationRenamingError: 'Une erreur est survenue lors du renommage de la modification',
-    ModificationNameAlreadyExists:
-        'Cette modification partagée ne peut être renommée car une modification de son dossier dans GridExplore possède déjà ce nom',
+    ModificationNameAlreadyExists: 'Ce nom est déjà utilisé dans GridExplore',
 };

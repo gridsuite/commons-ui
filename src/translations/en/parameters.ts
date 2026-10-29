@@ -488,6 +488,5 @@ export const parametersEn = {
     'tooltip.reset': 'User default parameters',
 
     networkModificationRenamingError: 'An error occurred while renaming the modification',
-    ModificationNameAlreadyExists:
-        'This shared modification cannot be renamed because a modification in its folder of GridExplore already has this name',
+    ModificationNameAlreadyExists: 'This name is already used in GridExplore',
 };

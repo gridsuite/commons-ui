@@ -349,7 +349,7 @@ export function NameCell({
                                 }}
                                 endAdornment={
                                     error && (
-                                        <Tooltip title={error} placement="top">
+                                        <Tooltip title={error} placement="top" arrow>
                                             <Box component="span" sx={{ display: 'inline-flex', color: 'error.main' }}>
                                                 <ErrorOutlineOutlinedIcon fontSize="small" />
                                             </Box>
