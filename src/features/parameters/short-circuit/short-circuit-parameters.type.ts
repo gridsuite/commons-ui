@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { UUID } from 'node:crypto';
-import { FilterIdentifier, SpecificParametersPerProvider } from '../../../utils';
+import { SpecificParametersPerProvider } from '../../../utils';
 import { InitialVoltage, PredefinedParameters } from './constants';
 
 export interface VoltageRange {
@@ -39,7 +39,7 @@ export interface FormPowerElectronicsCluster extends BasePowerElectronicsCluster
     filters: FilterPOJO[];
 }
 export interface PowerElectronicsCluster extends BasePowerElectronicsCluster {
-    filters: FilterIdentifier[];
+    filters: UUID[];
 }
 
 export interface ShortCircuitParametersDto {
