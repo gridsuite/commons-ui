@@ -20,9 +20,10 @@ const styles = {
 interface CustomAggridSortProps {
     colId: string;
     sortParams: SortParams;
+    isHoveringColumnHeader: boolean;
 }
 
-export function CustomAggridSort({ colId, sortParams }: CustomAggridSortProps) {
+export function CustomAggridSort({ colId, sortParams, isHoveringColumnHeader }: CustomAggridSortProps) {
     const { columnSort, handleSortChange } = useCustomAggridSort(colId, sortParams);
     const handleClick = () => {
         handleSortChange();
@@ -30,14 +31,21 @@ export function CustomAggridSort({ colId, sortParams }: CustomAggridSortProps) {
     const isColumnSorted = !!columnSort;
 
     return (
-        isColumnSorted && (
-            <IconButton onClick={handleClick}>
-                {columnSort.sort === SortWay.ASC ? (
-                    <ArrowUpward sx={styles.iconSize} />
-                ) : (
-                    <ArrowDownward sx={styles.iconSize} />
-                )}
-            </IconButton>
-        )
+        <>
+            {isColumnSorted && (
+                <IconButton onClick={handleClick}>
+                    {columnSort.sort === SortWay.ASC ? (
+                        <ArrowUpward sx={styles.iconSize} />
+                    ) : (
+                        <ArrowDownward sx={styles.iconSize} />
+                    )}
+                </IconButton>
+            )}
+            {isHoveringColumnHeader && !isColumnSorted && (
+                <IconButton onClick={handleClick}>
+                    <span className="ag-icon ag-icon-none" />
+                </IconButton>
+            )}
+        </>
     );
 }
