@@ -8,7 +8,7 @@ import type { UUID } from 'node:crypto';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Alert, Box, FormHelperText, IconButton, InputBase, Tooltip, useTheme } from '@mui/material';
+import { Box, IconButton, InputBase, Tooltip, useTheme } from '@mui/material';
 import {
     ErrorOutlineOutlined as ErrorOutlineOutlinedIcon,
     KeyboardArrowDown,
@@ -129,7 +129,7 @@ export function NameCell({
         setIsEditing(false);
         setInputBaseWidthPx(null);
         setError(undefined);
-    }, [error, isCheckingUnicity]);
+    }, []);
 
     const updateName = useCallback(
         (newName: string) => {
@@ -319,50 +319,45 @@ export function NameCell({
                 )}
                 <Box sx={createNameCellLabelBoxSx(row.getIsExpanded(), depth)}>
                     {isEditing ? (
-                        <>
-                            <Box
-                                sx={mergeSx(networkModificationTableStyles.modificationLabel, {
-                                    display: 'inline-flex',
-                                    width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
-                                    maxWidth: '100%',
-                                    flexShrink: 0,
-                                })}
-                            >
-                                <InputBase
-                                    inputRef={inputRef}
-                                    error={!!error}
-                                    title={error}
-                                    value={draftName}
-                                    onChange={(e) => setDraftName(e.target.value)}
-                                    onBlur={handleBlur}
-                                    onKeyDown={handleKeyDown}
-                                    onMouseDown={(e) => e.stopPropagation()}
-                                    sx={{
-                                        width: '100%',
-                                        fontSize: 'inherit',
-                                        fontFamily: 'inherit',
-                                        color: 'inherit',
-                                        '& .MuiInputBase-input': {
-                                            border: `1px solid ${error ? theme.palette.error.main : theme.palette.primary.main}`,
-                                            borderRadius: `${theme.shape.borderRadius}px`,
-                                            backgroundColor: theme.palette.background.paper,
-                                        },
-                                    }}
-                                    endAdornment={
-                                        error && (
-                                            <Tooltip title={error} placement="top">
-                                                <Box
-                                                    component="span"
-                                                    sx={{ display: 'inline-flex', color: 'error.main' }}
-                                                >
-                                                    <ErrorOutlineOutlinedIcon fontSize="small" />
-                                                </Box>
-                                            </Tooltip>
-                                        )
-                                    }
-                                />
-                            </Box>
-                        </>
+                        <Box
+                            sx={mergeSx(networkModificationTableStyles.modificationLabel, {
+                                display: 'inline-flex',
+                                width: inputBaseWidthPx ? `${inputBaseWidthPx}px` : `${MIN_CHAR_WIDTH}ch`,
+                                maxWidth: '100%',
+                                flexShrink: 0,
+                            })}
+                        >
+                            <InputBase
+                                inputRef={inputRef}
+                                error={!!error}
+                                title={error}
+                                value={draftName}
+                                onChange={(e) => setDraftName(e.target.value)}
+                                onBlur={handleBlur}
+                                onKeyDown={handleKeyDown}
+                                onMouseDown={(e) => e.stopPropagation()}
+                                sx={{
+                                    width: '100%',
+                                    fontSize: 'inherit',
+                                    fontFamily: 'inherit',
+                                    color: 'inherit',
+                                    '& .MuiInputBase-input': {
+                                        border: `1px solid ${error ? theme.palette.error.main : theme.palette.primary.main}`,
+                                        borderRadius: `${theme.shape.borderRadius}px`,
+                                        backgroundColor: theme.palette.background.paper,
+                                    },
+                                }}
+                                endAdornment={
+                                    error && (
+                                        <Tooltip title={error} placement="top">
+                                            <Box component="span" sx={{ display: 'inline-flex', color: 'error.main' }}>
+                                                <ErrorOutlineOutlinedIcon fontSize="small" />
+                                            </Box>
+                                        </Tooltip>
+                                    )
+                                }
+                            />
+                        </Box>
                     ) : (
                         /* Read mode */
                         <CustomTooltip disableFocusListener disableTouchListener title={label}>
