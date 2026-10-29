@@ -12,7 +12,6 @@ import { mergeSx } from '../../../utils';
 
 interface DragHandleCellProps {
     isRowDragDisabled: boolean;
-    // e.g. for the content of a shared modification the user can't write into
     isLocked?: boolean;
 }
 
