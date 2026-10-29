@@ -131,7 +131,6 @@ export default function LoadsVariationsParameters({ path }: Readonly<{ path: str
             <ParameterTableField
                 name={`${path}.${LOADS_VARIATIONS}`}
                 label="DynamicMarginCalculationLoadsVariations"
-                tooltipProps={{ title: 'DynamicMarginCalculationLoadsVariations' }}
                 columnsDefinition={columnsDefinition}
                 tableHeight={270}
             />
