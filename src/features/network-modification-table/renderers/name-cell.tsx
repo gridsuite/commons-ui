@@ -8,8 +8,13 @@ import type { UUID } from 'node:crypto';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Row, Table } from '@tanstack/react-table';
 import { useIntl } from 'react-intl';
-import { Alert, Box, IconButton, InputBase, useTheme } from '@mui/material';
-import { KeyboardArrowDown, KeyboardArrowRight, Lock } from '@mui/icons-material';
+import { Alert, Box, FormHelperText, IconButton, InputBase, Tooltip, useTheme } from '@mui/material';
+import {
+    ErrorOutlineOutlined as ErrorOutlineOutlinedIcon,
+    KeyboardArrowDown,
+    KeyboardArrowRight,
+    Lock,
+} from '@mui/icons-material';
 import { CustomTooltip } from '../../../components';
 import {
     createNameCellLabelBoxSx,
@@ -343,9 +348,20 @@ export function NameCell({
                                             backgroundColor: theme.palette.background.paper,
                                         },
                                     }}
+                                    endAdornment={
+                                        error && (
+                                            <Tooltip title={error} placement="top">
+                                                <Box
+                                                    component="span"
+                                                    sx={{ display: 'inline-flex', color: 'error.main' }}
+                                                >
+                                                    <ErrorOutlineOutlinedIcon fontSize="small" />
+                                                </Box>
+                                            </Tooltip>
+                                        )
+                                    }
                                 />
                             </Box>
-                            {error && <Alert severity="error">{error}</Alert>}
                         </>
                     ) : (
                         /* Read mode */

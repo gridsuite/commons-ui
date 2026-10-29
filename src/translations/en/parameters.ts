@@ -489,5 +489,5 @@ export const parametersEn = {
 
     networkModificationRenamingError: 'An error occurred while renaming the modification',
     ModificationNameAlreadyExists:
-        'This shared modification cannot be renamed because an object in its folder of GridExplore already has this name',
+        'This shared modification cannot be renamed because a modification in its folder of GridExplore already has this name',
 };

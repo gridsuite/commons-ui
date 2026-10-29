@@ -513,5 +513,5 @@ export const parametersFr = {
 
     networkModificationRenamingError: "Une erreur est survenue lors du renommage de la modification",
     ModificationNameAlreadyExists:
-        'Cette modification partagée ne peut être renommée car un objet de son dossier dans GridExplore possède déjà ce nom',
+        'Cette modification partagée ne peut être renommée car une modification de son dossier dans GridExplore possède déjà ce nom',
 };
