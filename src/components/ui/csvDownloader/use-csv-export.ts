@@ -46,6 +46,10 @@ export const useCsvExport = () => {
                         return roundedValue.toString().replace('.', ',');
                     }
                 }
+                if (props.withFormatter && params.column.getColDef().valueFormatter) {
+                    // export formatted value (to support translation for instance)
+                    return params.formatValue(params.value);
+                }
                 return params.value;
             };
             const getCSVFilename = (tableName: string) => {
