@@ -704,6 +704,7 @@ export const networkModificationsEn = {
 
     NetworkReduction: 'Network reduction',
     NetworkReductionVoltageLevelFilters: 'Voltage levels to remove',
+    NetworkReductionError: 'Error while creating a network reduction',
 
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',

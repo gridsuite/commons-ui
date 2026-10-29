@@ -711,6 +711,7 @@ export const networkModificationsFr = {
 
     NetworkReduction: 'Extraction réseau',
     NetworkReductionVoltageLevelFilters: 'Postes à supprimer',
+    NetworkReductionError: "Erreur lors de la création de l'extraction réseau",
 
     LoadScaling: 'Variation plan de consommation',
     LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
