@@ -43,6 +43,7 @@ export function CustomAggridSort({ colId, sortParams, isHoveringColumnHeader }: 
             )}
             {isHoveringColumnHeader && !isColumnSorted && (
                 <IconButton onClick={handleClick}>
+                    {/* Aggrid icon used for equivalent behaviour */}
                     <span className="ag-icon ag-icon-none" />
                 </IconButton>
             )}
