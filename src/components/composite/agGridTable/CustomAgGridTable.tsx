@@ -101,7 +101,7 @@ export type CustomAgGridTableProps = Required<Pick<CustomAGGridProps, 'columnDef
         | 'rowSelection'
         | 'overrideLocales'
         | 'loading'
-        | 'getRowClass'
+        | 'rowClassRules'
         | 'onGridReady'
     > & {
         name: string;
@@ -190,9 +190,8 @@ export const CustomAgGridTable = forwardRef<UseFieldArrayReturn<FieldValues, str
                 gridApi.api.refreshCells({
                     force: true,
                 });
-                gridApi.api.redrawRows?.();
             }
-        }, [gridApi, rowData, props.getRowClass]);
+        }, [gridApi, rowData]);
 
         const handleAddRow = () => {
             append(makeDefaultRowData());

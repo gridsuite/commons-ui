@@ -7,9 +7,9 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
+import { FieldValues, UseFieldArrayReturn, useFormState, useWatch } from 'react-hook-form';
 import { Alert, Grid, Stack } from '@mui/material';
-import { ColDef, GridApi, RowClassParams, ValueParserParams } from 'ag-grid-community';
+import { ColDef, GridApi, RowClassRules, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
@@ -31,6 +31,21 @@ import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
 import { CsvDownloadButton, CsvPicker, useCustomFormContext } from '../../../ui';
 
+function getDuplicatedEquipmentIds(rows: { [FieldConstants.EQUIPMENT_ID]?: string | null }[] = []) {
+    const seen = new Set<string>();
+    const duplicates = new Set<string>();
+    rows.forEach((row) => {
+        const equipmentId = row[FieldConstants.EQUIPMENT_ID];
+        if (equipmentId) {
+            if (seen.has(equipmentId)) {
+                duplicates.add(equipmentId);
+            }
+            seen.add(equipmentId);
+        }
+    });
+    return duplicates;
+}
+
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
         .array()
@@ -43,9 +58,7 @@ export const explicitNamingFilterSchema = {
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
-        .test('unique', 'duplicatedEquipmentInFilter', (array) => {
-            return array?.length === new Set(array?.map((row) => row[FieldConstants.EQUIPMENT_ID])).size;
-        })
+        .test('unique', 'duplicatedEquipmentInFilter', (array) => getDuplicatedEquipmentIds(array).size === 0)
         .when([FieldConstants.EQUIPMENT_TYPE], {
             is: (equipmentType: string) => isInjection(equipmentType),
             then: (innerSchema) =>
@@ -102,7 +115,8 @@ export function ExplicitNamingFilterForm({
     const intl = useIntl();
     const { snackError } = useSnackMessage();
 
-    const { getValues, setValue, isDeveloperMode, language, formState } = useCustomFormContext();
+    const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
+    const { isSubmitted, submitCount } = useFormState();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -181,7 +195,7 @@ export function ExplicitNamingFilterForm({
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
-    const [gridApi, setGridApi] = useState<GridApi<FilterTableRow> | null>(null);
+    const [gridApi, setGridApi] = useState<GridApi<FilterTableRow>>();
 
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
@@ -228,64 +242,33 @@ export function ExplicitNamingFilterForm({
             );
     };
 
-    const watchedEquipmentRows = useWatch({
-        name: FILTER_EQUIPMENTS_ATTRIBUTES,
-    }) as FilterTableRow[] | undefined;
+    const equipmentRows: FilterTableRow[] | undefined = useWatch({ name: FILTER_EQUIPMENTS_ATTRIBUTES });
+    const duplicatedEquipmentIds = useMemo(() => getDuplicatedEquipmentIds(equipmentRows), [equipmentRows]);
 
-    const duplicatedEquipmentIds = useMemo(() => {
-        const equipmentIds = (watchedEquipmentRows ?? [])
-            .map((row) => row[FieldConstants.EQUIPMENT_ID]?.trim())
-            .filter(Boolean);
-
-        const counts = equipmentIds.reduce<Record<string, number>>((acc, equipmentId) => {
-            acc[equipmentId] = (acc[equipmentId] ?? 0) + 1;
-            return acc;
-        }, {});
-
-        return new Set(
-            Object.entries(counts)
-                .filter(([, count]) => count > 1)
-                .map(([equipmentId]) => equipmentId)
-        );
-    }, [watchedEquipmentRows]);
+    const rowClassRules = useMemo<RowClassRules<FilterTableRow>>(
+        () => ({
+            'duplicate-equipment-row': ({ data }) =>
+                isSubmitted && !!data && duplicatedEquipmentIds.has(data[FieldConstants.EQUIPMENT_ID]),
+        }),
+        [isSubmitted, duplicatedEquipmentIds]
+    );
 
     useEffect(() => {
-        if (!gridApi || gridApi.isDestroyed() || !formState?.isSubmitted) {
+        if (!gridApi || gridApi.isDestroyed() || submitCount === 0) {
             return;
         }
-
+        const duplicates = getDuplicatedEquipmentIds(getValues(FILTER_EQUIPMENTS_ATTRIBUTES));
         let firstDuplicateIndex: number | null = null;
         gridApi.forEachNodeAfterFilterAndSort((node) => {
-            const equipmentId = node.data?.[FieldConstants.EQUIPMENT_ID]?.trim();
-            if (
-                firstDuplicateIndex === null &&
-                node.rowIndex !== null &&
-                equipmentId &&
-                duplicatedEquipmentIds.has(equipmentId)
-            ) {
+            if (firstDuplicateIndex === null && node.data && duplicates.has(node.data[FieldConstants.EQUIPMENT_ID])) {
                 firstDuplicateIndex = node.rowIndex;
             }
         });
-
-        if (firstDuplicateIndex === null) {
-            return;
+        if (firstDuplicateIndex !== null) {
+            gridApi.paginationGoToPage(Math.floor(firstDuplicateIndex / gridApi.paginationGetPageSize()));
+            gridApi.ensureIndexVisible(firstDuplicateIndex, 'top');
         }
-
-        gridApi.paginationGoToPage(Math.floor(firstDuplicateIndex / gridApi.paginationGetPageSize()));
-        gridApi.ensureIndexVisible(firstDuplicateIndex, 'top');
-    }, [gridApi, duplicatedEquipmentIds, formState?.isSubmitted, formState?.submitCount]);
-
-    const getRowClass = useCallback(
-        (params: RowClassParams<FilterTableRow>) => {
-            if (!formState?.isSubmitted) {
-                return undefined;
-            }
-            const equipmentId = params.data?.[FieldConstants.EQUIPMENT_ID]?.trim();
-
-            return equipmentId && duplicatedEquipmentIds.has(equipmentId) ? 'duplicate-equipment-row' : undefined;
-        },
-        [formState?.isSubmitted, duplicatedEquipmentIds]
-    );
+    }, [gridApi, getValues, submitCount]);
 
     return (
         <Stack
@@ -377,10 +360,11 @@ export function ExplicitNamingFilterForm({
                                 headerCheckbox: true,
                             }}
                             alwaysShowVerticalScroll
-                            getRowClass={getRowClass}
+                            rowClassRules={rowClassRules}
                             cssProps={{
                                 '& .ag-row.duplicate-equipment-row .ag-cell': {
                                     backgroundColor: 'error.main',
+                                    color: 'error.contrastText',
                                 },
                             }}
                             csvProps={{
