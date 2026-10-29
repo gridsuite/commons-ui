@@ -135,8 +135,7 @@ export const useLoadFlowParametersForm = (
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
-    const { watch, reset, getValues } = formMethods;
-    console.log('xxx getValues', getValues());
+    const { watch, reset } = formMethods;
 
     const watchProvider = watch(PROVIDER);
 
@@ -196,14 +195,13 @@ export const useLoadFlowParametersForm = (
 
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
-            console.log('xxx toLoadFlowFormValues', _params);
             const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
             const specificParametersForLoadedProvider = specificParamsDescription?.[_params.provider] ?? [];
             const { advancedParameters: advancedParams, commonParameters: commonParams } = splitCommonParameters(
                 _params.commonParameters
             );
 
-            const computedFormValues = {
+            return {
                 [PROVIDER]: _params.provider,
                 [PARAM_LIMIT_REDUCTION]: _params.limitReduction,
                 [COMMON_PARAMETERS]: {
@@ -220,8 +218,6 @@ export const useLoadFlowParametersForm = (
                 },
                 ...toFormValuesLimitReductions(_params.limitReductions),
             };
-            console.log('xxx computedFormValues', computedFormValues);
-            return computedFormValues;
         },
         [specificParamsDescription]
     );
