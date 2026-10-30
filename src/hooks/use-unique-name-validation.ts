@@ -17,7 +17,12 @@ interface UseUniqueNameValidationParams {
     currentName?: string;
     elementType: ElementType;
     activeDirectory?: string;
-    elementExists?: (directory: UUID, name: string, type: ElementType) => Promise<boolean>;
+    elementExists?: (
+        elementUuid: UUID | null,
+        directoryUuid: UUID | null,
+        name: string,
+        elementType: ElementType
+    ) => Promise<boolean>;
     isPrefilled?: boolean;
 }
 
@@ -58,7 +63,7 @@ export function useUniqueNameValidation({
     const handleCheckName = useCallback(
         (nameValue: string) => {
             if (nameValue !== currentName && directory) {
-                elementExists(directory, nameValue, elementType)
+                elementExists(null, directory, nameValue, elementType)
                     .then((alreadyExist) => {
                         if (alreadyExist) {
                             setError(name, {

@@ -117,7 +117,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
             currentNodeId={meta.context.currentNodeId}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
-            isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
+            isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
         />
     );
 }

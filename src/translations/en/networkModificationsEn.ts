@@ -704,4 +704,7 @@ export const networkModificationsEn = {
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',
     ReadOnlyForm: 'This form is read only',
+    networkModificationRenamingError: 'An error occurred while renaming the modification',
+    ModificationNameAlreadyExists: 'This name is already used in GridExplore',
+    ModificationNameValidationError: 'An error occurred while checking the shared modification name',
 };
