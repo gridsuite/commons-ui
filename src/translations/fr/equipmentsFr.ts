@@ -26,4 +26,5 @@ export const equipmentsFr = {
     StaticVarCompensators: 'CSPR',
     BusBarSections: 'Sections de jeux de barres',
     Switches: 'Organes de coupure',
+    CouplingSwitches: 'Couplages',
 };
