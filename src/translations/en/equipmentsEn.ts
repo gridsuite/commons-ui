@@ -25,5 +25,5 @@ export const equipmentsEn = {
     VscConverterStations: 'VSC converter stations',
     StaticVarCompensators: 'Static var compensators',
     BusBarSections: 'Busbar sections',
-    Switches: 'Couplers',
+    Switches: 'Switches',
 };

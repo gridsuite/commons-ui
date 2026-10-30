@@ -25,5 +25,5 @@ export const equipmentsFr = {
     VscConverterStations: 'Stations de conversion VSC',
     StaticVarCompensators: 'CSPR',
     BusBarSections: 'Sections de jeux de barres',
-    Switches: 'Couplages',
+    Switches: 'Organes de coupure',
 };
