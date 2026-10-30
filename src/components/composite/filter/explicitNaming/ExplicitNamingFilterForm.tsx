@@ -8,7 +8,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
 import { FieldValues, UseFieldArrayReturn, useFormState, useWatch } from 'react-hook-form';
-import { Alert, Grid, Stack } from '@mui/material';
+import { Alert, alpha, Grid, Stack, useTheme } from '@mui/material';
 import { ColDef, GridApi, RowClassRules, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
@@ -121,6 +121,7 @@ export function ExplicitNamingFilterForm({
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
     });
+    const theme = useTheme();
 
     useEffect(() => {
         if (watchEquipmentType && !((watchEquipmentType as EquipmentType) in FILTER_EQUIPMENTS)) {
@@ -363,8 +364,7 @@ export function ExplicitNamingFilterForm({
                             rowClassRules={rowClassRules}
                             cssProps={{
                                 '& .ag-row.duplicate-equipment-row .ag-cell': {
-                                    backgroundColor: 'error.main',
-                                    color: 'error.contrastText',
+                                    backgroundColor: alpha(theme.palette.error.light, 0.3),
                                 },
                             }}
                             csvProps={{
