@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import type { PropsWithChildren } from 'react';
+import { type PropsWithChildren } from 'react';
 import type { Meta, StoryObj } from '@storybook/react-vite';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -17,7 +17,7 @@ const options = [
     { id: 'lyon', label: 'Lyon' },
     { id: 'nantes', label: 'Nantes' },
 ];
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { city: options[0] } });
     return (
         <CustomFormProvider
@@ -28,6 +28,7 @@ function Form({ children }: PropsWithChildren) {
                     label: yup.string().required(),
                 }),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -45,8 +46,8 @@ const meta = {
         getOptionLabel: (option) => (typeof option === 'string' ? option : option.label),
     },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -57,5 +58,8 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {};
-export const NoSearch: Story = { args: { readOnly: true } };
+export const NoSearch: Story = { args: { selectMode: true } };
 export const Disabled: Story = { args: { disabled: true } };
+export const DefaultReadOnly: Story = { parameters: { isReadOnly: true } };
+export const NoSearchReadOnly: Story = { args: { selectMode: true }, parameters: { isReadOnly: true } };
+export const DisabledReadOnly: Story = { args: { disabled: true }, parameters: { isReadOnly: true } };

@@ -91,6 +91,9 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.BY_FILTER_DELETION.type:
                 case MODIFICATION_TYPES.MODIFICATION_BY_ASSIGNMENT.type:
                 case MODIFICATION_TYPES.BY_FORMULA_MODIFICATION.type:
+                    if (!modificationMetadata.equipmentType) {
+                        return '';
+                    }
                     return intl.formatMessage(
                         computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType)
                     );

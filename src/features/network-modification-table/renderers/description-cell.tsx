@@ -47,6 +47,14 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     setIsLoading(false);
                 });
             }
+            if (data.parentSharedUuid) {
+                return updateElement(data.parentSharedUuid, {
+                    elementUuid: data.uuid,
+                    description: descriptionRecord.description,
+                }).finally(() => {
+                    setIsLoading(false);
+                });
+            }
             return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,

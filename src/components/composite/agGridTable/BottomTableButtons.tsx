@@ -10,6 +10,7 @@ import { ErrorInput } from '../../ui/reactHookForm/errorManagement/ErrorInput';
 import { FieldErrorAlert } from '../../ui/reactHookForm/errorManagement/FieldErrorAlert';
 import { CsvDownloadButton } from '../../ui/csvDownloader';
 import type { CsvProps } from './agGridTable-utils';
+import { useCustomFormContext } from '../../ui';
 
 const InnerColoredButton = styled(IconButton)(({ theme }) => {
     return {
@@ -40,6 +41,7 @@ export function BottomTableButtons({
     handleMoveRowDown,
     csvProps,
 }: BottomTableButtonsProps) {
+    const { isReadOnly } = useCustomFormContext();
     return (
         <>
             <Grid
@@ -63,33 +65,35 @@ export function BottomTableButtons({
                         />
                     </Grid>
                 )}
-                {csvProps?.extraButtons && <Grid>{csvProps.extraButtons}</Grid>}
-                <Grid sx={{ marginLeft: 'auto' }}>
-                    <InnerColoredButton onClick={handleAddRow} aria-label="Add row">
-                        <AddIcon data-testid="ControlPointIcon" />
-                    </InnerColoredButton>
-                    <InnerColoredButton
-                        onClick={handleDeleteRows}
-                        disabled={disableDelete}
-                        aria-label="Delete selected rows"
-                    >
-                        <DeleteIcon />
-                    </InnerColoredButton>
-                    <InnerColoredButton
-                        disabled={disableUp}
-                        onClick={handleMoveRowUp}
-                        aria-label="Move selected rows up"
-                    >
-                        <ArrowCircleUp />
-                    </InnerColoredButton>
-                    <InnerColoredButton
-                        disabled={disableDown}
-                        onClick={handleMoveRowDown}
-                        aria-label="Move selected rows down"
-                    >
-                        <ArrowCircleDown />
-                    </InnerColoredButton>
-                </Grid>
+                {csvProps?.extraButtons && !isReadOnly && <Grid>{csvProps.extraButtons}</Grid>}
+                {!isReadOnly && (
+                    <Grid sx={{ marginLeft: 'auto' }}>
+                        <InnerColoredButton onClick={handleAddRow} aria-label="Add row">
+                            <AddIcon data-testid="ControlPointIcon" />
+                        </InnerColoredButton>
+                        <InnerColoredButton
+                            onClick={handleDeleteRows}
+                            disabled={disableDelete}
+                            aria-label="Delete selected rows"
+                        >
+                            <DeleteIcon />
+                        </InnerColoredButton>
+                        <InnerColoredButton
+                            disabled={disableUp}
+                            onClick={handleMoveRowUp}
+                            aria-label="Move selected rows up"
+                        >
+                            <ArrowCircleUp />
+                        </InnerColoredButton>
+                        <InnerColoredButton
+                            disabled={disableDown}
+                            onClick={handleMoveRowDown}
+                            aria-label="Move selected rows down"
+                        >
+                            <ArrowCircleDown />
+                        </InnerColoredButton>
+                    </Grid>
+                )}
             </Grid>
             <Box>
                 <ErrorInput name={name} InputField={FieldErrorAlert} />

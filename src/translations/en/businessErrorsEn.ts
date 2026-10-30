@@ -22,6 +22,7 @@ export const businessErrorsEn = {
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
+    'study.nodeNotFound': 'Node was not found.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
     'study.loadflowError': 'Loadflow error.',
@@ -44,6 +45,8 @@ export const businessErrorsEn = {
     'study.maxOperationTypeExceeded': 'Max number of operation reached',
     'modification.sharedWriteForbidden':
         'You are not allowed to write on one of the shared modifications this study uses.',
+    'modification.rootNetworkTagsForbiddenByShared':
+        'Forbidden action: the study contains at least one shared modification you are not allowed to modify and which is not defined on all the root networks used. {allowedTagsCount, plural, =0 {No new tag is allowed.} one {The allowed tag is {allowedTags}.} other {The allowed tags are {allowedTags}.}}',
     'useradmin.permissionDenied': "You don't have permission to perform this action.",
     'useradmin.userNotFound': 'User not found.',
     'useradmin.userAlreadyExists': 'User already exists.',
@@ -114,12 +117,8 @@ export const businessErrorsEn = {
     'modification.notFound': 'Modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',
-    'modification.deletion.argument.error':
-        'Modification deletion : invalid arguments (need to specify the group id or give a list of modifications ids)',
     'modification.duplication.argument.error':
         'Modification duplication : invalid arguments (need to specify the group id or give a list of modifications ids)',
-    'modification.with_group.deletion.forbidden':
-        'Unauthorized deletion: modification {modificationId} is owned by group {groupId}',
     'modification.description.missing': 'Missing network modification description',
     'modification.composite.move.cycle.error':
         'Moving composite modification {compositeModificationId} into {modificationId} would create a cycle',

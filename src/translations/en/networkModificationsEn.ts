@@ -52,8 +52,8 @@ export const networkModificationsEn = {
     'network_modifications.TABULAR_MODIFICATION': 'Tabular modification ({computedLabel})',
     'network_modifications.tabular.GENERATOR_MODIFICATION': 'generators',
     'network_modifications.tabular.LOAD_MODIFICATION': 'loads',
-    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification by formula {computedLabel}',
-    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification by filter {computedLabel}',
+    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification by formula ({computedLabel})',
+    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification by filter ({computedLabel})',
     'network_modifications.tabular.LINE_MODIFICATION': 'lines',
     'network_modifications.tabular.BATTERY_MODIFICATION': 'batteries',
     'network_modifications.tabular.VOLTAGE_LEVEL_MODIFICATION': 'voltage levels',
@@ -703,4 +703,5 @@ export const networkModificationsEn = {
 
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',
+    ReadOnlyForm: 'This form is read only',
 };

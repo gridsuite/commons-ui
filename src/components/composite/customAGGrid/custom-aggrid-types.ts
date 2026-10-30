@@ -19,7 +19,7 @@ export enum TableType {
     LogicalControls = 'LogicalControls',
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
-    ProcessExecutionHistory = 'ProcessExecutionHistory',
+    ProcessExecutionList = 'ProcessExecutionList',
 }
 
 // Filter operators
