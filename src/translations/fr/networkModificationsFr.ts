@@ -81,6 +81,7 @@ export const networkModificationsFr = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': "Ajout d'un jeu de barre dans le poste {computedLabel}",
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Ajout de section / tronçon dans le poste {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Déplacements de départs dans le poste {computedLabel}',
+    'network_modifications.NETWORK_REDUCTION': 'Extraction réseau',
     // Tabs
     SubstationTab: 'Site',
     ConnectivityTab: 'Connectivité',
@@ -707,6 +708,10 @@ export const networkModificationsFr = {
 
     GeneratorScaling: 'Variation plan de production',
     GeneratorScalingError: 'Erreur lors de la création de la variation du plan de production',
+
+    NetworkReduction: 'Extraction réseau',
+    NetworkReductionVoltageLevelFilters: 'Postes à supprimer',
+    NetworkReductionError: "Erreur lors de la création de l'extraction réseau",
 
     LoadScaling: 'Variation plan de consommation',
     LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
