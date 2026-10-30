@@ -10,6 +10,7 @@ import { ExportCsvButton } from './export-csv-button';
 
 export interface ManagedExportCsvButtonProps {
     disabled?: boolean;
+    withTooltip?: boolean;
     exportCsv: () => Promise<void>;
     resetKey?: unknown;
     onSuccess?: () => void;
@@ -18,6 +19,7 @@ export interface ManagedExportCsvButtonProps {
 
 export function ManagedExportCsvButton({
     disabled = false,
+    withTooltip = false,
     exportCsv,
     resetKey,
     onSuccess,
@@ -56,6 +58,7 @@ export function ManagedExportCsvButton({
     return (
         <ExportCsvButton
             disabled={disabled || isLoading}
+            withTooltip={withTooltip}
             onClick={handleClick}
             isDownloadLoading={isLoading}
             isDownloadSuccessful={isSuccessful}

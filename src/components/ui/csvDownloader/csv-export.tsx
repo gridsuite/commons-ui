@@ -15,6 +15,7 @@ export function CsvExport({
     tableNamePrefix = '',
     tableName,
     disabled,
+    withTooltip = false,
     skipColumnHeaders = false,
     skipPinnedBottom = false,
     language,
@@ -46,5 +47,12 @@ export function CsvExport({
         withFormatter,
         getData,
     ]);
-    return <ManagedExportCsvButton disabled={disabled} exportCsv={exportCsv} resetKey={resetKey} />;
+    return (
+        <ManagedExportCsvButton
+            disabled={disabled}
+            withTooltip={withTooltip}
+            exportCsv={exportCsv}
+            resetKey={resetKey}
+        />
+    );
 }
