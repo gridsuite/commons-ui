@@ -11,15 +11,29 @@ export const LANG_FRENCH = 'fr';
 export type GsLangUser = typeof LANG_ENGLISH | typeof LANG_FRENCH;
 export type GsLang = GsLangUser | typeof LANG_SYSTEM;
 
+const supportedLanguages = new Set<string>([LANG_FRENCH, LANG_ENGLISH]);
+
+export const getSystemLanguage = () => {
+    const systemLanguage = navigator.language.split(/[-_]/)[0];
+    return supportedLanguages.has(systemLanguage) ? (systemLanguage as GsLangUser) : LANG_ENGLISH;
+};
+
+export const getComputedLanguage = (language: GsLang): GsLangUser => {
+    return language === LANG_SYSTEM ? getSystemLanguage() : (language ?? LANG_ENGLISH);
+};
+
+export const isFrenchLanguage = (language: string | undefined): boolean =>
+    getComputedLanguage(language as GsLang) === LANG_FRENCH;
+
 export function getCsvDelimiter(language: string | undefined): ';' | ',' {
-    return language === LANG_FRENCH ? ';' : ',';
+    return isFrenchLanguage(language) ? ';' : ',';
 }
 
 export const transformIfFrenchNumber = (value: string, language: GsLang): string => {
     const trimmedValue = value.trim();
     // Only transform if we're in French mode and the value is a number that has a comma
     if (
-        language === LANG_FRENCH &&
+        isFrenchLanguage(language) &&
         trimmedValue.includes(',') &&
         !Number.isNaN(Number(trimmedValue.replace(',', '.')))
     ) {
