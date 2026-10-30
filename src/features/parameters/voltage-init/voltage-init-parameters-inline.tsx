@@ -15,13 +15,13 @@ import { CustomFormProvider } from '../../../components/ui';
 import { useVoltageInitParametersForm } from './use-voltage-init-parameters-form';
 import { VoltageInitParametersForm } from './voltage-init-parameters-form';
 import { VoltageInitStudyParameters } from './voltage-init.type';
-import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
+import { getVoltageInitParameters, resetVoltageInitParameters } from '../../../services';
 import {
     fromVoltageInitParametersFormToParamValues,
     fromVoltageInitParamsDataToFormValues,
 } from './voltage-init-form-utils';
-import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 import { snackWithFallback } from '../../../utils/error';
+import { DEFAULT_GENERAL_APPLY_MODIFICATIONS } from './constants';
 
 export function VoltageInitParametersInLine({
     studyUuid,
@@ -64,12 +64,9 @@ export function VoltageInitParametersInLine({
         [reset, snackError]
     );
 
-    const resetVoltageInitParameters = useCallback(() => {
-        updateVoltageInitParameters(studyUuid, {
-            applyModifications: DEFAULT_GENERAL_APPLY_MODIFICATIONS,
-            computationParameters: null, // null means Reset
-        }).catch((error) => {
-            snackWithFallback(snackError, error, { headerId: 'updateVoltageInitParametersError' });
+    const resetVoltageInitParams = useCallback(() => {
+        resetVoltageInitParameters(studyUuid, DEFAULT_GENERAL_APPLY_MODIFICATIONS).catch((error) => {
+            snackWithFallback(snackError, error, { headerId: 'resetVoltageInitParametersError' });
         });
     }, [studyUuid, snackError]);
 
@@ -94,7 +91,7 @@ export function VoltageInitParametersInLine({
                         fromVoltageInitParametersFormToParamValues(params).computationParameters,
                 }}
                 selectParameterHandler={handleLoadParameters}
-                resetHandler={resetVoltageInitParameters}
+                resetHandler={resetVoltageInitParams}
                 validateHandler={handleSubmit(voltageInitMethods.onSaveInline, voltageInitMethods.onValidationError)}
             >
                 <VoltageInitParametersForm

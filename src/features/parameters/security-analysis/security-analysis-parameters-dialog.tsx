@@ -12,6 +12,7 @@ import {
     fetchSecurityAnalysisParameters,
     fetchSecurityAnalysisProviders,
     getSecurityAnalysisDefaultLimitReductions,
+    resetSecurityAnalysisParameters,
     updateSecurityAnalysisParameters,
 } from '../../../services/security-analysis';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
@@ -40,6 +41,7 @@ export function SecurityAnalysisParametersDialog({
             backendFetchProviders: fetchSecurityAnalysisProviders,
             backendFetchParameters: fetchSecurityAnalysisParameters,
             backendUpdateParameters: updateSecurityAnalysisParameters,
+            backendResetParameters: resetSecurityAnalysisParameters,
             backendFetchDefaultLimitReductions: getSecurityAnalysisDefaultLimitReductions,
         }
     );
