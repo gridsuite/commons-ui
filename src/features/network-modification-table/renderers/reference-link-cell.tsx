@@ -11,7 +11,7 @@ import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
 import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
-import { fetchAppsMetadata, isExploreMetadata, unshareNetworkModification } from '../../../services';
+import { fetchAppsMetadata, isExploreMetadata } from '../../../services';
 import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { CustomMenuItem, CustomTooltip, ErrorMessage, LinkOffIcon } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
@@ -19,16 +19,10 @@ import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIco
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
-    studyUuid: UUID | null;
-    currentNodeId: UUID | null;
+    onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
 }
 
-export function ReferenceLinkCell({
-    studyUuid,
-    currentNodeId,
-    row,
-    disabled = false,
-}: Readonly<ReferenceLinkCellProps>) {
+export function ReferenceLinkCell({ row, disabled = false, onUnshareModification }: Readonly<ReferenceLinkCellProps>) {
     const data = row.original;
     const { referencedId } = row.original;
     const intl = useIntl();
@@ -79,7 +73,7 @@ export function ReferenceLinkCell({
             event.stopPropagation();
             setAnchorEl(null);
             setIsLoading(true);
-            unshareNetworkModification(studyUuid, currentNodeId, data.uuid)
+            onUnshareModification(data.uuid)
                 .catch((error: ErrorMessage) => {
                     snackWithFallback(snackError, error, { headerId: 'UnshareError' });
                 })
@@ -87,7 +81,7 @@ export function ReferenceLinkCell({
                     setIsLoading(false);
                 });
         },
-        [currentNodeId, data.uuid, snackError, studyUuid]
+        [data.uuid, onUnshareModification, snackError]
     );
 
     return (

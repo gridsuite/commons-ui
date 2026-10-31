@@ -22,7 +22,7 @@ export interface DescriptionModificationDialogProps {
     description: string;
     open: boolean;
     onClose: () => void;
-    updateElement?: (data: Record<string, string>) => Promise<Response>;
+    updateElement?: (data: Record<string, string>) => Promise<unknown>;
     updateForm?: (data: Record<string, string>) => void;
     disabledSave?: boolean;
     isReadOnly?: boolean;

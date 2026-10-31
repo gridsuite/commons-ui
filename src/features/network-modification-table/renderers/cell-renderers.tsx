@@ -79,11 +79,14 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
+    if (!meta?.context.onUpdateModificationNameAndDescription) {
+        return null;
+    }
+
     return (
         <DescriptionCell
             row={row}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
+            onUpdateModificationNameAndDescription={meta.context.onUpdateModificationNameAndDescription}
             isDisabled={meta?.status.isDisabled}
             isSaveDisabled={isModificationEditLocked(row.original)}
         />
@@ -92,13 +95,15 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
 
 export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
+    if (!meta?.context.onUnshareModification) {
+        return null;
+    }
 
     if (isReferenceModification(row.original)) {
         return (
             <ReferenceLinkCell
+                onUnshareModification={meta.context.onUnshareModification}
                 row={row}
-                studyUuid={meta?.context.studyUuid ?? null}
-                currentNodeId={meta?.context.currentNodeId ?? null}
                 disabled={meta?.status.isDisabled}
             />
         );
@@ -113,8 +118,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
     return (
         <SwitchCell
             row={row}
-            studyUuid={meta.context.studyUuid ?? null}
-            currentNodeId={meta.context.currentNodeId}
+            onUpdateModificationMetadata={meta?.context.onUpdateModificationMetadata}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
             isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
@@ -124,18 +128,18 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
 
 export function RootNetworkHeaderRenderer({ column, table }: HCtx) {
     const { meta } = table.options;
-    // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
-    const isCurrentRootNetwork =
-        !!meta?.context.currentRootNetworkUuid && column.id === meta.context.currentRootNetworkUuid;
-    if (!isCurrentRootNetwork || (meta?.modifications.count ?? 0) < 1) {
+    // `column.id` is the visualizedRootNetwork (set in createRootNetworksColumns).
+    const isVisualizedRootNetwork =
+        !!meta?.context.visualizedRootNetworkUuid && column.id === meta.context.visualizedRootNetworkUuid;
+    if (!isVisualizedRootNetwork || (meta?.modifications.count ?? 0) < 1) {
         return null;
     }
-    const currentRootNetworkTag = meta?.context.rootNetworks?.find(
-        (r) => r.rootNetworkUuid === meta.context.currentRootNetworkUuid
+    const visualizedRootNetworkTag = meta?.context.rootNetworks?.find(
+        (r) => r.rootNetworkUuid === meta.context.visualizedRootNetworkUuid
     )?.tag;
     return (
         <Box sx={networkModificationTableStyles.rootNetworkHeader}>
-            <Tooltip title={<FormattedMessage id="visualizedRootNetwork" values={{ tag: currentRootNetworkTag }} />}>
+            <Tooltip title={<FormattedMessage id="visualizedRootNetwork" values={{ tag: visualizedRootNetworkTag }} />}>
                 <Badge overlap="circular" color="primary" variant="dot">
                     <RemoveRedEyeIcon />
                 </Badge>
@@ -152,7 +156,8 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         !rootNetwork ||
         !meta?.modifications.activations ||
         !meta.modifications.applicabilities ||
-        !meta.modifications.setPendingApplicabilities
+        !meta.modifications.setPendingApplicabilities ||
+        !meta.context.onUpdateModificationStatusByRootNetwork
     ) {
         return null;
     }
@@ -160,8 +165,8 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         <Box sx={rootNetworkChipCellSx}>
             <RootNetworkChipCell
                 row={row}
-                studyUuid={meta.context.studyUuid ?? null}
-                currentNodeId={meta.context.currentNodeId}
+                onUpdateModificationStatusByRootNetwork={meta.context.onUpdateModificationStatusByRootNetwork}
+                canUpdateModificationStatusByRootNetwork={meta.context.canUpdateModificationStatusByRootNetwork}
                 rootNetwork={rootNetwork}
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}
