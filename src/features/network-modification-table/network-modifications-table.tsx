@@ -31,6 +31,7 @@ import {
     MAX_COMPOSITE_NESTING_DEPTH,
 } from './utils';
 import { ModificationRow } from './row';
+import { ModificationMoveInfos } from '../../services';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -43,11 +44,27 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
-    currentRootNetworkUuid?: UUID;
+    visualizedRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
+    onMoveModifications: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
+    canMoveModifications: boolean;
+    onUpdateModificationMetadata: (
+        modificationUuid: UUID,
+        metadata: Partial<ComposedModificationMetadata>
+    ) => Promise<unknown>;
+    onUpdateModificationNameAndDescription: (
+        modificationUuid: UUID,
+        metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+    ) => Promise<unknown>;
+    onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
+    onUpdateModificationStatusByRootNetwork: (
+        rootNetworkUuid: UUID,
+        modificationUuid: UUID,
+        applicable: boolean
+    ) => Promise<unknown>;
+    canUpdateModificationStatusByRootNetwork: boolean;
     isDisabled?: boolean;
+    rowStateResetKey?: string | null;
 }
 
 export function NetworkModificationsTable({
@@ -61,15 +78,21 @@ export function NetworkModificationsTable({
     highlightedModificationUuid,
     modificationToEditLabel,
     modificationUuidsToReset,
-    studyUuid = null,
-    currentNodeId = undefined,
-    currentRootNetworkUuid,
+    visualizedRootNetworkUuid,
     rootNetworks,
     isDisabled = false,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
     pendingState,
+    onMoveModifications,
+    canMoveModifications,
+    onUpdateModificationMetadata,
+    onUpdateModificationNameAndDescription,
+    onUnshareModification,
+    onUpdateModificationStatusByRootNetwork,
+    canUpdateModificationStatusByRootNetwork,
+    rowStateResetKey,
 }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
 
@@ -129,9 +152,12 @@ export function NetworkModificationsTable({
     const tableMeta = useMemo(
         () => ({
             context: {
-                studyUuid,
-                currentNodeId,
-                currentRootNetworkUuid,
+                onUpdateModificationMetadata,
+                onUpdateModificationNameAndDescription,
+                onUnshareModification,
+                onUpdateModificationStatusByRootNetwork,
+                canUpdateModificationStatusByRootNetwork,
+                visualizedRootNetworkUuid,
                 rootNetworks,
             },
             modifications: {
@@ -156,9 +182,12 @@ export function NetworkModificationsTable({
             },
         }),
         [
-            studyUuid,
-            currentNodeId,
-            currentRootNetworkUuid,
+            onUpdateModificationMetadata,
+            onUpdateModificationNameAndDescription,
+            onUnshareModification,
+            onUpdateModificationStatusByRootNetwork,
+            canUpdateModificationStatusByRootNetwork,
+            visualizedRootNetworkUuid,
             rootNetworks,
             modifications.length,
             activations,
@@ -213,8 +242,8 @@ export function NetworkModificationsTable({
         composedModifications,
         setComposedModifications,
         onDragEnd: onRowDragEnd,
-        studyUuid,
-        currentNodeUuid: currentNodeId,
+        onMoveModifications,
+        canMoveModifications,
     });
 
     // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
@@ -256,7 +285,7 @@ export function NetworkModificationsTable({
         table.resetRowSelection();
         table.resetExpanded();
         lastClickedRowId.current = null;
-    }, [lastClickedRowId, table, currentNodeId]);
+    }, [lastClickedRowId, table, rowStateResetKey]);
 
     useEffect(() => {
         if (highlightedModificationUuidRef.current && containerRef.current) {

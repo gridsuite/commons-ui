@@ -27,7 +27,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { moveModifications } from '../../services';
+import { ModificationMoveInfos } from '../../services';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -37,8 +37,8 @@ interface UseModificationsDragAndDropParams {
     composedModifications: ComposedModificationMetadata[];
     setComposedModifications: React.Dispatch<React.SetStateAction<ComposedModificationMetadata[]>>;
     onDragEnd: () => void;
-    studyUuid: UUID | null;
-    currentNodeUuid?: UUID;
+    onMoveModifications: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
+    canMoveModifications: boolean;
 }
 
 interface UseModificationsDragAndDropReturn {
@@ -103,8 +103,8 @@ export const useModificationsDragAndDrop = ({
     composedModifications,
     setComposedModifications,
     onDragEnd,
-    studyUuid = null,
-    currentNodeUuid = undefined,
+    onMoveModifications,
+    canMoveModifications,
 }: UseModificationsDragAndDropParams): UseModificationsDragAndDropReturn => {
     const { snackError } = useSnackMessage();
     const { rows } = table.getRowModel();
@@ -214,7 +214,7 @@ export const useModificationsDragAndDrop = ({
             onDragEnd();
 
             const { source, destination } = result;
-            if (!destination || source.index === destination.index || !currentNodeUuid) {
+            if (!destination || source.index === destination.index || !canMoveModifications) {
                 return;
             }
 
@@ -274,7 +274,7 @@ export const useModificationsDragAndDrop = ({
                 const oldPosition = composedModifications.findIndex((m) => m.rowKey === sourceRow.id);
                 const newPosition = composedModifications.findIndex((m) => m.rowKey === targetRow.id);
 
-                if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition || !currentNodeUuid) {
+                if (oldPosition === -1 || newPosition === -1 || oldPosition === newPosition) {
                     return;
                 }
 
@@ -286,7 +286,7 @@ export const useModificationsDragAndDrop = ({
             }
 
             // A null composite designates the node's own group, resolved by the study server
-            moveModifications(studyUuid, currentNodeUuid, [
+            onMoveModifications([
                 {
                     modificationUuid: movingUuid,
                     sourceCompositeUuid: sourceContainerId,
@@ -304,9 +304,9 @@ export const useModificationsDragAndDrop = ({
             rows,
             isDropForbidden,
             composedModifications,
-            currentNodeUuid,
             setComposedModifications,
-            studyUuid,
+            onMoveModifications,
+            canMoveModifications,
             snackError,
         ]
     );
