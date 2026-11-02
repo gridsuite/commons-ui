@@ -98,10 +98,9 @@ export const networkModificationTableStyles = {
         width: '16px',
         height: '16px',
     },
-    disabledDragHandle: (theme) => ({
-        cursor: 'not-allowed',
-        color: theme.palette.text.disabled,
-    }),
+    disabledDragHandle: {
+        cursor: 'default',
+    },
     readOnlyLockIcon: (theme) => ({
         flexShrink: 0,
         width: '14px',

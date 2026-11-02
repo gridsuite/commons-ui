@@ -32,6 +32,14 @@ import {
     VOLTAGE_LIMITS_MODIFICATION,
     VoltageInitTabValues as TabValues,
     VOLTAGE_INIT_TAB_VALUES as TAB_VALUES,
+    PENALTY_ACTIVE_POWER,
+    DEFAULT_PENALTY_ACTIVE_POWER,
+    PENALTY_INVEST_REA_NEG,
+    PENALTY_INVEST_REA_POS,
+    PENALTY_UNITS_REACTIVE,
+    DEFAULT_PENALTY_INVEST_REA_NEG,
+    DEFAULT_PENALTY_INVEST_REA_POS,
+    DEFAULT_PENALTY_UNITS_REACTIVE,
 } from './constants';
 import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
 import { useTabs, useSnackMessage } from '../../../hooks';
@@ -170,6 +178,12 @@ export const useVoltageInitParametersForm = ({
                         [NAME]: yup.string().required(),
                     })
                 ),
+                [TabValues.EXPERT]: yup.object().shape({
+                    [PENALTY_ACTIVE_POWER]: yup.number().required(),
+                    [PENALTY_INVEST_REA_NEG]: yup.number().required(),
+                    [PENALTY_INVEST_REA_POS]: yup.number().required(),
+                    [PENALTY_UNITS_REACTIVE]: yup.number().required(),
+                }),
             })
             .concat(getNameElementEditorSchema(name));
     }, [name]);
@@ -191,6 +205,12 @@ export const useVoltageInitParametersForm = ({
             [VARIABLE_TRANSFORMERS]: [],
             [SHUNT_COMPENSATORS_SELECTION_TYPE]: 'NONE_EXCEPT',
             [VARIABLE_SHUNT_COMPENSATORS]: [],
+            [TabValues.EXPERT]: {
+                [PENALTY_ACTIVE_POWER]: DEFAULT_PENALTY_ACTIVE_POWER,
+                [PENALTY_INVEST_REA_NEG]: DEFAULT_PENALTY_INVEST_REA_NEG,
+                [PENALTY_INVEST_REA_POS]: DEFAULT_PENALTY_INVEST_REA_POS,
+                [PENALTY_UNITS_REACTIVE]: DEFAULT_PENALTY_UNITS_REACTIVE,
+            },
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
