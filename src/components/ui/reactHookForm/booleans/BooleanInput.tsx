@@ -7,8 +7,10 @@
 
 import { type ChangeEvent, type JSX, useCallback } from 'react';
 import { useIntl } from 'react-intl';
-import { Checkbox, FormControlLabel, Switch } from '@mui/material';
+import { Checkbox, FormControlLabel, type FormControlLabelProps, Switch } from '@mui/material';
 import { useController } from 'react-hook-form';
+import { useCustomFormContext } from '../provider';
+import { readOnlyFormControlLabelStyle } from '../styles/styles';
 
 type InputTypes = typeof Switch | typeof Checkbox;
 type InputProps<TInput> = TInput extends (props: infer Props) => JSX.Element ? Props : never;
@@ -19,6 +21,7 @@ export type BooleanInputProps<TInput extends InputTypes> = {
     formProps?: InputProps<TInput>;
     Input: TInput;
     dataTestId?: string;
+    labelProps?: Omit<FormControlLabelProps, 'label' | 'control'>;
 };
 
 export function BooleanInput<TInput extends InputTypes>({
@@ -27,12 +30,14 @@ export function BooleanInput<TInput extends InputTypes>({
     formProps,
     Input,
     dataTestId,
+    labelProps,
     ...props
 }: Readonly<BooleanInputProps<TInput>>) {
-    const { onChange, slotProps, ...otherFormProps } = formProps ?? { onChange: undefined };
+    const { onChange, slotProps, disabled, ...otherFormProps } = formProps ?? { onChange: undefined };
     const {
         field: { onChange: onChangeRhf, value, ref },
     } = useController<Record<string, boolean>>({ name });
+    const { isReadOnly } = useCustomFormContext();
 
     const intl = useIntl();
 
@@ -53,11 +58,21 @@ export function BooleanInput<TInput extends InputTypes>({
             data-testid={dataTestId}
             {...(otherFormProps as any)}
             {...props}
+            disabled={isReadOnly || disabled} // override props.disabled if isReadOnly
         />
     );
 
     if (label) {
-        return <FormControlLabel control={CustomInput} label={intl.formatMessage({ id: label })} />;
+        return (
+            <FormControlLabel
+                control={CustomInput}
+                label={intl.formatMessage({ id: label })}
+                // must restore label color and opacity otherwise disabled Input is detected
+                // by FormControlLabel.
+                sx={isReadOnly ? readOnlyFormControlLabelStyle : undefined}
+                {...labelProps}
+            />
+        );
     }
 
     return CustomInput;

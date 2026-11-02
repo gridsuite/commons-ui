@@ -9,6 +9,8 @@ import { FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, RadioGroup
 import { FormattedMessage } from 'react-intl';
 import { useController } from 'react-hook-form';
 import { FieldLabel } from '../utils/FieldLabel';
+import { useCustomFormContext } from '../provider';
+import { readOnlyFormControlLabelStyle } from '../styles/styles';
 
 type RadioOptions = Array<{
     id: string;
@@ -29,6 +31,7 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
     const {
         field: { onChange, value },
     } = useController({ name, defaultValue: '' });
+    const { isReadOnly } = useCustomFormContext();
 
     return (
         <FormControl>
@@ -44,11 +47,14 @@ export function RadioInput({ name, label, id, options, formProps }: Readonly<Rad
                 {options.map((option) => {
                     const element = (
                         <FormControlLabel
-                            control={<Radio />}
+                            control={<Radio disabled={isReadOnly} />}
                             value={option.id}
                             key={option.id}
                             label={<FieldLabel label={option.label} />}
-                            disabled={option.disabled}
+                            disabled={isReadOnly || option.disabled}
+                            // must restore label color and opacity otherwise disabled Input is detected
+                            // by FormControlLabel.
+                            sx={isReadOnly ? readOnlyFormControlLabelStyle : undefined}
                         />
                     );
                     return option.tooltipMessage ? (

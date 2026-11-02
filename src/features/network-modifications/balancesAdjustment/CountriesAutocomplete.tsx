@@ -5,12 +5,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { SyntheticEvent } from 'react';
+import { SyntheticEvent, useMemo } from 'react';
 import { useController } from 'react-hook-form';
 import { Autocomplete, AutocompleteProps, TextField, TextFieldProps } from '@mui/material';
-import { genHelperError } from '../../../components/ui/reactHookForm/utils';
-import { AutocompleteInputProps } from '../../../components/ui/reactHookForm/autocompleteInputs';
+import {
+    genHelperError,
+    getReadOnlyAutocompleteProps,
+    getReadOnlySlotProps,
+} from '../../../components/ui/reactHookForm/utils';
+import { type AutocompleteInputProps } from '../../../components/ui/reactHookForm/autocompleteInputs';
 import { balancesAdjustmentStyles } from './balancesAdjustment.styles';
+import { useCustomFormContext } from '../../../components';
 
 export interface CountriesAutocompleteProps extends Pick<
     AutocompleteProps<string, true, false, false>,
@@ -33,6 +38,7 @@ export function CountriesAutocomplete({
     translate,
     ...props
 }: Readonly<CountriesAutocompleteProps>) {
+    const { isReadOnly } = useCustomFormContext();
     const {
         field: { onChange, value, ref },
         fieldState: { error },
@@ -41,6 +47,7 @@ export function CountriesAutocomplete({
     const handleChange = (_event: SyntheticEvent, newValue: string[]) => {
         onChange(newValue);
     };
+    const readOnlySlotProps = useMemo(() => getReadOnlySlotProps(isReadOnly, value), [isReadOnly, value]);
 
     return (
         <Autocomplete
@@ -59,7 +66,14 @@ export function CountriesAutocomplete({
                     {...params}
                     slotProps={{
                         ...params.slotProps,
-                        htmlInput: { ...params.slotProps.htmlInput },
+                        input: {
+                            ...params.slotProps.input,
+                            ...readOnlySlotProps.input,
+                        },
+                        inputLabel: {
+                            ...params.slotProps.inputLabel,
+                            ...readOnlySlotProps.inputLabel,
+                        },
                     }}
                     label={label}
                     {...genHelperError(error?.message)}
@@ -69,6 +83,7 @@ export function CountriesAutocomplete({
             autoHighlight
             disableCloseOnSelect
             {...props}
+            {...getReadOnlyAutocompleteProps(isReadOnly)}
         />
     );
 }

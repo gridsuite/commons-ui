@@ -11,6 +11,7 @@ import { forwardRef, useImperativeHandle } from 'react';
 import { DeletableRow } from './DeletableRow';
 import { ErrorInput, MidFormError } from '../errorManagement';
 import { AddButton } from '../../../ui/addButton';
+import { useCustomFormContext } from '../provider';
 
 export type ExpandableInputHandle = {
     replaceItems: (newItems: any[]) => void;
@@ -67,6 +68,7 @@ export const ExpandableInput = forwardRef(
         } = useFieldArray({
             name,
         });
+        const { isReadOnly } = useCustomFormContext();
 
         useImperativeHandle(
             ref,
@@ -94,13 +96,13 @@ export const ExpandableInput = forwardRef(
                                 }
                             }}
                             deletionMark={getDeletionMark?.(idx)}
-                            disabledDeletion={disabledDeletion?.(idx)}
+                            disabledDeletion={isReadOnly || disabledDeletion?.(idx)}
                             dataTestId={rowDataTestId}
                         >
                             <Field name={name} index={idx} {...fieldProps} />
                         </DeletableRow>
                     ))}
-                {addButtonLabel && (
+                {addButtonLabel && !isReadOnly && (
                     <Grid>
                         <AddButton
                             disabled={disabled}

@@ -9,6 +9,10 @@ import {
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
+    PENALTY_ACTIVE_POWER,
+    PENALTY_INVEST_REA_NEG,
+    PENALTY_INVEST_REA_POS,
+    PENALTY_UNITS_REACTIVE,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     SHUNT_COMPENSATORS_SELECTION_TYPE,
@@ -45,6 +49,10 @@ export type VoltageInitParameters = {
     [VARIABLE_TRANSFORMERS]: FilterIdentifier[];
     [SHUNT_COMPENSATORS_SELECTION_TYPE]: EquipmentsSelectionType;
     [VARIABLE_SHUNT_COMPENSATORS]: FilterIdentifier[];
+    [PENALTY_ACTIVE_POWER]: number;
+    [PENALTY_INVEST_REA_NEG]: number;
+    [PENALTY_INVEST_REA_POS]: number;
+    [PENALTY_UNITS_REACTIVE]: number;
 };
 
 // Dto exchanged with study server, with study-specific 'applyModifications' parameter

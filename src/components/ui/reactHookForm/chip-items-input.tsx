@@ -56,7 +56,7 @@ export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Re
         name,
     });
 
-    const { validationSchema, getValues } = useCustomFormContext();
+    const { validationSchema, getValues, isReadOnly } = useCustomFormContext();
 
     const {
         fieldState: { error },
@@ -66,6 +66,7 @@ export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Re
 
     const addItem = useCallback(
         (value: string) => {
+            if (isReadOnly) return;
             // check if element is already present
             if (getValues(name).find((v: string) => v === value) !== undefined) {
                 snackError({
@@ -76,7 +77,7 @@ export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Re
                 append(value);
             }
         },
-        [append, getValues, snackError, name]
+        [isReadOnly, getValues, name, snackError, append]
     );
 
     const keyPress = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -115,9 +116,13 @@ export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Re
                             <Chip
                                 key={item.id}
                                 size="small"
-                                onDelete={() => {
-                                    remove(index);
-                                }}
+                                onDelete={
+                                    isReadOnly
+                                        ? undefined
+                                        : () => {
+                                              remove(index);
+                                          }
+                                }
                                 label={
                                     <OverflowableText
                                         text={<RawReadOnlyInput name={`${name}.${index}`} />}
@@ -129,24 +134,26 @@ export function ChipItemsInput({ label, name, hideErrorMessage, dataTestId }: Re
                     </FormControl>
                 )}
 
-                <TextField
-                    data-testid={dataTestId}
-                    variant="standard"
-                    value={textEntered}
-                    onKeyDown={keyPress}
-                    onChange={handleChange}
-                    onBlur={onBlur}
-                    slotProps={{
-                        input: {
-                            disableUnderline: true,
-                            style: {
-                                marginTop: '5px',
-                                height: '30px',
-                                marginLeft: '10px',
+                {!isReadOnly && (
+                    <TextField
+                        data-testid={dataTestId}
+                        variant="standard"
+                        value={textEntered}
+                        onKeyDown={keyPress}
+                        onChange={handleChange}
+                        onBlur={onBlur}
+                        slotProps={{
+                            input: {
+                                disableUnderline: true,
+                                style: {
+                                    marginTop: '5px',
+                                    height: '30px',
+                                    marginLeft: '10px',
+                                },
                             },
-                        },
-                    }}
-                />
+                        }}
+                    />
+                )}
             </FormControl>
             {!hideErrorMessage && <ErrorInput name={name} InputField={MidFormError} />}
         </>

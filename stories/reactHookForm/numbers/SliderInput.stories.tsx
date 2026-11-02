@@ -12,10 +12,14 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { SliderInput, CustomFormProvider } from '../../../src';
 
-function Form({ children }: PropsWithChildren) {
+function Form({ isReadOnly = false, children }: PropsWithChildren & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { threshold: 27 } });
     return (
-        <CustomFormProvider {...methods} validationSchema={yup.object().shape({ threshold: yup.number().required() })}>
+        <CustomFormProvider
+            {...methods}
+            validationSchema={yup.object().shape({ threshold: yup.number().required() })}
+            isReadOnly={isReadOnly}
+        >
             <Box
                 sx={{
                     px: 2,
@@ -33,8 +37,8 @@ const meta = {
     tags: ['autodocs'],
     args: { name: 'threshold', min: 0, max: 100, valueLabelDisplay: 'auto' },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -55,3 +59,14 @@ export const WithMarks: Story = {
     },
 };
 export const Disabled: Story = { args: { disabled: true } };
+export const ReadOnly: Story = { parameters: { isReadOnly: true } };
+export const WithMarksReadOnly: Story = {
+    args: {
+        marks: [
+            { value: 0, label: '0' },
+            { value: 50, label: '50' },
+            { value: 100, label: '100' },
+        ],
+    },
+    parameters: { isReadOnly: true },
+};
