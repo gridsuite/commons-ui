@@ -124,6 +124,28 @@ export function updateParameter(
     });
 }
 
+export function elementAlreadyExists(
+    elementUuid: UUID | null | undefined,
+    directoryUuid: UUID | null | undefined,
+    elementName: string,
+    elementType: ElementType
+): Promise<boolean> {
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('elementName', elementName);
+    if (directoryUuid) {
+        urlSearchParams.append('directoryUuid', directoryUuid);
+    }
+    urlSearchParams.append('elementType', elementType);
+    if (elementUuid) {
+        urlSearchParams.append('elementUuid', elementUuid);
+    }
+    const existsElementUrl = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/checkName?${urlSearchParams.toString()}`;
+    console.debug(existsElementUrl);
+    return backendFetch(existsElementUrl, { method: 'head' }).then(
+        (response) => response.status !== 204 // HTTP 204 : No-content
+    );
+}
+
 export function updateElement(
     modificationUuid: UUID | undefined,
     metadata: Partial<ElementAttributes>
@@ -131,8 +153,6 @@ export function updateElement(
     if (!modificationUuid) {
         return Promise.reject(new Error('modificationUuid is required'));
     }
-    const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('uuid', modificationUuid);
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${safeEncodeURIComponent(modificationUuid)}`;
     return backendFetch(url, {
         method: 'PUT',
