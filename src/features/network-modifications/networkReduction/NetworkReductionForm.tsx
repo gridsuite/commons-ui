@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Grid } from '@mui/material';
-import { DirectoryItemsInput, FieldLabel, GridItem } from '../../../components';
+import { DirectoryItemsInput, FieldLabel } from '../../../components';
 import { ElementType, EquipmentType, FieldConstants } from '../../../utils';
 
 export function NetworkReductionForm() {
