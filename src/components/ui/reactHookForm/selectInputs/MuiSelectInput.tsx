@@ -13,6 +13,7 @@ import { useCustomFormContext } from '../provider';
 export type MuiSelectInputProps = SelectProps & {
     name: string;
     options: { id: string; label: string }[] | string[];
+    onChangeCb?: (value: string) => void;
 };
 
 function renderMenuItem(option: { id: string; label: string } | string) {
@@ -39,7 +40,10 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
     return (
         <Select
             value={value}
-            onChange={onChange}
+            onChange={(event) => {
+                onChange(event);
+                props.onChangeCb?.(event.target.value as string);
+            }}
             {...props}
             inputProps={{ ...props.inputProps, readOnly: isReadOnly || props.inputProps?.readOnly }}
         >

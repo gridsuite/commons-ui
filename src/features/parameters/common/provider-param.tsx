@@ -16,6 +16,7 @@ export interface ProviderParamProps {
     options: { id: string; label: string }[];
     id?: string;
     sx?: SxProps;
+    onProviderChange?: (provider: string) => void;
 }
 
 const styles = {
@@ -24,14 +25,20 @@ const styles = {
     },
 } as const satisfies MuiStyles;
 
-export function ProviderParam({ options, id, sx }: Readonly<ProviderParamProps>) {
+export function ProviderParam({ options, id, sx, onProviderChange }: Readonly<ProviderParamProps>) {
     return (
         <Grid container spacing={1} sx={mergeSx({ justifyContent: 'space-between' }, styles.providerParam, sx)}>
             <Grid size="auto" sx={mergeSx(parametersStyles.parameterName, { paddingRight: 2 })}>
                 <FormattedMessage id="Provider" />
             </Grid>
             <Grid size="auto" sx={parametersStyles.controlItem}>
-                <MuiSelectInput name={PROVIDER} size="small" options={options} data-testid={`${id}Provider`} />
+                <MuiSelectInput
+                    name={PROVIDER}
+                    size="small"
+                    options={options}
+                    data-testid={`${id}Provider`}
+                    onChangeCb={onProviderChange}
+                />
             </Grid>
             <LineSeparator />
         </Grid>

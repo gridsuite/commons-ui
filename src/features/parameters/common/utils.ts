@@ -10,6 +10,7 @@ import {
     ParameterType,
     SpecificParameterInfos,
     SpecificParametersDescription,
+    SpecificParametersPerProvider,
     SpecificParametersValues,
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
@@ -106,10 +107,12 @@ export const getAllSpecificParametersValues = (
 export const setSpecificParameters = (
     provider: string,
     specificParamsDescriptions: SpecificParametersDescription | null,
+    specificParametersPerProvider: SpecificParametersPerProvider | undefined,
     formMethods: UseFormReturn
 ) => {
-    const specificParams = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];
-    const specificParamsValues = getDefaultSpecificParamsValues(specificParams);
+    const specificParametersDesc = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];
+    const specificParameters = specificParametersPerProvider?.[provider] ?? {};
+    const specificParamsValues = formatSpecificParameters(specificParametersDesc, specificParameters);
     formMethods.setValue(SPECIFIC_PARAMETERS, specificParamsValues);
 };
 
