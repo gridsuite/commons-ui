@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import * as yup from 'yup';
-import { DeepNullable, FieldConstants, ModificationType } from '../../../utils';
+import { DeepNullable, FieldConstants, ModificationType, YUP_REQUIRED } from '../../../utils';
 import { NetworkReductionDto } from './networkReduction.types';
 
 export const networkReductionFormSchema = yup
@@ -19,7 +19,8 @@ export const networkReductionFormSchema = yup
                     [FieldConstants.NAME]: yup.string().required(),
                 })
             )
-            .required(),
+            .required()
+            .min(1, YUP_REQUIRED),
     })
     .required();
 
