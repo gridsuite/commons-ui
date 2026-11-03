@@ -363,8 +363,12 @@ export function ExplicitNamingFilterForm({
                             alwaysShowVerticalScroll
                             rowClassRules={rowClassRules}
                             cssProps={{
+                                '& .ag-row.duplicate-equipment-row': {
+                                    borderBottom: `4px solid ${alpha(theme.palette.error.main, 0.5)}`,
+                                },
                                 '& .ag-row.duplicate-equipment-row .ag-cell': {
-                                    backgroundColor: alpha(theme.palette.error.light, 0.3),
+                                    backgroundColor: alpha(theme.palette.error.light, 0.15),
+                                    color: theme.palette.error.dark,
                                 },
                             }}
                             csvProps={{
