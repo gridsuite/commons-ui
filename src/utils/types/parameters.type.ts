@@ -8,7 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { LoadFlowParametersInfos } from './loadflow.type';
 import { DynamicSecurityAnalysisParametersFetchReturn } from './dynamic-security-analysis.type';
-import type { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
+import type { ILimitScalingsByVoltageLevel } from '../../features/parameters/common/limitscalings/columns-definitions';
 import { DynamicSimulationParametersEnriched } from './dynamic-simulation.type';
 import { SensitivityAnalysisParametersInfosEnriched } from './sensitivity-analysis.type';
 import { type ShortCircuitParametersInfos } from '../../features/parameters/short-circuit/short-circuit-parameters.type';
@@ -70,7 +70,7 @@ export type BackendFunctions<T extends ComputingType> = {
     backendFetchParameters: (paramsUuidOrStudyUuid: UUID) => Promise<ParametersInfos<T>>;
     backendUpdateParameters?: (paramsUuidOrStudyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
     backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>;
-    backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>;
+    backendFetchDefaultLimitScalings?: () => Promise<ILimitScalingsByVoltageLevel[]>;
 };
 
 export type UseParametersBackendReturnProps<T extends ComputingType> = {
@@ -80,5 +80,5 @@ export type UseParametersBackendReturnProps<T extends ComputingType> = {
     updateParameters: (newParams: ParametersInfos<T>) => void;
     resetParameters: () => void;
     specificParamsDescription: SpecificParametersDescription | null;
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    defaultLimitScalings: ILimitScalingsByVoltageLevel[];
 };

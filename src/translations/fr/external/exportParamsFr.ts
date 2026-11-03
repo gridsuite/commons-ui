@@ -23,7 +23,6 @@ export const exportParamsFr = {
     'iidm.export.cgmes.naming-strategy.desc': 'Type de conversion utilisé pour créer les identifiants CGMES',
     'iidm.export.cgmes.naming-strategy.identity': 'identity',
     'iidm.export.cgmes.naming-strategy.cgmes': 'cgmes',
-    'iidm.export.cgmes.naming-strategy.cgmes-fix-all-invalid-ids': 'cgmes-fix-all-invalid-ids',
     'iidm.export.cgmes.profiles': 'Profils',
     'iidm.export.cgmes.profiles.desc': 'Profils à exporter',
     'iidm.export.cgmes.profiles.EQ': 'EQ',
@@ -67,6 +66,9 @@ export const exportParamsFr = {
         "Si à vrai met à jour les dépendances automatiquement sinon l'utilisateur les a déjà mises dans une extension de metadata",
     'iidm.export.cgmes.cgm_export': 'Exporter le cgm',
     'iidm.export.cgmes.cgm_export.desc': 'Exporter le cgm',
+    'iidm.export.cgmes.cgm-export-with-tp': 'Exporter le TP avec le cgm',
+    'iidm.export.cgmes.cgm-export-with-tp.desc':
+        'Pour un export cgm : vide pour ne pas exporter de TP, "CGM" pour un TP pour tout le CGM, "IGM" pour un TP par IGM',
 
     // UCTE
     'ucte.export.naming-strategy': 'Type de conversion utilisé pour créer les identifiants UCTE',
@@ -119,6 +121,9 @@ export const exportParamsFr = {
         " Forcer l'export du réseau même s'il contient des fonctionnalités en beta, en ignorant leur serialisation si elle n'existe pas.",
     'iidm.export.xml.sorted': 'Trier les ouvrages dans le fichier',
     'iidm.export.xml.sorted.desc': 'Trier les ouvrages dans le fichier',
+    'iidm.export.xml.use-connectable-creation-order': "Conserver l'ordre de création des ouvrages",
+    'iidm.export.xml.use-connectable-creation-order.desc':
+        'Écrire les ouvrages dans le fichier selon leur ordre de création (sans effet si les ouvrages sont triés)',
     'iidm.export.xml.version': 'Version IIDM',
     'iidm.export.xml.version.desc': 'Version IIDM utilisée pour générer le fichier',
 
@@ -137,8 +142,6 @@ export const exportParamsFr = {
         'Code EIC des lignes frontières (ligne non mergée)',
     'iidm.export.xml.included.extensions.cgmesLineBoundaryNode': 'Code EIC des lignes frontières (ligne complète)',
     'iidm.export.xml.included.extensions.cgmesMetadataModels': 'Cgmes - Métadonnées des modèles',
-    'iidm.export.xml.included.extensions.cgmesSshMetadata': 'Cgmes - ssh métadonnées',
-    'iidm.export.xml.included.extensions.cgmesSvMetadata': 'Cgmes - sv métadonnées',
     'iidm.export.xml.included.extensions.cgmesTapChangers': 'Cgmes - lois de réglage et déphasage',
     'iidm.export.xml.included.extensions.cimCharacteristics': 'Cgmes - caractéristiques',
     'iidm.export.xml.included.extensions.coordinatedReactiveControl': 'Contrôle coordonné du réactif',
@@ -146,25 +149,18 @@ export const exportParamsFr = {
     'iidm.export.xml.included.extensions.discreteMeasurements': 'Télémesures (Régleurs et Déphaseurs)',
     'iidm.export.xml.included.extensions.entsoeArea': 'Zone Entsoe',
     'iidm.export.xml.included.extensions.entsoeCategory': 'Catégorie Entsoe des groupes',
-    'iidm.export.xml.included.extensions.generatorActivePowerControl': 'Compensation (Groupes)',
     'iidm.export.xml.included.extensions.generatorFortescue': 'Données pour les calculs dissymétriques des groupes',
-    'iidm.export.xml.included.extensions.generatorAsymmetrical': 'Données pour les calculs dissymétriques des groupes',
     'iidm.export.xml.included.extensions.generatorRemoteReactivePowerControl':
-        'Régulation à distance de la puissance réactive des groupes',
+        'Régulation à distance de la puissance réactive des groupes (Version IIDM < 1.18)',
     'iidm.export.xml.included.extensions.generatorShortCircuit': 'Données de court-circuit des groupes',
-    'iidm.export.xml.included.extensions.generatorShortCircuits':
-        'Données de court-circuit des groupes (Version IIDM 1.0)',
     'iidm.export.xml.included.extensions.hvdcAngleDroopActivePowerControl': 'Emulation AC pour les HVDCs',
     'iidm.export.xml.included.extensions.hvdcOperatorActivePowerRange': 'Limites de transits des HVDCs',
     'iidm.export.xml.included.extensions.identifiableShortCircuit': 'Données de court-circuit des postes',
     'iidm.export.xml.included.extensions.injectionObservability': 'Observabilité des injections',
     'iidm.export.xml.included.extensions.lineFortescue': 'Données pour les calculs dissymétriques des lignes',
-    'iidm.export.xml.included.extensions.lineAsymmetrical': 'Données pour les calculs dissymétriques des lignes',
     'iidm.export.xml.included.extensions.linePosition': 'Coordonnées géographiques de lignes',
-    'iidm.export.xml.included.extensions.loadFortescue': 'Données pour les calculs dissymétriques des consommations',
     'iidm.export.xml.included.extensions.loadAsymmetrical': 'Données pour les calculs dissymétriques des consommations',
     'iidm.export.xml.included.extensions.measurements': 'Télémesures',
-    'iidm.export.xml.included.extensions.mergedXnode': 'Xnode mergé',
     'iidm.export.xml.included.extensions.operatingStatus': 'Statut de consignation et de déclenchement',
     'iidm.export.xml.included.extensions.position': 'Position des départs',
     'iidm.export.xml.included.extensions.referencePriorities':
@@ -177,23 +173,17 @@ export const exportParamsFr = {
     'iidm.export.xml.included.extensions.substationPosition': 'Coordonnées géographiques des sites',
     'iidm.export.xml.included.extensions.threeWindingsTransformerFortescue':
         'Données pour les calculs dissymétriques des transformateurs à trois enroulements',
-    'iidm.export.xml.included.extensions.threeWindingsTransformerAsymmetrical':
-        'Données pour les calculs dissymétriques des transformateurs à trois enroulements',
     'iidm.export.xml.included.extensions.threeWindingsTransformerPhaseAngleClock':
         "Angles de phase entre les enroulements (sous forme d'horloge) pour les transformateurs à trois enroulements",
     'iidm.export.xml.included.extensions.threeWindingsTransformerToBeEstimated':
         'Estimation des prises des régleurs et des déphaseurs des transformateurs à trois enroulements',
     'iidm.export.xml.included.extensions.twoWindingsTransformerFortescue':
         'Données pour les calculs dissymétriques des transformateurs à deux enroulements',
-    'iidm.export.xml.included.extensions.twoWindingsTransformerAsymmetrical':
-        'Données pour les calculs dissymétriques des transformateurs à deux enroulements',
     'iidm.export.xml.included.extensions.twoWindingsTransformerPhaseAngleClock':
         "Angle de phase entre les enroulements (sous forme d'horloge) pour les transformateurs à deux enroulements",
     'iidm.export.xml.included.extensions.twoWindingsTransformerToBeEstimated':
         'Estimation des prises des régleurs et des déphaseurs des transformateurs à deux enroulements',
-    'iidm.export.xml.included.extensions.voltageLevelShortCircuits':
-        'Données de court-circuit des postes (Version IIDM 1.0)',
     'iidm.export.xml.included.extensions.voltagePerReactivePowerControl':
-        'Lien entre la tension de consigne et la puissance réactive en mode réglage de tension (CSPRs)',
-    'iidm.export.xml.included.extensions.voltageRegulation': 'Réglage de tension',
+        'Lien entre la tension de consigne et la puissance réactive en mode réglage de tension (CSPRs) (Version IIDM < 1.18)',
+    'iidm.export.xml.included.extensions.voltageRegulation': 'Réglage de tension (Version IIDM < 1.18)',
 };

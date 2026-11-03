@@ -7,10 +7,10 @@
 import * as yup from 'yup';
 import { REAL_PERCENTAGE } from '../../../../utils/constants/translationKeys';
 
-export const LIMIT_REDUCTIONS_FORM = 'limitReductionsForm';
+export const LIMIT_SCALINGS_FORM = 'limitScalingsForm';
 export const VOLTAGE_LEVELS_FORM = 'voltageLevelsForm';
 export const IST_FORM = 'istForm';
-export const LIMIT_DURATION_FORM = 'limitReductionForm';
+export const LIMIT_DURATION_FORM = 'limitScalingForm';
 
 export interface IVoltageLevel {
     nominalV: number;
@@ -25,25 +25,25 @@ export interface ILimitDuration {
     highClosed: boolean;
 }
 
-export interface ITemporaryLimitReduction {
+export interface ITemporaryLimitScaling {
     reduction: number;
     limitDuration: ILimitDuration;
 }
 
-export interface ILimitReductionsByVoltageLevel {
+export interface ILimitScalingsByVoltageLevel {
     voltageLevel: IVoltageLevel;
     permanentLimitReduction: number;
-    temporaryLimitReductions: ITemporaryLimitReduction[];
+    temporaryLimitReductions: ITemporaryLimitScaling[];
 }
 
-export interface LimitReductionIColumnsDef {
+export interface LimitScalingIColumnsDef {
     label: React.ReactNode;
     dataKey: string;
     tooltip: React.ReactNode;
     width?: string;
 }
 
-export const COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS: LimitReductionIColumnsDef[] = [
+export const COLUMNS_DEFINITIONS_LIMIT_SCALINGS: LimitScalingIColumnsDef[] = [
     {
         label: 'voltageRange',
         dataKey: VOLTAGE_LEVELS_FORM,
@@ -72,11 +72,11 @@ const getLimitDurationsFormSchema = (nbLimits: number) => {
     return limitDurationsFormSchema;
 };
 
-export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
+export const getLimitScalingsFormSchema = (nbTemporaryLimits: number) => {
     return yup
         .object()
         .shape({
-            [LIMIT_REDUCTIONS_FORM]: yup.array().of(
+            [LIMIT_SCALINGS_FORM]: yup.array().of(
                 yup.object().shape({
                     [VOLTAGE_LEVELS_FORM]: yup.string(),
                     [IST_FORM]: yup.number().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE).nullable().required(),
@@ -87,17 +87,17 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
         .required();
 };
 
-const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
+const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitScaling[]) =>
     limits.reduce((acc: Record<string, number>, limit, index) => {
         acc[LIMIT_DURATION_FORM + index] = limit.reduction;
         return acc;
     }, {});
 
-export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+export const toFormValuesLimitScalings = (limits: ILimitScalingsByVoltageLevel[]) =>
     !limits
         ? {}
         : {
-              [LIMIT_REDUCTIONS_FORM]: limits.map((vlLimits) => ({
+              [LIMIT_SCALINGS_FORM]: limits.map((vlLimits) => ({
                   [VOLTAGE_LEVELS_FORM]: `${vlLimits.voltageLevel.nominalV} kV`,
                   [IST_FORM]: vlLimits.permanentLimitReduction,
                   ...toFormValuesFromTemporaryLimits(vlLimits.temporaryLimitReductions),

@@ -10,12 +10,12 @@ import * as yup from 'yup';
 import {
     ADVANCED_PARAMETERS,
     COMMON_PARAMETERS,
-    ILimitReductionsByVoltageLevel,
+    ILimitScalingsByVoltageLevel,
     IST_FORM,
     LIMIT_DURATION_FORM,
-    LIMIT_REDUCTIONS_FORM,
+    LIMIT_SCALINGS_FORM,
     SPECIFIC_PARAMETERS,
-    toFormValuesLimitReductions,
+    toFormValuesLimitScalings,
 } from '../common';
 import {
     BALANCE_TYPE,
@@ -24,10 +24,10 @@ import {
     DC,
     DC_POWER_FACTOR,
     DC_USE_TRANSFORMER_RATIO,
-    DEFAULT_LIMIT_REDUCTION_VALUE,
+    DEFAULT_LIMIT_SCALING_VALUE,
     DISTRIBUTED_SLACK,
     HVDC_AC_EMULATION,
-    PARAM_LIMIT_REDUCTION,
+    PARAM_LIMIT_SCALING,
     PARAM_PROVIDER_OPENLOADFLOW,
     PHASE_SHIFTER_REGULATION_ON,
     READ_SLACK_BUS,
@@ -42,7 +42,7 @@ import { ParameterValue } from '../../../utils';
 
 export enum TabValues {
     GENERAL = 'General',
-    LIMIT_REDUCTIONS = 'LimitReductions',
+    LIMIT_SCALINGS = 'LimitReductions',
     ADVANCED = 'Advanced',
     PROVIDER_SPECIFIC = 'ProviderSpecific',
 }
@@ -53,7 +53,7 @@ export const TAB_FIELDS: Record<TabValues, string[]> = {
     [TabValues.GENERAL]: [COMMON_PARAMETERS],
     [TabValues.PROVIDER_SPECIFIC]: [SPECIFIC_PARAMETERS],
     [TabValues.ADVANCED]: [ADVANCED_PARAMETERS],
-    [TabValues.LIMIT_REDUCTIONS]: [LIMIT_REDUCTIONS_FORM],
+    [TabValues.LIMIT_SCALINGS]: [LIMIT_SCALINGS_FORM],
 };
 
 export const getBasicLoadFlowParametersFormSchema = () => {
@@ -101,30 +101,27 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
     });
 };
 
-export const setLimitReductions = (
+export const setLimitScalings = (
     provider: string,
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[],
+    defaultLimitScalings: ILimitScalingsByVoltageLevel[],
     formMethods: UseFormReturn
 ) => {
     if (provider === PARAM_PROVIDER_OPENLOADFLOW) {
-        formMethods.setValue(
-            LIMIT_REDUCTIONS_FORM,
-            toFormValuesLimitReductions(defaultLimitReductions)[LIMIT_REDUCTIONS_FORM]
-        );
-        formMethods.setValue(PARAM_LIMIT_REDUCTION, null);
+        formMethods.setValue(LIMIT_SCALINGS_FORM, toFormValuesLimitScalings(defaultLimitScalings)[LIMIT_SCALINGS_FORM]);
+        formMethods.setValue(PARAM_LIMIT_SCALING, null);
     } else {
-        formMethods.setValue(PARAM_LIMIT_REDUCTION, DEFAULT_LIMIT_REDUCTION_VALUE);
-        formMethods.setValue(LIMIT_REDUCTIONS_FORM, []);
-        formMethods.clearErrors(LIMIT_REDUCTIONS_FORM);
+        formMethods.setValue(PARAM_LIMIT_SCALING, DEFAULT_LIMIT_SCALING_VALUE);
+        formMethods.setValue(LIMIT_SCALINGS_FORM, []);
+        formMethods.clearErrors(LIMIT_SCALINGS_FORM);
     }
 };
 
-export const mapLimitReductions = (
-    vlLimits: ILimitReductionsByVoltageLevel,
+export const mapLimitScalings = (
+    vlLimits: ILimitScalingsByVoltageLevel,
     formLimits: Record<string, unknown>[],
     indexVl: number
-): ILimitReductionsByVoltageLevel => {
-    const vlLNewLimits: ILimitReductionsByVoltageLevel = {
+): ILimitScalingsByVoltageLevel => {
+    const vlLNewLimits: ILimitScalingsByVoltageLevel = {
         ...vlLimits,
         permanentLimitReduction: formLimits[indexVl][IST_FORM] as number,
     };

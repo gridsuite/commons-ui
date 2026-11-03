@@ -7,18 +7,18 @@
 import { TableRow } from '@mui/material';
 
 import { CustomVoltageLevelTableCell } from './custom-voltage-level-table-cell';
-import { LimitReductionIColumnsDef } from '../limitreductions/columns-definitions';
+import { LimitScalingIColumnsDef } from '../limitscalings/columns-definitions';
 
 interface TableRowComponentProps {
     formName: string;
-    columnsDefinition: LimitReductionIColumnsDef[];
+    columnsDefinition: LimitScalingIColumnsDef[];
     index: number;
 }
 
 export function CustomVoltageLevelTableRow({ formName, columnsDefinition, index }: Readonly<TableRowComponentProps>) {
     return (
         <TableRow>
-            {columnsDefinition.map((column: LimitReductionIColumnsDef) => (
+            {columnsDefinition.map((column: LimitScalingIColumnsDef) => (
                 <CustomVoltageLevelTableCell
                     key={`${column.dataKey}`}
                     formName={formName}

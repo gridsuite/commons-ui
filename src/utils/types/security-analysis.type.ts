@@ -6,7 +6,7 @@
  */
 
 import { UUID } from 'node:crypto';
-import { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
+import { ILimitScalingsByVoltageLevel } from '../../features/parameters/common/limitscalings/columns-definitions';
 import { IdName } from './types';
 
 export type ContingencyListsInfos = {
@@ -23,7 +23,7 @@ export type SAParameters = {
     uuid?: UUID;
     provider: string;
     contingencyListsInfos: ContingencyListsInfos[];
-    limitReductions: ILimitReductionsByVoltageLevel[];
+    limitReductions: ILimitScalingsByVoltageLevel[];
     flowProportionalThreshold: number;
     lowVoltageProportionalThreshold: number;
     lowVoltageAbsoluteThreshold: number;

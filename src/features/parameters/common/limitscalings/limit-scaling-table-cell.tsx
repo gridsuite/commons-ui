@@ -9,21 +9,21 @@ import { TableCell } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { CustomTooltip } from '../../../../components/ui/tooltip/CustomTooltip';
 import {
-    LimitReductionIColumnsDef,
-    LIMIT_REDUCTIONS_FORM,
+    LimitScalingIColumnsDef,
+    LIMIT_SCALINGS_FORM,
     VOLTAGE_LEVELS_FORM,
-    ILimitReductionsByVoltageLevel,
+    ILimitScalingsByVoltageLevel,
 } from './columns-definitions';
 import { FloatInput, RawReadOnlyInput } from '../../../../components/ui';
 
-export function LimitReductionTableCell({
+export function LimitScalingTableCell({
     rowIndex,
     column,
     limits,
 }: Readonly<{
     rowIndex: number;
-    column: LimitReductionIColumnsDef;
-    limits: ILimitReductionsByVoltageLevel[];
+    column: LimitScalingIColumnsDef;
+    limits: ILimitScalingsByVoltageLevel[];
 }>) {
     const isVoltageLevelColumn = column.dataKey === VOLTAGE_LEVELS_FORM;
 
@@ -40,13 +40,13 @@ export function LimitReductionTableCell({
             }
         >
             <TableCell sx={{ fontWeight: 'bold' }}>
-                <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+                <RawReadOnlyInput name={`${LIMIT_SCALINGS_FORM}[${rowIndex}].${column.dataKey}`} />
             </TableCell>
         </CustomTooltip>
     ) : (
         <TableCell sx={{ fontWeight: 'bold', p: 0.75 }}>
             {isVoltageLevelColumn ? (
-                <RawReadOnlyInput name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`} />
+                <RawReadOnlyInput name={`${LIMIT_SCALINGS_FORM}[${rowIndex}].${column.dataKey}`} />
             ) : (
                 <FloatInput
                     formProps={{
@@ -59,7 +59,7 @@ export function LimitReductionTableCell({
                             },
                         },
                     }}
-                    name={`${LIMIT_REDUCTIONS_FORM}[${rowIndex}].${column.dataKey}`}
+                    name={`${LIMIT_SCALINGS_FORM}[${rowIndex}].${column.dataKey}`}
                 />
             )}
         </TableCell>

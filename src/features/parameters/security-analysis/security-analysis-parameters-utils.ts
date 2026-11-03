@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { CONTINGENCY_LISTS_INFOS, LIMIT_REDUCTIONS_FORM } from '../common';
+import { CONTINGENCY_LISTS_INFOS, LIMIT_SCALINGS_FORM } from '../common';
 import {
     FLOW_PROPORTIONAL_THRESHOLD,
     HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
@@ -23,5 +23,5 @@ export const TAB_FIELDS: Record<TabValues, string[]> = {
         HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD,
         HIGH_VOLTAGE_ABSOLUTE_THRESHOLD,
     ],
-    [TabValues.LimitReductions]: [LIMIT_REDUCTIONS_FORM],
+    [TabValues.LimitScalings]: [LIMIT_SCALINGS_FORM],
 };

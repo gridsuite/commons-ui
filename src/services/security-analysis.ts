@@ -68,8 +68,8 @@ export function fetchSecurityAnalysisParameters(parameterUuid: string): Promise<
     return parametersPromise.then((parameters) => enrichSecurityAnalysisParameters(parameters));
 }
 
-export function getSecurityAnalysisDefaultLimitReductions() {
-    console.info('get security analysis default limit reductions');
+export function getSecurityAnalysisDefaultLimitScalings() {
+    console.info('get security analysis default limit scalings');
     const url = `${getSecurityAnalysisUrl()}parameters/default-limit-reductions`;
     console.debug(url);
     return backendFetchJson(url);

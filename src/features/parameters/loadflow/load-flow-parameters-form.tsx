@@ -24,7 +24,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
         specificParametersDescriptionForProvider,
         params,
         watchProvider,
-        defaultLimitReductions,
+        defaultLimitScalings,
     } = loadflowMethods;
 
     return (
@@ -44,7 +44,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
                     currentProvider={watchProvider ?? ''}
                     specificParameters={specificParametersDescriptionForProvider}
                     params={params}
-                    defaultLimitReductions={defaultLimitReductions}
+                    defaultLimitScalings={defaultLimitScalings}
                 />
             </Grid>
         </Grid>
