@@ -5,8 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { Box } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useFormContext, useWatch } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import { useIntl } from 'react-intl';
 
 import type { UUID } from 'node:crypto';
@@ -27,81 +26,26 @@ import {
 } from '../../components';
 import { ElementType } from '../../utils';
 import { FlatParametersInput } from './FlatParametersInput';
-import {
-    CGMES_FORMAT,
-    CompressionType,
-    defaultGzipFormats,
-    emptyObj,
-    ExportDestinationType,
-    getDefaultValuesForExtensionsParameter,
-    onlyZipCompression,
-    XIIDM_FORMAT,
-} from './exportNetwork.utils';
+import { CompressionType, ExportDestinationType } from './exportNetwork.utils';
 import { ExportFormatProperties } from './exportNetwork.types';
-import { getAvailableExportFormats } from '../../services';
-
-const compressions = [CompressionType.ZIP, CompressionType.GZIP];
 
 export interface ExportNetworkFormProps {
-    open: boolean;
-    isDeveloperMode: boolean;
+    formatsWithParameters: Record<string, ExportFormatProperties>;
+    parameters: Parameter[];
+    availableCompressions: CompressionType[];
     displayFormat?: boolean;
 }
 
-export function ExportNetworkForm({ open, isDeveloperMode, displayFormat = true }: Readonly<ExportNetworkFormProps>) {
+export function ExportNetworkForm({
+    formatsWithParameters,
+    parameters,
+    availableCompressions,
+    displayFormat = true,
+}: Readonly<ExportNetworkFormProps>) {
     const intl = useIntl();
-    const [formatsWithParameters, setFormatsWithParameters] = useState<Record<string, ExportFormatProperties>>({});
-    const [parameters, setParameters] = useState<Parameter[]>();
-    const [availableCompressions, setAvailableCompressions] = useState<CompressionType[]>(compressions);
-    const { setValue, getValues, subscribe } = useFormContext();
 
     const exportDestination = useWatch({ name: EXPORT_DESTINATION });
     const folderItem = useWatch({ name: DIRECTORY_ITEM }) as DirectoryItemSchema;
-
-    useEffect(() => {
-        const unsubscribe = subscribe({
-            name: [`${EXPORT_FORMAT}`],
-            formState: {
-                values: true, // Subscribe to field value changes
-            },
-            callback: () => {
-                // When an export format changes, reset export parameters
-                setValue(EXPORT_PARAMETERS, emptyObj);
-                const exportFormat = getValues(EXPORT_FORMAT);
-                // get corresponding parameters of the selected format
-                setParameters(formatsWithParameters[exportFormat]?.parameters);
-                // update compression
-                setAvailableCompressions(exportFormat === CGMES_FORMAT ? onlyZipCompression : compressions);
-                if (defaultGzipFormats.includes(exportFormat)) {
-                    setValue(EXPORT_COMPRESSION, CompressionType.GZIP);
-                } else {
-                    setValue(EXPORT_COMPRESSION, CompressionType.ZIP);
-                }
-            },
-        });
-        return () => unsubscribe();
-    }, [setValue, subscribe, getValues, formatsWithParameters]);
-
-    useEffect(() => {
-        if (open) {
-            getAvailableExportFormats().then((formats) => {
-                const availableFormats = isDeveloperMode
-                    ? formats
-                    : Object.fromEntries(Object.entries(formats).filter(([key]) => key === XIIDM_FORMAT));
-
-                const formatsWithDefaultParameters = Object.fromEntries(
-                    Object.entries(availableFormats).map(([key, format]) => [
-                        key,
-                        {
-                            ...format,
-                            parameters: getDefaultValuesForExtensionsParameter(format.parameters),
-                        },
-                    ])
-                );
-                setFormatsWithParameters(formatsWithDefaultParameters);
-            });
-        }
-    }, [open, isDeveloperMode]);
 
     return (
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, p: 1 }}>

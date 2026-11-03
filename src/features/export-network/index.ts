@@ -8,5 +8,3 @@
 export * from './exportNetwork.types';
 export * from './exportNetwork.utils';
 export * from './ExportNetworkForm';
-export * from './FlatParametersInput';
-export * from './ignored-params';

@@ -31,6 +31,7 @@ export enum CompressionType {
     GZIP = 'gzip',
 }
 
+export const compressions = [CompressionType.ZIP, CompressionType.GZIP];
 export const onlyZipCompression = [CompressionType.ZIP];
 export const CGMES_FORMAT = 'CGMES';
 export const XIIDM_FORMAT = 'XIIDM';
