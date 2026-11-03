@@ -118,7 +118,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
     return (
         <SwitchCell
             row={row}
-            onUpdateModificationMetadata={meta?.context.onUpdateModificationMetadata}
+            onUpdateModificationMetadata={meta.context.onUpdateModificationMetadata}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
             isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
@@ -156,8 +156,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         !rootNetwork ||
         !meta?.modifications.activations ||
         !meta.modifications.applicabilities ||
-        !meta.modifications.setPendingApplicabilities ||
-        !meta.context.onUpdateModificationStatusByRootNetwork
+        !meta.modifications.setPendingApplicabilities
     ) {
         return null;
     }
@@ -166,7 +165,6 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
             <RootNetworkChipCell
                 row={row}
                 onUpdateModificationStatusByRootNetwork={meta.context.onUpdateModificationStatusByRootNetwork}
-                canUpdateModificationStatusByRootNetwork={meta.context.canUpdateModificationStatusByRootNetwork}
                 rootNetwork={rootNetwork}
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}

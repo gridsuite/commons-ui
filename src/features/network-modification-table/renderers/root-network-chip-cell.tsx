@@ -58,12 +58,11 @@ export interface RootNetworkChipCellProps {
     applicabilities: NetworkModificationApplicabilities;
     setPendingApplicabilities: React.Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
-    onUpdateModificationStatusByRootNetwork: (
+    onUpdateModificationStatusByRootNetwork?: (
         rootNetworkUuid: UUID,
         modificationUuid: UUID,
         applicable: boolean
     ) => Promise<unknown>;
-    canUpdateModificationStatusByRootNetwork: boolean;
 }
 
 export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
@@ -75,7 +74,6 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
         setPendingApplicabilities,
         isDisabled = false,
         onUpdateModificationStatusByRootNetwork,
-        canUpdateModificationStatusByRootNetwork,
     } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
@@ -90,7 +88,7 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const isModificationApplied = isAppliedOn(row, activations, applicabilities, rootNetwork.rootNetworkUuid);
 
     const handleModificationActivationByRootNetwork = useCallback(() => {
-        if (!canUpdateModificationStatusByRootNetwork) {
+        if (!onUpdateModificationStatusByRootNetwork) {
             return;
         }
 
@@ -122,7 +120,6 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
         setPendingApplicabilities,
         snackError,
         onUpdateModificationStatusByRootNetwork,
-        canUpdateModificationStatusByRootNetwork,
     ]);
 
     return (

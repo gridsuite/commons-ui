@@ -30,12 +30,11 @@ declare module '@tanstack/react-table' {
                 metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
             ) => Promise<unknown>;
             onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
-            onUpdateModificationStatusByRootNetwork: (
+            onUpdateModificationStatusByRootNetwork?: (
                 rootNetworkUuid: UUID,
                 modificationUuid: UUID,
                 applicable: boolean
             ) => Promise<unknown>;
-            canUpdateModificationStatusByRootNetwork: boolean;
             visualizedRootNetworkUuid?: UUID;
             rootNetworks?: RootNetworkRowInfo[];
         };
