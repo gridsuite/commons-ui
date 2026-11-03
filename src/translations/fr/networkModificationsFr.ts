@@ -182,6 +182,7 @@ export const networkModificationsFr = {
     NoVoltageLevelPositionMessage: 'Veuillez choisir un poste pour afficher les positions prises',
     ModifyLoad: 'Modifier une consommation',
     MeasurementsSection: 'Télémesures',
+    TapMeasurementsSection: 'Télémesures position prises',
     ValidMeasurement: 'Valide',
     InvalidMeasurement: 'Invalide',
     DeleteEquipment: 'Supprimer un ouvrage',
