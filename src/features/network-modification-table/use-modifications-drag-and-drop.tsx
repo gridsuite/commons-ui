@@ -37,8 +37,7 @@ interface UseModificationsDragAndDropParams {
     composedModifications: ComposedModificationMetadata[];
     setComposedModifications: React.Dispatch<React.SetStateAction<ComposedModificationMetadata[]>>;
     onDragEnd: () => void;
-    onMoveModifications: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
-    canMoveModifications: boolean;
+    onMoveModifications?: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
 }
 
 interface UseModificationsDragAndDropReturn {
@@ -104,7 +103,6 @@ export const useModificationsDragAndDrop = ({
     setComposedModifications,
     onDragEnd,
     onMoveModifications,
-    canMoveModifications,
 }: UseModificationsDragAndDropParams): UseModificationsDragAndDropReturn => {
     const { snackError } = useSnackMessage();
     const { rows } = table.getRowModel();
@@ -214,7 +212,7 @@ export const useModificationsDragAndDrop = ({
             onDragEnd();
 
             const { source, destination } = result;
-            if (!destination || source.index === destination.index || !canMoveModifications) {
+            if (!destination || source.index === destination.index || !onMoveModifications) {
                 return;
             }
 
@@ -306,7 +304,6 @@ export const useModificationsDragAndDrop = ({
             composedModifications,
             setComposedModifications,
             onMoveModifications,
-            canMoveModifications,
             snackError,
         ]
     );

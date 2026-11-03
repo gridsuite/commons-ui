@@ -46,8 +46,12 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
     visualizedRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
-    onMoveModifications: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
-    canMoveModifications: boolean;
+    onMoveModifications?: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
+    onUpdateModificationStatusByRootNetwork?: (
+        rootNetworkUuid: UUID,
+        modificationUuid: UUID,
+        applicable: boolean
+    ) => Promise<unknown>;
     onUpdateModificationMetadata: (
         modificationUuid: UUID,
         metadata: Partial<ComposedModificationMetadata>
@@ -57,12 +61,6 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
         metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
     ) => Promise<unknown>;
     onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
-    onUpdateModificationStatusByRootNetwork: (
-        rootNetworkUuid: UUID,
-        modificationUuid: UUID,
-        applicable: boolean
-    ) => Promise<unknown>;
-    canUpdateModificationStatusByRootNetwork: boolean;
     isDisabled?: boolean;
     rowStateResetKey?: string | null;
 }
@@ -86,12 +84,10 @@ export function NetworkModificationsTable({
     isFetchingModifications,
     pendingState,
     onMoveModifications,
-    canMoveModifications,
     onUpdateModificationMetadata,
     onUpdateModificationNameAndDescription,
     onUnshareModification,
     onUpdateModificationStatusByRootNetwork,
-    canUpdateModificationStatusByRootNetwork,
     rowStateResetKey,
 }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
@@ -156,7 +152,6 @@ export function NetworkModificationsTable({
                 onUpdateModificationNameAndDescription,
                 onUnshareModification,
                 onUpdateModificationStatusByRootNetwork,
-                canUpdateModificationStatusByRootNetwork,
                 visualizedRootNetworkUuid,
                 rootNetworks,
             },
@@ -186,7 +181,6 @@ export function NetworkModificationsTable({
             onUpdateModificationNameAndDescription,
             onUnshareModification,
             onUpdateModificationStatusByRootNetwork,
-            canUpdateModificationStatusByRootNetwork,
             visualizedRootNetworkUuid,
             rootNetworks,
             modifications.length,
@@ -243,7 +237,6 @@ export function NetworkModificationsTable({
         setComposedModifications,
         onDragEnd: onRowDragEnd,
         onMoveModifications,
-        canMoveModifications,
     });
 
     // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
