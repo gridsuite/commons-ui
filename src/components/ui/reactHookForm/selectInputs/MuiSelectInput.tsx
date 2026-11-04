@@ -29,7 +29,7 @@ function renderMenuItem(option: { id: string; label: string } | string) {
 }
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
+export function MuiSelectInput({ name, options, onChangeCb, ...props }: MuiSelectInputProps) {
     const {
         field: { value, onChange },
     } = useController({
@@ -42,7 +42,7 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
             value={value}
             onChange={(event) => {
                 onChange(event);
-                props.onChangeCb?.(event.target.value as string);
+                onChangeCb?.(event.target.value as string);
             }}
             {...props}
             inputProps={{ ...props.inputProps, readOnly: isReadOnly || props.inputProps?.readOnly }}
