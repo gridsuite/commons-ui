@@ -14,6 +14,7 @@ import { DESCRIPTION, NAME } from '../../../components/ui';
 import {
     NetworkVisualizationTabValues as TabValues,
     NV_TAB_VALUES,
+    PARAM_AUTO_REFRESH,
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
     PARAM_DIAGONAL_LABEL,
@@ -97,6 +98,7 @@ export const useNetworkVisualizationParametersForm = ({
                     [PARAM_COMPONENT_LIBRARY]: yup.string(),
                     [PARAM_MEASUREMENTS]: yup.boolean(),
                     [PARAM_OBSERVABILITY]: yup.boolean(),
+                    [PARAM_AUTO_REFRESH]: yup.boolean(),
                 }),
                 [TabValues.NETWORK_AREA_DIAGRAM]: yup.object().shape({
                     [PARAM_NAD_POSITIONS_GENERATION_MODE]: yup.string(),
@@ -122,6 +124,7 @@ export const useNetworkVisualizationParametersForm = ({
                 [PARAM_COMPONENT_LIBRARY]: '',
                 [PARAM_MEASUREMENTS]: false,
                 [PARAM_OBSERVABILITY]: false,
+                [PARAM_AUTO_REFRESH]: false,
             },
             [TabValues.NETWORK_AREA_DIAGRAM]: {
                 [PARAM_NAD_POSITIONS_GENERATION_MODE]: '',
