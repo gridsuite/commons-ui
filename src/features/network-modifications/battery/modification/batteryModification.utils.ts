@@ -38,8 +38,10 @@ import {
     getVoltageRegulationSchema,
     modificationPropertiesSchema,
     toModificationProperties,
+    toReactiveCapabilityCurveChoiceForModification,
 } from '../../common';
 import { BatteryModificationDto } from './batteryModification.types';
+import { BatteryFormInfos } from '../batteryDialog.type';
 
 export const batteryModificationFormSchema = object()
     .shape({
@@ -131,8 +133,17 @@ export const batteryModificationDtoToForm = (
     };
 };
 
-export const batteryModificationFormToDto = (form: BatteryModificationFormData): BatteryModificationDto => {
-    const isReactiveCapabilityCurveOn = form.reactiveLimits?.reactiveCapabilityCurveChoice === 'CURVE';
+export const batteryModificationFormToDto = (
+    form: BatteryModificationFormData,
+    dto: BatteryModificationDto | undefined,
+    equipment?: BatteryFormInfos
+): BatteryModificationDto => {
+    const isReactiveCapabilityCurveOn =
+        toReactiveCapabilityCurveChoiceForModification(
+            form?.reactiveLimits,
+            equipment?.reactiveCapabilityCurvePoints,
+            dto?.reactiveCapabilityCurve
+        ) === 'CURVE';
     return {
         type: ModificationType.BATTERY_MODIFICATION,
         equipmentId: form.equipmentID ?? '',
