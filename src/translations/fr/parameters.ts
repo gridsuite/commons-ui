@@ -98,7 +98,7 @@ export const parametersFr = {
     ComponentLibrary: 'Sélection de la bibliothèque de composants',
     measurements: 'Télémesures',
     observability: 'Observabilité',
-    autoRefresh: 'Mise à jour automatique',
+    autoRefresh: 'Rafraichissement automatique',
     nadPositionsGenerationModeLabel: 'Initialisation des positions',
     NadGeoPositionsModeLabel: 'Géographique',
     NadAutoPositionsModeLabel: 'Automatique',
