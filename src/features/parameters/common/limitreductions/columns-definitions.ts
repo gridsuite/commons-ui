@@ -93,7 +93,7 @@ const toFormValuesFromTemporaryLimits = (limits: ITemporaryLimitReduction[]) =>
         return acc;
     }, {});
 
-export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[]) =>
+export const toFormValuesLimitReductions = (limits: ILimitReductionsByVoltageLevel[] | null) =>
     !limits
         ? {}
         : {
