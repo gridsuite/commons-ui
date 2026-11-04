@@ -8,7 +8,7 @@
 import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
-import { ActivableChip } from '../../../components/ui/inputs';
+import { ActivableChip } from '../../../components';
 import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
@@ -18,12 +18,7 @@ import {
     RootNetworkRowInfo,
     snackWithFallback,
 } from '../../../utils';
-import {
-    isAppliedOn,
-    isApplicableOn,
-    isDeactivatedItselfOrByAncestor,
-    isReferenceModificationOrInsideOne,
-} from '../utils';
+import { isAppliedOn, isApplicableOn, isDeactivatedItselfOrByAncestor } from '../utils';
 
 function addPendingApplicability(
     pendingApplicabilities: NetworkModificationApplicabilities,
@@ -84,8 +79,6 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const data = row.original;
     const modificationUuid = data.uuid;
 
-    const isSharedContent = isReferenceModificationOrInsideOne(data);
-
     const isModificationApplicable = useMemo(() => {
         return isApplicableOn(applicabilities, modificationUuid, rootNetwork.rootNetworkUuid);
     }, [modificationUuid, applicabilities, rootNetwork.rootNetworkUuid]);
@@ -142,11 +135,7 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
             isActivationRequested={isModificationApplicable}
             isActivationEffective={isModificationApplied}
             isDisabled={
-                isLoading ||
-                isDisabled ||
-                isSharedContent ||
-                rootNetwork.isCreating ||
-                isDeactivatedItselfOrByAncestor(row, activations)
+                isLoading || isDisabled || rootNetwork.isCreating || isDeactivatedItselfOrByAncestor(row, activations)
             }
             onClick={handleModificationActivationByRootNetwork}
         />

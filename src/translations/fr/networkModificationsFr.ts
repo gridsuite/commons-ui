@@ -54,8 +54,8 @@ export const networkModificationsFr = {
     'network_modifications.TABULAR_MODIFICATION': 'Modification tabulaire ({computedLabel})',
     'network_modifications.tabular.GENERATOR_MODIFICATION': 'générateurs',
     'network_modifications.tabular.LOAD_MODIFICATION': 'consommations',
-    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification par formule {computedLabel}',
-    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification par filtre {computedLabel}',
+    'network_modifications.BY_FORMULA_MODIFICATION': 'Modification par formule ({computedLabel})',
+    'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification par filtre ({computedLabel})',
     'network_modifications.tabular.LINE_MODIFICATION': 'lignes',
     'network_modifications.tabular.BATTERY_MODIFICATION': 'batteries',
     'network_modifications.tabular.VOLTAGE_LEVEL_MODIFICATION': 'postes',
@@ -98,6 +98,7 @@ export const networkModificationsFr = {
     ConverterStation1Tab: 'Station 1',
     ConverterStation2Tab: 'Station 2',
 
+    UnshareError: 'Une erreur est survenue lors du départage de la modification',
     ModificationReadError: 'Une erreur est survenue lors de la récupération de la modification',
     CompositeModification: 'Modification composite',
     CreateSubstation: 'Créer un site',
@@ -277,6 +278,22 @@ export const networkModificationsFr = {
     ReplacingLine: 'Liaison de remplacement',
     ReplacingLineId: 'ID liaison de remplacement',
     ReplacingLineName: 'Nom liaison de remplacement',
+    BalancesAdjustment: 'Équilibrage bilan',
+    BalancesAdjustmentError: "Erreur lors de la création de l'équilibrage bilan",
+    BalancesAdjustmentZone: 'Nom de la zone',
+    BalancesAdjustmentCountry: 'Pays',
+    BalancesAdjustmentShiftEquipmentType: "Type d'équipements",
+    BalancesAdjustmentShiftType: 'Type de variation',
+    BalancesAdjustmentTarget: 'Position nette cible',
+    PROPORTIONAL: 'Proportionnelle',
+    BALANCED: 'Équirépartie',
+    Areas: 'Zones',
+    Loadflow: 'Calcul de répartition',
+    Algorithm: 'Algorithme',
+    maxNumberIterations: "Nombre maximal d'itérations",
+    subtractLoadFlowBalancing: 'Prendre en compte la compensation dans le calcul des bilans',
+    thresholdNetPosition: "Seuil d'acceptabilité de la position nette cible",
+    LoadFlowWithRatioTapChangers: 'Calcul de répartition avec régleurs',
     ActiveLimits: 'Limites en actif',
     ReactiveLimits: 'Limites en réactif',
     On: 'Activé',
@@ -319,7 +336,6 @@ export const networkModificationsFr = {
     CreateGenerator: 'Créer un groupe',
     GeneratorCreationError: "Erreur lors de la création d'un groupe",
     VoltageRegulationText: 'Réglage de tension',
-    GenerationDispatch: 'Démarrage de groupes',
     generatorMinimumActivePowerMaxValueError: 'La puissance active min doit être inférieure à la puissance active max',
     PlannedActivePowerSetPointMustBeBetweenMinAndMaxActivePower:
         'La valeur de la puissance imposée doit être comprise entre la valeur de la puissance active min et la valeur de la puissance active max',
@@ -468,6 +484,7 @@ export const networkModificationsFr = {
     side1RectifierSide2Inverter: 'Flux (1->2)',
     side1InverterSide2Rectifier: 'Flux (2->1)',
     copyLink: 'Copier le lien',
+    unshare: 'Départager',
     linkCopied: 'Lien copié',
     linkCopyError: 'Erreur lors de la copie du lien',
     // Voltage level
@@ -514,6 +531,22 @@ export const networkModificationsFr = {
     notBuiltNodeTooltipVlTopoModif:
         "Liste des organes de coupure d'après le dernier nœud réalisé de la branche courante",
     Undefined: 'Non défini',
+
+    // Generation dispatch
+    GenerationDispatch: 'Démarrage de groupes',
+    GenerationDispatchError: 'Erreur lors de la création du démarrage de groupes',
+    LossCoefficient: 'Coefficient de pertes',
+    ReduceMaxP: 'Abattement Pmax',
+    DefaultOutageRate: 'Taux indisponibilité par défaut',
+    GeneratorsWithoutOutage: 'Groupes sans abattement indispo',
+    GeneratorsWithFixedActivePower: 'Groupes non ajustables',
+    GeneratorFilter: 'FILTRE GROUPE',
+    FrequencyReserve: 'RESERVE FREQUENCE (%)',
+    frequencyReserve: 'Réserve fréquence',
+    GeneratorsFiltersFrequencyReserveToolTip:
+        'Les saisies sont appliquées dans l’ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un groupe est inclus dans plusieurs filtres)',
+    GeneratorsOrdering: 'Hiérarchie des sites',
+    GeneratorAvailability: 'Indisponibilité groupes',
 
     // Tabular creation / modification - dialog
     TabularCreation: 'Création tabulaire',
@@ -651,4 +684,35 @@ export const networkModificationsFr = {
     Filters: 'Filtres',
     shuntCompensatorId: 'ID du MCS',
     shuntCompensatorName: 'Nom du MCS',
+
+    // Lines attach to splitting lines
+    LinesAttachToSplitLines: 'Transformer un piquage en coupure',
+    lineAttachedToSplitLineVoltageLevel: 'Poste en piquage à passer en coupure',
+    ReplacingLines: 'Liaisons de remplacement',
+    ReplacingLine1: 'Liaison de remplacement 1',
+    ReplacingLine2: 'Liaison de remplacement 2',
+    LinesAttachToSplitLinesError: "Erreur lors de la transformation d'un piquage en coupure",
+
+    Variations: 'Variations',
+    CreateVariation: 'Ajouter Variation',
+    VariationMode: 'Mode de variation',
+    ReactiveVariationMode: 'Mode variation du réactif',
+    DeltaP: 'Δ P',
+    TargetPText: 'P cible',
+    ProportionalToPMax: 'Proportionnel à Pmax',
+    StackingUp: 'Empilement',
+    RegularDistribution: 'Équirépartition',
+    TanPhiFixed: 'tan(φ) fixe',
+    ConstantQWithoutUnit: 'Q constant',
+
+    GeneratorScaling: 'Variation plan de production',
+    GeneratorScalingError: 'Erreur lors de la création de la variation du plan de production',
+
+    LoadScaling: 'Variation plan de consommation',
+    LoadScalingError: 'Erreur lors de la création de la variation du plan de consommation',
+    ReadOnlyForm: 'Ce formulaire est en lecture seule',
+    networkModificationRenamingError: 'Une erreur est survenue lors du renommage de la modification',
+    ModificationNameAlreadyExists: 'Ce nom est déjà utilisé dans GridExplore',
+    ModificationNameValidationError:
+        'Une erreur est survenue lors de la vérification du nom de la modification partagée',
 };

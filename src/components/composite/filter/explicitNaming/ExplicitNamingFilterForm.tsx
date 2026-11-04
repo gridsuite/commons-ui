@@ -7,9 +7,9 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { FieldValues, UseFieldArrayReturn, useWatch } from 'react-hook-form';
+import { FieldValues, UseFieldArrayReturn, useFormState, useWatch } from 'react-hook-form';
 import { Alert, Grid, Stack } from '@mui/material';
-import { ColDef, ValueParserParams } from 'ag-grid-community';
+import { ColDef, GridApi, RowClassRules, ValueParserParams } from 'ag-grid-community';
 import { v4 as uuid4 } from 'uuid';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
@@ -31,6 +31,21 @@ import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { LANG_SYSTEM, snackWithFallback } from '../../../../utils';
 import { CsvDownloadButton, CsvPicker, useCustomFormContext } from '../../../ui';
 
+function getDuplicatedEquipmentIds(rows: { [FieldConstants.EQUIPMENT_ID]?: string | null }[] = []) {
+    const seen = new Set<string>();
+    const duplicates = new Set<string>();
+    rows.forEach((row) => {
+        const equipmentId = row[FieldConstants.EQUIPMENT_ID];
+        if (equipmentId) {
+            if (seen.has(equipmentId)) {
+                duplicates.add(equipmentId);
+            }
+            seen.add(equipmentId);
+        }
+    });
+    return duplicates;
+}
+
 export const explicitNamingFilterSchema = {
     [FILTER_EQUIPMENTS_ATTRIBUTES]: yup
         .array()
@@ -43,6 +58,7 @@ export const explicitNamingFilterSchema = {
         // we remove empty lines
         .compact((row) => !row[DISTRIBUTION_KEY] && !row[FieldConstants.EQUIPMENT_ID])
         .min(1, 'emptyFilterError')
+        .test('unique', 'duplicatedEquipmentInFilter', (array) => getDuplicatedEquipmentIds(array).size === 0)
         .when([FieldConstants.EQUIPMENT_TYPE], {
             is: (equipmentType: string) => isInjection(equipmentType),
             then: (innerSchema) =>
@@ -100,6 +116,7 @@ export function ExplicitNamingFilterForm({
     const { snackError } = useSnackMessage();
 
     const { getValues, setValue, isDeveloperMode, language } = useCustomFormContext();
+    const { isSubmitted, submitCount } = useFormState();
 
     const watchEquipmentType = useWatch({
         name: FieldConstants.EQUIPMENT_TYPE,
@@ -178,6 +195,7 @@ export function ExplicitNamingFilterForm({
     const [selectedFile, setSelectedFile] = useState<File | undefined>();
     const [fileErrorMessage, setFileErrorMessage] = useState<string | undefined>();
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
+    const [gridApi, setGridApi] = useState<GridApi<FilterTableRow>>();
 
     const getTemplateData = useCallback(() => [csvFileHeaders], [csvFileHeaders]);
 
@@ -224,6 +242,34 @@ export function ExplicitNamingFilterForm({
             );
     };
 
+    const equipmentRows: FilterTableRow[] | undefined = useWatch({ name: FILTER_EQUIPMENTS_ATTRIBUTES });
+    const duplicatedEquipmentIds = useMemo(() => getDuplicatedEquipmentIds(equipmentRows), [equipmentRows]);
+
+    const rowClassRules = useMemo<RowClassRules<FilterTableRow>>(
+        () => ({
+            'duplicate-equipment-row': ({ data }) =>
+                isSubmitted && !!data && duplicatedEquipmentIds.has(data[FieldConstants.EQUIPMENT_ID]),
+        }),
+        [isSubmitted, duplicatedEquipmentIds]
+    );
+
+    useEffect(() => {
+        if (!gridApi || gridApi.isDestroyed() || submitCount === 0) {
+            return;
+        }
+        const duplicates = getDuplicatedEquipmentIds(getValues(FILTER_EQUIPMENTS_ATTRIBUTES));
+        let firstDuplicateIndex: number | null = null;
+        gridApi.forEachNodeAfterFilterAndSort((node) => {
+            if (firstDuplicateIndex === null && node.data && duplicates.has(node.data[FieldConstants.EQUIPMENT_ID])) {
+                firstDuplicateIndex = node.rowIndex;
+            }
+        });
+        if (firstDuplicateIndex !== null) {
+            gridApi.paginationGoToPage(Math.floor(firstDuplicateIndex / gridApi.paginationGetPageSize()));
+            gridApi.ensureIndexVisible(firstDuplicateIndex, 'top');
+        }
+    }, [gridApi, getValues, submitCount]);
+
     return (
         <Stack
             spacing={2}
@@ -243,6 +289,7 @@ export function ExplicitNamingFilterForm({
                     label="equipmentType"
                     shouldOpenPopup={openConfirmationPopup}
                     onValueChange={resetOnTypeChange}
+                    title="changeEquipmentTypeTitle"
                     message="changeTypeMessage"
                     validateButtonLabel="button.changeType"
                     sx={{ width: 400, maxWidth: '100%' }}
@@ -300,6 +347,7 @@ export function ExplicitNamingFilterForm({
                     <Grid sx={{ flexGrow: 1, minHeight: 0, display: 'flex', flexDirection: 'column' }}>
                         <CustomAgGridTable
                             ref={tableRef}
+                            onGridReady={({ api }) => setGridApi(api)}
                             name={FILTER_EQUIPMENTS_ATTRIBUTES}
                             columnDefs={columnDefs}
                             defaultColDef={defaultColDef}
@@ -312,6 +360,13 @@ export function ExplicitNamingFilterForm({
                                 headerCheckbox: true,
                             }}
                             alwaysShowVerticalScroll
+                            rowClassRules={rowClassRules}
+                            cssProps={{
+                                '& .ag-row.duplicate-equipment-row .ag-cell': {
+                                    backgroundColor: 'error.main',
+                                    color: 'error.contrastText',
+                                },
+                            }}
                             csvProps={{
                                 fileName: intl.formatMessage({ id: 'filterCsvFileName' }),
                                 language,

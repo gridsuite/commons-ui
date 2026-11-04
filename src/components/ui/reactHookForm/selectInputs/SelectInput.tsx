@@ -58,7 +58,7 @@ export function SelectInput(props: SelectInputProps) {
             getOptionLabel={getOptionLabel}
             inputTransform={inputTransform}
             outputTransform={outputTransform}
-            readOnly
+            selectMode
             {...props}
         />
     );

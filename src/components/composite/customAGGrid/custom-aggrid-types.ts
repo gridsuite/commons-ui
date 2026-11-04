@@ -18,7 +18,7 @@ export enum TableType {
     StateEstimation = 'StateEstimation',
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
-    ProcessExecutionHistory = 'ProcessExecutionHistory',
+    ProcessExecutionList = 'ProcessExecutionList',
 }
 
 // Filter operators

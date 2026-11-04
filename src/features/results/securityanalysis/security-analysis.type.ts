@@ -7,7 +7,7 @@
 
 import { ColDef, GridReadyEvent } from 'ag-grid-community';
 import { AgGridReactProps } from 'ag-grid-react';
-import { TablePaginationProps } from '@mui/material';
+import { ResultsPaginationInput } from '../common/types';
 import { RunningStatus, RunningStatusMessage } from '../../../utils/running-status';
 
 export enum NmkType {
@@ -103,6 +103,7 @@ export type SecurityAnalysisNmkResult = {
     content?: (
         ContingenciesFromConstraintItem[] | ConstraintsFromContingencyItem[] | CutOffPowerFromConstraintsItem[] | null
     )[];
+    totalElements?: number;
     [key: string]: unknown;
 };
 
@@ -134,11 +135,12 @@ export interface SecurityAnalysisTableProps {
 
 export interface SecurityAnalysisResultNmkProps {
     result?: SecurityAnalysisNmkResult;
+    count?: number;
     columnDefs: ColDef[];
     isLoadingResult: boolean;
     nmkType: NmkType;
     onGridReady: (params: GridReadyEvent) => void;
     resultStatusMessages: RunningStatusMessage;
     securityAnalysisStatus: RunningStatus;
-    paginationProps: TablePaginationProps;
+    paginationProps: ResultsPaginationInput;
 }

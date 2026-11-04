@@ -61,7 +61,6 @@ export const topBarFr = {
     'user-information-dialog/number-of-voltageInit-per-user': "Nombre d'initialisations du plan de tension",
     'user-information-dialog/number-of-pccMin-per-user': 'Nombre de PCC N-1',
     'user-information-dialog/number-of-stateEstimation-per-user': "Nombre d'estimations d'état",
-    'user-information-dialog/number-of-balanceAdjustement-per-user': "Nombre d'équilibrages bilan",
     'user-information-dialog/number-of-dynamicSimulation-per-user': 'Nombre de simulations dynamiques',
     'user-information-dialog/number-of-dynamicSecurity-per-user': "Nombre d'analyses de sécurité dynamiques",
     'user-information-dialog/number-of-dynamicMargin-per-user': 'Nombre de calculs de marge dynamiques',

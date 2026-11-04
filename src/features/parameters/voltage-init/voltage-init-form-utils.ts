@@ -9,6 +9,10 @@ import type { UUID } from 'node:crypto';
 import { EquipmentsSelectionType, VoltageInitParameters, VoltageInitStudyParameters } from './voltage-init.type';
 import {
     DEFAULT_GENERAL_APPLY_MODIFICATIONS,
+    DEFAULT_PENALTY_ACTIVE_POWER,
+    DEFAULT_PENALTY_INVEST_REA_NEG,
+    DEFAULT_PENALTY_INVEST_REA_POS,
+    DEFAULT_PENALTY_UNITS_REACTIVE,
     DEFAULT_REACTIVE_SLACKS_THRESHOLD,
     DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
     DEFAULT_UPDATE_BUS_VOLTAGE,
@@ -16,6 +20,10 @@ import {
     GENERATORS_SELECTION_TYPE,
     HIGH_VOLTAGE_LIMIT,
     LOW_VOLTAGE_LIMIT,
+    PENALTY_ACTIVE_POWER,
+    PENALTY_INVEST_REA_NEG,
+    PENALTY_INVEST_REA_POS,
+    PENALTY_UNITS_REACTIVE,
     PRIORITY,
     REACTIVE_SLACKS_THRESHOLD,
     SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD,
@@ -44,6 +52,7 @@ export const TAB_FIELDS: Record<TabValues, string[]> = {
         GENERATORS_SELECTION_TYPE,
         VARIABLE_Q_GENERATORS,
     ],
+    [TabValues.EXPERT]: [TabValues.EXPERT],
 };
 
 export const fromVoltageInitParametersFormToParamValues = (
@@ -118,6 +127,14 @@ export const fromVoltageInitParametersFormToParamValues = (
                         [FILTER_NAME]: filter[NAME],
                     };
                 }) ?? [],
+            [PENALTY_INVEST_REA_POS]:
+                newParams?.[TabValues.EXPERT]?.[PENALTY_INVEST_REA_POS] ?? DEFAULT_PENALTY_INVEST_REA_POS,
+            [PENALTY_INVEST_REA_NEG]:
+                newParams?.[TabValues.EXPERT]?.[PENALTY_INVEST_REA_NEG] ?? DEFAULT_PENALTY_INVEST_REA_NEG,
+            [PENALTY_ACTIVE_POWER]:
+                newParams?.[TabValues.EXPERT]?.[PENALTY_ACTIVE_POWER] ?? DEFAULT_PENALTY_ACTIVE_POWER,
+            [PENALTY_UNITS_REACTIVE]:
+                newParams?.[TabValues.EXPERT]?.[PENALTY_UNITS_REACTIVE] ?? DEFAULT_PENALTY_UNITS_REACTIVE,
         },
     };
 };
@@ -181,6 +198,12 @@ export const fromVoltageInitParamsDataToFormValues = (parameters: VoltageInitPar
                 [NAME]: filter[FILTER_NAME],
             };
         }),
+        [TabValues.EXPERT]: {
+            [PENALTY_ACTIVE_POWER]: parameters[PENALTY_ACTIVE_POWER],
+            [PENALTY_INVEST_REA_NEG]: parameters[PENALTY_INVEST_REA_NEG],
+            [PENALTY_INVEST_REA_POS]: parameters[PENALTY_INVEST_REA_POS],
+            [PENALTY_UNITS_REACTIVE]: parameters[PENALTY_UNITS_REACTIVE],
+        },
     };
 };
 
@@ -251,5 +274,15 @@ export const fromStudyVoltageInitParamsDataToFormValues = (
                 };
             }
         ),
+        [TabValues.EXPERT]: {
+            [PENALTY_ACTIVE_POWER]:
+                parameters?.computationParameters?.penaltyActivePower ?? DEFAULT_PENALTY_ACTIVE_POWER,
+            [PENALTY_INVEST_REA_NEG]:
+                parameters?.computationParameters?.penaltyInvestReaNeg ?? DEFAULT_PENALTY_INVEST_REA_NEG,
+            [PENALTY_INVEST_REA_POS]:
+                parameters?.computationParameters?.penaltyInvestReaPos ?? DEFAULT_PENALTY_INVEST_REA_POS,
+            [PENALTY_UNITS_REACTIVE]:
+                parameters?.computationParameters?.penaltyUnitsReactive ?? DEFAULT_PENALTY_UNITS_REACTIVE,
+        },
     };
 };

@@ -11,12 +11,17 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { CheckboxNullableInput, CustomFormProvider } from '../../src';
 
-function Form({ children, value }: PropsWithChildren<{ value: boolean | null }>) {
+function Form({
+    isReadOnly = false,
+    children,
+    value,
+}: PropsWithChildren<{ value: boolean | null }> & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { state: value } });
     return (
         <CustomFormProvider
             {...methods}
             validationSchema={yup.object().shape({ state: yup.boolean().nullable().required() })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -28,35 +33,34 @@ const meta = {
     component: CheckboxNullableInput,
     tags: ['autodocs'],
     args: { name: 'state', label: 'Nullable state' },
+    decorators: [
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly} value={parameters.value}>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof CheckboxNullableInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Checked: Story = {
-    decorators: [
-        (Story) => (
-            <Form value>
-                <Story />
-            </Form>
-        ),
-    ],
+    parameters: { value: true },
 };
 export const Unchecked: Story = {
-    decorators: [
-        (Story) => (
-            <Form value={false}>
-                <Story />
-            </Form>
-        ),
-    ],
+    parameters: { value: false },
 };
 export const Indeterminate: Story = {
-    decorators: [
-        (Story) => (
-            <Form value={null}>
-                <Story />
-            </Form>
-        ),
-    ],
+    parameters: { value: null },
+};
+
+export const CheckedReadOnly: Story = {
+    parameters: { isReadOnly: true, value: true },
+};
+export const UncheckedReadOnly: Story = {
+    parameters: { isReadOnly: true, value: false },
+};
+export const IndeterminateReadOnly: Story = {
+    parameters: { isReadOnly: true, value: null },
 };

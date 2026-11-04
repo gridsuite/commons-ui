@@ -15,7 +15,7 @@ import {
     HVDC_AC_EMULATION,
     PHASE_SHIFTER_REGULATION_ON,
 } from './constants';
-import { ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
+import { ParameterDifference, ParameterType, SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { COMMON_PARAMETERS } from '../common';
 
 const basicParams: SpecificParameterInfos[] = [
@@ -72,11 +72,20 @@ const basicParams: SpecificParameterInfos[] = [
     },
 ];
 
-function LoadFlowGeneralParameters() {
+interface LoadFlowGeneralParametersProps {
+    parametersDifferences?: Record<string, ParameterDifference>;
+}
+
+function LoadFlowGeneralParameters({ parametersDifferences }: Readonly<LoadFlowGeneralParametersProps>) {
     return (
         <>
             {basicParams.map((item) => (
-                <ParameterField id={COMMON_PARAMETERS} {...item} key={item.name} />
+                <ParameterField
+                    id={COMMON_PARAMETERS}
+                    {...item}
+                    key={item.name}
+                    parameterDifference={parametersDifferences?.[item.name]}
+                />
             ))}
         </>
     );

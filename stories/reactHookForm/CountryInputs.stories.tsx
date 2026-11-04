@@ -22,12 +22,13 @@ function CountryForm({ children }: PropsWithChildren) {
     );
 }
 
-function CountriesForm({ children }: PropsWithChildren) {
+function CountriesForm({ isReadOnly, children }: PropsWithChildren & { isReadOnly?: boolean }) {
     const methods = useForm({ defaultValues: { countries: ['FR', 'GB'] } });
     return (
         <CustomFormProvider
             {...methods}
             validationSchema={yup.object().shape({ countries: yup.array().required().of(yup.string().required()) })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -59,4 +60,13 @@ export const Single: Story = {
             <CountrySelectionInput name="country" label="Country" />
         </CountryForm>
     ),
+};
+export const MultipleReadOnly: Story = {
+    decorators: [
+        (Story) => (
+            <CountriesForm isReadOnly>
+                <Story />
+            </CountriesForm>
+        ),
+    ],
 };

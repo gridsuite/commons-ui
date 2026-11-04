@@ -43,19 +43,19 @@ function shuntColumnsDefinition(isPreviousConnectionColumnDisplayed: boolean | u
             label: FieldConstants.MAX_Q_AT_NOMINAL_V,
             dataKey: FieldConstants.MAX_Q_AT_NOMINAL_V,
             initialValue: null,
-            width: '25%',
+            width: '20%',
         },
         {
             label: 'previousConnection',
             dataKey: FieldConstants.PREVIOUS_SHUNT_COMPENSATOR_SELECTED,
             initialValue: null,
-            width: isPreviousConnectionColumnDisplayed ? '20%' : '0',
+            width: isPreviousConnectionColumnDisplayed ? '15%' : '0',
         },
         {
             label: 'connected',
             dataKey: FieldConstants.SHUNT_COMPENSATOR_SELECTED,
             initialValue: true,
-            width: '10%',
+            width: '20%',
         },
     ];
 }

@@ -11,14 +11,18 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { DEFAULT_RANGE_VALUE, getRangeInputSchema, RangeInput, CustomFormProvider } from '../../../src';
 
-function Form({ children }: PropsWithChildren<{}>) {
+function Form({ isReadOnly = false, children }: PropsWithChildren<{}> & { isReadOnly: boolean }) {
     const methods = useForm({
         defaultValues: {
             limits: DEFAULT_RANGE_VALUE,
         },
     });
     return (
-        <CustomFormProvider {...methods} validationSchema={yup.object().shape({ ...getRangeInputSchema('limits') })}>
+        <CustomFormProvider
+            {...methods}
+            validationSchema={yup.object().shape({ ...getRangeInputSchema('limits') })}
+            isReadOnly={isReadOnly}
+        >
             {children}
         </CustomFormProvider>
     );
@@ -29,17 +33,17 @@ const meta = {
     component: RangeInput,
     tags: ['autodocs'],
     args: { name: 'limits', label: 'Limits' },
+    decorators: [
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
+                <Story />
+            </Form>
+        ),
+    ],
 } satisfies Meta<typeof RangeInput>;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
-    decorators: [
-        (Story) => (
-            <Form>
-                <Story />
-            </Form>
-        ),
-    ],
-};
+export const Default: Story = {};
+export const ReadOnly: Story = { parameters: { isReadOnly: true } };

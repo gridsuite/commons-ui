@@ -164,7 +164,7 @@ export const useModificationsDragAndDrop = ({
                 // GRD-4772 (temporary): a shared modification (reference) cannot be drag-and-dropped
                 // into another shared modification, nor into one of its descendants (expanded children
                 // of the referenced composite).
-                // A reference, or a composite carrying a reference among its (loaded) descendants,
+                // A reference, or a composite carrying a reference among its descendants,
                 // would end up nested under another reference — same forbidden shape either way.
                 const sourceCarriesReference =
                     isReferenceModification(sourceRow.original) || containsReferenceModification(sourceRow.original);

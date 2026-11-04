@@ -9,18 +9,28 @@ export enum VoltageInitTabValues {
     GENERAL = 'GENERAL',
     VOLTAGE_LIMITS = 'voltageLimits',
     EQUIPMENTS_SELECTION = 'equipmentSelection',
+    EXPERT = 'EXPERT',
 }
 
 export const VOLTAGE_INIT_TAB_VALUES = Object.values(VoltageInitTabValues);
 
 export const GENERAL = 'GENERAL';
+export const EXPERT = 'EXPERT';
 export const GENERAL_APPLY_MODIFICATIONS = 'GENERAL_APPLY_MODIFICATIONS';
 export const DEFAULT_GENERAL_APPLY_MODIFICATIONS = true;
 export const DEFAULT_UPDATE_BUS_VOLTAGE = true;
 export const DEFAULT_REACTIVE_SLACKS_THRESHOLD = 500;
+export const DEFAULT_PENALTY_INVEST_REA_POS = 10;
+export const DEFAULT_PENALTY_INVEST_REA_NEG = 10;
+export const DEFAULT_PENALTY_ACTIVE_POWER = 1;
+export const DEFAULT_PENALTY_UNITS_REACTIVE = 0.1;
 export const DEFAULT_SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD = 0;
 export const REACTIVE_SLACKS_THRESHOLD = 'reactiveSlacksThreshold';
 export const SHUNT_COMPENSATOR_ACTIVATION_THRESHOLD = 'shuntCompensatorActivationThreshold';
+export const PENALTY_INVEST_REA_POS = 'penaltyInvestReaPos';
+export const PENALTY_INVEST_REA_NEG = 'penaltyInvestReaNeg';
+export const PENALTY_ACTIVE_POWER = 'penaltyActivePower';
+export const PENALTY_UNITS_REACTIVE = 'penaltyUnitsReactive';
 export const PRIORITY = 'priority';
 
 export const SELECTION_TYPE = 'selectionType';

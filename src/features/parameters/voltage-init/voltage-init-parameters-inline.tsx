@@ -27,10 +27,12 @@ export function VoltageInitParametersInLine({
     studyUuid,
     setHaveDirtyFields,
     voltageInitParameters,
+    isDeveloperMode = false,
 }: Readonly<{
     studyUuid: UUID | null;
     setHaveDirtyFields: (isDirty: boolean) => void;
     voltageInitParameters: VoltageInitStudyParameters | null;
+    isDeveloperMode: boolean;
 }>) {
     const voltageInitMethods = useVoltageInitParametersForm({
         parametersUuid: null,
@@ -92,7 +94,11 @@ export function VoltageInitParametersInLine({
                 resetHandler={resetVoltageInitParams}
                 validateHandler={handleSubmit(voltageInitMethods.onSaveInline, voltageInitMethods.onValidationError)}
             >
-                <VoltageInitParametersForm voltageInitMethods={voltageInitMethods} showActionsButtons />
+                <VoltageInitParametersForm
+                    voltageInitMethods={voltageInitMethods}
+                    showActionsButtons
+                    isDeveloperMode={isDeveloperMode}
+                />
             </ParameterLayout>
         </CustomFormProvider>
     );

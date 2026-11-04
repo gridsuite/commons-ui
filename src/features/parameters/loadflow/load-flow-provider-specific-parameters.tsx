@@ -7,14 +7,18 @@
 
 import { memo } from 'react';
 import { ParameterField } from '../common/parameter-field';
-import { SpecificParameterInfos } from '../../../utils';
+import { ParameterDifference, SpecificParameterInfos } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from '../common';
 
 interface LoadFlowProviderSpecificParametersProps {
     specificParameters?: SpecificParameterInfos[];
+    parametersDifferences?: Record<string, ParameterDifference>;
 }
 
-function LoadFlowProviderSpecificParameters({ specificParameters }: Readonly<LoadFlowProviderSpecificParametersProps>) {
+function LoadFlowProviderSpecificParameters({
+    specificParameters,
+    parametersDifferences,
+}: Readonly<LoadFlowProviderSpecificParametersProps>) {
     return (
         <>
             {specificParameters?.map((item) => (
@@ -24,6 +28,7 @@ function LoadFlowProviderSpecificParameters({ specificParameters }: Readonly<Loa
                     label={item.name}
                     description={`${item.description} (${item.name})`}
                     key={item.name}
+                    parameterDifference={parametersDifferences?.[item.name]}
                 />
             ))}
         </>
