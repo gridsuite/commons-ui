@@ -80,4 +80,5 @@ export const FILTER_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     ...BASE_EQUIPMENTS,
     [EquipmentType.HVDC_LINE]: ALL_EQUIPMENTS[EquipmentType.HVDC_LINE],
     [EquipmentType.VSC_CONVERTER_STATION]: ALL_EQUIPMENTS[EquipmentType.VSC_CONVERTER_STATION],
+    [EquipmentType.SWITCH]: ALL_EQUIPMENTS[EquipmentType.SWITCH],
 };
