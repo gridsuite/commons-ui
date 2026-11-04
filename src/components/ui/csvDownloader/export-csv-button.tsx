@@ -8,9 +8,11 @@
 import { Box, CircularProgress, IconButton } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { GetApp as GetAppIcon, Check as CheckIcon } from '@mui/icons-material';
+import { CustomTooltip } from '../tooltip/CustomTooltip';
 
 export interface ExportButtonProps {
     labelId?: string;
+    withTooltip?: boolean;
     disabled?: boolean;
     onClick?: () => void;
     isDownloadLoading?: boolean; // used mostly for previous Edge versions where download from backend file takes some time to begin
@@ -19,18 +21,29 @@ export interface ExportButtonProps {
 
 export function ExportCsvButton({
     labelId = 'MuiVirtualizedTable/exportCSV',
+    withTooltip = false,
     onClick,
     disabled = false,
     isDownloadLoading: isCsvLoading = false,
     isDownloadSuccessful = false,
 }: Readonly<ExportButtonProps>) {
+    const iconButton = (
+        <IconButton disabled={disabled} aria-label="exportCSVButton" onClick={onClick}>
+            {isDownloadSuccessful ? <CheckIcon /> : <GetAppIcon />}
+        </IconButton>
+    );
+
     return (
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <FormattedMessage id={labelId} />
+            {!withTooltip && <FormattedMessage id={labelId} />}
             <Box sx={{ position: 'relative' }}>
-                <IconButton disabled={disabled} aria-label="exportCSVButton" onClick={onClick}>
-                    {isDownloadSuccessful ? <CheckIcon /> : <GetAppIcon />}
-                </IconButton>
+                {withTooltip ? (
+                    <CustomTooltip title={<FormattedMessage id={labelId} />}>
+                        <span>{iconButton}</span>
+                    </CustomTooltip>
+                ) : (
+                    iconButton
+                )}
                 {isCsvLoading && (
                     <CircularProgress
                         size={30}
