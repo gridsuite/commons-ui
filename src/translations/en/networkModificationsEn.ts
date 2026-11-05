@@ -622,7 +622,7 @@ export const networkModificationsEn = {
     'TabularCreationSkeletonComment.GENERATOR':
         '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,,,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
     'TabularCreationSkeletonComment.BATTERY':
-        '#,,,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+        '#,,,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,',
     'TabularCreationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,,,true | false,,TOP | BOTTOM,,,',
     'TabularCreationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR | required if maxQAtNominalV is set,,',
@@ -634,7 +634,7 @@ export const networkModificationsEn = {
     'TabularModificationSkeletonComment.GENERATOR':
         '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
     'TabularModificationSkeletonComment.BATTERY':
-        '#,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+        '#,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,',
     'TabularModificationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,true | false,,TOP | BOTTOM,,,',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
