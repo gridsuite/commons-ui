@@ -10,22 +10,23 @@ import { Switch, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
-import { setModificationMetadata } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, NetworkModificationActivations, snackWithFallback } from '../../../utils';
 import { isActivated, isDeactivatedByAncestor } from '../utils';
 
 export interface SwitchCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     activations: NetworkModificationActivations;
     setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
+    onUpdateModificationMetadata?: (
+        modificationUuid: UUID,
+        metadata: Partial<ComposedModificationMetadata>
+    ) => Promise<unknown>;
     isDisabled?: boolean;
 }
 
 export function SwitchCell(props: Readonly<SwitchCellProps>) {
-    const { row, studyUuid, currentNodeId, activations, setPendingActivations, isDisabled = false } = props;
+    const { row, onUpdateModificationMetadata, activations, setPendingActivations, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
@@ -35,7 +36,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
 
     const toggleModificationActive = useCallback(
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-            if (!modificationUuid) {
+            if (!modificationUuid || !onUpdateModificationMetadata) {
                 return;
             }
 
@@ -43,7 +44,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             // Apply optimistic update, dropped once the modifications are fetched back with the new value
             setPendingActivations((prev) => ({ ...prev, [modificationUuid]: checked }));
 
-            setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
+            onUpdateModificationMetadata(modificationUuid, {
                 activated: checked,
                 type: data.type,
             })
@@ -60,7 +61,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, studyUuid, currentNodeId, data.type, setPendingActivations, snackError]
+        [modificationUuid, data.type, onUpdateModificationMetadata, setPendingActivations, snackError]
     );
 
     return (
@@ -72,7 +73,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             <span>
                 <Switch
                     size="small"
-                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations)}
+                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations) || !onUpdateModificationMetadata}
                     checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />
