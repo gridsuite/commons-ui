@@ -200,6 +200,7 @@ export const parametersFr = {
     UniqueFilterInputError: 'Vous devez sélectionner un filtre',
     EquipmentSelection: 'Sélection des ouvrages',
     ExpertSelection: 'Expert',
+    objectiveFunctionWeights: 'Poids de la fonction objectif',
     PenaltyInvestReaPos: 'Investissement réactifs capacitifs',
     PenaltyInvestReaNeg: 'Investissement réactifs inductifs',
     PenaltyActivePower: 'Pertes actives',
