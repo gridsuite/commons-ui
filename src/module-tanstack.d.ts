@@ -21,15 +21,15 @@ declare module '@tanstack/react-table' {
     // Read at runtime via `table.options.meta` from any cell/header renderer.
     interface TableMeta<TData extends RowData> {
         context: {
-            onUpdateModificationMetadata: (
+            onUpdateModificationMetadata?: (
                 modificationUuid: UUID,
                 metadata: Partial<ComposedModificationMetadata>
             ) => Promise<unknown>;
-            onUpdateModificationNameAndDescription: (
+            onUpdateModificationNameAndDescription?: (
                 modificationUuid: UUID,
                 metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
             ) => Promise<unknown>;
-            onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
+            onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
             onUpdateModificationStatusByRootNetwork?: (
                 rootNetworkUuid: UUID,
                 modificationUuid: UUID,

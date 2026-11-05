@@ -52,15 +52,15 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
         modificationUuid: UUID,
         applicable: boolean
     ) => Promise<unknown>;
-    onUpdateModificationMetadata: (
+    onUpdateModificationMetadata?: (
         modificationUuid: UUID,
         metadata: Partial<ComposedModificationMetadata>
     ) => Promise<unknown>;
-    onUpdateModificationNameAndDescription: (
+    onUpdateModificationNameAndDescription?: (
         modificationUuid: UUID,
         metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
     ) => Promise<unknown>;
-    onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
+    onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
     isDisabled?: boolean;
     rowStateResetKey?: string | null;
 }

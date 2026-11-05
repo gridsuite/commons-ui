@@ -79,14 +79,11 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    if (!meta?.context.onUpdateModificationNameAndDescription) {
-        return null;
-    }
 
     return (
         <DescriptionCell
             row={row}
-            onUpdateModificationNameAndDescription={meta.context.onUpdateModificationNameAndDescription}
+            onUpdateModificationNameAndDescription={meta?.context.onUpdateModificationNameAndDescription}
             isDisabled={meta?.status.isDisabled}
             isSaveDisabled={isModificationEditLocked(row.original)}
         />
@@ -95,14 +92,11 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
 
 export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    if (!meta?.context.onUnshareModification) {
-        return null;
-    }
 
     if (isReferenceModification(row.original)) {
         return (
             <ReferenceLinkCell
-                onUnshareModification={meta.context.onUnshareModification}
+                onUnshareModification={meta?.context.onUnshareModification}
                 row={row}
                 disabled={meta?.status.isDisabled}
             />

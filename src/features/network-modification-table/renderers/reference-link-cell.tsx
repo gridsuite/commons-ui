@@ -19,7 +19,7 @@ import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIco
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
-    onUnshareModification: (modificationUuid: UUID) => Promise<unknown>;
+    onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
 }
 
 export function ReferenceLinkCell({ row, disabled = false, onUnshareModification }: Readonly<ReferenceLinkCellProps>) {
@@ -72,6 +72,9 @@ export function ReferenceLinkCell({ row, disabled = false, onUnshareModification
         (event: React.MouseEvent<HTMLElement>) => {
             event.stopPropagation();
             setAnchorEl(null);
+            if (!onUnshareModification) {
+                return;
+            }
             setIsLoading(true);
             onUnshareModification(data.uuid)
                 .catch((error: ErrorMessage) => {
@@ -115,7 +118,7 @@ export function ReferenceLinkCell({ row, disabled = false, onUnshareModification
                     </ListItemIcon>
                     <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
                 </CustomMenuItem>
-                <CustomMenuItem onClick={handleUnshare} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
+                <CustomMenuItem onClick={handleUnshare} disabled={!onUnshareModification} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
                     <ListItemIcon sx={{ minWidth: 24 }}>
                         <LinkOffIcon sx={{ fontSize: 18 }} />
                     </ListItemIcon>
