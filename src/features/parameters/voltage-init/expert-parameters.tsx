@@ -4,7 +4,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Grid } from '@mui/material';
+import { Grid, Typography } from '@mui/material';
+import { FormattedMessage } from 'react-intl';
 
 import {
     EXPERT,
@@ -15,16 +16,17 @@ import {
 } from './constants';
 import { ParameterFloat } from '../common';
 import { parametersStyles } from '../parameters-style';
-import { ActivePowerAdornment, ReactivePowerAdornment } from '../../../utils/constants/adornments';
 
 export function ExpertParameters() {
     return (
         <Grid>
+            <Typography component="span" variant="h6">
+                <FormattedMessage id="objectiveFunctionWeights" />
+            </Typography>
             <ParameterFloat
                 name={`${EXPERT}.${PENALTY_INVEST_REA_POS}`}
                 style={parametersStyles.parameterName}
                 label="PenaltyInvestReaPos"
-                adornment={ReactivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
             />
@@ -32,7 +34,6 @@ export function ExpertParameters() {
                 name={`${EXPERT}.${PENALTY_INVEST_REA_NEG}`}
                 style={parametersStyles.parameterName}
                 label="PenaltyInvestReaNeg"
-                adornment={ReactivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
             />
@@ -40,7 +41,6 @@ export function ExpertParameters() {
                 name={`${EXPERT}.${PENALTY_ACTIVE_POWER}`}
                 style={parametersStyles.parameterName}
                 label="PenaltyActivePower"
-                adornment={ActivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
             />
@@ -48,7 +48,6 @@ export function ExpertParameters() {
                 name={`${EXPERT}.${PENALTY_UNITS_REACTIVE}`}
                 style={parametersStyles.parameterName}
                 label="PenaltyUnitsReactive"
-                adornment={ReactivePowerAdornment}
                 labelSize={8}
                 inputSize={4}
             />
