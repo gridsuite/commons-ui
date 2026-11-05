@@ -18,7 +18,7 @@ export interface SwitchCellProps {
     row: Row<ComposedModificationMetadata>;
     activations: NetworkModificationActivations;
     setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
-    onUpdateModificationMetadata: (
+    onUpdateModificationMetadata?: (
         modificationUuid: UUID,
         metadata: Partial<ComposedModificationMetadata>
     ) => Promise<unknown>;
@@ -36,7 +36,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
 
     const toggleModificationActive = useCallback(
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-            if (!modificationUuid) {
+            if (!modificationUuid || !onUpdateModificationMetadata) {
                 return;
             }
 
@@ -73,7 +73,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             <span>
                 <Switch
                     size="small"
-                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations)}
+                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations) || !onUpdateModificationMetadata}
                     checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />

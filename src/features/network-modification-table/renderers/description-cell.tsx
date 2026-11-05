@@ -22,7 +22,7 @@ export interface DescriptionCellProps {
     isDisabled?: boolean;
     // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
-    onUpdateModificationNameAndDescription: (
+    onUpdateModificationNameAndDescription?: (
         modificationUuid: UUID,
         metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
     ) => Promise<unknown>;
@@ -38,8 +38,14 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
     const { description } = data;
     const empty = !description;
 
+    const canUpdateDescription =
+        isReferenceModification(data) || !!data.parentSharedUuid || !!onUpdateModificationNameAndDescription;
+
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
+            if (!canUpdateDescription) {
+                return;
+            }
             setIsLoading(true);
             if (isReferenceModification(data)) {
                 return updateElement(data.referencedId, {
@@ -57,7 +63,7 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     setIsLoading(false);
                 });
             }
-            return onUpdateModificationNameAndDescription(modificationUuid, {
+            return onUpdateModificationNameAndDescription?.(modificationUuid, {
                 description: descriptionRecord.description,
                 type: data.type,
             }).finally(() => {
@@ -88,7 +94,7 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
-                    disabledSave={isSaveDisabled}
+                    disabledSave={isSaveDisabled || !canUpdateDescription}
                 />
             )}
             <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>
