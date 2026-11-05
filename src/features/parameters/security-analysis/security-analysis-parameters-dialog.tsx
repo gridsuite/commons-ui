@@ -11,7 +11,7 @@ import { ParametersEditionDialogProps } from '../common';
 import {
     fetchSecurityAnalysisParameters,
     fetchSecurityAnalysisProviders,
-    getSecurityAnalysisDefaultLimitReductions,
+    getSecurityAnalysisDefaultLimitScalings,
     updateSecurityAnalysisParameters,
 } from '../../../services/security-analysis';
 import { SecurityAnalysisParametersForm } from './security-analysis-parameters-form';
@@ -40,7 +40,7 @@ export function SecurityAnalysisParametersDialog({
             backendFetchProviders: fetchSecurityAnalysisProviders,
             backendFetchParameters: fetchSecurityAnalysisParameters,
             backendUpdateParameters: updateSecurityAnalysisParameters,
-            backendFetchDefaultLimitReductions: getSecurityAnalysisDefaultLimitReductions,
+            backendFetchDefaultLimitScalings: getSecurityAnalysisDefaultLimitScalings,
         }
     );
 

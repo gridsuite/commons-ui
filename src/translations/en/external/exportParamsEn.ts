@@ -21,7 +21,6 @@ export const exportParamsEn = {
     'iidm.export.cgmes.naming-strategy.desc': 'Configure what type of naming strategy you want',
     'iidm.export.cgmes.naming-strategy.identity': 'identity',
     'iidm.export.cgmes.naming-strategy.cgmes': 'cgmes',
-    'iidm.export.cgmes.naming-strategy.cgmes-fix-all-invalid-ids': 'cgmes-fix-all-invalid-ids',
     'iidm.export.cgmes.profiles': 'Profiles',
     'iidm.export.cgmes.profiles.desc': 'Profiles to export',
     'iidm.export.cgmes.profiles.EQ': 'EQ',
@@ -48,6 +47,9 @@ export const exportParamsEn = {
     'iidm.export.cgmes.business-process': 'Business process',
     'iidm.export.cgmes.update-dependencies': 'Update dependencies',
     'iidm.export.cgmes.cgm_export': 'Export cgm',
+    'iidm.export.cgmes.cgm-export-with-tp': 'Export TP with cgm',
+    'iidm.export.cgmes.cgm-export-with-tp.desc':
+        'When exporting a cgm: empty to not export TP, "CGM" for one TP for the whole CGM, "IGM" for one TP per IGM',
 
     // UCTE
     'ucte.export.naming-strategy': 'Naming strategy',
@@ -88,6 +90,9 @@ export const exportParamsEn = {
     'iidm.export.xml.force-export-network-with-beta-features': 'Force export when beta features are present',
     'iidm.export.xml.sorted': 'Sort export output file',
     'iidm.export.xml.sorted.desc': 'Sort export output file',
+    'iidm.export.xml.use-connectable-creation-order': 'Use creation order',
+    'iidm.export.xml.use-connectable-creation-order.desc':
+        'Write equipments in export output file in their creation order (no effect if export output file is sorted)',
     'iidm.export.xml.version': 'IIDM Version',
     'iidm.export.xml.version.desc': 'IIDM-XML version in which files will be generated',
 
@@ -104,8 +109,6 @@ export const exportParamsEn = {
     'iidm.export.xml.included.extensions.cgmesBoundaryLineBoundaryNode': 'Cgmes boundary line boundary node',
     'iidm.export.xml.included.extensions.cgmesLineBoundaryNode': 'Cgmes line boundary node',
     'iidm.export.xml.included.extensions.cgmesMetadataModels': 'Cgmes models metadata',
-    'iidm.export.xml.included.extensions.cgmesSshMetadata': 'Cgmes ssh metadata',
-    'iidm.export.xml.included.extensions.cgmesSvMetadata': 'Cgmes sv metadata',
     'iidm.export.xml.included.extensions.cgmesTapChangers': 'Cgmes tap changers',
     'iidm.export.xml.included.extensions.cimCharacteristics': 'Cgmes characteristics',
     'iidm.export.xml.included.extensions.coordinatedReactiveControl': 'Coordinated reactive control',
@@ -113,24 +116,18 @@ export const exportParamsEn = {
     'iidm.export.xml.included.extensions.discreteMeasurements': 'Discrete measurements',
     'iidm.export.xml.included.extensions.entsoeArea': 'Entsoe area',
     'iidm.export.xml.included.extensions.entsoeCategory': 'Entsoe category',
-    'iidm.export.xml.included.extensions.generatorActivePowerControl': 'Generator active power control',
     'iidm.export.xml.included.extensions.generatorFortescue': 'Generator asymmetrical',
-    'iidm.export.xml.included.extensions.generatorAsymmetrical': 'Generator asymmetrical',
     'iidm.export.xml.included.extensions.generatorRemoteReactivePowerControl':
-        'Generator remote reactive power control',
+        'Generator remote reactive power control (IIDM version < 1.18)',
     'iidm.export.xml.included.extensions.generatorShortCircuit': 'Generator short-circuit',
-    'iidm.export.xml.included.extensions.generatorShortCircuits': 'Generator short-circuit (IIDM version 1.0)',
     'iidm.export.xml.included.extensions.hvdcAngleDroopActivePowerControl': 'HVDC angle droop active power control',
     'iidm.export.xml.included.extensions.hvdcOperatorActivePowerRange': 'HVDC operator active power range',
     'iidm.export.xml.included.extensions.identifiableShortCircuit': 'Identifiable short-circuit',
     'iidm.export.xml.included.extensions.injectionObservability': 'Injection observability',
     'iidm.export.xml.included.extensions.lineFortescue': 'Line asymmetrical',
-    'iidm.export.xml.included.extensions.lineAsymmetrical': 'Line asymmetrical',
     'iidm.export.xml.included.extensions.linePosition': 'Line position',
-    'iidm.export.xml.included.extensions.loadFortescue': 'Load asymmetrical',
     'iidm.export.xml.included.extensions.loadAsymmetrical': 'Load asymmetrical',
     'iidm.export.xml.included.extensions.measurements': 'Measurements',
-    'iidm.export.xml.included.extensions.mergedXnode': 'Merged Xnode',
     'iidm.export.xml.included.extensions.operatingStatus': 'Operating status',
     'iidm.export.xml.included.extensions.position': 'Connectable position',
     'iidm.export.xml.included.extensions.referencePriorities': 'Reference priorities (LoadFlow)',
@@ -141,19 +138,16 @@ export const exportParamsEn = {
     'iidm.export.xml.included.extensions.startup': 'Generator startup',
     'iidm.export.xml.included.extensions.substationPosition': 'Substation position',
     'iidm.export.xml.included.extensions.threeWindingsTransformerFortescue': 'Three windings transformer asymmetrical',
-    'iidm.export.xml.included.extensions.threeWindingsTransformerAsymmetrical':
-        'Three windings transformer asymmetrical',
     'iidm.export.xml.included.extensions.threeWindingsTransformerPhaseAngleClock':
         'Three windings transformer phase angle clock',
     'iidm.export.xml.included.extensions.threeWindingsTransformerToBeEstimated':
         'Three windings transformer to be estimated',
     'iidm.export.xml.included.extensions.twoWindingsTransformerFortescue': 'Two windings transformer asymmetrical',
-    'iidm.export.xml.included.extensions.twoWindingsTransformerAsymmetrical': 'Two windings transformer asymmetrical',
     'iidm.export.xml.included.extensions.twoWindingsTransformerPhaseAngleClock':
         'Two windings transformer phase angle clock',
     'iidm.export.xml.included.extensions.twoWindingsTransformerToBeEstimated':
         'Two windings transformer to be estimated',
-    'iidm.export.xml.included.extensions.voltageLevelShortCircuits': 'Voltage level short circuits',
-    'iidm.export.xml.included.extensions.voltagePerReactivePowerControl': 'Voltage per reactive power control',
-    'iidm.export.xml.included.extensions.voltageRegulation': 'Voltage regulation',
+    'iidm.export.xml.included.extensions.voltagePerReactivePowerControl':
+        'Voltage per reactive power control (IIDM version < 1.18)',
+    'iidm.export.xml.included.extensions.voltageRegulation': 'Voltage regulation (IIDM version < 1.18)',
 };

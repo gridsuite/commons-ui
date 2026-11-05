@@ -36,9 +36,9 @@ function LoadFlowParametersHeader({
                     data-testid="LfGeneralTab"
                 />
                 <Tab
-                    label={<FormattedMessage id={TabValues.LIMIT_REDUCTIONS} />}
-                    value={TabValues.LIMIT_REDUCTIONS}
-                    sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_REDUCTIONS)}
+                    label={<FormattedMessage id={TabValues.LIMIT_SCALINGS} />}
+                    value={TabValues.LIMIT_SCALINGS}
+                    sx={getTabStyle(tabIndexesWithError, TabValues.LIMIT_SCALINGS)}
                     data-testid="LfLimitReductionsTab"
                 />
                 <Tab

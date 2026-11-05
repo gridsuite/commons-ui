@@ -10,7 +10,7 @@ import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { ParametersEditionDialogProps } from '../common';
 import {
     fetchLoadFlowParameters,
-    getLoadFlowDefaultLimitReductions,
+    getLoadFlowDefaultLimitScalings,
     getLoadFlowProviders,
     getLoadFlowSpecificParametersDescription,
     setLoadFlowParameters,
@@ -45,7 +45,7 @@ export function LoadFlowParametersEditionDialog({
             backendFetchParameters: fetchLoadFlowParameters,
             backendUpdateParameters: setLoadFlowParameters,
             backendFetchSpecificParametersDescription: getLoadFlowSpecificParametersDescription,
-            backendFetchDefaultLimitReductions: getLoadFlowDefaultLimitReductions,
+            backendFetchDefaultLimitScalings: getLoadFlowDefaultLimitScalings,
         }
     );
 

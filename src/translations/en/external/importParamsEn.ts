@@ -6,12 +6,6 @@
  */
 export const importParamsEn = {
     // CGMES
-    'iidm.import.cgmes.allow-unsupported-tap-changers': 'Allow unsupported tap changers',
-    'iidm.import.cgmes.allow-unsupported-tap-changers.desc': 'Allow import of potentially unsupported tap changers',
-    'iidm.import.cgmes.change-sign-for-shunt-reactive-power-flow-initial-state':
-        'Change sign for shunt power flow in initial state',
-    'iidm.import.cgmes.change-sign-for-shunt-reactive-power-flow-initial-state.desc':
-        'Change the sign of the power flow for shunt in initial state',
     'iidm.import.cgmes.convert-boundary': 'Convert boundary',
     'iidm.import.cgmes.convert-boundary.desc': 'Convert boundary during import',
     'iidm.import.cgmes.convert-sv-injections': 'Convert SV injections',
@@ -27,15 +21,8 @@ export const importParamsEn = {
         'Configure what type of naming strategy you want to use for the provided ID mapping file',
     'iidm.import.cgmes.naming-strategy.identity': 'identity',
     'iidm.import.cgmes.naming-strategy.cgmes': 'cgmes',
-    'iidm.import.cgmes.naming-strategy.cgmes-fix-all-invalid-id': 'cgmes-fix-all-invalid-id',
     'iidm.import.cgmes.import-control-areas': 'Import control areas',
     'iidm.import.cgmes.import-control-areas.desc': 'Import control areas',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions':
-        'Profile used for initial state values of shunt sections and tap position',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.desc':
-        'Profile used for initial state values of shunt sections and tap position',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.SV': 'SV',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.SSH': 'SSH',
     'iidm.import.cgmes.source-for-iidm-id': 'Source for IIDM identifiers',
     'iidm.import.cgmes.source-for-iidm-id.desc': 'Source for IIDM identifiers',
     'iidm.import.cgmes.source-for-iidm-id.mRID': 'mrID',
@@ -91,6 +78,9 @@ export const importParamsEn = {
     'iidm.import.xml.missing-permanent-limit-percentage': 'Create missing permanent limit from temporary one',
     'iidm.import.minimal-validation-level': 'Minimal validation level',
     'iidm.import.only-selected-operational-limits-groups': 'Only selected operational limits group',
+    'iidm.import.repair-invalid-reactive-curve-limits': 'Repair invalid reactive capability curves',
+    'iidm.import.repair-invalid-reactive-curve-limits.desc':
+        'Swap minQ and maxQ in reactive capability curve points where minQ > maxQ',
     'iidm.import.xml.with-automation-systems': 'With automation systems',
 
     // import extensions
@@ -107,8 +97,6 @@ export const importParamsEn = {
     'iidm.import.xml.included.extensions.cgmesBoundaryLineBoundaryNode': 'Cgmes boundary line boundary node',
     'iidm.import.xml.included.extensions.cgmesLineBoundaryNode': 'Cgmes line boundary node',
     'iidm.import.xml.included.extensions.cgmesMetadataModels': 'Cgmes models metadata',
-    'iidm.import.xml.included.extensions.cgmesSshMetadata': 'Cgmes ssh metadata',
-    'iidm.import.xml.included.extensions.cgmesSvMetadata': 'Cgmes sv metadata',
     'iidm.import.xml.included.extensions.cgmesTapChangers': 'Cgmes tap changers',
     'iidm.import.xml.included.extensions.cimCharacteristics': 'Cgmes characteristics',
     'iidm.import.xml.included.extensions.coordinatedReactiveControl': 'Coordinated reactive control',
@@ -116,21 +104,16 @@ export const importParamsEn = {
     'iidm.import.xml.included.extensions.discreteMeasurements': 'Discrete measurements',
     'iidm.import.xml.included.extensions.entsoeArea': 'Entsoe area',
     'iidm.import.xml.included.extensions.entsoeCategory': 'Entsoe category',
-    'iidm.import.xml.included.extensions.generatorActivePowerControl': 'Generator active power control',
-    'iidm.import.xml.included.extensions.generatorAsymmetrical': 'Generator asymmetrical',
     'iidm.import.xml.included.extensions.generatorRemoteReactivePowerControl':
-        'Generator remote reactive power control',
+        'Generator remote reactive power control (IIDM version < 1.18)',
     'iidm.import.xml.included.extensions.generatorShortCircuit': 'Generator short-circuit',
-    'iidm.import.xml.included.extensions.generatorShortCircuits': 'Generator short-circuit (IIDM version 1.0)',
     'iidm.import.xml.included.extensions.hvdcAngleDroopActivePowerControl': 'HVDC angle droop active power control',
     'iidm.import.xml.included.extensions.hvdcOperatorActivePowerRange': 'HVDC operator active power range',
     'iidm.import.xml.included.extensions.identifiableShortCircuit': 'Identifiable short-circuit',
     'iidm.import.xml.included.extensions.injectionObservability': 'Injection observability',
-    'iidm.import.xml.included.extensions.lineAsymmetrical': 'Line asymmetrical',
     'iidm.import.xml.included.extensions.linePosition': 'Line position',
     'iidm.import.xml.included.extensions.loadAsymmetrical': 'Load asymmetrical',
     'iidm.import.xml.included.extensions.measurements': 'Measurements',
-    'iidm.import.xml.included.extensions.mergedXnode': 'Merged Xnode',
     'iidm.import.xml.included.extensions.operatingStatus': 'Operating status',
     'iidm.import.xml.included.extensions.position': 'Connectable position',
     'iidm.import.xml.included.extensions.referencePriorities': 'Reference priorities (LoadFlow)',
@@ -140,28 +123,21 @@ export const importParamsEn = {
     'iidm.import.xml.included.extensions.standbyAutomaton': 'Static var compensators automaton',
     'iidm.import.xml.included.extensions.startup': 'Generator startup',
     'iidm.import.xml.included.extensions.substationPosition': 'Substation position',
-    'iidm.import.xml.included.extensions.threeWindingsTransformerAsymmetrical':
-        'Three windings transformer asymmetrical',
     'iidm.import.xml.included.extensions.threeWindingsTransformerPhaseAngleClock':
         'Three windings transformer phase angle clock',
     'iidm.import.xml.included.extensions.threeWindingsTransformerToBeEstimated':
         'Three windings transformer to be estimated',
-    'iidm.import.xml.included.extensions.twoWindingsTransformerAsymmetrical': 'Two windings transformer asymmetrical',
     'iidm.import.xml.included.extensions.twoWindingsTransformerPhaseAngleClock':
         'Two windings transformer phase angle clock',
     'iidm.import.xml.included.extensions.twoWindingsTransformerToBeEstimated':
         'Two windings transformer to be estimated',
-    'iidm.import.xml.included.extensions.voltageLevelShortCircuits': 'Voltage level short circuits',
-    'iidm.import.xml.included.extensions.voltagePerReactivePowerControl': 'Voltage per reactive power control',
-    'iidm.import.xml.included.extensions.voltageRegulation': 'Voltage regulation',
-    'iidm.import.xml.included.extensions.xnode': 'Xnode',
+    'iidm.import.xml.included.extensions.voltagePerReactivePowerControl':
+        'Voltage per reactive power control (IIDM version < 1.18)',
+    'iidm.import.xml.included.extensions.voltageRegulation': 'Voltage regulation (IIDM version < 1.18)',
     'iidm.import.xml.included.extensions.manualFrequencyRestorationReserve': 'Manual frequency restoration reserve',
 
-    // to remove after powsybl september release
     'iidm.import.xml.included.extensions.generatorFortescue': 'Generator asymmetrical',
     'iidm.import.xml.included.extensions.lineFortescue': 'Line asymmetrical',
-    'iidm.import.xml.included.extensions.loadFortescue': 'Load asymmetrical',
     'iidm.import.xml.included.extensions.threeWindingsTransformerFortescue': 'Three windings transformer asymmetrical',
     'iidm.import.xml.included.extensions.twoWindingsTransformerFortescue': 'Two windings transformer asymmetrical',
-    // end to remove
 };

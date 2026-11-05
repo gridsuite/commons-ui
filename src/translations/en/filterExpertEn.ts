@@ -133,6 +133,7 @@ export const filterExpertEn = {
     regulationMode: 'Regulation mode',
     'regulationMode.voltage': 'Voltage regulation',
     'regulationMode.reactivePower': 'Reactive power regulation',
+    'regulationMode.voltagePerReactivePower': 'Voltage regulation with reactive power slope',
     voltageSetPoint: 'Voltage set point',
     activePowerSetPoint: 'Active power set point',
     reactivePowerSetPoint: 'Reactive power set point',

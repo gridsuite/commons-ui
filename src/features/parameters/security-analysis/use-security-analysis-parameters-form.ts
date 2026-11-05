@@ -18,12 +18,12 @@ import {
 import {
     CONTINGENCY_LISTS,
     CONTINGENCY_LISTS_INFOS,
-    ILimitReductionsByVoltageLevel,
+    ILimitScalingsByVoltageLevel,
     IST_FORM,
     LIMIT_DURATION_FORM,
-    LIMIT_REDUCTIONS_FORM,
+    LIMIT_SCALINGS_FORM,
     PROVIDER,
-    toFormValuesLimitReductions,
+    toFormValuesLimitScalings,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { updateParameter } from '../../../services';
@@ -50,7 +50,7 @@ export interface UseSecurityAnalysisParametersFormReturn {
     setSelectedTab: (selectedTab: TabValues) => void;
     handleTabChange: (event: SyntheticEvent, newValue: TabValues) => void;
     formattedProviders: { id: string; label: string }[];
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    defaultLimitScalings: ILimitScalingsByVoltageLevel[];
     toFormValueSaParameters: (_params: SAParametersEnriched) => any;
     formatNewParams: (formData: Record<string, any>) => SAParametersEnriched;
     params: SAParametersEnriched | null;
@@ -68,7 +68,7 @@ export const useSecurityAnalysisParametersForm = (
     name: string | null,
     description: string | null
 ): UseSecurityAnalysisParametersFormReturn => {
-    const { providers, params, updateParameters, defaultLimitReductions } = parametersBackend;
+    const { providers, params, updateParameters, defaultLimitScalings } = parametersBackend;
     const previousWatchProviderRef = useRef<string | undefined>(undefined);
     const { snackError } = useSnackMessage();
 
@@ -92,7 +92,7 @@ export const useSecurityAnalysisParametersForm = (
             ...getNameElementEditorEmptyFormData(name, description),
             [PROVIDER]: params?.provider,
             [CONTINGENCY_LISTS_INFOS]: [],
-            [LIMIT_REDUCTIONS_FORM]: [],
+            [LIMIT_SCALINGS_FORM]: [],
             [FLOW_PROPORTIONAL_THRESHOLD]: null,
             [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: null,
             [LOW_VOLTAGE_ABSOLUTE_THRESHOLD]: null,
@@ -125,13 +125,13 @@ export const useSecurityAnalysisParametersForm = (
         []
     );
 
-    const toLimitReductions = useCallback(
+    const toLimitScalings = useCallback(
         (formLimits: Record<string, any>[]) => {
             if (!params?.limitReductions) {
                 return [];
             }
-            return params.limitReductions.map((vlLimits: ILimitReductionsByVoltageLevel, indexVl: number) => {
-                const vlLNewLimits: ILimitReductionsByVoltageLevel = {
+            return params.limitReductions.map((vlLimits: ILimitScalingsByVoltageLevel, indexVl: number) => {
+                const vlLNewLimits: ILimitScalingsByVoltageLevel = {
                     ...vlLimits,
                     permanentLimitReduction: formLimits[indexVl][IST_FORM],
                 };
@@ -157,10 +157,10 @@ export const useSecurityAnalysisParametersForm = (
                 [HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD]: formData[HIGH_VOLTAGE_PROPORTIONAL_THRESHOLD] / 100,
                 [HIGH_VOLTAGE_ABSOLUTE_THRESHOLD]: formData[HIGH_VOLTAGE_ABSOLUTE_THRESHOLD],
                 [CONTINGENCY_LISTS_INFOS]: toContingencyListsInfos(formData[CONTINGENCY_LISTS_INFOS]),
-                limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
+                limitReductions: toLimitScalings(formData[LIMIT_SCALINGS_FORM]),
             };
         },
-        [toContingencyListsInfos, toLimitReductions]
+        [toContingencyListsInfos, toLimitScalings]
     );
 
     const {
@@ -204,16 +204,16 @@ export const useSecurityAnalysisParametersForm = (
         if (watchProvider !== undefined && watchProvider !== previousWatchProviderRef.current) {
             if (previousWatchProviderRef.current !== undefined) {
                 if (params !== null) {
-                    params.limitReductions = defaultLimitReductions;
+                    params.limitReductions = defaultLimitScalings;
                 }
                 formMethods.setValue(
-                    LIMIT_REDUCTIONS_FORM,
-                    toFormValuesLimitReductions(defaultLimitReductions)[LIMIT_REDUCTIONS_FORM]
+                    LIMIT_SCALINGS_FORM,
+                    toFormValuesLimitScalings(defaultLimitScalings)[LIMIT_SCALINGS_FORM]
                 );
             }
             previousWatchProviderRef.current = watchProvider;
         }
-    }, [watchProvider, formMethods, defaultLimitReductions, params]);
+    }, [watchProvider, formMethods, defaultLimitScalings, params]);
 
     useEffect(() => {
         if (!params) {
@@ -230,7 +230,7 @@ export const useSecurityAnalysisParametersForm = (
         setSelectedTab,
         handleTabChange,
         formattedProviders,
-        defaultLimitReductions,
+        defaultLimitScalings,
         toFormValueSaParameters,
         formatNewParams,
         params,

@@ -8,19 +8,19 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from
 import { useFieldArray } from 'react-hook-form';
 import { CustomTooltip } from '../../../../components/ui/tooltip/CustomTooltip';
 import {
-    LimitReductionIColumnsDef,
-    LIMIT_REDUCTIONS_FORM,
-    ILimitReductionsByVoltageLevel,
-} from '../limitreductions/columns-definitions';
-import { LimitReductionTableRow } from '../limitreductions/limit-reduction-table-row';
+    LimitScalingIColumnsDef,
+    LIMIT_SCALINGS_FORM,
+    ILimitScalingsByVoltageLevel,
+} from '../limitscalings/columns-definitions';
+import { LimitScalingTableRow } from '../limitscalings/limit-scaling-table-row';
 import { CustomVoltageLevelTableRow } from './custom-voltage-level-table-row';
 
-interface LimitReductionsTableProps {
-    columnsDefinition: LimitReductionIColumnsDef[];
+interface LimitScalingsTableProps {
+    columnsDefinition: LimitScalingIColumnsDef[];
     tableHeight?: number;
     tableMinWidth?: number;
     formName: string;
-    limits?: ILimitReductionsByVoltageLevel[];
+    limits?: ILimitScalingsByVoltageLevel[];
 }
 
 const stickyFirstColumnSx = {
@@ -35,7 +35,7 @@ export function CustomVoltageLevelTable({
     tableHeight,
     tableMinWidth,
     limits,
-}: Readonly<LimitReductionsTableProps>) {
+}: Readonly<LimitScalingsTableProps>) {
     const { fields: rows } = useFieldArray({
         name: formName,
     });
@@ -79,8 +79,8 @@ export function CustomVoltageLevelTable({
                 </TableHead>
                 <TableBody>
                     {rows.map((row, index) =>
-                        formName === LIMIT_REDUCTIONS_FORM && limits ? (
-                            <LimitReductionTableRow
+                        formName === LIMIT_SCALINGS_FORM && limits ? (
+                            <LimitScalingTableRow
                                 key={`${row.id}`}
                                 columnsDefinition={columnsDefinition}
                                 index={index}

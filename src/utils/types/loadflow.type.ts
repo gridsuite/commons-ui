@@ -6,7 +6,7 @@
  */
 
 import type { UUID } from 'node:crypto';
-import type { ILimitReductionsByVoltageLevel } from '../../features/parameters/common/limitreductions/columns-definitions';
+import type { ILimitScalingsByVoltageLevel } from '../../features/parameters/common/limitscalings/columns-definitions';
 import type { ParameterDifference, ParameterValue, SpecificParametersPerProvider } from '../types/parameters.type';
 
 export interface LoadFlowParametersInfos {
@@ -15,6 +15,6 @@ export interface LoadFlowParametersInfos {
     limitReduction: number;
     commonParameters: Record<string, ParameterValue>;
     specificParametersPerProvider: SpecificParametersPerProvider;
-    limitReductions: ILimitReductionsByVoltageLevel[];
+    limitReductions: ILimitScalingsByVoltageLevel[];
     parametersDifferences?: Record<string, ParameterDifference>;
 }

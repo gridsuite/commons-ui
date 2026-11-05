@@ -16,6 +16,6 @@ export * from './parameters-creation-dialog';
 export * from './provider-param';
 export * from './widget';
 export * from './voltage-level-table';
-export * from './limitreductions';
+export * from './limitscalings';
 export * from './contingency-table';
 export * from './hook';

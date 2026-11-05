@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export const PARAM_LIMIT_REDUCTION = 'limitReduction';
+export const PARAM_LIMIT_SCALING = 'limitReduction';
 export const PARAM_PROVIDER_OPENLOADFLOW = 'OpenLoadFlow';
 
 // BasicLoadFlowParameters
@@ -27,17 +27,17 @@ export const SHUNT_COMPENSATOR_VOLTAGE_CONTROL_ON = 'shuntCompensatorVoltageCont
 export const DC_USE_TRANSFORMER_RATIO = 'dcUseTransformerRatio';
 export const DC_POWER_FACTOR = 'dcPowerFactor';
 
-export const MIN_VALUE_ALLOWED_FOR_LIMIT_REDUCTION = 0.5;
-export const MAX_VALUE_ALLOWED_FOR_LIMIT_REDUCTION = 1;
-export const DEFAULT_LIMIT_REDUCTION_VALUE = 0.8;
+export const MIN_VALUE_ALLOWED_FOR_LIMIT_SCALING = 0.5;
+export const MAX_VALUE_ALLOWED_FOR_LIMIT_SCALING = 1;
+export const DEFAULT_LIMIT_SCALING_VALUE = 0.8;
 
 export const alertThresholdMarks = [
     {
-        value: MIN_VALUE_ALLOWED_FOR_LIMIT_REDUCTION,
+        value: MIN_VALUE_ALLOWED_FOR_LIMIT_SCALING,
         label: '50',
     },
     {
-        value: MAX_VALUE_ALLOWED_FOR_LIMIT_REDUCTION,
+        value: MAX_VALUE_ALLOWED_FOR_LIMIT_SCALING,
         label: '100',
     },
 ];

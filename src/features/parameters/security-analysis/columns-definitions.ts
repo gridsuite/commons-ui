@@ -6,10 +6,10 @@
  */
 import * as yup from 'yup';
 import {
-    getLimitReductionsFormSchema,
-    ILimitReductionsByVoltageLevel,
+    getLimitScalingsFormSchema,
+    ILimitScalingsByVoltageLevel,
     PROVIDER,
-    toFormValuesLimitReductions,
+    toFormValuesLimitScalings,
 } from '../common';
 import { getNameElementEditorSchema } from '../../../components/ui/dialogs/name-element-editor';
 import { getContingencyListsInfosFormSchema, toFormValuesContingencyListsInfos } from '../common/contingency-table';
@@ -22,15 +22,15 @@ import {
     LOW_VOLTAGE_PROPORTIONAL_THRESHOLD,
 } from './constants';
 
-export const getSAParametersFormSchema = (name: string | null, limitReductions?: ILimitReductionsByVoltageLevel[]) => {
+export const getSAParametersFormSchema = (name: string | null, limitScalings?: ILimitScalingsByVoltageLevel[]) => {
     const providerSchema = yup.object().shape({
         [PROVIDER]: yup.string().required(),
     });
 
     const contingencyListsInfosSchema = getContingencyListsInfosFormSchema();
 
-    const limitReductionsSchema = getLimitReductionsFormSchema(
-        limitReductions?.length ? limitReductions[0].temporaryLimitReductions.length : 0
+    const limitScalingsSchema = getLimitScalingsFormSchema(
+        limitScalings?.length ? limitScalings[0].temporaryLimitReductions.length : 0
     );
 
     const thresholdsSchema = yup.object().shape({
@@ -58,7 +58,7 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
         .shape({
             ...providerSchema.fields,
             ...contingencyListsInfosSchema.fields,
-            ...limitReductionsSchema.fields,
+            ...limitScalingsSchema.fields,
             ...thresholdsSchema.fields,
         })
         .concat(getNameElementEditorSchema(name));
@@ -67,7 +67,7 @@ export const getSAParametersFormSchema = (name: string | null, limitReductions?:
 export const toFormValueSaParameters = (params: SAParametersEnriched) => ({
     [PROVIDER]: params.provider,
     ...toFormValuesContingencyListsInfos(params?.contingencyListsInfos ?? []),
-    ...toFormValuesLimitReductions(params?.limitReductions),
+    ...toFormValuesLimitScalings(params?.limitReductions),
     // SA specific form values
     [FLOW_PROPORTIONAL_THRESHOLD]: params.flowProportionalThreshold * 100,
     [LOW_VOLTAGE_PROPORTIONAL_THRESHOLD]: params.lowVoltageProportionalThreshold * 100,

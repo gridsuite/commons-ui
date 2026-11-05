@@ -6,13 +6,13 @@
  */
 
 import { FormattedMessage, useIntl } from 'react-intl';
-import { ITemporaryLimitReduction } from './columns-definitions';
+import { ITemporaryLimitScaling } from './columns-definitions';
 
-type LimitReductionsLabelColumnProps = {
-    limits: ITemporaryLimitReduction;
+type LimitScalingsLabelColumnProps = {
+    limits: ITemporaryLimitScaling;
 };
 
-export function LimitReductionsToolTipColumn({ limits }: Readonly<LimitReductionsLabelColumnProps>) {
+export function LimitScalingsToolTipColumn({ limits }: Readonly<LimitScalingsLabelColumnProps>) {
     const intl = useIntl();
     const lowBound = `${Math.trunc(limits.limitDuration.lowBound / 60)} min`;
     const highBoundValue = Math.trunc(limits.limitDuration.highBound / 60);

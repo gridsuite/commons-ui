@@ -78,6 +78,7 @@ export const PHASE_REGULATION_MODE_OPTIONS = [
 export const SVAR_REGULATION_MODE_OPTIONS = [
     { name: 'VOLTAGE', label: 'regulationMode.voltage' },
     { name: 'REACTIVE_POWER', label: 'regulationMode.reactivePower' },
+    { name: 'VOLTAGE_PER_REACTIVE_POWER', label: 'regulationMode.voltagePerReactivePower' },
 ];
 
 export const REGULATION_TYPE_OPTIONS = [
