@@ -100,7 +100,7 @@ export const getAllSpecificParametersValues = (
         // This is a workaround where parameter components of a provider are mounted but the provider changes during prefill.
         // Even after calling reset(), all parameters from the previous provider remain mounted and registered,
         // so their values are fell back to defaults => These parameters should be ignored.
-        if (!_specificParametersValues[key]) {
+        if (!Object.hasOwn(_specificParametersValues, key)) {
             return acc;
         }
         if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
