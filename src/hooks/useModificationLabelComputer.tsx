@@ -141,6 +141,16 @@ export const useModificationLabelComputer = () => {
                     return getEquipmentAttributeModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
+                case MODIFICATION_TYPES.TABULAR_CREATION.type:
+                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type: {
+                    const { csvFilename } = modificationValues;
+                    return {
+                        computedLabel: getLabel(modif),
+                        hasCsvFilename: String(!!csvFilename),
+                        csvFilename:
+                            formatBold && csvFilename ? <strong key="csvFilename">{csvFilename}</strong> : csvFilename,
+                    };
+                }
                 default:
                     return {
                         computedLabel: formatBold ? (
