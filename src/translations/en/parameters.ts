@@ -190,6 +190,7 @@ export const parametersEn = {
     UniqueFilterInputError: 'You must select one filter',
     EquipmentSelection: 'Equipment selection',
     ExpertSelection: 'Expert',
+    objectiveFunctionWeights: 'Objective function weights',
     PenaltyInvestReaPos: 'Capacitive reactive investment',
     PenaltyInvestReaNeg: ' Inductive reactive investment',
     PenaltyActivePower: 'Active losses',
