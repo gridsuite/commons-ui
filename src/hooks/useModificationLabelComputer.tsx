@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useIntl } from 'react-intl';
+import { IntlShape, useIntl } from 'react-intl';
 import { Fragment, useCallback } from 'react';
 import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
@@ -17,6 +17,8 @@ interface ModificationValues {
     equipmentAttributeValue: string;
     voltageLevelEquipmentId: string;
     substationEquipmentId: string;
+    tabularCreationType?: string;
+    tabularModificationType?: string;
     csvFilename?: string;
 }
 
@@ -59,16 +61,15 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
     };
 };
 
-const getTabularModificationValues = (
-    modification: ModificationValues,
-    equipmentTypeLabel: string,
-    formatBold: boolean
-) => {
+const getTabularModificationValues = (modification: ModificationValues, formatBold: boolean, intl: IntlShape) => {
+    const computedLabel = intl.formatMessage({
+        id: `network_modifications.tabular.${modification.tabularCreationType ?? modification.tabularModificationType}`,
+    });
     if (!modification.csvFilename) {
-        return { computedLabel: equipmentTypeLabel, csvFilename: '' };
+        return { computedLabel, csvFilename: '' };
     }
     return {
-        computedLabel: equipmentTypeLabel,
+        computedLabel,
         csvFilename: formatBold ? (
             <Fragment key="csvFilename">
                 {' - '}
@@ -159,21 +160,8 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
-                    return getTabularModificationValues(
-                        modificationValues,
-                        intl.formatMessage({
-                            id: `network_modifications.tabular.${modificationValues.tabularCreationType}`,
-                        }),
-                        formatBold
-                    );
                 case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
-                    return getTabularModificationValues(
-                        modificationValues,
-                        intl.formatMessage({
-                            id: `network_modifications.tabular.${modificationValues.tabularModificationType}`,
-                        }),
-                        formatBold
-                    );
+                    return getTabularModificationValues(modificationValues, formatBold, intl);
                 default:
                     return {
                         computedLabel: formatBold ? (
