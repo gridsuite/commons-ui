@@ -69,6 +69,7 @@ export const networkModificationsEn = {
     'network_modifications.LCC_CREATION': 'Creating HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modifying HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Creating static var compensator {computedLabel}',
+    'network_modifications.STATIC_VAR_COMPENSATOR_MODIFICATION': 'Modifying static var compensator {computedLabel}',
     'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
         'Creating voltage level {voltageLevelEquipmentId} and substation {substationEquipmentId}',
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION': 'Modifying voltage level topology {computedLabel}',
@@ -447,6 +448,8 @@ export const networkModificationsEn = {
     AddAutomaton: 'Add an automaton',
     CreateStaticVarCompensator: 'Create static var compensator',
     StaticVarCompensatorCreationError: 'Error while creating static var compensator',
+    ModifyStaticVarCompensator: 'Modify static var compensator',
+    StaticVarCompensatorModificationError: 'Error while modifying static var compensator',
     StaticVarCompensatorErrorQFixGreaterThanQMax: 'Q Fixed value should be less than Q maximum value',
     StaticVarCompensatorErrorQFixLessThanQMin: 'Q Fixed value should be greater than Q minimum value',
     StaticVarCompensatorErrorSFixGreaterThanSMax:

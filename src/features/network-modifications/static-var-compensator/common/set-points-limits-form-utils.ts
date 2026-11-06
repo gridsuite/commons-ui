@@ -97,6 +97,40 @@ export const getReactiveFormValidationSchema = () =>
         ),
     });
 
+export const getReactiveModificationFormEmptyFormData = (id = FieldConstants.SETPOINTS_LIMITS) => ({
+    [id]: {
+        ...getReactiveFormEmptyFormData(id)[id],
+        [FieldConstants.VOLTAGE_REGULATION_MODE]: null,
+        [FieldConstants.VOLTAGE_REGULATION_TYPE]: null,
+    },
+});
+
+export const getReactiveModificationFormValidationSchema = () =>
+    yup.object().shape({
+        [FieldConstants.MAX_SUSCEPTANCE]: yup.number().nullable(),
+        [FieldConstants.MIN_SUSCEPTANCE]: yup.number().nullable(),
+        [FieldConstants.MAX_Q_AT_NOMINAL_V]: yup.number().nullable(),
+        [FieldConstants.MIN_Q_AT_NOMINAL_V]: yup.number().nullable(),
+        [FieldConstants.VOLTAGE_SET_POINT]: yup.number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
+        [FieldConstants.REACTIVE_POWER_SET_POINT]: yup.number().nullable(),
+        [FieldConstants.CHARACTERISTICS_CHOICE]: yup.string().required(),
+        [FieldConstants.VOLTAGE_REGULATION_MODE]: yup.string().nullable(),
+        [FieldConstants.VOLTAGE_REGULATION_TYPE]: yup.string().nullable(),
+        [FieldConstants.VOLTAGE_LEVEL]: yup
+            .object()
+            .nullable()
+            .shape({
+                [FieldConstants.ID]: yup.string().required(),
+            }),
+        [FieldConstants.EQUIPMENT]: yup
+            .object()
+            .nullable()
+            .shape({
+                [FieldConstants.ID]: yup.string().required(),
+                [FieldConstants.TYPE]: yup.string().required(),
+            }),
+    });
+
 export const getReactiveFormData = ({
     maxSusceptance,
     minSusceptance,
