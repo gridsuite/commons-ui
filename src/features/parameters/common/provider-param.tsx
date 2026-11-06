@@ -37,7 +37,7 @@ export function ProviderParam({ options, id, sx, onProviderChange }: Readonly<Pr
                     size="small"
                     options={options}
                     data-testid={`${id}Provider`}
-                    onChangeCb={onProviderChange}
+                    onChange={onProviderChange}
                 />
             </Grid>
             <LineSeparator />
