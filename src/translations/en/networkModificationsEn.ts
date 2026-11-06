@@ -77,6 +77,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': 'Creating a busbar in voltage level {computedLabel}',
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
+    'network_modifications.NETWORK_REDUCTION': 'Network reduction',
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
@@ -700,6 +701,10 @@ export const networkModificationsEn = {
 
     GeneratorScaling: 'Generator scaling',
     GeneratorScalingError: 'Error while creating a generator scaling',
+
+    NetworkReduction: 'Network reduction',
+    NetworkReductionVoltageLevelFilters: 'Voltage levels to remove',
+    NetworkReductionError: 'Error while creating a network reduction',
 
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',
