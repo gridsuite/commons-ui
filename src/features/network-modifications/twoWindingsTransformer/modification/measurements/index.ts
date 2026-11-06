@@ -8,3 +8,4 @@
 export * from './toBeEstimated.type';
 export * from './toBeEstimated.utils';
 export * from './ToBeEstimatedForm';
+export * from './position/TapPositionMeasurementsForm';
