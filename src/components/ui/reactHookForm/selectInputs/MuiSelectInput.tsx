@@ -10,9 +10,10 @@ import { MenuItem, Select, SelectProps } from '@mui/material';
 import { useController } from 'react-hook-form';
 import { useCustomFormContext } from '../provider';
 
-export type MuiSelectInputProps = SelectProps & {
+export type MuiSelectInputProps = Omit<SelectProps, 'onChange'> & {
     name: string;
     options: { id: string; label: string }[] | string[];
+    onChange?: (value: string) => void;
 };
 
 function renderMenuItem(option: { id: string; label: string } | string) {
@@ -28,9 +29,9 @@ function renderMenuItem(option: { id: string; label: string } | string) {
 }
 
 // This input use Mui select instead of Autocomplete which can be needed some time (like in FormControl)
-export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps) {
+export function MuiSelectInput({ name, options, onChange, ...props }: MuiSelectInputProps) {
     const {
-        field: { value, onChange },
+        field: { value, onChange: onChangeRhf },
     } = useController({
         name,
     });
@@ -39,7 +40,10 @@ export function MuiSelectInput({ name, options, ...props }: MuiSelectInputProps)
     return (
         <Select
             value={value}
-            onChange={onChange}
+            onChange={(event) => {
+                onChangeRhf(event);
+                onChange?.(event.target.value as string);
+            }}
             {...props}
             inputProps={{ ...props.inputProps, readOnly: isReadOnly || props.inputProps?.readOnly }}
         >

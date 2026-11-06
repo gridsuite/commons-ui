@@ -7,7 +7,7 @@
 
 import { FieldErrors, useForm, UseFormReturn } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useEffectEvent, useMemo, useState } from 'react';
 import type { UUID } from 'node:crypto';
 import * as yup from 'yup';
 import {
@@ -47,7 +47,7 @@ import {
     getNameElementEditorEmptyFormData,
     getNameElementEditorSchema,
 } from '../../../components/ui/dialogs/name-element-editor';
-import { useTabs, useSnackMessage } from '../../../hooks';
+import { useSnackMessage, useTabs } from '../../../hooks';
 import {
     formatSpecificParameters,
     getAllSpecificParametersValues,
@@ -71,6 +71,7 @@ export interface UseLoadFlowParametersFormReturn {
     params: LoadFlowParametersInfos | null;
     watchProvider: string | undefined;
     paramsLoaded: boolean;
+    onProviderChange: (provider: string) => void;
     onValidationError: (errors: FieldErrors) => void;
     onSaveInline: (formData: Record<string, any>) => void;
     onSaveDialog: (formData: Record<string, any>) => void;
@@ -92,8 +93,6 @@ export const useLoadFlowParametersForm = (
         return params?.provider && specificParamsDescription ? specificParamsDescription[params.provider] : [];
     });
     const { snackError } = useSnackMessage();
-
-    const previousWatchProviderRef = useRef<string | undefined>(undefined);
 
     const specificParametersDefaultValues = useMemo(() => {
         return getDefaultSpecificParamsValues(specificParametersDescriptionForProvider);
@@ -149,11 +148,11 @@ export const useLoadFlowParametersForm = (
     }, [watchProvider, params?.provider, specificParamsDescription]);
 
     const toLimitReductions = useCallback(
-        (formLimits: Record<string, any>[]) => {
+        (provider: string, formLimits: Record<string, any>[]) => {
             if (formLimits?.length === 0) {
                 return [];
             }
-            if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
+            if (provider === PARAM_PROVIDER_OPENLOADFLOW) {
                 if (!params?.limitReductions) {
                     return defaultLimitReductions.map((vlLimits, indexVl) =>
                         mapLimitReductions(vlLimits, formLimits, indexVl)
@@ -165,7 +164,7 @@ export const useLoadFlowParametersForm = (
             }
             return [];
         },
-        [defaultLimitReductions, params?.limitReductions, watchProvider]
+        [defaultLimitReductions, params?.limitReductions]
     );
 
     const formatNewParams = useCallback(
@@ -187,7 +186,7 @@ export const useLoadFlowParametersForm = (
                       }
                     : {},
 
-                limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
+                limitReductions: toLimitReductions(formData[PROVIDER], formData[LIMIT_REDUCTIONS_FORM]),
             };
         },
         [specificParametersDefaultValues, toLimitReductions]
@@ -195,8 +194,8 @@ export const useLoadFlowParametersForm = (
 
     const toLoadFlowFormValues = useCallback(
         (_params: LoadFlowParametersInfos) => {
-            const specificParamsListForCurrentProvider = _params.specificParametersPerProvider[_params.provider];
-            const specificParametersForLoadedProvider = specificParamsDescription?.[_params.provider] ?? [];
+            const specificParameters = _params.specificParametersPerProvider[_params.provider];
+            const specificParametersDesc = specificParamsDescription?.[_params.provider] ?? [];
             const { advancedParameters: advancedParams, commonParameters: commonParams } = splitCommonParameters(
                 _params.commonParameters
             );
@@ -211,10 +210,7 @@ export const useLoadFlowParametersForm = (
                     ...advancedParams,
                 },
                 [SPECIFIC_PARAMETERS]: {
-                    ...formatSpecificParameters(
-                        specificParametersForLoadedProvider,
-                        specificParamsListForCurrentProvider
-                    ),
+                    ...formatSpecificParameters(specificParametersDesc, specificParameters),
                 },
                 ...toFormValuesLimitReductions(_params.limitReductions),
             };
@@ -271,9 +267,6 @@ export const useLoadFlowParametersForm = (
     );
 
     const resetForm = useEffectEvent((_params: LoadFlowParametersInfos) => {
-        // Update ref before reset() so the watchProvider effect treats this as already handled
-        // and skips applying defaults (which would overwrite the values we're about to reset to).
-        previousWatchProviderRef.current = _params.provider;
         // Update description in the same batch as reset() so the old provider's fields don't
         // get one extra render with undefined values which would dirty the form.
         setSpecificParametersDescriptionForProvider(specificParamsDescription?.[_params.provider] ?? []);
@@ -292,27 +285,27 @@ export const useLoadFlowParametersForm = (
         resetForm(params);
     }, [paramsLoaded, params, specificParamsDescription]);
 
-    useEffect(() => {
-        if (!watchProvider || watchProvider === previousWatchProviderRef.current) {
-            return;
-        }
+    const onProviderChange = useCallback(
+        (nextProvider: string) => {
+            setSpecificParameters(
+                nextProvider,
+                specificParamsDescription,
+                params?.specificParametersPerProvider,
+                formMethods
+            );
+            setLimitReductions(nextProvider, defaultLimitReductions, formMethods);
 
-        // Only user-driven switches reach here: resetForm() pre-sets the ref so resets
-        // triggered by loading params are caught by the early-return above.
-        setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
-        setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
-
-        // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
-        // (formSchema has a dep on limitReductionNumber)
-        if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
-            // providerX -> OLF: use default value
-            setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
-        } else {
-            setLimitReductionNumber(0);
-        }
-
-        previousWatchProviderRef.current = watchProvider;
-    }, [defaultLimitReductions, formMethods, specificParamsDescription, watchProvider]);
+            // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
+            // (formSchema has a dep on limitReductionNumber)
+            if (nextProvider === PARAM_PROVIDER_OPENLOADFLOW) {
+                // providerX -> OLF: use default value
+                setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+            } else {
+                setLimitReductionNumber(0);
+            }
+        },
+        [defaultLimitReductions, formMethods, specificParamsDescription, params]
+    );
 
     return {
         formMethods,
@@ -328,6 +321,7 @@ export const useLoadFlowParametersForm = (
         params,
         watchProvider,
         paramsLoaded,
+        onProviderChange,
         onValidationError,
         onSaveInline,
         onSaveDialog,
