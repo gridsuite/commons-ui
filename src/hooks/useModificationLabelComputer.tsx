@@ -6,7 +6,7 @@
  */
 
 import { useIntl } from 'react-intl';
-import { useCallback } from 'react';
+import { Fragment, useCallback } from 'react';
 import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
 interface ModificationValues {
@@ -54,6 +54,27 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
             <strong key="substationEquipmentId">{modification.substationEquipmentId}</strong>
         ) : (
             modification.substationEquipmentId
+        ),
+    };
+};
+
+const getTabularModificationValues = (
+    equipmentTypeLabel: string,
+    csvFilename: string | undefined,
+    formatBold: boolean
+) => {
+    if (!csvFilename) {
+        return { computedLabel: equipmentTypeLabel, csvFilename: '' };
+    }
+    return {
+        computedLabel: equipmentTypeLabel,
+        csvFilename: formatBold ? (
+            <Fragment key="csvFilename">
+                {' - '}
+                <strong>{csvFilename}</strong>
+            </Fragment>
+        ) : (
+            ` - ${csvFilename}`
         ),
     };
 };
@@ -142,15 +163,8 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
-                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type: {
-                    const { csvFilename } = modificationValues;
-                    return {
-                        computedLabel: getLabel(modif),
-                        hasCsvFilename: String(!!csvFilename),
-                        csvFilename:
-                            formatBold && csvFilename ? <strong key="csvFilename">{csvFilename}</strong> : csvFilename,
-                    };
-                }
+                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
+                    return getTabularModificationValues(getLabel(modif), modificationValues.csvFilename, formatBold);
                 default:
                     return {
                         computedLabel: formatBold ? (

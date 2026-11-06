@@ -49,8 +49,7 @@ export const networkModificationsEn = {
     'network_modifications.modifications': 'Updating modification list ...',
     'network_modifications.GENERATION_DISPATCH': 'Generation dispatch {computedLabel}',
     'network_modifications.VOLTAGE_INIT_MODIFICATION': 'Voltage profile initialization {computedLabel}',
-    'network_modifications.TABULAR_MODIFICATION':
-        'Modifying {computedLabel}{hasCsvFilename, select, true { - {csvFilename}} other {}}',
+    'network_modifications.TABULAR_MODIFICATION': 'Modifying {computedLabel}{csvFilename}',
     'network_modifications.tabular.GENERATOR_MODIFICATION': 'generators',
     'network_modifications.tabular.LOAD_MODIFICATION': 'loads',
     'network_modifications.BY_FORMULA_MODIFICATION': 'Modification by formula ({computedLabel})',
@@ -61,8 +60,7 @@ export const networkModificationsEn = {
     'network_modifications.tabular.TWO_WINDINGS_TRANSFORMER_MODIFICATION': 'two windings transformers',
     'network_modifications.tabular.SHUNT_COMPENSATOR_MODIFICATION': 'linear shunt compensators',
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'substations',
-    'network_modifications.TABULAR_CREATION':
-        'Creating {computedLabel}{hasCsvFilename, select, true { - {csvFilename}} other {}}',
+    'network_modifications.TABULAR_CREATION': 'Creating {computedLabel}{csvFilename}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generators',
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'loads',
