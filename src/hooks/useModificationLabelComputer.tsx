@@ -17,6 +17,7 @@ interface ModificationValues {
     equipmentAttributeValue: string;
     voltageLevelEquipmentId: string;
     substationEquipmentId: string;
+    csvFilename?: string;
 }
 
 const getOperatingStatusModificationValues = (modification: ModificationValues, formatBold: boolean) => {
@@ -59,11 +60,11 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
 };
 
 const getTabularModificationValues = (
+    modification: ModificationValues,
     equipmentTypeLabel: string,
-    csvFilename: string | undefined,
     formatBold: boolean
 ) => {
-    if (!csvFilename) {
+    if (!modification.csvFilename) {
         return { computedLabel: equipmentTypeLabel, csvFilename: '' };
     }
     return {
@@ -71,10 +72,10 @@ const getTabularModificationValues = (
         csvFilename: formatBold ? (
             <Fragment key="csvFilename">
                 {' - '}
-                <strong>{csvFilename}</strong>
+                <strong>{modification.csvFilename}</strong>
             </Fragment>
         ) : (
-            ` - ${csvFilename}`
+            ` - ${modification.csvFilename}`
         ),
     };
 };
@@ -104,7 +105,6 @@ export const useModificationLabelComputer = () => {
                     return `${modificationMetadata.lineToAttachTo1Id}/${modificationMetadata.lineToAttachTo2Id}`;
                 case MODIFICATION_TYPES.DELETE_ATTACHING_LINE.type:
                     return `${modificationMetadata.attachedLineId}/${modificationMetadata.lineToAttachTo1Id}/${modificationMetadata.lineToAttachTo2Id}`;
-                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
                 case MODIFICATION_TYPES.LIMIT_SETS_TABULAR_MODIFICATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularModificationType}`,
@@ -118,10 +118,6 @@ export const useModificationLabelComputer = () => {
                     return intl.formatMessage(
                         computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType)
                     );
-                case MODIFICATION_TYPES.TABULAR_CREATION.type:
-                    return intl.formatMessage({
-                        id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
-                    });
                 case MODIFICATION_TYPES.CREATE_COUPLING_DEVICE.type:
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_TOPOLOGY.type:
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_SECTION.type:
@@ -163,8 +159,21 @@ export const useModificationLabelComputer = () => {
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.TABULAR_CREATION.type:
+                    return getTabularModificationValues(
+                        modificationValues,
+                        intl.formatMessage({
+                            id: `network_modifications.tabular.${modificationValues.tabularCreationType}`,
+                        }),
+                        formatBold
+                    );
                 case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
-                    return getTabularModificationValues(getLabel(modif), modificationValues.csvFilename, formatBold);
+                    return getTabularModificationValues(
+                        modificationValues,
+                        intl.formatMessage({
+                            id: `network_modifications.tabular.${modificationValues.tabularModificationType}`,
+                        }),
+                        formatBold
+                    );
                 default:
                     return {
                         computedLabel: formatBold ? (
@@ -175,7 +184,7 @@ export const useModificationLabelComputer = () => {
                     };
             }
         },
-        [getLabel]
+        [getLabel, intl]
     );
 
     return { computeLabel };
