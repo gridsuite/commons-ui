@@ -48,7 +48,7 @@ export function CsvDownloadButton({
     }
 
     return (
-        <CSVDownloader data={data} filename={fileName} config={{ delimiter: getCsvDelimiter(language) }} bom={true}>
+        <CSVDownloader bom data={data} filename={fileName} config={{ delimiter: getCsvDelimiter(language) }}>
             {button}
         </CSVDownloader>
     );
