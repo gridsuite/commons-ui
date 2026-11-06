@@ -45,6 +45,7 @@ type SingleLineDiagramParameters = {
     componentLibrary: string;
     measurements: boolean;
     observability: boolean;
+    autoRefresh: boolean;
 };
 
 type NetworkAreaDiagramParameters = {
