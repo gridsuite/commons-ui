@@ -22,7 +22,7 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
-    'explore.elementAlreadyExists': "L'élément {elementName} existe déjà dans le dossier",
+    'explore.modificationElementAlreadyExists': "La modification composite '{elementName}' existe déjà dans le dossier",
     'study.nodeNotFound': 'Noeud non trouvé.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
