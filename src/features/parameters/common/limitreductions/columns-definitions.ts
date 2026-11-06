@@ -76,13 +76,21 @@ export const getLimitReductionsFormSchema = (nbTemporaryLimits: number) => {
     return yup
         .object()
         .shape({
-            [LIMIT_REDUCTIONS_FORM]: yup.array().of(
-                yup.object().shape({
-                    [VOLTAGE_LEVELS_FORM]: yup.string(),
-                    [IST_FORM]: yup.number().min(0, REAL_PERCENTAGE).max(1, REAL_PERCENTAGE).nullable().required(),
-                    ...getLimitDurationsFormSchema(nbTemporaryLimits),
-                })
-            ),
+            [LIMIT_REDUCTIONS_FORM]:
+                nbTemporaryLimits === 0
+                    ? yup.mixed().notRequired() // ignore validation
+                    : yup.array().of(
+                          yup.object().shape({
+                              [VOLTAGE_LEVELS_FORM]: yup.string(),
+                              [IST_FORM]: yup
+                                  .number()
+                                  .min(0, REAL_PERCENTAGE)
+                                  .max(1, REAL_PERCENTAGE)
+                                  .nullable()
+                                  .required(),
+                              ...getLimitDurationsFormSchema(nbTemporaryLimits),
+                          })
+                      ),
         })
         .required();
 };

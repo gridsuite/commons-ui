@@ -120,6 +120,7 @@ export const setSpecificParameters = (
     const specificParameters = specificParametersPerProvider?.[provider] ?? {};
     const specificParamsValues = formatSpecificParameters(specificParametersDesc, specificParameters);
     formMethods.setValue(SPECIFIC_PARAMETERS, specificParamsValues);
+    formMethods.clearErrors(SPECIFIC_PARAMETERS);
 };
 
 export type UseComputationParametersFormReturn = {
