@@ -18,6 +18,7 @@ import {
     tabbedFormStyles,
 } from '../../common';
 import { SetPointsLimitsForm } from '../common/set-points-limits-form';
+import { StandbyAutomatonForm } from '../common/standby-automaton-form';
 import { StaticVarCompensatorDialogTabs } from '../common/static-var-compensator-dialog-tabs';
 import { StaticVarCompensatorDialogTab } from '../common/static-var-compensator-tab-utils';
 import { StaticVarCompensatorFormInfo } from '../common/static-var-compensator.types';
@@ -67,7 +68,6 @@ export function StaticVarCompensatorModificationForm({
                 tabIndex={selectedTab}
                 tabIndexesWithError={tabsWithError}
                 onTabChange={onTabChange}
-                hideAutomatonTab
             />
             <Box sx={tabbedFormStyles.scrollableContent}>
                 <Box hidden={selectedTab !== StaticVarCompensatorDialogTab.CONNECTIVITY_TAB}>
@@ -92,6 +92,9 @@ export function StaticVarCompensatorModificationForm({
                         voltageLevelOptions={voltageLevelOptions}
                         fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                     />
+                </Box>
+                <Box hidden={selectedTab !== StaticVarCompensatorDialogTab.AUTOMATON_TAB}>
+                    <StandbyAutomatonForm isEquipmentModification previousValues={staticVarCompensatorToModify} />
                 </Box>
                 <Box hidden={selectedTab !== StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB}>
                     <PropertiesForm networkElementType="staticCompensator" isModification />

@@ -29,7 +29,7 @@ export interface SetPointsLimitsFormProps {
     previousValues?: StaticVarCompensatorFormInfo | null;
 }
 
-const getPreviousRegulationMode = (previousValues?: StaticVarCompensatorFormInfo | null) => {
+export const getPreviousRegulationMode = (previousValues?: StaticVarCompensatorFormInfo | null) => {
     if (!previousValues) {
         return undefined;
     }
