@@ -24,7 +24,7 @@ import {
     SHORT_CIRCUIT_WITH_SHUNT_COMPENSATORS,
     SHORT_CIRCUIT_WITH_VSC_CONVERTER_STATIONS,
 } from './constants';
-import { updateParameter } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { useTabs, useSnackMessage } from '../../../hooks';
 import { ComputingType, ElementType, SpecificParameterInfos, UseParametersBackendReturnProps } from '../../../utils';
 import {
@@ -258,9 +258,10 @@ export const useShortCircuitParametersForm = ({
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    formatNewParams(formData),
+                    () => formatNewParams(formData),
                     formData[NAME],
                     ElementType.SHORT_CIRCUIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -269,7 +270,7 @@ export const useShortCircuitParametersForm = ({
                 });
             }
         },
-        [formatNewParams, parametersUuid, snackError]
+        [formMethods, formatNewParams, parametersUuid, snackError]
     );
 
     useEffect(() => {

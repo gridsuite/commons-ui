@@ -54,7 +54,8 @@ import {
     getSensitivityAnalysisFactorsCount,
     setSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
-import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL, updateParameter } from '../../../services';
+import { DEFAULT_TIMEOUT_MS, IGNORE_SIGNAL } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { useSnackMessage, useTabs, UseTabsReturn } from '../../../hooks';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
 import { BuildStatus } from '../../node';
@@ -486,9 +487,10 @@ export const useSensitivityAnalysisParametersForm = ({
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    mapSensitivityAnalysisParameters(formatNewParams(formData)),
+                    () => mapSensitivityAnalysisParameters(formatNewParams(formData)),
                     formData[FieldConstants.NAME],
                     ElementType.SENSITIVITY_PARAMETERS,
                     formData[FieldConstants.DESCRIPTION] ?? ''
@@ -497,7 +499,7 @@ export const useSensitivityAnalysisParametersForm = ({
                 });
             }
         },
-        [parametersUuid, formatNewParams, snackError]
+        [formMethods, parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {

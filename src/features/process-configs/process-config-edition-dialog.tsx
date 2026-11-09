@@ -9,7 +9,13 @@ import { useCallback } from 'react';
 import { SubmitHandler, useWatch } from 'react-hook-form';
 import { CustomMuiDialog } from '../../components';
 import { useSnackMessage } from '../../hooks';
-import { FieldConstants, isDisabledValidationButton, snackWithFallback } from '../../utils';
+import {
+    FieldConstants,
+    isDisabledValidationButton,
+    isOnlyNameOrDescriptionModified,
+    snackWithFallback,
+} from '../../utils';
+import { updateElement } from '../../services';
 import { ProcessType } from './common';
 import {
     getProcessConfigBackendFromFormData,
@@ -54,17 +60,24 @@ export function ProcessConfigEditionDialog({
     const handleSave = useCallback<SubmitHandler<ProcessConfigFormValues>>(
         async (values) => {
             try {
-                await updateProcessConfig(
-                    processConfigUuid,
-                    values[FieldConstants.NAME] ?? '',
-                    values[FieldConstants.DESCRIPTION] ?? '',
-                    getProcessConfigBackendFromFormData(values)
-                );
+                if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
+                    await updateElement(processConfigUuid, {
+                        elementName: values[FieldConstants.NAME] ?? '',
+                        description: values[FieldConstants.DESCRIPTION] ?? '',
+                    });
+                } else {
+                    await updateProcessConfig(
+                        processConfigUuid,
+                        values[FieldConstants.NAME] ?? '',
+                        values[FieldConstants.DESCRIPTION] ?? '',
+                        getProcessConfigBackendFromFormData(values)
+                    );
+                }
             } catch (error) {
                 snackWithFallback(snackError, error, { headerId: 'processConfig/updateProcessConfigError' });
             }
         },
-        [processConfigUuid, updateProcessConfig, snackError]
+        [formMethods, processConfigUuid, updateProcessConfig, snackError]
     );
 
     return (

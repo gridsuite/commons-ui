@@ -41,7 +41,8 @@ import {
     DEFAULT_PENALTY_INVEST_REA_POS,
     DEFAULT_PENALTY_UNITS_REACTIVE,
 } from './constants';
-import { getVoltageInitParameters, updateParameter, updateVoltageInitParameters } from '../../../services';
+import { getVoltageInitParameters, updateVoltageInitParameters } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { useTabs, useSnackMessage } from '../../../hooks';
 import { ElementType, isBlankOrEmpty, MUST_BE_GREATER_OR_EQUAL_TO_ZERO, YUP_REQUIRED } from '../../../utils';
 import {
@@ -245,9 +246,10 @@ export const useVoltageInitParametersForm = ({
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    fromVoltageInitParametersFormToParamValues(formData).computationParameters,
+                    () => fromVoltageInitParametersFormToParamValues(formData).computationParameters,
                     formData[NAME],
                     ElementType.VOLTAGE_INIT_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -256,7 +258,7 @@ export const useVoltageInitParametersForm = ({
                 });
             }
         },
-        [parametersUuid, snackError]
+        [formMethods, parametersUuid, snackError]
     );
 
     // GridExplore init case

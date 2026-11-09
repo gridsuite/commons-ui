@@ -11,6 +11,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
 import { v4 as uuid4 } from 'uuid';
 import * as yup from 'yup';
+import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../../hooks/useSnackMessage';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
 import { CustomMuiDialog } from '../../../ui/dialogs/customMuiDialog/CustomMuiDialog';
@@ -25,7 +26,8 @@ import { FilterEditionProps } from '../filter.type';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { FILTER_EQUIPMENTS_ATTRIBUTES } from './ExplicitNamingFilterConstants';
 import { snackWithFallback } from '../../../../utils/error';
-import { isDisabledValidationButton } from '../../../../utils/form-utils';
+import { isDisabledValidationButton, isOnlyNameOrDescriptionModified } from '../../../../utils/form-utils';
+import { updateElement } from '../../../../services/explore';
 
 const formSchema = yup
     .object()
@@ -91,24 +93,35 @@ export function ExplicitNamingFilterEditionDialog({
 
     const onSubmit = useCallback<SubmitHandler<FormSchemaType>>(
         (filterForm) => {
-            saveExplicitNamingFilter(
-                filterForm[FILTER_EQUIPMENTS_ATTRIBUTES] ?? [],
-                false,
-                filterForm[FieldConstants.EQUIPMENT_TYPE],
-                filterForm[FieldConstants.NAME],
-                filterForm[FieldConstants.DESCRIPTION] ?? '',
-                id,
-                (error) => {
-                    snackWithFallback(snackError, error);
-                },
-                onClose
-            );
+            if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
+                updateElement(id as UUID, {
+                    elementName: filterForm[FieldConstants.NAME],
+                    description: filterForm[FieldConstants.DESCRIPTION] ?? '',
+                })
+                    .then(onClose)
+                    .catch((error) => {
+                        snackWithFallback(snackError, error);
+                    });
+            } else {
+                saveExplicitNamingFilter(
+                    filterForm[FILTER_EQUIPMENTS_ATTRIBUTES] ?? [],
+                    false,
+                    filterForm[FieldConstants.EQUIPMENT_TYPE],
+                    filterForm[FieldConstants.NAME],
+                    filterForm[FieldConstants.DESCRIPTION] ?? '',
+                    id,
+                    (error) => {
+                        snackWithFallback(snackError, error);
+                    },
+                    onClose
+                );
+            }
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
+        [broadcastChannel, formMethods, id, itemSelectionForCopy, onClose, snackError, setItemSelectionForCopy]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;
