@@ -12,7 +12,7 @@ import type { UserProfile } from 'oidc-client-ts';
 
 import { useSnackMessage } from './useSnackMessage';
 import { formatComputingTypeLabel } from '../features/parameters/common/computing-type';
-import type { ILimitReductionsByVoltageLevel } from '../features/parameters/common/limitreductions/columns-definitions';
+import type { ILimitScalingsByVoltageLevel } from '../features/parameters/common/limitscalings/columns-definitions';
 import type {
     BackendFunctions,
     ParametersInfos,
@@ -41,7 +41,7 @@ export const useParametersBackend = <T extends ComputingType>(
         backendFetchParameters,
         backendUpdateParameters,
         backendFetchSpecificParametersDescription,
-        backendFetchDefaultLimitReductions,
+        backendFetchDefaultLimitScalings,
     } = backendFunctions;
 
     const [providers, setProviders] = useState<Record<string, string>>({});
@@ -49,7 +49,7 @@ export const useParametersBackend = <T extends ComputingType>(
     const [specificParamsDescription, setSpecificParamsDescription] = useState<SpecificParametersDescription | null>(
         null
     );
-    const [defaultLimitReductions, setDefaultLimitReductions] = useState<ILimitReductionsByVoltageLevel[]>([]);
+    const [defaultLimitScalings, setDefaultLimitScalings] = useState<ILimitScalingsByVoltageLevel[]>([]);
 
     // PROVIDER SYNC
     const fetchAvailableProviders = useCallback(() => {
@@ -101,23 +101,23 @@ export const useParametersBackend = <T extends ComputingType>(
         }
     }, [optionalServiceStatus, fetchSpecificParametersDescription]);
 
-    // Default limit reductions
-    const fetchDefaultLimitReductions = useCallback(() => {
-        backendFetchDefaultLimitReductions?.()
-            .then((defaultLimits: ILimitReductionsByVoltageLevel[]) => {
-                setDefaultLimitReductions(defaultLimits);
+    // Default limit scalings
+    const fetchDefaultLimitScalings = useCallback(() => {
+        backendFetchDefaultLimitScalings?.()
+            .then((defaultLimits: ILimitScalingsByVoltageLevel[]) => {
+                setDefaultLimitScalings(defaultLimits);
             })
             .catch((error) => {
                 snackWithFallback(snackError, error, { headerId: 'fetchDefaultLimitReductionsError' });
             });
-    }, [backendFetchDefaultLimitReductions, snackError]);
+    }, [backendFetchDefaultLimitScalings, snackError]);
 
-    // We just need to fetch default limit reductions once
+    // We just need to fetch default limit scalings once
     useEffect(() => {
         if (optionalServiceStatus === OptionalServicesStatus.Up) {
-            fetchDefaultLimitReductions();
+            fetchDefaultLimitScalings();
         }
-    }, [optionalServiceStatus, fetchDefaultLimitReductions]);
+    }, [optionalServiceStatus, fetchDefaultLimitScalings]);
 
     // PARAMETERS UPDATE
     const updateParameters = useCallback(
@@ -194,6 +194,6 @@ export const useParametersBackend = <T extends ComputingType>(
         updateParameters,
         resetParameters,
         specificParamsDescription,
-        defaultLimitReductions,
+        defaultLimitScalings,
     };
 };

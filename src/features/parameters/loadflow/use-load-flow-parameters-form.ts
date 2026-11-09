@@ -13,8 +13,8 @@ import * as yup from 'yup';
 import {
     getAdvancedLoadFlowParametersFormSchema,
     getCommonLoadFlowParametersFormSchema,
-    mapLimitReductions,
-    setLimitReductions,
+    mapLimitScalings,
+    setLimitScalings,
     splitCommonParameters,
     TAB_FIELDS,
     TAB_VALUES,
@@ -25,15 +25,15 @@ import {
     COMMON_PARAMETERS,
     PROVIDER,
     SPECIFIC_PARAMETERS,
-    toFormValuesLimitReductions,
+    toFormValuesLimitScalings,
     VERSION_PARAMETER,
 } from '../common';
 import {
-    getLimitReductionsFormSchema,
-    ILimitReductionsByVoltageLevel,
-    LIMIT_REDUCTIONS_FORM,
-} from '../common/limitreductions/columns-definitions';
-import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
+    getLimitScalingsFormSchema,
+    ILimitScalingsByVoltageLevel,
+    LIMIT_SCALINGS_FORM,
+} from '../common/limitscalings/columns-definitions';
+import { PARAM_LIMIT_SCALING, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { updateParameter } from '../../../services';
 import {
@@ -65,7 +65,7 @@ export interface UseLoadFlowParametersFormReturn {
     tabIndexesWithError: TabValues[];
     formattedProviders: { id: string; label: string }[];
     specificParametersDescriptionForProvider: SpecificParameterInfos[];
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    defaultLimitScalings: ILimitScalingsByVoltageLevel[];
     toLoadFlowFormValues: (_params: LoadFlowParametersInfos) => any;
     formatNewParams: (formData: Record<string, any>) => LoadFlowParametersInfos;
     params: LoadFlowParametersInfos | null;
@@ -83,9 +83,8 @@ export const useLoadFlowParametersForm = (
     name: string | null,
     description: string | null
 ): UseLoadFlowParametersFormReturn => {
-    const { providers, params, updateParameters, specificParamsDescription, defaultLimitReductions } =
-        parametersBackend;
-    const [limitReductionNumber, setLimitReductionNumber] = useState(0);
+    const { providers, params, updateParameters, specificParamsDescription, defaultLimitScalings } = parametersBackend;
+    const [limitScalingNumber, setLimitScalingNumber] = useState(0);
     const [specificParametersDescriptionForProvider, setSpecificParametersDescriptionForProvider] = useState<
         SpecificParameterInfos[]
     >(() => {
@@ -103,14 +102,14 @@ export const useLoadFlowParametersForm = (
         return yup
             .object({
                 [PROVIDER]: yup.string().required(),
-                [PARAM_LIMIT_REDUCTION]: yup.number().nullable(),
+                [PARAM_LIMIT_SCALING]: yup.number().nullable(),
                 ...getCommonLoadFlowParametersFormSchema().fields,
                 ...getAdvancedLoadFlowParametersFormSchema().fields,
-                ...getLimitReductionsFormSchema(limitReductionNumber).fields,
+                ...getLimitScalingsFormSchema(limitScalingNumber).fields,
                 ...getSpecificParametersFormSchema(specificParametersDescriptionForProvider).fields,
             })
             .concat(getNameElementEditorSchema(name));
-    }, [name, limitReductionNumber, specificParametersDescriptionForProvider]);
+    }, [name, limitScalingNumber, specificParametersDescriptionForProvider]);
 
     const { advancedParameters, commonParameters } = useMemo(
         () => splitCommonParameters(params?.commonParameters),
@@ -121,7 +120,7 @@ export const useLoadFlowParametersForm = (
         defaultValues: {
             ...getNameElementEditorEmptyFormData(name, description),
             [PROVIDER]: params?.provider,
-            [PARAM_LIMIT_REDUCTION]: null,
+            [PARAM_LIMIT_SCALING]: null,
             [COMMON_PARAMETERS]: {
                 ...commonParameters,
             },
@@ -131,7 +130,7 @@ export const useLoadFlowParametersForm = (
             [SPECIFIC_PARAMETERS]: {
                 ...specificParametersDefaultValues,
             },
-            [LIMIT_REDUCTIONS_FORM]: [],
+            [LIMIT_SCALINGS_FORM]: [],
         },
         resolver: yupResolver(formSchema as unknown as yup.ObjectSchema<any>),
     });
@@ -148,31 +147,31 @@ export const useLoadFlowParametersForm = (
         setSpecificParametersDescriptionForProvider(specificParamsDescription[provider] ?? []);
     }, [watchProvider, params?.provider, specificParamsDescription]);
 
-    const toLimitReductions = useCallback(
+    const toLimitScalings = useCallback(
         (formLimits: Record<string, any>[]) => {
             if (formLimits?.length === 0) {
                 return [];
             }
             if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
                 if (!params?.limitReductions) {
-                    return defaultLimitReductions.map((vlLimits, indexVl) =>
-                        mapLimitReductions(vlLimits, formLimits, indexVl)
+                    return defaultLimitScalings.map((vlLimits, indexVl) =>
+                        mapLimitScalings(vlLimits, formLimits, indexVl)
                     );
                 }
                 return params?.limitReductions.map((vlLimits, indexVl) =>
-                    mapLimitReductions(vlLimits, formLimits, indexVl)
+                    mapLimitScalings(vlLimits, formLimits, indexVl)
                 );
             }
             return [];
         },
-        [defaultLimitReductions, params?.limitReductions, watchProvider]
+        [defaultLimitScalings, params?.limitReductions, watchProvider]
     );
 
     const formatNewParams = useCallback(
         (formData: Record<string, any>): LoadFlowParametersInfos => {
             return {
                 provider: formData[PROVIDER],
-                limitReduction: formData[PARAM_LIMIT_REDUCTION],
+                limitReduction: formData[PARAM_LIMIT_SCALING],
                 commonParameters: {
                     [VERSION_PARAMETER]: formData[COMMON_PARAMETERS][VERSION_PARAMETER], // PowSyBl requires that "version" appears first
                     ...formData[COMMON_PARAMETERS],
@@ -187,10 +186,10 @@ export const useLoadFlowParametersForm = (
                       }
                     : {},
 
-                limitReductions: toLimitReductions(formData[LIMIT_REDUCTIONS_FORM]),
+                limitReductions: toLimitScalings(formData[LIMIT_SCALINGS_FORM]),
             };
         },
-        [specificParametersDefaultValues, toLimitReductions]
+        [specificParametersDefaultValues, toLimitScalings]
     );
 
     const toLoadFlowFormValues = useCallback(
@@ -203,7 +202,7 @@ export const useLoadFlowParametersForm = (
 
             return {
                 [PROVIDER]: _params.provider,
-                [PARAM_LIMIT_REDUCTION]: _params.limitReduction,
+                [PARAM_LIMIT_SCALING]: _params.limitReduction,
                 [COMMON_PARAMETERS]: {
                     ...commonParams,
                 },
@@ -216,7 +215,7 @@ export const useLoadFlowParametersForm = (
                         specificParamsListForCurrentProvider
                     ),
                 },
-                ...toFormValuesLimitReductions(_params.limitReductions),
+                ...toFormValuesLimitScalings(_params.limitReductions),
             };
         },
         [specificParamsDescription]
@@ -278,9 +277,9 @@ export const useLoadFlowParametersForm = (
         // get one extra render with undefined values which would dirty the form.
         setSpecificParametersDescriptionForProvider(specificParamsDescription?.[_params.provider] ?? []);
         if (_params.provider === PARAM_PROVIDER_OPENLOADFLOW) {
-            setLimitReductionNumber(_params.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+            setLimitScalingNumber(_params.limitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
         } else {
-            setLimitReductionNumber(0);
+            setLimitScalingNumber(0);
         }
         reset(toLoadFlowFormValues(_params));
     });
@@ -300,19 +299,19 @@ export const useLoadFlowParametersForm = (
         // Only user-driven switches reach here: resetForm() pre-sets the ref so resets
         // triggered by loading params are caught by the early-return above.
         setSpecificParameters(watchProvider, specificParamsDescription, formMethods);
-        setLimitReductions(watchProvider, defaultLimitReductions, formMethods);
+        setLimitScalings(watchProvider, defaultLimitScalings, formMethods);
 
-        // When we switch to OLF: we have to update the yup schema regarding the limit reductions.
-        // (formSchema has a dep on limitReductionNumber)
+        // When we switch to OLF: we have to update the yup schema regarding the limit scalings.
+        // (formSchema has a dep on limitScalingNumber)
         if (watchProvider === PARAM_PROVIDER_OPENLOADFLOW) {
             // providerX -> OLF: use default value
-            setLimitReductionNumber(defaultLimitReductions?.at(0)?.temporaryLimitReductions?.length ?? 0);
+            setLimitScalingNumber(defaultLimitScalings?.at(0)?.temporaryLimitReductions?.length ?? 0);
         } else {
-            setLimitReductionNumber(0);
+            setLimitScalingNumber(0);
         }
 
         previousWatchProviderRef.current = watchProvider;
-    }, [defaultLimitReductions, formMethods, specificParamsDescription, watchProvider]);
+    }, [defaultLimitScalings, formMethods, specificParamsDescription, watchProvider]);
 
     return {
         formMethods,
@@ -322,7 +321,7 @@ export const useLoadFlowParametersForm = (
         tabIndexesWithError,
         formattedProviders,
         specificParametersDescriptionForProvider,
-        defaultLimitReductions,
+        defaultLimitScalings,
         toLoadFlowFormValues,
         formatNewParams,
         params,

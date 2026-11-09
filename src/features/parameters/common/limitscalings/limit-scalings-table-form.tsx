@@ -8,18 +8,18 @@
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
-    COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS,
-    ILimitReductionsByVoltageLevel,
+    COLUMNS_DEFINITIONS_LIMIT_SCALINGS,
+    ILimitScalingsByVoltageLevel,
     LIMIT_DURATION_FORM,
-    LIMIT_REDUCTIONS_FORM,
+    LIMIT_SCALINGS_FORM,
 } from './columns-definitions';
 import { CustomVoltageLevelTable } from '../voltage-level-table';
-import { LimitReductionsToolTipColumn } from './limit-reductions-tooltip-column';
-import { LimitReductionsLabelColumn } from './limit-reductions-label-column';
+import { LimitScalingsToolTipColumn } from './limit-scalings-tooltip-column';
+import { LimitScalingsLabelColumn } from './limit-scalings-label-column';
 
-export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitReductionsByVoltageLevel[] }>) {
+export function LimitScalingsTableForm({ limits }: Readonly<{ limits: ILimitScalingsByVoltageLevel[] }>) {
     const columnsDefinition = useMemo(() => {
-        const columnsDef = COLUMNS_DEFINITIONS_LIMIT_REDUCTIONS.map((column) => ({
+        const columnsDef = COLUMNS_DEFINITIONS_LIMIT_SCALINGS.map((column) => ({
             ...column,
             label: <FormattedMessage id={column.label as string} />,
             tooltip: <FormattedMessage id={column.tooltip as string} />,
@@ -28,9 +28,9 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
         if (limits !== null && limits.length > 0) {
             limits[0].temporaryLimitReductions.forEach((tlimit, index) => {
                 columnsDef.push({
-                    label: <LimitReductionsLabelColumn limits={tlimit} />,
+                    label: <LimitScalingsLabelColumn limits={tlimit} />,
                     dataKey: LIMIT_DURATION_FORM + index,
-                    tooltip: <LimitReductionsToolTipColumn limits={tlimit} />,
+                    tooltip: <LimitScalingsToolTipColumn limits={tlimit} />,
                 });
             });
         }
@@ -40,7 +40,7 @@ export function LimitReductionsTableForm({ limits }: Readonly<{ limits: ILimitRe
 
     return (
         <CustomVoltageLevelTable
-            formName={LIMIT_REDUCTIONS_FORM}
+            formName={LIMIT_SCALINGS_FORM}
             columnsDefinition={columnsDefinition}
             tableHeight={450}
             tableMinWidth={600}

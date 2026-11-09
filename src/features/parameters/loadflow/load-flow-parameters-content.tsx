@@ -10,15 +10,15 @@ import { TabValues } from './load-flow-parameters-utils';
 import LoadFlowAdvancedParameters from './load-flow-advanced-parameters';
 import LoadFlowGeneralParameters from './load-flow-general-parameters';
 import LoadFlowProviderSpecificParameters from './load-flow-provider-specific-parameters';
-import { LimitReductionsTableForm } from '../common';
+import { LimitScalingsTableForm } from '../common';
 import {
     alertThresholdMarks,
-    MAX_VALUE_ALLOWED_FOR_LIMIT_REDUCTION,
-    MIN_VALUE_ALLOWED_FOR_LIMIT_REDUCTION,
-    PARAM_LIMIT_REDUCTION,
+    MAX_VALUE_ALLOWED_FOR_LIMIT_SCALING,
+    MIN_VALUE_ALLOWED_FOR_LIMIT_SCALING,
+    PARAM_LIMIT_SCALING,
     PARAM_PROVIDER_OPENLOADFLOW,
 } from './constants';
-import { ILimitReductionsByVoltageLevel } from '../common/limitreductions/columns-definitions';
+import { ILimitScalingsByVoltageLevel } from '../common/limitscalings/columns-definitions';
 import { parametersStyles } from '../parameters-style';
 import { SpecificParameterInfos } from '../../../utils/types/parameters.type';
 import { LoadFlowParametersInfos } from '../../../utils/types/loadflow.type';
@@ -31,7 +31,7 @@ type LoadFlowParametersContentProps = {
     currentProvider: string;
     specificParameters?: SpecificParameterInfos[];
     params: LoadFlowParametersInfos | null;
-    defaultLimitReductions: ILimitReductionsByVoltageLevel[];
+    defaultLimitScalings: ILimitScalingsByVoltageLevel[];
 };
 
 const styles = {
@@ -54,7 +54,7 @@ function LoadFlowParametersContent({
     currentProvider,
     specificParameters,
     params,
-    defaultLimitReductions,
+    defaultLimitScalings,
 }: Readonly<LoadFlowParametersContentProps>) {
     const parametersDifferences = params?.parametersDifferences;
 
@@ -65,17 +65,17 @@ function LoadFlowParametersContent({
                     <TabPanel value={selectedTab} index={TabValues.GENERAL}>
                         <LoadFlowGeneralParameters parametersDifferences={parametersDifferences} />
                     </TabPanel>
-                    <TabPanel value={selectedTab} index={TabValues.LIMIT_REDUCTIONS}>
+                    <TabPanel value={selectedTab} index={TabValues.LIMIT_SCALINGS}>
                         <Grid container sx={{ width: '100%' }}>
                             {currentProvider === PARAM_PROVIDER_OPENLOADFLOW ? (
-                                <LimitReductionsTableForm limits={params?.limitReductions ?? defaultLimitReductions} />
+                                <LimitScalingsTableForm limits={params?.limitReductions ?? defaultLimitScalings} />
                             ) : (
                                 <ParameterLineSlider
-                                    name={PARAM_LIMIT_REDUCTION}
+                                    name={PARAM_LIMIT_SCALING}
                                     label="LimitReduction"
                                     marks={alertThresholdMarks}
-                                    minValue={MIN_VALUE_ALLOWED_FOR_LIMIT_REDUCTION}
-                                    maxValue={MAX_VALUE_ALLOWED_FOR_LIMIT_REDUCTION}
+                                    minValue={MIN_VALUE_ALLOWED_FOR_LIMIT_SCALING}
+                                    maxValue={MAX_VALUE_ALLOWED_FOR_LIMIT_SCALING}
                                 />
                             )}
                         </Grid>

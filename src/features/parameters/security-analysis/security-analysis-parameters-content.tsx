@@ -11,7 +11,7 @@ import { FormattedMessage } from 'react-intl';
 
 import { Tab, Tabs } from '@mui/material';
 import type { UUID } from 'node:crypto';
-import { LimitReductionsTableForm, TabPanel, CONTINGENCY_LISTS_INFOS, ContingencyTableApi } from '../common';
+import { LimitScalingsTableForm, TabPanel, CONTINGENCY_LISTS_INFOS, ContingencyTableApi } from '../common';
 import { ContingencyTable } from '../common/contingency-table';
 import { ContingencyCount } from '../common/contingency-table/types';
 import { PARAM_PROVIDER_OPENLOADFLOW } from '../loadflow';
@@ -36,7 +36,7 @@ export function SecurityAnalysisParametersContent({
     const {
         params,
         watchProvider,
-        defaultLimitReductions,
+        defaultLimitScalings,
         selectedTab,
         handleTabChange,
         setSelectedTab,
@@ -45,7 +45,7 @@ export function SecurityAnalysisParametersContent({
     const currentProvider = watchProvider?.trim();
 
     useEffect(() => {
-        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && selectedTab === TabValues.LimitReductions) {
+        if (currentProvider !== PARAM_PROVIDER_OPENLOADFLOW && selectedTab === TabValues.LimitScalings) {
             setSelectedTab(TabValues.Contingencies);
         }
     }, [currentProvider, selectedTab, setSelectedTab]);
@@ -65,9 +65,9 @@ export function SecurityAnalysisParametersContent({
                 />
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
                     <Tab
-                        label={<FormattedMessage id={TabValues.LimitReductions} />}
-                        value={TabValues.LimitReductions}
-                        sx={getTabStyle(tabIndexesWithError, TabValues.LimitReductions)}
+                        label={<FormattedMessage id={TabValues.LimitScalings} />}
+                        value={TabValues.LimitScalings}
+                        sx={getTabStyle(tabIndexesWithError, TabValues.LimitScalings)}
                     />
                 )}
             </Tabs>
@@ -84,9 +84,9 @@ export function SecurityAnalysisParametersContent({
             <TabPanel value={selectedTab} index={TabValues.Aggravation}>
                 <ViolationsHidingParameters />
             </TabPanel>
-            <TabPanel value={selectedTab} index={TabValues.LimitReductions}>
+            <TabPanel value={selectedTab} index={TabValues.LimitScalings}>
                 {currentProvider === PARAM_PROVIDER_OPENLOADFLOW && params?.limitReductions && (
-                    <LimitReductionsTableForm limits={params.limitReductions ?? defaultLimitReductions} />
+                    <LimitScalingsTableForm limits={params.limitReductions ?? defaultLimitScalings} />
                 )}
             </TabPanel>
         </>

@@ -6,12 +6,6 @@
  */
 export const importParamsFr = {
     // CGMES
-    'iidm.import.cgmes.allow-unsupported-tap-changers': "Autoriser n'importe quel type de régleur ou déphaseur",
-    'iidm.import.cgmes.allow-unsupported-tap-changers.desc': "Autoriser n'importe quel type de régleur ou déphaseur",
-    'iidm.import.cgmes.change-sign-for-shunt-reactive-power-flow-initial-state':
-        "Changement du signe des flux des MCS de l'état initial",
-    'iidm.import.cgmes.change-sign-for-shunt-reactive-power-flow-initial-state.desc':
-        "Changement du signe des flux des MCS de l'état initial",
     'iidm.import.cgmes.convert-boundary': 'Importer les XNodes en tant que site/poste',
     'iidm.import.cgmes.convert-boundary.desc': 'Importer les XNodes en tant que site/poste',
     'iidm.import.cgmes.convert-sv-injections': 'Convertir les injections du fichier SV en conso',
@@ -24,15 +18,8 @@ export const importParamsFr = {
     'iidm.import.cgmes.naming-strategy.desc': 'Type de nommage utilisé par le fichier de mapping des identifiants',
     'iidm.import.cgmes.naming-strategy.identity': 'identity',
     'iidm.import.cgmes.naming-strategy.cgmes': 'cgmes',
-    'iidm.import.cgmes.naming-strategy.cgmes-fix-all-invalid-id': 'cgmes-fix-all-invalid-id',
     'iidm.import.cgmes.import-control-areas': 'Importer les zones géographiques',
     'iidm.import.cgmes.import-control-areas.desc': 'Importer les zones géographiques (Control areas)',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions':
-        'Profil utilisé pour initialiser les valeurs des sections enclenchés des MCS et les prises courantes des régleurs et déphaseurs',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.desc':
-        'Profil utilisé pour initialiser les valeurs des sections enclenchés des MCS et les prises courantes des régleurs et déphaseurs',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.SV': 'SV',
-    'iidm.import.cgmes.profile-for-initial-values-shunt-sections-tap-positions.SSH': 'SSH',
     'iidm.import.cgmes.source-for-iidm-id': 'Identifiants CGMES utilisés pour créer les identifiants IIDM',
     'iidm.import.cgmes.source-for-iidm-id.desc': 'Identifiants CGMES utilisés pour créer les identifiants IIDM',
     'iidm.import.cgmes.source-for-iidm-id.mRID': 'mrID',
@@ -107,14 +94,16 @@ export const importParamsFr = {
     'iidm.import.only-selected-operational-limits-groups': 'Jeux de limites actifs uniquement',
     'iidm.import.only-selected-operational-limits-groups.desc':
         'Importer seulement les jeux de limites actifs de chaque ouvrage',
+    'iidm.import.repair-invalid-reactive-curve-limits': 'Corriger les diagrammes de réactif invalides',
+    'iidm.import.repair-invalid-reactive-curve-limits.desc':
+        'Inverser Qmin et Qmax dans les points des diagrammes de réactif où Qmin > Qmax',
     'iidm.import.xml.with-automation-systems': 'Importer les automates',
     'iidm.import.xml.with-automation-systems.desc': "Permet d'importer les automates dans le réseau",
 
     // extensions
     'iidm.import.xml.included.extensions': 'Extensions',
-    'iidm.import.xml.included.extensions.desc': 'Extensions',
-    'iidm.import.xml.extensions.selectionDialog.name': 'Sélection des extensions',
-    'iidm.import.xml.extensions.desc': 'Importer avec ces extensions',
+    'iidm.import.xml.included.extensions.selectionDialog.name': 'Sélection des extensions',
+    'iidm.import.xml.included.extensions.desc': 'Importer avec ces extensions',
     'iidm.import.xml.included.extensions.activePowerControl': 'Compensation',
     'iidm.import.xml.included.extensions.baseVoltageMapping': 'Tension nominale',
     'iidm.import.xml.included.extensions.batteryShortCircuit': 'Données de court-circuit des batteries',
@@ -127,8 +116,6 @@ export const importParamsFr = {
         'Code EIC des lignes frontières (ligne non mergée)',
     'iidm.import.xml.included.extensions.cgmesLineBoundaryNode': 'Code EIC des lignes frontières (ligne complète)',
     'iidm.import.xml.included.extensions.cgmesMetadataModels': 'Cgmes - Métadonnées des modèles',
-    'iidm.import.xml.included.extensions.cgmesSshMetadata': 'Cgmes - ssh métadonnées',
-    'iidm.import.xml.included.extensions.cgmesSvMetadata': 'Cgmes - sv métadonnées',
     'iidm.import.xml.included.extensions.cgmesTapChangers': 'Cgmes - lois de réglage et déphasage',
     'iidm.import.xml.included.extensions.cimCharacteristics': 'Cgmes - caractéristiques',
     'iidm.import.xml.included.extensions.coordinatedReactiveControl': 'Contrôle coordonné du réactif',
@@ -136,22 +123,16 @@ export const importParamsFr = {
     'iidm.import.xml.included.extensions.discreteMeasurements': 'Télémesures (Régleurs et Déphaseurs)',
     'iidm.import.xml.included.extensions.entsoeArea': 'Zone Entsoe',
     'iidm.import.xml.included.extensions.entsoeCategory': 'Catégorie Entsoe des groupes',
-    'iidm.import.xml.included.extensions.generatorActivePowerControl': 'Compensation (Groupes)',
-    'iidm.import.xml.included.extensions.generatorAsymmetrical': 'Données pour les calculs dissymétriques des groupes',
     'iidm.import.xml.included.extensions.generatorRemoteReactivePowerControl':
-        'Régulation à distance de la puissance réactive des groupes',
+        'Régulation à distance de la puissance réactive des groupes (Version IIDM < 1.18)',
     'iidm.import.xml.included.extensions.generatorShortCircuit': 'Données de court-circuit des groupes',
-    'iidm.import.xml.included.extensions.generatorShortCircuits':
-        'Données de court-circuit des groupes (Version IIDM 1.0)',
     'iidm.import.xml.included.extensions.hvdcAngleDroopActivePowerControl': 'Emulation AC pour les HVDCs',
     'iidm.import.xml.included.extensions.hvdcOperatorActivePowerRange': 'Limites de transits des HVDCs',
     'iidm.import.xml.included.extensions.identifiableShortCircuit': 'Données de court-circuit des postes',
     'iidm.import.xml.included.extensions.injectionObservability': 'Observabilité des injections',
-    'iidm.import.xml.included.extensions.lineAsymmetrical': 'Données pour les calculs dissymétriques des lignes',
     'iidm.import.xml.included.extensions.linePosition': 'Coordonnées géographiques de lignes',
     'iidm.import.xml.included.extensions.loadAsymmetrical': 'Données pour les calculs dissymétriques des consommations',
     'iidm.import.xml.included.extensions.measurements': 'Télémesures',
-    'iidm.import.xml.included.extensions.mergedXnode': 'Xnode mergé',
     'iidm.import.xml.included.extensions.operatingStatus': 'Statut de consignation et de déclenchement',
     'iidm.import.xml.included.extensions.position': 'Position des départs',
     'iidm.import.xml.included.extensions.referencePriorities':
@@ -162,32 +143,23 @@ export const importParamsFr = {
     'iidm.import.xml.included.extensions.standbyAutomaton': 'Automate des CSPRs',
     'iidm.import.xml.included.extensions.startup': 'Coût de démarrage des groupes',
     'iidm.import.xml.included.extensions.substationPosition': 'Coordonnées géographiques des sites',
-    'iidm.import.xml.included.extensions.threeWindingsTransformerAsymmetrical':
-        'Données pour les calculs dissymétriques des transformateurs à trois enroulements',
     'iidm.import.xml.included.extensions.threeWindingsTransformerPhaseAngleClock':
         "Angles de phase entre les enroulements (sous forme d'horloge) pour les transformateurs à trois enroulements",
     'iidm.import.xml.included.extensions.threeWindingsTransformerToBeEstimated':
         'Estimation des prises des régleurs et des déphaseurs des transformateurs à trois enroulements',
-    'iidm.import.xml.included.extensions.twoWindingsTransformerAsymmetrical':
-        'Données pour les calculs dissymétriques des transformateurs à deux enroulements',
     'iidm.import.xml.included.extensions.twoWindingsTransformerPhaseAngleClock':
         "Angle de phase entre les enroulements (sous forme d'horloge) pour les transformateurs à deux enroulements",
     'iidm.import.xml.included.extensions.twoWindingsTransformerToBeEstimated':
         'Estimation des prises des régleurs et des déphaseurs des transformateurs à deux enroulements',
-    'iidm.import.xml.included.extensions.voltageLevelShortCircuits':
-        'Données de court-circuit des postes (Version IIDM 1.0)',
-    'iidm.import.xml.included.extensions.voltagePerReactivePowerControl': 'Contrôle de la tension par le réactif',
-    'iidm.import.xml.included.extensions.voltageRegulation': 'Réglage de tension',
-    'iidm.import.xml.included.extensions.xnode': 'Code Xnode',
+    'iidm.import.xml.included.extensions.voltagePerReactivePowerControl':
+        'Contrôle de la tension par le réactif (Version IIDM < 1.18)',
+    'iidm.import.xml.included.extensions.voltageRegulation': 'Réglage de tension (Version IIDM < 1.18)',
     'iidm.import.xml.included.extensions.manualFrequencyRestorationReserve': 'Réserve tertiaire de fréquence',
 
-    // to remove after powsybl september release
     'iidm.import.xml.included.extensions.generatorFortescue': 'Données pour les calculs dissymétriques des groupes',
     'iidm.import.xml.included.extensions.lineFortescue': 'Données pour les calculs dissymétriques des lignes',
-    'iidm.import.xml.included.extensions.loadFortescue': 'Données pour les calculs dissymétriques des consommations',
     'iidm.import.xml.included.extensions.threeWindingsTransformerFortescue':
         'Données pour les calculs dissymétriques des transformateurs à trois enroulements',
     'iidm.import.xml.included.extensions.twoWindingsTransformerFortescue':
         'Données pour les calculs dissymétriques des transformateurs à deux enroulements',
-    // end to remove
 };

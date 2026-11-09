@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import { TableCell } from '@mui/material';
-import { LimitReductionIColumnsDef } from '../limitreductions/columns-definitions';
+import { LimitScalingIColumnsDef } from '../limitscalings/columns-definitions';
 import { VOLTAGE_LEVEL } from '../constants';
 import { FloatInput, RawReadOnlyInput } from '../../../../components/ui';
 
@@ -16,7 +16,7 @@ export function CustomVoltageLevelTableCell({
 }: Readonly<{
     formName: string;
     rowIndex: number;
-    column: LimitReductionIColumnsDef;
+    column: LimitScalingIColumnsDef;
 }>) {
     return (
         <TableCell sx={{ fontWeight: 'bold' }}>

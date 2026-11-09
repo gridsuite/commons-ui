@@ -14,7 +14,7 @@ export const HIGH_VOLTAGE_ABSOLUTE_THRESHOLD = 'highVoltageAbsoluteThreshold';
 export enum TabValues {
     Contingencies = 'Contingencies',
     Aggravation = 'Aggravation',
-    LimitReductions = 'LimitReductions',
+    LimitScalings = 'LimitReductions',
 }
 
 export const TAB_VALUES = Object.values(TabValues);
