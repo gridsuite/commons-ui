@@ -9,7 +9,6 @@ import { EquipmentType, FieldConstants, Identifiable } from '../../../../utils';
 import { TwoWindingsTransformerModificationDto } from '../modification/twoWindingsTransformerModification.types';
 import { ConnectablePositionFormInfos } from '../../common/connectivity/connectivity.type';
 import { CurrentLimitsData } from '../../common/currentLimits/limits.types';
-import { DiscreteMeasurementsInfos } from '../modification/measurements/position/tapPositionMeasurements.type';
 
 export interface TapChangerStep extends TapChangerStepMapInfos {
     [FieldConstants.STEPS_TAP]: number;
@@ -33,6 +32,11 @@ interface TwoWindingsTransformerToBeEstimatedInfos {
 }
 
 interface MeasurementsInfos {
+    value?: number;
+    validity: boolean;
+}
+
+export interface DiscreteMeasurementsInfos {
     value?: number;
     validity: boolean;
 }

@@ -6,7 +6,5 @@
  * SPDX-License-Identifier: MPL-2.0
  */
 
-export interface DiscreteMeasurementsInfos {
-    value?: number;
-    validity: boolean;
-}
+export * from './TapPositionMeasurementsForm';
+export * from './tapPositionMeasurements.utils';

@@ -9,7 +9,7 @@
 import { Box, Grid, Stack } from '@mui/material';
 import { GridSection, IntegerInput } from '../../../../../../components';
 import { FieldConstants } from '../../../../../../utils';
-import { DiscreteMeasurementsInfos } from './tapPositionMeasurements.type';
+import type { DiscreteMeasurementsInfos } from '../../../common';
 
 interface TapMeasurementsFormProps {
     measurementRatioTap?: DiscreteMeasurementsInfos;
