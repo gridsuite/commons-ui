@@ -128,8 +128,8 @@ export const ShortCircuitGeneralTabPanel = forwardRef<HTMLSpanElement, Readonly<
         );
         const statusToShow = <Lens fontSize="medium" sx={statusColor} />;
 
-        const onPredefinedParametersManualChange = (event: any) => {
-            const newPredefinedParameters = event.target.value;
+        const onPredefinedParametersManualChange = (value: string) => {
+            const newPredefinedParameters = value as PredefinedParameters;
             resetAll(newPredefinedParameters);
         };
 
