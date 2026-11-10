@@ -6,7 +6,7 @@
  */
 // @author Quentin CAPY
 
-import { PropsWithChildren, useEffect, useMemo, useRef, useSyncExternalStore } from 'react';
+import { PropsWithChildren, useEffect, useMemo, useSyncExternalStore } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
 import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
@@ -21,17 +21,12 @@ function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, st
 
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
-    // Track connection failures per WebSocket URL to distinguish initial connections
-    // from reconnections that require notifying listeners.
-
     // When using a gateway, a WebSocket connection may initially succeed even if
     // the notification server is down, causing immediate closure and repeated retries.
 
     // To avoid unnecessary reopen callbacks, we wait for the connection to remain
     // stable for DELAY_BEFORE_WEBSOCKET_CONNECTED ms, cancelling the timeout if it
-    // closes or fails. Callbacks are only triggered after a previous connection failure,
-    // never on a successful initial connection.
-    const hadConnectionFailureByUrl = useRef<Record<string, boolean>>({});
+    // closes or fails.
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
@@ -60,6 +55,8 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         const connections = Object.entries(urls)
             .filter(isUrlDefined)
             .map(([urlKey, url]) => {
+                // Track failures locally so reopen callbacks only fire after at least one failed connection.
+                let hadConnectionFailure = false;
                 // one timer per url: lives in this url's closure so it can't be cleared by another url
                 let connectedTimeout: ReturnType<typeof setTimeout> | undefined;
                 const clearConnectedTimeout = () => {
@@ -84,12 +81,12 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
 
                 rws.onclose = (event) => {
                     clearConnectedTimeout();
-                    hadConnectionFailureByUrl.current[urlKey] = true;
+                    hadConnectionFailure = true;
                     console.error(`Unexpected ${urlKey} Notification WebSocket closed`, event);
                 };
                 rws.onerror = (event) => {
                     clearConnectedTimeout();
-                    hadConnectionFailureByUrl.current[urlKey] = true;
+                    hadConnectionFailure = true;
                     console.error(`Unexpected ${urlKey} Notification WebSocket error`, event);
                 };
 
@@ -97,7 +94,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                     clearConnectedTimeout();
                     connectedTimeout = setTimeout(() => {
                         // only notify listeners if there was at least one failure before this connection
-                        if (rws.retryCount === 0 && hadConnectionFailureByUrl.current[urlKey]) {
+                        if (rws.retryCount === 0 && hadConnectionFailure) {
                             broadcastOnReopen(urlKey)();
                         }
                     }, DELAY_BEFORE_WEBSOCKET_CONNECTED);
