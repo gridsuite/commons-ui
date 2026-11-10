@@ -68,3 +68,15 @@ export function updateVoltageInitParameters(studyUuid: UUID | null, newParams: V
         body: JSON.stringify(newParams),
     });
 }
+
+export function resetVoltageInitParameters(studyUuid: UUID | null, applyModifications: boolean) {
+    console.info('reset study voltage init parameters to default');
+    const url = `${getStudyUrl(studyUuid)}/voltage-init/parameters/reset`;
+    console.debug(url);
+    const params = new URLSearchParams({
+        applyModifications: String(applyModifications),
+    });
+    return backendFetch(`${url}?${params.toString()}`, {
+        method: 'POST',
+    });
+}
