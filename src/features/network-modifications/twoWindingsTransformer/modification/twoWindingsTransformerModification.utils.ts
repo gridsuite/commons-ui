@@ -56,7 +56,12 @@ import {
     RatioTapChangerFormSchema,
     toTapChangerStepList,
 } from '../tapChanger';
-import { getToBeEstimatedValidationSchemaObject, toBeEstimatedEmptyFormData } from './measurements';
+import {
+    getToBeEstimatedValidationSchemaObject,
+    toBeEstimatedEmptyFormData,
+    getTapPositionMeasurementsValidationSchemaObject,
+    tapPositionMeasurementsEmptyFormData,
+} from './measurements';
 import {
     getBranchActiveReactivePowerEditDataProperties,
     getBranchActiveReactivePowerEmptyFormDataProperties,
@@ -73,10 +78,6 @@ import {
 } from './twoWindingsTransformerModification.types';
 import { TapChangerStep, TwoWindingsTransformerMapInfos } from '../common/twoWindingsTransformer.types';
 import { TapChangerStepCreationDto } from '../creation/twoWindingsTransformerCreation.types';
-import {
-    getTapPositionMeasurementsValidationSchemaObject,
-    tapPositionMeasurementsEmptyFormData,
-} from './measurements/position/tapPositionMeasurements.utils';
 
 const getTapChangerEmptyModificationDto = (enabled: boolean | null | undefined): TapChangerModificationDto => ({
     enabled: toModificationOperation(enabled),
