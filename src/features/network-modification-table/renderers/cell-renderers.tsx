@@ -107,14 +107,17 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
 }
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    if (!meta?.modifications.activations || !meta.modifications.setPendingActivations) {
+    if (
+        !meta?.modifications.activations ||
+        !meta.modifications.setPendingActivations ||
+        !meta.modifications.saveActivation
+    ) {
         return null;
     }
     return (
         <SwitchCell
             row={row}
-            studyUuid={meta.context.studyUuid ?? null}
-            currentNodeId={meta.context.currentNodeId}
+            saveActivation={meta.modifications.saveActivation}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
             isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
@@ -152,7 +155,8 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         !rootNetwork ||
         !meta?.modifications.activations ||
         !meta.modifications.applicabilities ||
-        !meta.modifications.setPendingApplicabilities
+        !meta.modifications.setPendingApplicabilities ||
+        !meta.modifications.saveApplicability
     ) {
         return null;
     }
@@ -160,8 +164,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         <Box sx={rootNetworkChipCellSx}>
             <RootNetworkChipCell
                 row={row}
-                studyUuid={meta.context.studyUuid ?? null}
-                currentNodeId={meta.context.currentNodeId}
+                saveApplicability={meta.modifications.saveApplicability}
                 rootNetwork={rootNetwork}
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}

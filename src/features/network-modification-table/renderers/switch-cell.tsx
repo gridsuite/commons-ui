@@ -9,23 +9,21 @@ import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Switch, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
-import type { UUID } from 'node:crypto';
-import { setModificationMetadata } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, NetworkModificationActivations, snackWithFallback } from '../../../utils';
 import { isActivated, isDeactivatedByAncestor } from '../utils';
+import type { SaveModificationActivation } from '../network-modifications-table';
 
 export interface SwitchCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
+    saveActivation: SaveModificationActivation;
     activations: NetworkModificationActivations;
     setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
     isDisabled?: boolean;
 }
 
 export function SwitchCell(props: Readonly<SwitchCellProps>) {
-    const { row, studyUuid, currentNodeId, activations, setPendingActivations, isDisabled = false } = props;
+    const { row, saveActivation, activations, setPendingActivations, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
@@ -43,10 +41,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             // Apply optimistic update, dropped once the modifications are fetched back with the new value
             setPendingActivations((prev) => ({ ...prev, [modificationUuid]: checked }));
 
-            setModificationMetadata(studyUuid, currentNodeId, modificationUuid, {
-                activated: checked,
-                type: data.type,
-            })
+            saveActivation(data, checked)
                 .catch((error) => {
                     // Rollback on failure: with nothing pending the switch reads the modification again
                     setPendingActivations((prev) => {
@@ -60,7 +55,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, studyUuid, currentNodeId, data.type, setPendingActivations, snackError]
+        [modificationUuid, data, saveActivation, setPendingActivations, snackError]
     );
 
     return (
