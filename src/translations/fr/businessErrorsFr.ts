@@ -132,4 +132,8 @@ export const businessErrorsFr = {
 
     'report.notFound': 'Rapport non trouvé.',
     'report.notARoot': "Le rapport n'est pas un rapport racine.",
+
+    'geoData.networkNotFound': 'Réseau non trouvé.',
+    'geoData.variantNotFound': 'Variante non trouvée.',
+    'geoData.invalidCountry': 'Pays invalide.',
 };
