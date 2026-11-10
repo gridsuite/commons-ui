@@ -132,4 +132,8 @@ export const businessErrorsFr = {
 
     'report.notFound': 'Rapport non trouvé.',
     'report.notARoot': "Le rapport n'est pas un rapport racine.",
+
+    'actions.contingencyListNotFound': 'Liste de contingences non trouvée.',
+    'actions.invalidContingencyListPayload': 'Le contenu de la liste de contingences est invalide.',
+    'actions.networkNotFound': 'Réseau non trouvé.',
 };
