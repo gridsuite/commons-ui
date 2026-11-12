@@ -22,6 +22,7 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
+    'explore.modificationElementAlreadyExists': "La modification composite '{elementName}' existe déjà dans le dossier",
     'study.nodeNotFound': 'Noeud non trouvé.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
@@ -119,6 +120,7 @@ export const businessErrorsFr = {
     'modification.containsShared':
         'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
+    'modification.shared.notFound': 'La modification partagée {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
     'modification.duplication.argument.error':
@@ -128,4 +130,7 @@ export const businessErrorsFr = {
         'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
     'modification.voltageLevel.attachmentLine.missing':
         'La ligne de piquage pour le poste {voltageLevelId} est manquante',
+
+    'report.notFound': 'Rapport non trouvé.',
+    'report.notARoot': "Le rapport n'est pas un rapport racine.",
 };

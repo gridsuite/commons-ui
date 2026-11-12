@@ -10,6 +10,7 @@ import {
     ParameterType,
     SpecificParameterInfos,
     SpecificParametersDescription,
+    SpecificParametersPerProvider,
     SpecificParametersValues,
 } from '../../../utils';
 import { SPECIFIC_PARAMETERS } from './constants';
@@ -96,6 +97,12 @@ export const getAllSpecificParametersValues = (
     _specificParametersValues: SpecificParametersValues
 ): SpecificParametersValues => {
     return Object.keys(formData[SPECIFIC_PARAMETERS]).reduce((acc: SpecificParametersValues, key: string) => {
+        // This is a workaround where parameter components of a provider are mounted but the provider changes during prefill.
+        // Even after calling reset(), all parameters from the previous provider remain mounted and registered,
+        // so their values are fell back to defaults => These parameters should be ignored.
+        if (!Object.hasOwn(_specificParametersValues, key)) {
+            return acc;
+        }
         if (_specificParametersValues[key].toString() !== formData[SPECIFIC_PARAMETERS][key].toString()) {
             acc[key] = formData[SPECIFIC_PARAMETERS][key].toString();
         }
@@ -106,11 +113,14 @@ export const getAllSpecificParametersValues = (
 export const setSpecificParameters = (
     provider: string,
     specificParamsDescriptions: SpecificParametersDescription | null,
+    specificParametersPerProvider: SpecificParametersPerProvider | undefined,
     formMethods: UseFormReturn
 ) => {
-    const specificParams = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];
-    const specificParamsValues = getDefaultSpecificParamsValues(specificParams);
+    const specificParametersDesc = provider ? (specificParamsDescriptions?.[provider] ?? []) : [];
+    const specificParameters = specificParametersPerProvider?.[provider] ?? {};
+    const specificParamsValues = formatSpecificParameters(specificParametersDesc, specificParameters);
     formMethods.setValue(SPECIFIC_PARAMETERS, specificParamsValues);
+    formMethods.clearErrors(SPECIFIC_PARAMETERS);
 };
 
 export type UseComputationParametersFormReturn = {

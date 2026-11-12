@@ -191,4 +191,8 @@ export const filterExpertEn = {
     substationId: 'Substation ID',
     substationId1: 'Substation ID 1',
     substationId2: 'Substation ID 2',
+    switchKind: 'Type',
+    breaker: 'Breaker',
+    loadBreaker: 'Load Breaker',
+    disconnector: 'Disconnector',
 };
