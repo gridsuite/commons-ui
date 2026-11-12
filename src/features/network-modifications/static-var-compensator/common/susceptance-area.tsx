@@ -12,17 +12,29 @@ import { FormattedMessage } from 'react-intl';
 import { FloatInput, GridItem } from '../../../../components';
 import { FieldConstants, ReactivePowerAdornment, SusceptanceAdornment } from '../../../../utils';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
+import { computeQ0 } from './standby-automaton-form-utils';
 
-export function SusceptanceArea() {
+export interface SusceptanceAreaProps {
+    isEquipmentModification?: boolean;
+    previousValues?: StaticVarCompensatorFormInfo | null;
+}
+
+export function SusceptanceArea({ isEquipmentModification = false, previousValues }: Readonly<SusceptanceAreaProps>) {
     const id = FieldConstants.AUTOMATON;
     const { setValue } = useFormContext();
     const watchChoiceAutomaton = useWatch({
         name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.CHARACTERISTICS_CHOICE}`,
     });
-    const minS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_SUSCEPTANCE}` });
-    const maxS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_SUSCEPTANCE}` });
-    const minQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_Q_AT_NOMINAL_V}` });
-    const maxQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_Q_AT_NOMINAL_V}` });
+    const watchMinS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_SUSCEPTANCE}` });
+    const watchMaxS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_SUSCEPTANCE}` });
+    const watchMinQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_Q_AT_NOMINAL_V}` });
+    const watchMaxQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_Q_AT_NOMINAL_V}` });
+    const minS = watchMinS ?? previousValues?.minSusceptance ?? null;
+    const maxS = watchMaxS ?? previousValues?.maxSusceptance ?? null;
+    const minQ = watchMinQ ?? computeQ0(previousValues?.minSusceptance, previousValues?.nominalV) ?? null;
+    const maxQ = watchMaxQ ?? computeQ0(previousValues?.maxSusceptance, previousValues?.nominalV) ?? null;
+    const previousB0 = previousValues?.standbyAutomatonInfos?.b0;
     // CHARACTERISTICS_CHOICE_AUTOMATON used only to validate the schema (work around)
     useEffect(() => {
         setValue(`${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`, watchChoiceAutomaton);
@@ -89,11 +101,23 @@ export function SusceptanceArea() {
     );
 
     const susceptanceField = (
-        <FloatInput name={`${id}.${FieldConstants.B0}`} label="b0" adornment={SusceptanceAdornment} />
+        <FloatInput
+            name={`${id}.${FieldConstants.B0}`}
+            label="b0"
+            adornment={SusceptanceAdornment}
+            previousValue={previousB0 ?? undefined}
+            clearable={isEquipmentModification}
+        />
     );
 
     const qAtNominalVField = (
-        <FloatInput name={`${id}.${FieldConstants.Q0}`} label="fixQAtNominalV" adornment={ReactivePowerAdornment} />
+        <FloatInput
+            name={`${id}.${FieldConstants.Q0}`}
+            label="fixQAtNominalV"
+            adornment={ReactivePowerAdornment}
+            previousValue={computeQ0(previousB0, previousValues?.nominalV)}
+            clearable={isEquipmentModification}
+        />
     );
 
     return (

@@ -28,6 +28,10 @@ import {
     getReactiveModificationFormEmptyFormData,
     getReactiveModificationFormValidationSchema,
 } from '../common/set-points-limits-form-utils';
+import {
+    getStandbyAutomatonModificationEmptyFormData,
+    getStandbyAutomatonModificationFormValidationSchema,
+} from '../common/standby-automaton-form-utils';
 import { StaticVarCompensatorModificationDto } from './static-var-compensator-modification.types';
 
 export const staticVarCompensatorModificationFormSchema = object()
@@ -36,6 +40,7 @@ export const staticVarCompensatorModificationFormSchema = object()
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
         [FieldConstants.SETPOINTS_LIMITS]: getReactiveModificationFormValidationSchema(),
+        [FieldConstants.AUTOMATON]: getStandbyAutomatonModificationFormValidationSchema(),
     })
     .concat(modificationPropertiesSchema)
     .required();
@@ -47,6 +52,7 @@ export const staticVarCompensatorModificationEmptyFormData: DeepNullable<StaticV
     [FieldConstants.EQUIPMENT_NAME]: '',
     [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionEmptyFormDataProps(true),
     [FieldConstants.SETPOINTS_LIMITS]: getReactiveModificationFormEmptyFormData()[FieldConstants.SETPOINTS_LIMITS],
+    [FieldConstants.AUTOMATON]: getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
 };
 
@@ -62,7 +68,7 @@ export const staticVarCompensatorModificationDtoToForm = (
     includePreviousValues = true
 ): StaticVarCompensatorModificationFormData => {
     // a modification can change only one of the two limits
-    const isSusceptanceChoice = dto.minSusceptance != null || dto.maxSusceptance != null;
+    const isSusceptanceChoice = dto.minSusceptance != null || dto.maxSusceptance != null || dto.b0 != null;
     const regulatingTerminalVlId = dto.regulatingTerminalVlId?.value;
     const regulatingTerminalId = dto.regulatingTerminalId?.value;
     const regulatingTerminalType = dto.regulatingTerminalType?.value;
@@ -99,6 +105,17 @@ export const staticVarCompensatorModificationDtoToForm = (
                     ? { [FieldConstants.ID]: regulatingTerminalId, [FieldConstants.TYPE]: regulatingTerminalType }
                     : null,
         },
+        [FieldConstants.AUTOMATON]: {
+            ...getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
+            [FieldConstants.ADD_STAND_BY_AUTOMATON]: dto.standbyAutomatonOn?.value ?? null,
+            [FieldConstants.STAND_BY_AUTOMATON]: dto.standby?.value ?? null,
+            [FieldConstants.LOW_VOLTAGE_SET_POINT]: dto.lowVoltageSetpoint?.value ?? null,
+            [FieldConstants.HIGH_VOLTAGE_SET_POINT]: dto.highVoltageSetpoint?.value ?? null,
+            [FieldConstants.LOW_VOLTAGE_THRESHOLD]: dto.lowVoltageThreshold?.value ?? null,
+            [FieldConstants.HIGH_VOLTAGE_THRESHOLD]: dto.highVoltageThreshold?.value ?? null,
+            [FieldConstants.B0]: dto.b0?.value ?? null,
+            [FieldConstants.Q0]: dto.q0?.value ?? null,
+        },
         ...getPropertiesFromModification(dto.properties, includePreviousValues),
     };
 };
@@ -106,12 +123,14 @@ export const staticVarCompensatorModificationDtoToForm = (
 export const staticVarCompensatorModificationFormToDto = (
     form: StaticVarCompensatorModificationFormData
 ): StaticVarCompensatorModificationDto => {
-    const { connectivity, setpointsLimits } = form;
+    const { connectivity, setpointsLimits, automaton } = form;
     const { characteristicsChoice, voltageRegulationMode, voltageRegulationType } = setpointsLimits;
     const isSusceptanceChoice = characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id;
     const isQAtNominalVChoice = characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id;
     const isRegulationOff = voltageRegulationMode === VOLTAGE_REGULATION_MODES.OFF.id;
     const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
+    const isAutomatonRemoved = automaton?.addStandbyAutomaton === false;
+    const getAutomatonValue = <T>(value: T) => (isAutomatonRemoved ? null : toModificationOperation(value));
 
     return {
         type: ModificationType.STATIC_VAR_COMPENSATOR_MODIFICATION,
@@ -136,6 +155,14 @@ export const staticVarCompensatorModificationFormToDto = (
         regulatingTerminalId: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.id) : null,
         regulatingTerminalType: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.type) : null,
         regulatingTerminalVlId: isDistantRegulation ? toModificationOperation(setpointsLimits.voltageLevel?.id) : null,
+        standbyAutomatonOn: toModificationOperation(automaton?.addStandbyAutomaton),
+        standby: getAutomatonValue(automaton?.StandbyAutomaton),
+        b0: isSusceptanceChoice ? getAutomatonValue(automaton?.b0) : null,
+        q0: isQAtNominalVChoice ? getAutomatonValue(automaton?.q0) : null,
+        lowVoltageSetpoint: getAutomatonValue(automaton?.lowVoltageSetpoint),
+        highVoltageSetpoint: getAutomatonValue(automaton?.highVoltageSetpoint),
+        lowVoltageThreshold: getAutomatonValue(automaton?.lowVoltageThreshold),
+        highVoltageThreshold: getAutomatonValue(automaton?.highVoltageThreshold),
         properties: toModificationProperties(form) ?? null,
     };
 };
