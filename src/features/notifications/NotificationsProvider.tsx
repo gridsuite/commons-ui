@@ -95,6 +95,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                     connectedTimeout = setTimeout(() => {
                         // only notify listeners if there was at least one failure before this connection
                         if (rws.retryCount === 0 && hadConnectionFailure) {
+                            console.info(`${urlKey} Notification Websocket connected`);
                             broadcastOnReopen(urlKey)();
                         }
                     }, DELAY_BEFORE_WEBSOCKET_CONNECTED);
