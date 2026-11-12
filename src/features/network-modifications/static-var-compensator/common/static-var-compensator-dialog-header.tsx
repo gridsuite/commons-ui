@@ -10,19 +10,20 @@ import { useWatch } from 'react-hook-form';
 import { GridItem, TextInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils';
 import { filledTextField } from '../../common';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 
 export interface StaticVarCompensatorDialogHeaderProps {
-    isEquipmentModification?: boolean;
-    previousName?: string;
+    isModification?: boolean;
+    staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null;
 }
 
 export function StaticVarCompensatorDialogHeader({
-    isEquipmentModification = false,
-    previousName,
+    isModification = false,
+    staticVarCompensatorToModify,
 }: Readonly<StaticVarCompensatorDialogHeaderProps>) {
     const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
 
-    const staticCompensatorIdField = isEquipmentModification ? (
+    const staticCompensatorIdField = isModification ? (
         <TextField
             size="small"
             fullWidth
@@ -33,16 +34,16 @@ export function StaticVarCompensatorDialogHeader({
             {...filledTextField}
         />
     ) : (
-        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, variant: 'filled' }} />
+        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
 
     const staticCompensatorNameField = (
         <TextInput
             name={FieldConstants.EQUIPMENT_NAME}
             label="Name"
-            formProps={{ variant: 'filled' }}
-            previousValue={previousName}
-            clearable={isEquipmentModification}
+            formProps={filledTextField}
+            previousValue={staticVarCompensatorToModify?.name ?? undefined}
+            clearable={isModification}
         />
     );
     return (

@@ -25,18 +25,18 @@ import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 export interface SetPointsLimitsFormProps {
     voltageLevelOptions: Identifiable[];
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
-    isEquipmentModification?: boolean;
-    previousValues?: StaticVarCompensatorFormInfo | null;
+    isModification?: boolean;
+    staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null;
 }
 
-const getPreviousRegulationMode = (previousValues?: StaticVarCompensatorFormInfo | null) => {
-    if (!previousValues) {
+const getPreviousRegulationMode = (staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null) => {
+    if (!staticVarCompensatorToModify) {
         return undefined;
     }
-    if (!previousValues.isRegulating) {
+    if (!staticVarCompensatorToModify.isRegulating) {
         return VOLTAGE_REGULATION_MODES.OFF;
     }
-    return previousValues.regulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id
+    return staticVarCompensatorToModify.regulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id
         ? VOLTAGE_REGULATION_MODES.REACTIVE_POWER
         : VOLTAGE_REGULATION_MODES.VOLTAGE;
 };
@@ -47,20 +47,22 @@ const toQAtNominalV = (susceptance?: number | null, nominalV?: number | null) =>
 export function SetPointsLimitsForm({
     voltageLevelOptions,
     fetchVoltageLevelEquipments,
-    isEquipmentModification = false,
-    previousValues,
+    isModification = false,
+    staticVarCompensatorToModify,
 }: Readonly<SetPointsLimitsFormProps>) {
     const intl = useIntl();
     const id = FieldConstants.SETPOINTS_LIMITS;
 
-    const previousRegulationMode = getPreviousRegulationMode(previousValues);
+    const previousRegulationMode = getPreviousRegulationMode(staticVarCompensatorToModify);
     const isPreviousRegulationDistant = !!(
-        previousValues?.regulatingTerminalVlId || previousValues?.regulatingTerminalConnectableId
+        staticVarCompensatorToModify?.regulatingTerminalVlId ||
+        staticVarCompensatorToModify?.regulatingTerminalConnectableId
     );
     const previousRegulationType = isPreviousRegulationDistant ? REGULATION_TYPES.DISTANT : REGULATION_TYPES.LOCAL;
     const previousEquipmentSectionType =
-        previousValues?.regulatingTerminalConnectableType && previousValues?.regulatingTerminalConnectableId
-            ? `${previousValues.regulatingTerminalConnectableType} : ${previousValues.regulatingTerminalConnectableId}`
+        staticVarCompensatorToModify?.regulatingTerminalConnectableType &&
+        staticVarCompensatorToModify?.regulatingTerminalConnectableId
+            ? `${staticVarCompensatorToModify.regulatingTerminalConnectableType} : ${staticVarCompensatorToModify.regulatingTerminalConnectableId}`
             : undefined;
 
     const watchCharacteristicsChoice = useWatch({ name: `${id}.${FieldConstants.CHARACTERISTICS_CHOICE}` });
@@ -72,8 +74,8 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MIN_SUSCEPTANCE}`}
             label="minSusceptance"
             adornment={SusceptanceAdornment}
-            previousValue={previousValues?.minSusceptance ?? undefined}
-            clearable={isEquipmentModification}
+            previousValue={staticVarCompensatorToModify?.minSusceptance ?? undefined}
+            clearable={isModification}
         />
     );
     const maxSusceptanceField = (
@@ -81,8 +83,8 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MAX_SUSCEPTANCE}`}
             label="maximumSusceptance"
             adornment={SusceptanceAdornment}
-            previousValue={previousValues?.maxSusceptance ?? undefined}
-            clearable={isEquipmentModification}
+            previousValue={staticVarCompensatorToModify?.maxSusceptance ?? undefined}
+            clearable={isModification}
         />
     );
 
@@ -91,8 +93,11 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MIN_Q_AT_NOMINAL_V}`}
             label="minQAtNominalV"
             adornment={ReactivePowerAdornment}
-            previousValue={toQAtNominalV(previousValues?.minSusceptance, previousValues?.nominalV)}
-            clearable={isEquipmentModification}
+            previousValue={toQAtNominalV(
+                staticVarCompensatorToModify?.minSusceptance,
+                staticVarCompensatorToModify?.nominalV
+            )}
+            clearable={isModification}
         />
     );
     const maxQAtNominalVField = (
@@ -100,8 +105,11 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MAX_Q_AT_NOMINAL_V}`}
             label="maxQAtVnominal"
             adornment={ReactivePowerAdornment}
-            previousValue={toQAtNominalV(previousValues?.maxSusceptance, previousValues?.nominalV)}
-            clearable={isEquipmentModification}
+            previousValue={toQAtNominalV(
+                staticVarCompensatorToModify?.maxSusceptance,
+                staticVarCompensatorToModify?.nominalV
+            )}
+            clearable={isModification}
         />
     );
 
@@ -110,8 +118,8 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.VOLTAGE_SET_POINT}`}
             label="VoltageText"
             adornment={VoltageAdornment}
-            previousValue={previousValues?.voltageSetpoint ?? undefined}
-            clearable={isEquipmentModification}
+            previousValue={staticVarCompensatorToModify?.voltageSetpoint ?? undefined}
+            clearable={isModification}
         />
     );
 
@@ -120,8 +128,8 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.REACTIVE_POWER_SET_POINT}`}
             label="ReactivePowerText"
             adornment={ReactivePowerAdornment}
-            previousValue={previousValues?.reactivePowerSetpoint ?? undefined}
-            clearable={isEquipmentModification}
+            previousValue={staticVarCompensatorToModify?.reactivePowerSetpoint ?? undefined}
+            clearable={isModification}
         />
     );
 
@@ -131,7 +139,9 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.VOLTAGE_REGULATION_TYPE}`}
             label="RegulationTypeText"
             size="small"
-            previousValue={previousValues ? intl.formatMessage({ id: previousRegulationType.label }) : undefined}
+            previousValue={
+                staticVarCompensatorToModify ? intl.formatMessage({ id: previousRegulationType.label }) : undefined
+            }
         />
     );
 
@@ -142,8 +152,8 @@ export function SetPointsLimitsForm({
             disabled={false}
             fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
             voltageLevelOptions={voltageLevelOptions}
-            equipmentSectionTypeDefaultValue={isEquipmentModification ? '' : EquipmentType.STATIC_VAR_COMPENSATOR}
-            regulatingTerminalVlId={previousValues?.regulatingTerminalVlId ?? undefined}
+            equipmentSectionTypeDefaultValue={isModification ? '' : EquipmentType.STATIC_VAR_COMPENSATOR}
+            regulatingTerminalVlId={staticVarCompensatorToModify?.regulatingTerminalVlId ?? undefined}
             equipmentSectionType={previousEquipmentSectionType}
         />
     );
@@ -195,7 +205,7 @@ export function SetPointsLimitsForm({
                         label="ModeAutomaton"
                         options={Object.values(VOLTAGE_REGULATION_MODES)}
                         fullWidth
-                        disableClearable={!isEquipmentModification}
+                        disableClearable={!isModification}
                         size="small"
                         previousValue={
                             previousRegulationMode
