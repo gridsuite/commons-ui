@@ -129,7 +129,11 @@ export function CustomHeaderComponent<F extends CustomAggridFilterParams, T>({
                             )}
                             {sortParams && (
                                 <Grid>
-                                    <CustomAggridSort colId={column.getId()} sortParams={sortParams} />
+                                    <CustomAggridSort
+                                        colId={column.getId()}
+                                        sortParams={sortParams}
+                                        isHoveringColumnHeader={isHoveringColumnHeader}
+                                    />
                                 </Grid>
                             )}
                         </Grid>

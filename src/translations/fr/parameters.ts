@@ -52,6 +52,7 @@ export const parametersFr = {
     descLfCountriesToBalance: 'Pays réglant',
     inputLabelLfCountriesToBalance: 'Pays participant à la compensation',
     editParameters: 'Éditer les paramètres',
+    defaultValue: 'Par défaut: {value}',
 
     General: 'Général',
     LimitReductions: 'Abattements',
@@ -97,6 +98,7 @@ export const parametersFr = {
     ComponentLibrary: 'Sélection de la bibliothèque de composants',
     measurements: 'Télémesures',
     observability: 'Observabilité',
+    autoRefresh: 'Rafraichissement automatique',
     nadPositionsGenerationModeLabel: 'Initialisation des positions',
     NadGeoPositionsModeLabel: 'Géographique',
     NadAutoPositionsModeLabel: 'Automatique',
@@ -176,6 +178,8 @@ export const parametersFr = {
 
     updateVoltageInitParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'initialisation du plan de tension",
+    resetVoltageInitParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'initialisation du plan de tension",
     VoltageInitParametersGeneralTabLabel: 'Général',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Appliquer automatiquement la modification du plan de tension',
     VoltageInitParametersGeneralSaveInfo:
@@ -195,6 +199,12 @@ export const parametersFr = {
         "Les saisies sont appliquées dans l'ordre de la liste (en remplaçant éventuellement des saisies au fur et à mesure si un poste est inclus dans plusieurs filtres)",
     UniqueFilterInputError: 'Vous devez sélectionner un filtre',
     EquipmentSelection: 'Sélection des ouvrages',
+    ExpertSelection: 'Expert',
+    objectiveFunctionWeights: 'Poids de la fonction objectif',
+    PenaltyInvestReaPos: 'Investissement réactifs capacitifs',
+    PenaltyInvestReaNeg: 'Investissement réactifs inductifs',
+    PenaltyActivePower: 'Pertes actives',
+    PenaltyUnitsReactive: 'Puissance réactive des groupes',
     ReactiveSlacksThreshold: "Seuil d'alerte sur les investissements réactifs",
     ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'Le seuil doit être supérieur ou égal à 0',
     ShuntCompensatorActivationThreshold: "Seuil d'alerte sur l'enclenchement des MCS",
@@ -205,7 +215,7 @@ export const parametersFr = {
     voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
     AdjustExistingLimits: 'Modifier les limites existantes',
     AdjustExistingLimitsInfo:
-        'Merci de saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
+        'Saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
     SetDefaultLimits: 'Valeurs par défaut pour compléter les limites manquantes',
     allExcept: 'Tous sauf',
     noneExcept: 'Aucun sauf',
@@ -292,6 +302,8 @@ export const parametersFr = {
         'Une erreur est survenue lors de la récupération des paramètres spécifiques de calcul de répartition',
     updateLoadFlowParametersError:
         'Une erreur est survenue lors de la mise à jour des paramètres de calcul de répartition',
+    resetLoadFlowParametersError:
+        'Une erreur est survenue lors de la réinitialisation des paramètres de calcul de répartition',
     // SecurityAnalysis
     fetchSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sécurité",
@@ -299,6 +311,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
     updateSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    resetSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sécurité",
     getSecurityAnalysisContingenciesCountError:
         "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
     // SensitivityAnalysis
@@ -308,12 +322,15 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sensibilité",
     updateSensitivityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sensibilité",
+    resetSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sensibilité",
     getSensitivityAnalysisFactorsCountError: "Une erreur est survenue lors de l'estimation du nombre de calculs",
     // Other
     resetLoadFlowParametersWarning:
         'Impossible de récupérer les paramètres de calcul de répartition définis dans le profil utilisateur (les valeurs par défaut sont appliquées)',
     PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
     updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
+    resetPccMinParametersError: 'Une erreur est survenue lors de la réinitialisation des paramètres de pcc min',
     pccMinParamFilter: 'Définition des postes en défaut',
 
     Dynawo: 'Dynawo',

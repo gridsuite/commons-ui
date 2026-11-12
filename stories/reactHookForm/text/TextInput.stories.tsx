@@ -11,7 +11,11 @@ import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { TextInput, CustomFormProvider } from '../../../src';
 
-function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string }>) {
+function Form({
+    isReadOnly = false,
+    children,
+    value = 'Paris',
+}: PropsWithChildren<{ value?: string }> & { isReadOnly: boolean }) {
     const methods = useForm({ defaultValues: { city: value } });
     return (
         <CustomFormProvider
@@ -19,6 +23,7 @@ function Form({ children, value = 'Paris' }: PropsWithChildren<{ value?: string 
             validationSchema={yup.object().shape({
                 city: yup.string().required(),
             })}
+            isReadOnly={isReadOnly}
         >
             {children}
         </CustomFormProvider>
@@ -31,8 +36,8 @@ const meta = {
     tags: ['autodocs'],
     args: { name: 'city', label: 'City' },
     decorators: [
-        (Story) => (
-            <Form>
+        (Story, { parameters }) => (
+            <Form isReadOnly={parameters.isReadOnly}>
                 <Story />
             </Form>
         ),
@@ -45,3 +50,6 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {};
 export const Clearable: Story = { args: { clearable: true } };
 export const Disabled: Story = { args: { disabled: true } };
+export const DefaultReadOnly: Story = { parameters: { isReadOnly: true } };
+export const ClearableReadOnly: Story = { args: { clearable: true }, parameters: { isReadOnly: true } };
+export const DisabledReadOnly: Story = { args: { disabled: true }, parameters: { isReadOnly: true } };

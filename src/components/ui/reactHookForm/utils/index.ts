@@ -12,3 +12,4 @@ export * from './SubmitButton';
 export * from './TextFieldWithAdornment';
 export * from './functions';
 export * from './HelperPreviousValue';
+export * from './slotProps';

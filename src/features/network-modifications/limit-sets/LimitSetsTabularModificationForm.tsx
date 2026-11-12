@@ -8,7 +8,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useIntl } from 'react-intl';
-import { type FieldValues, useFormContext, type UseFieldArrayReturn, useWatch } from 'react-hook-form';
+import { type FieldValues, type UseFieldArrayReturn, useWatch } from 'react-hook-form';
 import { Alert, Grid, Stack } from '@mui/material';
 import { ColDef } from 'ag-grid-community';
 import type { ParseConfig, ParseResult } from 'papaparse';
@@ -23,6 +23,7 @@ import {
     DefaultCellRenderer,
     InputWithPopupConfirmation,
     IntegerInput,
+    useCustomFormContext,
 } from '../../../components';
 import { FieldConstants, getCsvDelimiter, type GsLang, hasNonEmptyRows, transformIfFrenchNumber } from '../../../utils';
 import { AGGRID_LOCALES } from '../../../translations/not-intl/aggrid-locales';
@@ -48,7 +49,7 @@ export function LimitSetsTabularModificationForm({
     const [repeatableColumns, setRepeatableColumns] = useState<TabularField[]>([]);
     const tableRef = useRef<UseFieldArrayReturn<FieldValues, string>>(null);
 
-    const { setValue, clearErrors, getValues, setError, trigger } = useFormContext();
+    const { setValue, clearErrors, getValues, setError, trigger, isReadOnly } = useCustomFormContext();
 
     const getTypeLabel = useCallback((type: string) => intl.formatMessage({ id: type }), [intl]);
 
@@ -317,15 +318,17 @@ export function LimitSetsTabularModificationForm({
                                     label="amountTemporaryLimits"
                                 />
                             </Grid>
-                            <Grid>
-                                <CsvDownloadButton
-                                    data={getTemplateData}
-                                    fileName={csvProps.fileName}
-                                    language={language}
-                                    labelId="GenerateCSV"
-                                    variant="contained"
-                                />
-                            </Grid>
+                            {!isReadOnly && (
+                                <Grid>
+                                    <CsvDownloadButton
+                                        data={getTemplateData}
+                                        fileName={csvProps.fileName}
+                                        language={language}
+                                        labelId="GenerateCSV"
+                                        variant="contained"
+                                    />
+                                </Grid>
+                            )}
                         </Grid>
                         <Grid sx={{ flex: 1, minWidth: 0 }}>
                             <CsvPicker<Record<string, unknown>>

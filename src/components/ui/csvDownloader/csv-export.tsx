@@ -15,9 +15,11 @@ export function CsvExport({
     tableNamePrefix = '',
     tableName,
     disabled,
+    withTooltip = false,
     skipColumnHeaders = false,
     skipPinnedBottom = false,
     language,
+    withFormatter = false,
     getData,
     resetKey,
 }: CsvExportProps): JSX.Element {
@@ -31,8 +33,26 @@ export function CsvExport({
             skipColumnHeaders,
             skipPinnedBottom,
             language,
+            withFormatter,
             getData,
         });
-    }, [columns, csvExport, tableName, tableNamePrefix, skipColumnHeaders, skipPinnedBottom, language, getData]);
-    return <ManagedExportCsvButton disabled={disabled} exportCsv={exportCsv} resetKey={resetKey} />;
+    }, [
+        columns,
+        csvExport,
+        tableName,
+        tableNamePrefix,
+        skipColumnHeaders,
+        skipPinnedBottom,
+        language,
+        withFormatter,
+        getData,
+    ]);
+    return (
+        <ManagedExportCsvButton
+            disabled={disabled}
+            withTooltip={withTooltip}
+            exportCsv={exportCsv}
+            resetKey={resetKey}
+        />
+    );
 }

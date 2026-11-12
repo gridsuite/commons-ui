@@ -98,6 +98,16 @@ export const networkModificationTableStyles = {
         width: '16px',
         height: '16px',
     },
+    disabledDragHandle: {
+        cursor: 'default',
+    },
+    readOnlyLockIcon: (theme) => ({
+        flexShrink: 0,
+        width: '14px',
+        height: '14px',
+        marginLeft: theme.spacing(0.5),
+        color: theme.palette.text.secondary,
+    }),
     modificationLabel: {
         textOverflow: 'ellipsis',
         overflow: 'hidden',

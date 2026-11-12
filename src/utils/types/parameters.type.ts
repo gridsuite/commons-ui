@@ -26,6 +26,13 @@ export enum ParameterType {
     COUNTRIES = 'COUNTRIES',
 }
 
+export type ParameterValue = boolean | string | string[] | number;
+
+export interface ParameterDifference {
+    value?: ParameterValue;
+    defaultValue?: ParameterValue;
+}
+
 export type SpecificParameterInfos = {
     name: string;
     type: ParameterType;
@@ -61,7 +68,8 @@ export type ParametersInfos<T extends ComputingType> = T extends ComputingType.S
 export type BackendFunctions<T extends ComputingType> = {
     backendFetchProviders?: (() => Promise<string[]>) | null;
     backendFetchParameters: (paramsUuidOrStudyUuid: UUID) => Promise<ParametersInfos<T>>;
-    backendUpdateParameters?: (paramsUuidOrStudyUuid: UUID, newParam: ParametersInfos<T> | null) => Promise<any>;
+    backendUpdateParameters?: (paramsUuidOrStudyUuid: UUID, newParam: ParametersInfos<T>) => Promise<any>;
+    backendResetParameters?: (paramsUuidOrStudyUuid: UUID) => Promise<any>;
     backendFetchSpecificParametersDescription?: () => Promise<SpecificParametersDescription>;
     backendFetchDefaultLimitReductions?: () => Promise<ILimitReductionsByVoltageLevel[]>;
 };

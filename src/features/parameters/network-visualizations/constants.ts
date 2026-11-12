@@ -25,6 +25,7 @@ export const PARAM_SUBSTATION_LAYOUT = 'substationLayout';
 export const PARAM_NAD_POSITIONS_GENERATION_MODE = 'nadPositionsGenerationMode';
 export const PARAM_MEASUREMENTS = 'measurements';
 export const PARAM_OBSERVABILITY = 'observability';
+export const PARAM_AUTO_REFRESH = 'autoRefresh';
 
 export enum NetworkVisualizationTabValues {
     MAP = 'mapParameters',
@@ -45,6 +46,7 @@ export const COMPONENT_LIBRARY = 'ComponentLibrary';
 export const NAD_POSITIONS_GENERATION_MODE_LABEL = 'nadPositionsGenerationModeLabel';
 export const MEASUREMENTS_LABEL = 'measurements';
 export const OBSERVABILITY_LABEL = 'observability';
+export const AUTO_REFRESH_LABEL = 'autoRefresh';
 
 export const INTL_LINE_FLOW_MODE_OPTIONS = [
     {

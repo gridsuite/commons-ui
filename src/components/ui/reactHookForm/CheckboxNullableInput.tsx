@@ -8,9 +8,10 @@
 import { Checkbox, CheckboxProps, FormControl, FormControlLabel } from '@mui/material';
 import { useIntl } from 'react-intl';
 import { useController } from 'react-hook-form';
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useCustomFormContext } from './provider';
 import { HelperPreviousValue } from './utils';
+import { readOnlyFormControlLabelStyle } from './styles/styles';
 
 interface CheckboxNullableInputProps {
     name: string;
@@ -38,7 +39,7 @@ export function CheckboxNullableInput({
     } = useController({ name });
 
     const intl = useIntl();
-    const { isNodeBuilt, isUpdate } = useCustomFormContext();
+    const { isNodeBuilt, isUpdate, isReadOnly } = useCustomFormContext();
 
     const handleChangeValue = useCallback(() => {
         let newValue;
@@ -57,6 +58,12 @@ export function CheckboxNullableInput({
     const currentLabel = typeof label === 'function' ? label(value) : label;
 
     const { slotProps, ...otherFormProps } = formProps ?? {};
+    const labelStyle = useMemo(() => {
+        return {
+            ...(style && { color: style.color }),
+            ...(isReadOnly && readOnlyFormControlLabelStyle),
+        };
+    }, [isReadOnly, style]);
 
     return (
         <FormControl fullWidth size="small">
@@ -75,6 +82,7 @@ export function CheckboxNullableInput({
                             ...slotProps,
                         }}
                         {...otherFormProps}
+                        disabled={isReadOnly || formProps?.disabled}
                     />
                 }
                 label={
@@ -84,7 +92,7 @@ export function CheckboxNullableInput({
                               id: currentLabel,
                           })
                 }
-                sx={style ? { color: style.color } : undefined}
+                sx={labelStyle}
             />
             {previousValue && (
                 <HelperPreviousValue

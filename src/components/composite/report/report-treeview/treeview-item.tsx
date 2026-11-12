@@ -130,6 +130,7 @@ export function TreeviewItem({
                                 backgroundColor: isCurrentOccurrence
                                     ? theme.searchedText.currentHighlightColor
                                     : theme.searchedText.highlightColor,
+                                ...(theme.searchedText.textColor && { color: theme.searchedText.textColor }),
                             }}
                         >
                             {part}

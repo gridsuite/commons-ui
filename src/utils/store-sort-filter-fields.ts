@@ -57,5 +57,5 @@ export const PCCMIN_ANALYSIS_RESULT_SORT_STORE = 'pccminAnalysisResult';
 export const PCCMIN_ANALYSIS_PAGINATION_STORE_FIELD = 'pccminAnalysisPagination';
 export const PCCMIN_RESULT = 'pccMinResults';
 
-// process execution history store fields
-export const PROCESS_EXECUTION_HISTORY_SORT_STORE = 'processExecutionHistory';
+// process execution list store fields
+export const PROCESS_EXECUTION_LIST_SORT_STORE = 'processExecutionList';

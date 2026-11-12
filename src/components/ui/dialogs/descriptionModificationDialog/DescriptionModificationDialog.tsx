@@ -24,6 +24,8 @@ export interface DescriptionModificationDialogProps {
     onClose: () => void;
     updateElement?: (data: Record<string, string>) => Promise<Response>;
     updateForm?: (data: Record<string, string>) => void;
+    disabledSave?: boolean;
+    isReadOnly?: boolean;
 }
 
 const schema = yup.object().shape({
@@ -37,6 +39,8 @@ export function DescriptionModificationDialog({
     onClose,
     updateElement,
     updateForm,
+    disabledSave,
+    isReadOnly = false,
 }: Readonly<DescriptionModificationDialogProps>) {
     const { snackError } = useSnackMessage();
 
@@ -77,8 +81,9 @@ export function DescriptionModificationDialog({
             open={open}
             onClose={onCancel}
             onSave={onSubmit}
-            formContext={{ ...methods, validationSchema: schema, removeOptional: true }}
+            formContext={{ ...methods, validationSchema: schema, removeOptional: true, isReadOnly }}
             titleId="description"
+            disabledSave={disabledSave}
         >
             <Box
                 sx={{

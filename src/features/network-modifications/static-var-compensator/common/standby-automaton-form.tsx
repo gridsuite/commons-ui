@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { WarningAmber } from '@mui/icons-material';
-import { Box, FormControlLabel, Grid, TextField, Tooltip } from '@mui/material';
+import { Box, Grid, TextField, Tooltip } from '@mui/material';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { CheckboxInput, FloatInput, SwitchInput } from '../../../../components';
 import { SusceptanceArea } from './susceptance-area';
@@ -66,18 +66,15 @@ export function StandbyAutomatonForm() {
         standby: (
             <Grid container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
                 <Grid container sx={{ width: '100%' }}>
-                    <FormControlLabel
-                        value="StandbyAutomaton"
-                        control={
-                            <SwitchInput
-                                name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
-                                formProps={{
-                                    disabled: standbyDisabled,
-                                }}
-                            />
-                        }
-                        label={<FormattedMessage id="StandbyAutomaton" />}
-                        labelPlacement="start"
+                    <SwitchInput
+                        name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
+                        formProps={{
+                            disabled: standbyDisabled,
+                        }}
+                        label="StandbyAutomaton"
+                        labelProps={{
+                            labelPlacement: 'start',
+                        }}
                     />
                     {hover && watchVoltageMode !== VOLTAGE_REGULATION_MODES.VOLTAGE.id && (
                         <Box

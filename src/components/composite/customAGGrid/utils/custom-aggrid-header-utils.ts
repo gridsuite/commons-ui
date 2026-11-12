@@ -55,7 +55,7 @@ export const makeAgGridCustomHeaderColumn = <F extends CustomAggridFilterParams 
         ...props,
         context: {
             ...context,
-            fractionDigits: numeric && !fractionDigits ? 2 : fractionDigits,
+            fractionDigits: numeric && fractionDigits == null ? 2 : fractionDigits,
         },
     };
 };

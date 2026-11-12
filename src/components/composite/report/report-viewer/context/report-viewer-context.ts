@@ -26,6 +26,7 @@ export interface ReportFetcherContextValue {
         searchTerm: string,
         pageSize: number
     ) => Promise<MatchPosition[]> | undefined;
+    refreshCounter?: number;
 }
 
 export const ReportFetcherContext = createContext<ReportFetcherContextValue | null>(null);

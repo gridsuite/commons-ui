@@ -10,7 +10,7 @@ import { backendFetch, backendFetchJson, backendFetchText, safeEncodeURIComponen
 import { PREFIX_STUDY_SERVER_QUERIES } from './study';
 import { ComposedModificationMetadata, NetworkModificationMetadata } from '../utils';
 
-export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | undefined) =>
+export const getStudyUrlWithNodeUuid = (studyUuid: string | null | undefined, nodeUuid: string | null | undefined) =>
     `${PREFIX_STUDY_SERVER_QUERIES}/v1/studies/${safeEncodeURIComponent(studyUuid)}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
 export enum ModificationContainerType {
@@ -35,6 +35,21 @@ export function fetchNetworkModification(modificationUuid: UUID) {
     const modificationFetchUrl = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications/${safeEncodeURIComponent(modificationUuid)}`;
     console.debug(modificationFetchUrl);
     return backendFetch(modificationFetchUrl);
+}
+
+export function unshareNetworkModification(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | null,
+    modificationUuid: UUID
+): Promise<Response> {
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/${safeEncodeURIComponent(modificationUuid)}/unshare`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+    });
 }
 
 export function fetchBusBarSectionsForNewCoupler(
@@ -96,18 +111,6 @@ export function updateNetworkModificationsMetadata(
     });
 }
 
-export function getNetworkModificationsFromComposite(
-    compositeModificationUuids: string[],
-    onlyMetadata: boolean = true
-): Promise<Record<UUID, NetworkModificationMetadata[]>> {
-    const urlSearchParams = new URLSearchParams();
-    compositeModificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
-    urlSearchParams.append('onlyMetadata', String(onlyMetadata));
-    const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-composite-modifications/network-modifications?${urlSearchParams.toString()}`;
-    console.debug(url);
-    return backendFetchJson(url);
-}
-
 /** Moves modifications into nodeUuid, all coming from originNodeUuid (defaults to nodeUuid) */
 export function moveModifications(
     studyUuid: UUID | null,
@@ -147,6 +150,28 @@ export function setModificationMetadata(
     const urlSearchParams = new URLSearchParams();
     urlSearchParams.append('uuids', String([modificationUuid]));
     const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications?${urlSearchParams.toString()}`;
+    return backendFetch(url, {
+        method: 'PUT',
+        headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(metadata),
+    });
+}
+
+export function setModificationNameAndDescription(
+    studyUuid: UUID | null,
+    nodeUuid: UUID | undefined,
+    modificationUuid: UUID | undefined,
+    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+): Promise<Response> {
+    if (!modificationUuid) {
+        return Promise.reject(new Error('modificationUuid is required'));
+    }
+    const urlSearchParams = new URLSearchParams();
+    urlSearchParams.append('uuid', modificationUuid);
+    const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications/${safeEncodeURIComponent(modificationUuid)}/name-and-description`;
     return backendFetch(url, {
         method: 'PUT',
         headers: {

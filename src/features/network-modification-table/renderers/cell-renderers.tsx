@@ -18,8 +18,8 @@ import { DescriptionCell } from './description-cell';
 import { SwitchCell } from './switch-cell';
 import { RootNetworkChipCell } from './root-network-chip-cell';
 import { networkModificationTableStyles, rootNetworkChipCellSx } from '../network-modification-table-styles';
+import { isModificationEditLocked, isReferenceModification } from '../utils';
 import { ComposedModificationMetadata } from '../../../utils';
-import { isReferenceModification } from '../utils';
 import { ReferenceLinkCell } from './reference-link-cell';
 
 /**
@@ -35,8 +35,13 @@ import { ReferenceLinkCell } from './reference-link-cell';
 type CCtx = CellContext<ComposedModificationMetadata, unknown>;
 type HCtx = HeaderContext<ComposedModificationMetadata, unknown>;
 
-export function DragHandleRenderer({ table }: CCtx) {
-    return <DragHandleCell isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false} />;
+export function DragHandleRenderer({ row, table }: CCtx) {
+    return (
+        <DragHandleCell
+            isRowDragDisabled={table.options.meta?.interaction.isRowDragDisabled ?? false}
+            isLocked={!!row.original.childFromReadOnlyShared}
+        />
+    );
 }
 
 export function SelectHeaderRenderer({ table }: HCtx) {
@@ -61,7 +66,15 @@ export function NameHeaderRenderer({ table }: HCtx) {
 }
 
 export function NameCellRenderer({ row, table, column }: CCtx) {
-    return <NameCell row={row} table={table} onChange={column.columnDef.meta?.onChange} />;
+    return (
+        <NameCell
+            row={row}
+            table={table}
+            onChange={column.columnDef.meta?.onChange}
+            isRenameDisabled={isModificationEditLocked(row.original)}
+            isReadOnly={isModificationEditLocked(row.original)}
+        />
+    );
 }
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
@@ -72,6 +85,7 @@ export function DescriptionCellRenderer({ row, table }: CCtx) {
             studyUuid={meta?.context.studyUuid ?? null}
             currentNodeId={meta?.context.currentNodeId}
             isDisabled={meta?.status.isDisabled}
+            isSaveDisabled={isModificationEditLocked(row.original)}
         />
     );
 }
@@ -80,7 +94,14 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
 
     if (isReferenceModification(row.original)) {
-        return <ReferenceLinkCell row={row} disabled={meta?.status.isDisabled} />;
+        return (
+            <ReferenceLinkCell
+                row={row}
+                studyUuid={meta?.context.studyUuid ?? null}
+                currentNodeId={meta?.context.currentNodeId ?? null}
+                disabled={meta?.status.isDisabled}
+            />
+        );
     }
     return null;
 }
@@ -96,7 +117,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
             currentNodeId={meta.context.currentNodeId}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
-            isDisabled={meta.status.isDisabled}
+            isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
         />
     );
 }
@@ -145,7 +166,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}
                 setPendingApplicabilities={meta.modifications.setPendingApplicabilities}
-                isDisabled={meta.status.isDisabled}
+                isDisabled={meta.status.isDisabled || isModificationEditLocked(row.original)}
             />
         </Box>
     );

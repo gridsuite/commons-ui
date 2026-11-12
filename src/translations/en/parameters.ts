@@ -50,6 +50,7 @@ export const parametersEn = {
     descLfCountriesToBalance: 'Balancing countries',
     inputLabelLfCountriesToBalance: 'Countries participating in balancing',
     editParameters: 'Edit parameters',
+    defaultValue: 'Default: {value}',
 
     General: 'General',
     LimitReductions: 'Limit reductions',
@@ -95,6 +96,7 @@ export const parametersEn = {
     ComponentLibrary: 'Component library selection',
     measurements: 'Measurements',
     observability: 'Observability',
+    autoRefresh: 'Auto refresh',
     nadPositionsGenerationModeLabel: 'Initialization of the positions',
     NadGeoPositionsModeLabel: 'Geographical',
     NadAutoPositionsModeLabel: 'Automatic',
@@ -170,6 +172,7 @@ export const parametersEn = {
     Or: 'or',
 
     updateVoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
+    resetVoltageInitParametersError: 'An error occurred while resetting the voltage profile initialization parameters',
     VoltageInitParametersGeneralTabLabel: 'General',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Automatically apply voltage init modification',
     VoltageInitParametersGeneralSaveInfo:
@@ -188,6 +191,12 @@ export const parametersEn = {
         'User entries are applied one after another starting at the top of the list. If a voltage level is included in more than one filter, an entry can therefore be replaced by a subsequent entry',
     UniqueFilterInputError: 'You must select one filter',
     EquipmentSelection: 'Equipment selection',
+    ExpertSelection: 'Expert',
+    objectiveFunctionWeights: 'Objective function weights',
+    PenaltyInvestReaPos: 'Capacitive reactive investment',
+    PenaltyInvestReaNeg: ' Inductive reactive investment',
+    PenaltyActivePower: 'Active losses',
+    PenaltyUnitsReactive: 'Generators reactive power',
     ReactiveSlacksThreshold: 'Alert threshold on reactive slacks',
     ReactiveSlacksThresholdMustBeGreaterOrEqualToZero: 'The threshold must be greater or equal to 0',
     ShuntCompensatorActivationThreshold: 'Alert threshold on shunt compensator activation',
@@ -197,7 +206,7 @@ export const parametersEn = {
     VoltageInitParametersError: 'An error occurred while updating the voltage profile initialization parameters',
     AdjustExistingLimits: 'Adjust existing limits',
     AdjustExistingLimitsInfo:
-        'Please enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
+        'Enter a positive number in order to increase an existing voltage limit and a negative number in order to decrease an existing voltage limit (new limit = existing limit + user input).',
     SetDefaultLimits: 'Default values to fill missing limits',
     allExcept: 'All except',
     noneExcept: 'None except',
@@ -280,16 +289,19 @@ export const parametersEn = {
     fetchLoadFlowProvidersError: 'An error occurred while fetching the load flow providers',
     fetchLoadFlowSpecificParametersError: 'An error occured when fetching the load flow specific parameters',
     updateLoadFlowParametersError: 'An error occurred while updating the load flow parameters',
+    resetLoadFlowParametersError: 'An error occurred while resetting the load flow parameters',
     // SecurityAnalysis
     fetchSecurityAnalysisParametersError: 'An error occured when fetching the security analysis parameters',
     fetchSecurityAnalysisProvidersError: 'An error occured when fetching security analysis provider list',
     updateSecurityAnalysisParametersError: 'An error occurred while updating the security analysis parameters',
+    resetSecurityAnalysisParametersError: 'An error occurred while resetting the security analysis parameters',
     getSecurityAnalysisContingenciesCountError:
         'An error occurred while estimating security analysis contingencies count',
     // SensitivityAnalysis
     fetchSensitivityAnalysisParametersError: 'An error occured when fetching the sensitivity analysis parameters',
     fetchSensitivityAnalysisProvidersError: 'An error occured when fetching sensitivity analysis provider list',
     updateSensitivityAnalysisParametersError: 'An error occurred while updating the sensitivity analysis parameters',
+    resetSensitivityAnalysisParametersError: 'An error occurred while resetting the sensitivity analysis parameters',
     getSensitivityAnalysisFactorsCountError: 'An error occured while estimating sensitivity analysis computations',
     // Other
     resetLoadFlowParametersWarning:
@@ -297,6 +309,7 @@ export const parametersEn = {
     // pccMin
     PccMinParametersError: 'An error occurred while updating the pcc min parameters',
     updatePccMinParametersError: 'An error occurred while updating the pcc min parameters',
+    resetPccMinParametersError: 'An error occurred while reseting the pcc min parameters',
     pccMinParamFilter: 'Definition of contingencies on voltage levels',
 
     Dynawo: 'Dynawo',

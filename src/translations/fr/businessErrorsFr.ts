@@ -22,6 +22,8 @@ export const businessErrorsFr = {
     'explore.permissionDenied': "Vous n'êtes pas autorisé à effectuer cette action.",
     'explore.maxElementsExceeded':
         "Vous avez atteint votre quota utilisateur en termes de situations et d'études ({limit} situations et études).",
+    'explore.modificationElementAlreadyExists': "La modification composite '{elementName}' existe déjà dans le dossier",
+    'study.nodeNotFound': 'Noeud non trouvé.',
     'study.notFound': 'Étude non trouvée.',
     'study.computationRunning': "L'opération ne peut être menée car un calcul est en cours.",
     'study.loadflowError': 'Erreur de calcul de répartition.',
@@ -45,6 +47,8 @@ export const businessErrorsFr = {
     'study.maxOperationTypeExceeded': "Nombre maximal d'opération de ce type atteint",
     'modification.sharedWriteForbidden':
         "Vous n'avez pas les droits d'écriture sur l'une des modifications partagées de cette étude.",
+    'modification.rootNetworkTagsForbiddenByShared':
+        "Action interdite : l'étude contient au moins une modification partagée pour laquelle vous n'avez pas les droits de modification et qui n'est pas définie sur l'ensemble des réseaux racines utilisés. {allowedTagsCount, plural, =0 {Aucune nouvelle balise n'est autorisée.} one {La balise autorisée est {allowedTags}.} other {Les balises autorisées sont {allowedTags}.}}",
     'useradmin.permissionDenied': "Vous n'avez pas la permission d'effectuer cette action.",
     'useradmin.userNotFound': 'Utilisateur introuvable.',
     'useradmin.userAlreadyExists': "L'utilisateur existe déjà.",
@@ -100,6 +104,7 @@ export const businessErrorsFr = {
 
     'monitor.server.differentProcessConfigType':
         'Impossible de comparer 2 configurations de processus de type différent : {processConfigEntity1Type} vs {processConfigEntity2Type}',
+    'monitor.server.unsupportedProvider': 'Le simulateur doit être Open Load Flow',
 
     'network.notFound': 'Réseau {networkId} non trouvé',
     'network.variant.notFound': 'Variante {variantId} pour le réseau {networkId} non trouvé',
@@ -115,17 +120,17 @@ export const businessErrorsFr = {
     'modification.containsShared':
         'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
+    'modification.shared.notFound': 'La modification partagée {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
-    'modification.deletion.argument.error':
-        "Modification suppression : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
     'modification.duplication.argument.error':
         "Modification duplication : arguments invalides (besoin d'un id de groupe ou d'une liste de uuids de modifications)",
-    'modification.with_group.deletion.forbidden':
-        'Suppression non autorisée : la modification {modificationId} appartient au groupe {groupId}',
     'modification.description.missing': 'La description de la modification réseau est manquante',
     'modification.composite.move.cycle.error':
         'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
     'modification.voltageLevel.attachmentLine.missing':
         'La ligne de piquage pour le poste {voltageLevelId} est manquante',
+
+    'report.notFound': 'Rapport non trouvé.',
+    'report.notARoot': "Le rapport n'est pas un rapport racine.",
 };

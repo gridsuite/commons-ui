@@ -5,7 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { InferType, object, string } from 'yup';
+import { InferType, mixed, object, string } from 'yup';
 import { DeepNullable, FieldConstants, ModificationType, sanitizeString } from '../../../../utils';
 import {
     getConnectivityData,
@@ -26,6 +26,10 @@ export const lineSplitWithVoltageLevelCreationFormSchema = object()
         [FieldConstants.LINE2_ID]: string().required(),
         [FieldConstants.LINE2_NAME]: string().nullable(),
         [FieldConstants.CONNECTIVITY]: object().shape(getConnectivityPropertiesValidationSchema()),
+        // Full creation payload for a not-yet-existing voltage level, set when the user picks "create
+        // new" instead of an existing one. Kept in the form rather than external state, so any consumer
+        // can read it back via formToDto.
+        [FieldConstants.NEW_VOLTAGE_LEVEL]: mixed<VoltageLevelCreationDto>().nullable().default(null),
         ...getLineToAttachOrSplitFormValidationSchema(),
     })
     .required();
@@ -38,6 +42,7 @@ export const lineSplitWithVoltageLevelCreationEmptyFormData: DeepNullable<LineSp
     [FieldConstants.LINE2_ID]: '',
     [FieldConstants.LINE2_NAME]: '',
     [FieldConstants.CONNECTIVITY]: getConnectivityPropertiesEmptyFormData(),
+    [FieldConstants.NEW_VOLTAGE_LEVEL]: null,
     ...getLineToAttachOrSplitEmptyFormData(),
 };
 
@@ -66,16 +71,15 @@ export const lineSplitWithVoltageLevelCreationDtoToForm = (
                 [FieldConstants.VOLTAGE_LEVEL]: getNewVoltageLevelData(newVoltageLevel),
             },
         }),
+        [FieldConstants.NEW_VOLTAGE_LEVEL]: newVoltageLevel ?? null,
     } as LineSplitWithVoltageLevelCreationFormData;
 };
 
-// newVoltageLevel carries the full creation payload for a not-yet-existing voltage level, when the user
-// picked "create new voltage level" instead of an existing one: it cannot be derived from form data alone.
 export const lineSplitWithVoltageLevelCreationFormToDto = (
-    lineSplitForm: LineSplitWithVoltageLevelCreationFormData,
-    newVoltageLevel: VoltageLevelCreationDto | null
+    lineSplitForm: LineSplitWithVoltageLevelCreationFormData
 ): LineSplitWithVoltageLevelCreationDto => {
     const currentVoltageLevelId = lineSplitForm[FieldConstants.CONNECTIVITY]?.voltageLevel?.id;
+    const newVoltageLevel = lineSplitForm[FieldConstants.NEW_VOLTAGE_LEVEL] ?? null;
     const isNewVoltageLevel = newVoltageLevel?.equipmentId === currentVoltageLevelId;
     return {
         type: ModificationType.LINE_SPLIT_WITH_VOLTAGE_LEVEL,

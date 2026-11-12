@@ -10,3 +10,4 @@ export { ArrowsInputIcon } from './ArrowsInputIcon';
 export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
 export { EditNoteIcon } from './EditNoteIcon';
 export { VoltageUnitIcon } from './VoltageUnitIcon';
+export { LinkOffIcon } from './LinkOffIcon';

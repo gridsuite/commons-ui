@@ -10,6 +10,7 @@ export enum RunningStatus {
     FAILED = 'FAILED',
     IDLE = 'IDLE',
     RUNNING = 'RUNNING',
+    PRELOADING = 'PRELOADING',
 }
 
 export interface RunningStatusMessage {

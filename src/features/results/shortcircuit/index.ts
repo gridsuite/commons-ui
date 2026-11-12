@@ -8,5 +8,6 @@
 export * from './shortcircuit-analysis-result.type';
 export * from './shortcircuit-analysis-result-content';
 export * from './shortcircuit-analysis-result-table';
+export * from './shortcircuit-analysis-result-view';
 export * from './shortcircuit-analysis-result';
 export * from './shortcircuit-analysis-all-buses-result';

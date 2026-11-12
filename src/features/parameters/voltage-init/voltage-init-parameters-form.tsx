@@ -14,20 +14,28 @@ import { VoltageInitTabValues as TabValues } from './constants';
 import { GeneralParameters } from './general-parameters';
 import { EquipmentSelectionParameters } from './equipment-selection-parameters';
 import { VoltageLimitsParameters } from './voltage-limits-parameters';
+import { ExpertParameters } from './expert-parameters';
 
 interface VoltageInitParametersFormProps {
     voltageInitMethods: UseVoltageInitParametersFormReturn;
     showActionsButtons?: boolean;
+    isDeveloperMode?: boolean;
 }
 
 export function VoltageInitParametersForm({
     voltageInitMethods,
     showActionsButtons,
+    isDeveloperMode,
 }: Readonly<VoltageInitParametersFormProps>) {
     const { selectedTab, handleTabChange, tabIndexesWithError } = voltageInitMethods;
 
     return (
-        <Stack sx={parametersStyles.scrollableGrid}>
+        <Stack
+            sx={(theme) => ({
+                ...parametersStyles.scrollableGrid(theme),
+                paddingTop: 0,
+            })}
+        >
             <Tabs value={selectedTab} variant="scrollable" onChange={handleTabChange}>
                 <Tab
                     label={<FormattedMessage id="VoltageInitParametersGeneralTabLabel" />}
@@ -44,6 +52,13 @@ export function VoltageInitParametersForm({
                     value={TabValues.EQUIPMENTS_SELECTION}
                     sx={getTabStyle(tabIndexesWithError, TabValues.EQUIPMENTS_SELECTION)}
                 />
+                {isDeveloperMode && (
+                    <Tab
+                        label={<FormattedMessage id="ExpertSelection" />}
+                        value={TabValues.EXPERT}
+                        sx={getTabStyle(tabIndexesWithError, TabValues.EXPERT)}
+                    />
+                )}
             </Tabs>
             <Grid container>
                 <TabPanel value={selectedTab} index={TabValues.GENERAL}>
@@ -55,6 +70,11 @@ export function VoltageInitParametersForm({
                 <TabPanel value={selectedTab} index={TabValues.EQUIPMENTS_SELECTION}>
                     <EquipmentSelectionParameters />
                 </TabPanel>
+                {isDeveloperMode && (
+                    <TabPanel value={selectedTab} index={TabValues.EXPERT}>
+                        <ExpertParameters />
+                    </TabPanel>
+                )}
             </Grid>
         </Stack>
     );

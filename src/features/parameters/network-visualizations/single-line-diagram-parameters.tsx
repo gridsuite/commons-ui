@@ -9,6 +9,7 @@ import { Grid } from '@mui/material';
 import { useMemo } from 'react';
 import { FormattedMessage } from 'react-intl';
 import {
+    AUTO_REFRESH_LABEL,
     CENTER_LABEL,
     COMPONENT_LIBRARY,
     DIAGONAL_LABEL,
@@ -16,6 +17,7 @@ import {
     MEASUREMENTS_LABEL,
     NetworkVisualizationTabValues as TabValues,
     OBSERVABILITY_LABEL,
+    PARAM_AUTO_REFRESH,
     PARAM_CENTER_LABEL,
     PARAM_COMPONENT_LIBRARY,
     PARAM_DIAGONAL_LABEL,
@@ -104,6 +106,7 @@ export function SingleLineDiagramParameters({ componentLibraries }: Readonly<Sin
             {componentLineDropDown}
             {labelPosition(PARAM_MEASUREMENTS, MEASUREMENTS_LABEL)}
             {labelPosition(PARAM_OBSERVABILITY, OBSERVABILITY_LABEL)}
+            {labelPosition(PARAM_AUTO_REFRESH, AUTO_REFRESH_LABEL)}
         </Grid>
     );
 }

@@ -6,7 +6,6 @@
  */
 
 import type { UUID } from 'node:crypto';
-import type { UseFormReturn } from 'react-hook-form';
 import type { DirectoryItemSchema } from '../../../components';
 import { FieldConstants } from '../../../utils';
 import { ProcessType } from './process-config.type';
@@ -24,14 +23,14 @@ export type ProcessConfigParameterRef = {
 type ProcessConfigParameterValues = Partial<Record<ProcessConfigParameterField, ProcessConfigParameterRef[]>>;
 
 export type ProcessConfigFormValues = {
-    processType: ProcessType | '';
+    [FieldConstants.PROCESS_TYPE]: ProcessType | '';
     [FieldConstants.NAME]: string;
     [FieldConstants.DESCRIPTION]?: string;
     [FieldConstants.DIRECTORY]?: DirectoryItemSchema | null;
     [FieldConstants.MODIFICATIONS]: ProcessConfigModification[];
 } & ProcessConfigParameterValues;
 
-export type ProcessConfigPrefillValues = Partial<Omit<ProcessConfigFormValues, 'processType'>>;
+export type ProcessConfigPrefillValues = Partial<Omit<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>>;
 
 export type FetchProcessConfigHandler = (
     processConfigUuid: string,
@@ -51,7 +50,6 @@ export type UpdateProcessConfigHandler = (
 ) => Promise<Response>;
 
 export type ProcessConfigFormProps = {
-    form: UseFormReturn<ProcessConfigFormValues>;
     mode: ProcessConfigMode;
     initialElementName?: string;
     activeDirectory?: UUID;

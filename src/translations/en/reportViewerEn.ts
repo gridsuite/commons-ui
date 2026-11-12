@@ -9,4 +9,7 @@ export const reportViewerEn = {
     'report_viewer/close': 'Close',
     'report_viewer/severity': 'Severity',
     'report_viewer/message': 'Message',
+    loadingReport: 'Loading logs in progress...',
+    searchPlaceholderLog: 'Search in logs',
+    searchPlaceholderLogsTreeStructure: 'Search in tree structure',
 };

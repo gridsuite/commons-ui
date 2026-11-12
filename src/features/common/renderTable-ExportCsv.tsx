@@ -36,10 +36,12 @@ export interface RenderTableAndExportCsvProps {
     tableName: string;
     rows: any[];
     language: GsLangUser;
+    formattedExport?: boolean;
     getRowStyle?: (params: RowClassParams) => RowStyle | undefined;
     overlayNoRowsTemplate: string | undefined;
     skipColumnHeaders: boolean;
     exportCsvResetKey?: Key;
+    withTooltip?: boolean;
     onGridReady?: (params: GridReadyEvent) => void;
 }
 
@@ -50,10 +52,12 @@ export function RenderTableAndExportCsv({
     tableName,
     rows,
     language,
+    formattedExport = false,
     getRowStyle,
     overlayNoRowsTemplate,
     skipColumnHeaders = false,
     exportCsvResetKey,
+    withTooltip = false,
     onGridReady,
 }: RenderTableAndExportCsvProps) {
     const isRowsEmpty = !rows || rows.length === 0;
@@ -76,6 +80,8 @@ export function RenderTableAndExportCsv({
                     skipColumnHeaders={skipColumnHeaders}
                     getData={(params: any) => gridRef.current?.api?.exportDataAsCsv(params)}
                     resetKey={exportCsvResetKey}
+                    withFormatter={formattedExport}
+                    withTooltip={withTooltip}
                 />
             </Box>
             {rows && (
