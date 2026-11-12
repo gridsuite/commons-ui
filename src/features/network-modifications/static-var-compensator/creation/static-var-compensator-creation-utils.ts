@@ -141,11 +141,12 @@ export const staticVarCompensatorCreationFormToDto = (
             characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
             setpointsLimits.minQAtNominalV
         ),
-        regulationMode: voltageRegulationMode === VOLTAGE_REGULATION_MODES.OFF.id ? null : voltageRegulationMode,
+        regulationMode:
+            voltageRegulationMode === VOLTAGE_REGULATION_MODES.OFF.id ? null : (voltageRegulationMode ?? null),
         isRegulating: voltageRegulationMode !== VOLTAGE_REGULATION_MODES.OFF.id,
         voltageSetpoint: setpointsLimits.voltageSetpoint ?? null,
         reactivePowerSetpoint: setpointsLimits.reactivePowerSetpoint ?? null,
-        voltageRegulationType: setpointsLimits.voltageRegulationType,
+        voltageRegulationType: setpointsLimits.voltageRegulationType ?? REGULATION_TYPES.LOCAL.id,
 
         regulatingTerminalId: getValueIf(isDistantRegulation, regulationEquipment?.id),
 

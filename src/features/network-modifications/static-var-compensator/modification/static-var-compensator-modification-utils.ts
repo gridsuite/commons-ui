@@ -24,10 +24,7 @@ import {
 } from '../../common';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { VOLTAGE_REGULATION_MODES } from '../common/constants';
-import {
-    getReactiveModificationFormEmptyFormData,
-    getReactiveModificationFormValidationSchema,
-} from '../common/set-points-limits-form-utils';
+import { getReactiveFormEmptyFormData, getReactiveFormValidationSchema } from '../common/set-points-limits-form-utils';
 import { StaticVarCompensatorModificationDto } from './static-var-compensator-modification.types';
 
 export const staticVarCompensatorModificationFormSchema = object()
@@ -35,7 +32,7 @@ export const staticVarCompensatorModificationFormSchema = object()
         [FieldConstants.EQUIPMENT_ID]: string().required(),
         [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
         [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
-        [FieldConstants.SETPOINTS_LIMITS]: getReactiveModificationFormValidationSchema(),
+        [FieldConstants.SETPOINTS_LIMITS]: getReactiveFormValidationSchema(true),
     })
     .concat(modificationPropertiesSchema)
     .required();
@@ -46,7 +43,9 @@ export const staticVarCompensatorModificationEmptyFormData: DeepNullable<StaticV
     [FieldConstants.EQUIPMENT_ID]: '',
     [FieldConstants.EQUIPMENT_NAME]: '',
     [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionEmptyFormDataProps(true),
-    [FieldConstants.SETPOINTS_LIMITS]: getReactiveModificationFormEmptyFormData()[FieldConstants.SETPOINTS_LIMITS],
+    [FieldConstants.SETPOINTS_LIMITS]: getReactiveFormEmptyFormData(FieldConstants.SETPOINTS_LIMITS, true)[
+        FieldConstants.SETPOINTS_LIMITS
+    ],
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
 };
 
@@ -61,7 +60,6 @@ export const staticVarCompensatorModificationDtoToForm = (
     dto: StaticVarCompensatorModificationDto,
     includePreviousValues = true
 ): StaticVarCompensatorModificationFormData => {
-    // a modification can change only one of the two limits
     const isSusceptanceChoice = dto.minSusceptance != null || dto.maxSusceptance != null;
     const regulatingTerminalVlId = dto.regulatingTerminalVlId?.value;
     const regulatingTerminalId = dto.regulatingTerminalId?.value;
@@ -127,7 +125,6 @@ export const staticVarCompensatorModificationFormToDto = (
         minSusceptance: isSusceptanceChoice ? toModificationOperation(setpointsLimits.minSusceptance) : null,
         maxQAtNominalV: isQAtNominalVChoice ? toModificationOperation(setpointsLimits.maxQAtNominalV) : null,
         minQAtNominalV: isQAtNominalVChoice ? toModificationOperation(setpointsLimits.minQAtNominalV) : null,
-        // OFF doesn't exist in powsybl: it only sets regulating to false and keeps the regulation mode
         regulationMode: isRegulationOff ? null : toModificationOperation(voltageRegulationMode),
         regulating: voltageRegulationMode ? toModificationOperation(!isRegulationOff) : null,
         voltageSetpoint: toModificationOperation(setpointsLimits.voltageSetpoint),

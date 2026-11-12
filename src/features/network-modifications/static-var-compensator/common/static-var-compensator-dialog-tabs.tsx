@@ -15,14 +15,14 @@ export interface StaticVarCompensatorCreationDialogTabsProps {
     tabIndex: number;
     tabIndexesWithError: StaticVarCompensatorDialogTab[];
     onTabChange: (event: SyntheticEvent<Element, Event>, newValue: number) => void;
-    hideAutomatonTab?: boolean;
+    showAutomatonTab?: boolean;
 }
 
 export function StaticVarCompensatorDialogTabs({
     tabIndex,
     tabIndexesWithError,
     onTabChange,
-    hideAutomatonTab = false,
+    showAutomatonTab = true,
 }: StaticVarCompensatorCreationDialogTabsProps) {
     return (
         <Grid container sx={{ width: '100%' }}>
@@ -37,7 +37,7 @@ export function StaticVarCompensatorDialogTabs({
                     label={<FormattedMessage id="SetpointsAndLimitsTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.SET_POINTS_LIMITS_TAB)}
                 />
-                {!hideAutomatonTab && (
+                {showAutomatonTab && (
                     <Tab
                         value={StaticVarCompensatorDialogTab.AUTOMATON_TAB}
                         label={<FormattedMessage id="StaticVarCompensatorAutomatonTab" />}

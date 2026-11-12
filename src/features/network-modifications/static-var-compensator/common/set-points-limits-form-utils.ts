@@ -6,13 +6,16 @@
  */
 
 import * as yup from 'yup';
-import { NumberSchema } from 'yup';
+import { NumberSchema, StringSchema } from 'yup';
 import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { REGULATION_TYPES } from '../../common';
 import { VOLTAGE_REGULATION_MODES } from './constants';
 
-export const getReactiveFormEmptyFormData = (id = FieldConstants.SETPOINTS_LIMITS) => ({
+export const getReactiveFormEmptyFormData = (
+    id = FieldConstants.SETPOINTS_LIMITS,
+    isEquipmentModification = false
+) => ({
     [id]: {
         [FieldConstants.MAX_SUSCEPTANCE]: null,
         [FieldConstants.MIN_SUSCEPTANCE]: null,
@@ -21,47 +24,75 @@ export const getReactiveFormEmptyFormData = (id = FieldConstants.SETPOINTS_LIMIT
         [FieldConstants.VOLTAGE_SET_POINT]: null,
         [FieldConstants.REACTIVE_POWER_SET_POINT]: null,
         [FieldConstants.CHARACTERISTICS_CHOICE]: CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
-        [FieldConstants.VOLTAGE_REGULATION_MODE]: VOLTAGE_REGULATION_MODES.OFF.id,
-        [FieldConstants.VOLTAGE_REGULATION_TYPE]: REGULATION_TYPES.LOCAL.id,
+        [FieldConstants.VOLTAGE_REGULATION_MODE]: isEquipmentModification ? null : VOLTAGE_REGULATION_MODES.OFF.id,
+        [FieldConstants.VOLTAGE_REGULATION_TYPE]: isEquipmentModification ? null : REGULATION_TYPES.LOCAL.id,
         [FieldConstants.VOLTAGE_LEVEL]: null,
         [FieldConstants.EQUIPMENT]: null,
     },
 });
 
-const requiredWhenSusceptanceChoice = (baseSchema: NumberSchema<number | null | undefined>) =>
+const requiredWhenSusceptanceChoice = (
+    baseSchema: NumberSchema<number | null | undefined>,
+    isEquipmentModification: boolean
+) =>
     baseSchema.when([FieldConstants.CHARACTERISTICS_CHOICE], {
-        is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
+        is: (characteristicsChoice: string) =>
+            !isEquipmentModification && characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id,
         then: (schema) => schema.required(),
         otherwise: (schema) => schema.notRequired(),
     });
 
-const requiredWhenQatNominalVChoice = (baseSchema: NumberSchema<number | null | undefined>) =>
+const requiredWhenQatNominalVChoice = (
+    baseSchema: NumberSchema<number | null | undefined>,
+    isEquipmentModification: boolean
+) =>
     baseSchema.when([FieldConstants.CHARACTERISTICS_CHOICE], {
-        is: (characteristicsChoice: string) => characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
+        is: (characteristicsChoice: string) =>
+            !isEquipmentModification && characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
         then: (schema) => schema.required(),
         otherwise: (schema) => schema.notRequired(),
     });
 
-const requiredWhenDistantVoltageMode = <T extends yup.AnySchema>(baseSchema: T): T =>
+const requiredWhenDistantVoltageMode = <T extends yup.AnySchema>(baseSchema: T, isEquipmentModification: boolean): T =>
     baseSchema.when([FieldConstants.VOLTAGE_REGULATION_MODE, FieldConstants.VOLTAGE_REGULATION_TYPE], {
         is: (voltageRegulationMode: string, voltageRegulationType: string) =>
+            !isEquipmentModification &&
             voltageRegulationMode === VOLTAGE_REGULATION_MODES.VOLTAGE.id &&
             voltageRegulationType === REGULATION_TYPES.DISTANT.id,
         then: (schema) => schema.required(),
     });
 
-export const getReactiveFormValidationSchema = () =>
+const requiredForCreation = (baseSchema: StringSchema<string | null | undefined>, isEquipmentModification: boolean) =>
+    baseSchema.when([], {
+        is: () => !isEquipmentModification,
+        then: (schema) => schema.required(),
+    });
+
+export const getReactiveFormValidationSchema = (isEquipmentModification = false) =>
     yup.object().shape({
-        [FieldConstants.MAX_SUSCEPTANCE]: requiredWhenSusceptanceChoice(yup.number().nullable()),
-        [FieldConstants.MIN_SUSCEPTANCE]: requiredWhenSusceptanceChoice(yup.number().nullable()),
-        [FieldConstants.MAX_Q_AT_NOMINAL_V]: requiredWhenQatNominalVChoice(yup.number().nullable()),
-        [FieldConstants.MIN_Q_AT_NOMINAL_V]: requiredWhenQatNominalVChoice(yup.number().nullable()),
+        [FieldConstants.MAX_SUSCEPTANCE]: requiredWhenSusceptanceChoice(
+            yup.number().nullable(),
+            isEquipmentModification
+        ),
+        [FieldConstants.MIN_SUSCEPTANCE]: requiredWhenSusceptanceChoice(
+            yup.number().nullable(),
+            isEquipmentModification
+        ),
+        [FieldConstants.MAX_Q_AT_NOMINAL_V]: requiredWhenQatNominalVChoice(
+            yup.number().nullable(),
+            isEquipmentModification
+        ),
+        [FieldConstants.MIN_Q_AT_NOMINAL_V]: requiredWhenQatNominalVChoice(
+            yup.number().nullable(),
+            isEquipmentModification
+        ),
         [FieldConstants.VOLTAGE_SET_POINT]: yup
             .number()
             .nullable()
             .min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
             .when([FieldConstants.VOLTAGE_REGULATION_MODE], {
-                is: (voltageRegulationMode: string) => voltageRegulationMode === VOLTAGE_REGULATION_MODES.VOLTAGE.id,
+                is: (voltageRegulationMode: string) =>
+                    !isEquipmentModification && voltageRegulationMode === VOLTAGE_REGULATION_MODES.VOLTAGE.id,
                 then: (schema) => schema.required(),
                 otherwise: (schema) => schema.notRequired(),
             }),
@@ -70,13 +101,13 @@ export const getReactiveFormValidationSchema = () =>
             .nullable()
             .when([FieldConstants.VOLTAGE_REGULATION_MODE], {
                 is: (voltageRegulationMode: string) =>
-                    voltageRegulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id,
+                    !isEquipmentModification && voltageRegulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id,
                 then: (schema) => schema.required(),
                 otherwise: (schema) => schema.notRequired(),
             }),
         [FieldConstants.CHARACTERISTICS_CHOICE]: yup.string().required(),
-        [FieldConstants.VOLTAGE_REGULATION_MODE]: yup.string().required(),
-        [FieldConstants.VOLTAGE_REGULATION_TYPE]: yup.string().required(),
+        [FieldConstants.VOLTAGE_REGULATION_MODE]: requiredForCreation(yup.string().nullable(), isEquipmentModification),
+        [FieldConstants.VOLTAGE_REGULATION_TYPE]: requiredForCreation(yup.string().nullable(), isEquipmentModification),
 
         [FieldConstants.VOLTAGE_LEVEL]: requiredWhenDistantVoltageMode(
             yup
@@ -84,7 +115,8 @@ export const getReactiveFormValidationSchema = () =>
                 .nullable()
                 .shape({
                     [FieldConstants.ID]: yup.string().required(),
-                })
+                }),
+            isEquipmentModification
         ),
         [FieldConstants.EQUIPMENT]: requiredWhenDistantVoltageMode(
             yup
@@ -93,42 +125,9 @@ export const getReactiveFormValidationSchema = () =>
                 .shape({
                     [FieldConstants.ID]: yup.string().required(),
                     [FieldConstants.TYPE]: yup.string().required(),
-                })
+                }),
+            isEquipmentModification
         ),
-    });
-
-export const getReactiveModificationFormEmptyFormData = (id = FieldConstants.SETPOINTS_LIMITS) => ({
-    [id]: {
-        ...getReactiveFormEmptyFormData(id)[id],
-        [FieldConstants.VOLTAGE_REGULATION_MODE]: null,
-        [FieldConstants.VOLTAGE_REGULATION_TYPE]: null,
-    },
-});
-
-export const getReactiveModificationFormValidationSchema = () =>
-    yup.object().shape({
-        [FieldConstants.MAX_SUSCEPTANCE]: yup.number().nullable(),
-        [FieldConstants.MIN_SUSCEPTANCE]: yup.number().nullable(),
-        [FieldConstants.MAX_Q_AT_NOMINAL_V]: yup.number().nullable(),
-        [FieldConstants.MIN_Q_AT_NOMINAL_V]: yup.number().nullable(),
-        [FieldConstants.VOLTAGE_SET_POINT]: yup.number().nullable().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO),
-        [FieldConstants.REACTIVE_POWER_SET_POINT]: yup.number().nullable(),
-        [FieldConstants.CHARACTERISTICS_CHOICE]: yup.string().required(),
-        [FieldConstants.VOLTAGE_REGULATION_MODE]: yup.string().nullable(),
-        [FieldConstants.VOLTAGE_REGULATION_TYPE]: yup.string().nullable(),
-        [FieldConstants.VOLTAGE_LEVEL]: yup
-            .object()
-            .nullable()
-            .shape({
-                [FieldConstants.ID]: yup.string().required(),
-            }),
-        [FieldConstants.EQUIPMENT]: yup
-            .object()
-            .nullable()
-            .shape({
-                [FieldConstants.ID]: yup.string().required(),
-                [FieldConstants.TYPE]: yup.string().required(),
-            }),
     });
 
 export const getReactiveFormData = ({

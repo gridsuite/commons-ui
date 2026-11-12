@@ -5,17 +5,45 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
+import { useWatch } from 'react-hook-form';
 import { GridItem, TextInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils';
+import { filledTextField } from '../../common';
 
-export function StaticVarCompensatorDialogHeader() {
-    const staticCompensatorIdField = (
+export interface StaticVarCompensatorDialogHeaderProps {
+    isEquipmentModification?: boolean;
+    previousName?: string;
+}
+
+export function StaticVarCompensatorDialogHeader({
+    isEquipmentModification = false,
+    previousName,
+}: Readonly<StaticVarCompensatorDialogHeaderProps>) {
+    const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
+
+    const staticCompensatorIdField = isEquipmentModification ? (
+        <TextField
+            size="small"
+            fullWidth
+            label="ID"
+            value={equipmentId ?? ''}
+            slotProps={{ input: { readOnly: true } }}
+            disabled
+            {...filledTextField}
+        />
+    ) : (
         <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, variant: 'filled' }} />
     );
 
     const staticCompensatorNameField = (
-        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ variant: 'filled' }} />
+        <TextInput
+            name={FieldConstants.EQUIPMENT_NAME}
+            label="Name"
+            formProps={{ variant: 'filled' }}
+            previousValue={previousName}
+            clearable={isEquipmentModification}
+        />
     );
     return (
         <Grid container spacing={2} sx={{ width: '100%' }}>
