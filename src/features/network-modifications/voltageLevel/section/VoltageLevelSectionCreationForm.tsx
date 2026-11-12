@@ -128,6 +128,7 @@ export function VoltageLevelSectionCreationForm({
             const busBarSections = arrayPosition.length - 1;
             if (selectedSectionIndex === 0 && selectedPositionOption === POSITION_NEW_SECTION_SIDE.BEFORE.id) {
                 setValue(FieldConstants.SWITCH_BEFORE_NOT_REQUIRED, true);
+                setValue(FieldConstants.SWITCHES_BEFORE_SECTIONS, null);
                 setIsNotRequiredSwitchBefore(true);
             } else {
                 setValue(FieldConstants.SWITCH_BEFORE_NOT_REQUIRED, false);
@@ -138,6 +139,7 @@ export function VoltageLevelSectionCreationForm({
                 selectedPositionOption === POSITION_NEW_SECTION_SIDE.AFTER.id
             ) {
                 setValue(FieldConstants.SWITCH_AFTER_NOT_REQUIRED, true);
+                setValue(FieldConstants.SWITCHES_AFTER_SECTIONS, null);
                 setIsNotRequiredSwitchAfter(true);
             } else {
                 setValue(FieldConstants.SWITCH_AFTER_NOT_REQUIRED, false);
