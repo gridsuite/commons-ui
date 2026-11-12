@@ -120,6 +120,7 @@ export const businessErrorsFr = {
     'modification.containsShared':
         'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
+    'modification.shared.notFound': 'La modification partagée {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
     'modification.duplication.argument.error':
