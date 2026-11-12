@@ -40,3 +40,12 @@ export function updateShortCircuitParameters(parameterUuid: UUID, newParams: any
         body: newParams ? JSON.stringify(newParams) : null,
     });
 }
+
+export function resetShortCircuitParameters(parameterUuid: UUID) {
+    console.info('reset short circuit parameters');
+    const uri = `${getShortCircuitUrl()}parameters/${parameterUuid}/reset`;
+    console.debug(uri);
+    return backendFetch(uri, {
+        method: 'PUT',
+    });
+}

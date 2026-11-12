@@ -90,7 +90,10 @@ export function ExportNetworkForm({
                         sx={{ marginTop: 1 }}
                         name={EXPORT_FORMAT}
                         label="exportFormat"
-                        options={Object.keys(formatsWithParameters)}
+                        options={Object.values(formatsWithParameters).map((format) => ({
+                            id: format.formatName,
+                            label: format.customFormatName ? format.customFormatName : format.formatName,
+                        }))}
                         size="small"
                         disableClearable
                     />

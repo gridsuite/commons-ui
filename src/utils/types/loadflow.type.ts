@@ -12,9 +12,9 @@ import type { ParameterDifference, ParameterValue, SpecificParametersPerProvider
 export interface LoadFlowParametersInfos {
     uuid?: UUID;
     provider: string;
-    limitReduction: number;
+    limitReduction: number | null;
     commonParameters: Record<string, ParameterValue>;
     specificParametersPerProvider: SpecificParametersPerProvider;
-    limitReductions: ILimitReductionsByVoltageLevel[];
+    limitReductions: ILimitReductionsByVoltageLevel[] | null;
     parametersDifferences?: Record<string, ParameterDifference>;
 }

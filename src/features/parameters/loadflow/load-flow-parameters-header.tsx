@@ -18,16 +18,18 @@ function LoadFlowParametersHeader({
     tabIndexesWithError,
     formattedProviders,
     disableSpecificProviderParams,
+    onProviderChange,
 }: Readonly<{
     selectedTab: string;
     handleTabChange: (event: React.SyntheticEvent, newValue: TabValues) => void;
     tabIndexesWithError: TabValues[];
     formattedProviders: { id: string; label: string }[];
     disableSpecificProviderParams: boolean;
+    onProviderChange: (provider: string) => void;
 }>) {
     return (
         <Stack>
-            <ProviderParam options={formattedProviders} id="Lf" />
+            <ProviderParam options={formattedProviders} id="Lf" onProviderChange={onProviderChange} />
             <Tabs value={selectedTab} onChange={handleTabChange}>
                 <Tab
                     label={<FormattedMessage id={TabValues.GENERAL} />}
