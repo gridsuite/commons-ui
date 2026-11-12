@@ -5,8 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useIntl } from 'react-intl';
-import { useCallback } from 'react';
+import { IntlShape, useIntl } from 'react-intl';
+import { Fragment, useCallback } from 'react';
 import { EquipmentType, MODIFICATION_TYPES, NetworkModificationMetadata } from '../utils';
 
 interface ModificationValues {
@@ -17,6 +17,9 @@ interface ModificationValues {
     equipmentAttributeValue: string;
     voltageLevelEquipmentId: string;
     substationEquipmentId: string;
+    tabularCreationType?: string;
+    tabularModificationType?: string;
+    csvFilename?: string;
 }
 
 const getOperatingStatusModificationValues = (modification: ModificationValues, formatBold: boolean) => {
@@ -58,6 +61,26 @@ const getVoltageLevelWithSubstationModificationValues = (modification: Modificat
     };
 };
 
+const getTabularModificationValues = (modification: ModificationValues, formatBold: boolean, intl: IntlShape) => {
+    const computedLabel = intl.formatMessage({
+        id: `network_modifications.tabular.${modification.tabularCreationType ?? modification.tabularModificationType}`,
+    });
+    if (!modification.csvFilename) {
+        return { computedLabel, csvFilename: '' };
+    }
+    return {
+        computedLabel,
+        csvFilename: formatBold ? (
+            <Fragment key="csvFilename">
+                {' - '}
+                <strong>{modification.csvFilename}</strong>
+            </Fragment>
+        ) : (
+            ` - ${modification.csvFilename}`
+        ),
+    };
+};
+
 const computeEquipmentTypeToMessageDescriptor = (equipmentType: string) => {
     if (equipmentType === EquipmentType.HVDC_LINE) {
         return { id: 'Hvdc' };
@@ -83,7 +106,6 @@ export const useModificationLabelComputer = () => {
                     return `${modificationMetadata.lineToAttachTo1Id}/${modificationMetadata.lineToAttachTo2Id}`;
                 case MODIFICATION_TYPES.DELETE_ATTACHING_LINE.type:
                     return `${modificationMetadata.attachedLineId}/${modificationMetadata.lineToAttachTo1Id}/${modificationMetadata.lineToAttachTo2Id}`;
-                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
                 case MODIFICATION_TYPES.LIMIT_SETS_TABULAR_MODIFICATION.type:
                     return intl.formatMessage({
                         id: `network_modifications.tabular.${modificationMetadata.tabularModificationType}`,
@@ -97,10 +119,6 @@ export const useModificationLabelComputer = () => {
                     return intl.formatMessage(
                         computeEquipmentTypeToMessageDescriptor(modificationMetadata.equipmentType)
                     );
-                case MODIFICATION_TYPES.TABULAR_CREATION.type:
-                    return intl.formatMessage({
-                        id: `network_modifications.tabular.${modificationMetadata.tabularCreationType}`,
-                    });
                 case MODIFICATION_TYPES.CREATE_COUPLING_DEVICE.type:
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_TOPOLOGY.type:
                 case MODIFICATION_TYPES.CREATE_VOLTAGE_LEVEL_SECTION.type:
@@ -141,6 +159,9 @@ export const useModificationLabelComputer = () => {
                     return getEquipmentAttributeModificationValues(modificationValues, formatBold);
                 case MODIFICATION_TYPES.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION.type:
                     return getVoltageLevelWithSubstationModificationValues(modificationValues, formatBold);
+                case MODIFICATION_TYPES.TABULAR_CREATION.type:
+                case MODIFICATION_TYPES.TABULAR_MODIFICATION.type:
+                    return getTabularModificationValues(modificationValues, formatBold, intl);
                 default:
                     return {
                         computedLabel: formatBold ? (
@@ -151,7 +172,7 @@ export const useModificationLabelComputer = () => {
                     };
             }
         },
-        [getLabel]
+        [getLabel, intl]
     );
 
     return { computeLabel };
