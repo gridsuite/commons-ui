@@ -25,6 +25,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
         params,
         watchProvider,
         defaultLimitReductions,
+        onProviderChange,
     } = loadflowMethods;
 
     return (
@@ -36,6 +37,7 @@ export function LoadFlowParametersForm({ loadflowMethods }: Readonly<LoadFlowPar
                     tabIndexesWithError={tabIndexesWithError}
                     formattedProviders={formattedProviders}
                     disableSpecificProviderParams={!watchProvider || !specificParametersDescriptionForProvider}
+                    onProviderChange={onProviderChange}
                 />
             </Grid>
             <Grid size={12}>

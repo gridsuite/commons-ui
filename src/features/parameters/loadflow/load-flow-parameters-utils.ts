@@ -24,7 +24,6 @@ import {
     DC,
     DC_POWER_FACTOR,
     DC_USE_TRANSFORMER_RATIO,
-    DEFAULT_LIMIT_REDUCTION_VALUE,
     DISTRIBUTED_SLACK,
     HVDC_AC_EMULATION,
     PARAM_LIMIT_REDUCTION,
@@ -104,17 +103,17 @@ export const getAdvancedLoadFlowParametersFormSchema = () => {
 export const setLimitReductions = (
     provider: string,
     defaultLimitReductions: ILimitReductionsByVoltageLevel[],
+    limitReductions: ILimitReductionsByVoltageLevel[] | null,
+    limitReduction: number | null,
     formMethods: UseFormReturn
 ) => {
     if (provider === PARAM_PROVIDER_OPENLOADFLOW) {
         formMethods.setValue(
             LIMIT_REDUCTIONS_FORM,
-            toFormValuesLimitReductions(defaultLimitReductions)[LIMIT_REDUCTIONS_FORM]
+            toFormValuesLimitReductions(limitReductions ?? defaultLimitReductions)[LIMIT_REDUCTIONS_FORM]
         );
-        formMethods.setValue(PARAM_LIMIT_REDUCTION, null);
     } else {
-        formMethods.setValue(PARAM_LIMIT_REDUCTION, DEFAULT_LIMIT_REDUCTION_VALUE);
-        formMethods.setValue(LIMIT_REDUCTIONS_FORM, []);
+        formMethods.setValue(PARAM_LIMIT_REDUCTION, limitReduction);
         formMethods.clearErrors(LIMIT_REDUCTIONS_FORM);
     }
 };
