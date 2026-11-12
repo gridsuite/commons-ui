@@ -21,12 +21,6 @@ function isUrlDefined(tuple: [string, string | undefined]): tuple is [string, st
 
 export type NotificationsProviderProps = { urls: Record<string, string | undefined> };
 export function NotificationsProvider({ urls, children }: PropsWithChildren<NotificationsProviderProps>) {
-    // When using a gateway, a WebSocket connection may initially succeed even if
-    // the notification server is down, causing immediate closure and repeated retries.
-
-    // To avoid unnecessary reopen callbacks, we wait for the connection to remain
-    // stable for DELAY_BEFORE_WEBSOCKET_CONNECTED ms, cancelling the timeout if it
-    // closes or fails.
     const {
         broadcast: broadcastMessage,
         addListener: addListenerMessage,
@@ -90,6 +84,12 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                     console.error(`Unexpected ${urlKey} Notification WebSocket error`, event);
                 };
 
+                // When using a gateway, a WebSocket connection may initially succeed even if
+                // the notification server is down, causing immediate closure and repeated retries.
+
+                // To avoid unnecessary reopen callbacks, we wait for the connection to remain
+                // stable for DELAY_BEFORE_WEBSOCKET_CONNECTED ms, cancelling the timeout if it
+                // closes or fails.
                 rws.onopen = () => {
                     clearConnectedTimeout();
                     connectedTimeout = setTimeout(() => {
