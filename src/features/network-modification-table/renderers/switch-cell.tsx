@@ -73,7 +73,12 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             <span>
                 <Switch
                     size="small"
-                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations) || !onUpdateModificationMetadata}
+                    disabled={
+                        isLoading ||
+                        isDisabled ||
+                        isDeactivatedByAncestor(row, activations) ||
+                        !onUpdateModificationMetadata
+                    }
                     checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />

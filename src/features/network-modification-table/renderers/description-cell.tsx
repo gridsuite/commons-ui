@@ -47,30 +47,28 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                 return;
             }
             setIsLoading(true);
-            if (isReferenceModification(data)) {
-                return updateElement(data.referencedId, {
-                    elementUuid: data.referencedId,
-                    description: descriptionRecord.description,
-                }).finally(() => {
-                    setIsLoading(false);
-                });
-            }
-            if (data.parentSharedUuid) {
-                return updateElement(data.parentSharedUuid, {
-                    elementUuid: data.uuid,
-                    description: descriptionRecord.description,
-                }).finally(() => {
-                    setIsLoading(false);
-                });
-            }
-            return onUpdateModificationNameAndDescription?.(modificationUuid, {
-                description: descriptionRecord.description,
-                type: data.type,
-            }).finally(() => {
+            try {
+                if (isReferenceModification(data)) {
+                    await updateElement(data.referencedId, {
+                        elementUuid: data.referencedId,
+                        description: descriptionRecord.description,
+                    });
+                } else if (data.parentSharedUuid) {
+                    await updateElement(data.parentSharedUuid, {
+                        elementUuid: data.uuid,
+                        description: descriptionRecord.description,
+                    });
+                } else {
+                    await onUpdateModificationNameAndDescription?.(modificationUuid, {
+                        description: descriptionRecord.description,
+                        type: data.type,
+                    });
+                }
+            } finally {
                 setIsLoading(false);
-            });
+            }
         },
-        [modificationUuid, data, onUpdateModificationNameAndDescription]
+        [modificationUuid, data, onUpdateModificationNameAndDescription, canUpdateDescription]
     );
 
     const handleDescDialogClose = useCallback(() => {

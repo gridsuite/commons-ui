@@ -118,7 +118,11 @@ export function ReferenceLinkCell({ row, disabled = false, onUnshareModification
                     </ListItemIcon>
                     <ListItemText primary={intl.formatMessage({ id: 'copyLink' })} />
                 </CustomMenuItem>
-                <CustomMenuItem onClick={handleUnshare} disabled={!onUnshareModification} sx={{ minHeight: 0, py: 0.25, px: 1 }}>
+                <CustomMenuItem
+                    onClick={handleUnshare}
+                    disabled={!onUnshareModification}
+                    sx={{ minHeight: 0, py: 0.25, px: 1 }}
+                >
                     <ListItemIcon sx={{ minWidth: 24 }}>
                         <LinkOffIcon sx={{ fontSize: 18 }} />
                     </ListItemIcon>
