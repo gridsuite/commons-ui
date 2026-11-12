@@ -9,7 +9,7 @@ import { useCallback } from 'react';
 import { CsvExportParams, ProcessCellForExportParams, ProcessHeaderForExportParams } from 'ag-grid-community';
 import { useIntl } from 'react-intl';
 import { CsvDownloadProps } from './csv-export.type';
-import { getCsvDelimiter, isFrenchLanguage } from '../../../utils';
+import { formatIfFrenchNumber, getCsvDelimiter } from '../../../utils';
 import { fetchStudyMetadata } from '../../../services';
 
 const NA_VALUE = 'N/A';
@@ -33,7 +33,7 @@ export const useCsvExport = () => {
                 if (params.column.getColId() === 'limitName') {
                     return formatNAValue(params.value);
                 }
-                // If the language is in French, we change the decimal separator
+                // Numbers are rounded to the displayed precision, with the decimal separator of the language
                 if (typeof params.value === 'number') {
                     const fractionDigits =
                         params.column.getColDef()?.cellRendererParams?.fractionDigits ??
@@ -42,9 +42,7 @@ export const useCsvExport = () => {
                         fractionDigits != null && !Number.isNaN(params.value)
                             ? params.value.toFixed(fractionDigits)
                             : params.value;
-                    if (isFrenchLanguage(props.language)) {
-                        return roundedValue.toString().replace('.', ',');
-                    }
+                    return formatIfFrenchNumber(roundedValue, props.language);
                 }
                 if (props.withFormatter && params.column.getColDef().valueFormatter) {
                     // export formatted value (to support translation for instance)

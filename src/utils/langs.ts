@@ -29,6 +29,7 @@ export function getCsvDelimiter(language: string | undefined): ';' | ',' {
     return isFrenchLanguage(language) ? ';' : ',';
 }
 
+/** French input to JS number string: "1,5" -> "1.5" (import). */
 export const transformIfFrenchNumber = (value: string, language: GsLang): string => {
     const trimmedValue = value.trim();
     // Only transform if we're in French mode and the value is a number that has a comma
@@ -40,4 +41,10 @@ export const transformIfFrenchNumber = (value: string, language: GsLang): string
         return trimmedValue.replace(',', '.');
     }
     return trimmedValue;
+};
+
+/** Number or numeric string to French output: 1.5 or "1.5" -> "1,5" (export). */
+export const formatIfFrenchNumber = (value: number | string, language: string | undefined): string => {
+    const stringValue = value.toString();
+    return isFrenchLanguage(language) ? stringValue.replace('.', ',') : stringValue;
 };
