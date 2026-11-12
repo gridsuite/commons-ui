@@ -125,4 +125,7 @@ export const businessErrorsEn = {
     'modification.composite.move.cycle.error':
         'Moving composite modification {compositeModificationId} into {modificationId} would create a cycle',
     'modification.voltageLevel.attachmentLine.missing': 'Line attach for voltage level {voltageLevelId} is missing',
+
+    'report.notFound': 'Report not found.',
+    'report.notARoot': 'The report is not a root report.',
 };

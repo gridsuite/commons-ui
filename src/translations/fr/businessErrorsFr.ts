@@ -129,4 +129,7 @@ export const businessErrorsFr = {
         'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
     'modification.voltageLevel.attachmentLine.missing':
         'La ligne de piquage pour le poste {voltageLevelId} est manquante',
+
+    'report.notFound': 'Rapport non trouvé.',
+    'report.notARoot': "Le rapport n'est pas un rapport racine.",
 };
