@@ -26,7 +26,7 @@ import {
     toFormValuesLimitReductions,
 } from '../common';
 import { getNameElementEditorEmptyFormData } from '../../../components/ui/dialogs/name-element-editor';
-import { updateParameter } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { useTabs, useSnackMessage } from '../../../hooks';
 import { snackWithFallback } from '../../../utils/error';
 import { mapSecurityAnalysisParameters, SAParametersEnriched } from '../../../utils/types';
@@ -186,9 +186,10 @@ export const useSecurityAnalysisParametersForm = (
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    mapSecurityAnalysisParameters(formatNewParams(formData)),
+                    () => mapSecurityAnalysisParameters(formatNewParams(formData)),
                     formData[NAME],
                     ElementType.SECURITY_ANALYSIS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -197,7 +198,7 @@ export const useSecurityAnalysisParametersForm = (
                 });
             }
         },
-        [parametersUuid, formatNewParams, snackError]
+        [formMethods, parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {

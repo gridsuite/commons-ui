@@ -28,11 +28,8 @@ import {
     PARAM_OBSERVABILITY,
     PARAM_SUBSTATION_LAYOUT,
 } from './constants';
-import {
-    getNetworkVisualizationsParameters,
-    setStudyNetworkVisualizationParameters,
-    updateParameter,
-} from '../../../services';
+import { getNetworkVisualizationsParameters, setStudyNetworkVisualizationParameters } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { useSnackMessage, useTabs } from '../../../hooks';
 import { ElementType } from '../../../utils';
 import { NetworkVisualizationParameters } from './network-visualizations.types';
@@ -160,9 +157,10 @@ export const useNetworkVisualizationParametersForm = ({
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    formData,
+                    () => formData,
                     formData[NAME],
                     ElementType.NETWORK_VISUALIZATIONS_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -171,7 +169,7 @@ export const useNetworkVisualizationParametersForm = ({
                 });
             }
         },
-        [parametersUuid, snackError]
+        [formMethods, parametersUuid, snackError]
     );
 
     // Gridexplore init case
