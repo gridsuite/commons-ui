@@ -14,6 +14,10 @@ import {
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
 } from './utils';
+import type {
+    SaveModificationActivation,
+    SaveModificationApplicability,
+} from './features/network-modification-table/network-modifications-table';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
@@ -31,6 +35,8 @@ declare module '@tanstack/react-table' {
             setPendingActivations?: Dispatch<SetStateAction<NetworkModificationActivations>>;
             applicabilities?: NetworkModificationApplicabilities;
             setPendingApplicabilities?: Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
+            saveActivation?: SaveModificationActivation;
+            saveApplicability?: SaveModificationApplicability;
         };
         interaction: {
             lastClickedRowId: RefObject<string | null>;

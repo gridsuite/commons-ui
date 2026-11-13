@@ -9,7 +9,6 @@ import React, { useState, useCallback, useMemo, SetStateAction } from 'react';
 import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { ActivableChip } from '../../../components';
-import { updateModificationStatusByRootNetwork } from '../../../services';
 import { useSnackMessage } from '../../../hooks';
 import {
     ComposedModificationMetadata,
@@ -19,6 +18,7 @@ import {
     snackWithFallback,
 } from '../../../utils';
 import { isAppliedOn, isApplicableOn, isDeactivatedItselfOrByAncestor } from '../utils';
+import type { SaveModificationApplicability } from '../network-modifications-table';
 
 function addPendingApplicability(
     pendingApplicabilities: NetworkModificationApplicabilities,
@@ -54,8 +54,7 @@ function removePendingApplicability(
 
 export interface RootNetworkChipCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
+    saveApplicability: SaveModificationApplicability;
     rootNetwork: RootNetworkRowInfo;
     activations: NetworkModificationActivations;
     applicabilities: NetworkModificationApplicabilities;
@@ -66,8 +65,7 @@ export interface RootNetworkChipCellProps {
 export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const {
         row,
-        studyUuid,
-        currentNodeId,
+        saveApplicability,
         rootNetwork,
         activations,
         applicabilities,
@@ -87,10 +85,6 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     const isModificationApplied = isAppliedOn(row, activations, applicabilities, rootNetwork.rootNetworkUuid);
 
     const handleModificationActivationByRootNetwork = useCallback(() => {
-        if (!studyUuid || !currentNodeId) {
-            return;
-        }
-
         setIsLoading(true);
 
         // toggle the current applicability
@@ -102,13 +96,7 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
         );
 
         // Perform backend call
-        updateModificationStatusByRootNetwork(
-            studyUuid,
-            currentNodeId,
-            rootNetwork.rootNetworkUuid,
-            modificationUuid,
-            newApplicability
-        )
+        saveApplicability(data, rootNetwork, newApplicability)
             .catch((error) => {
                 setPendingApplicabilities((prev) =>
                     removePendingApplicability(prev, modificationUuid, rootNetwork.rootNetworkUuid)
@@ -119,11 +107,11 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
                 setIsLoading(false);
             });
     }, [
+        data,
         modificationUuid,
-        studyUuid,
-        currentNodeId,
+        saveApplicability,
         isModificationApplicable,
-        rootNetwork.rootNetworkUuid,
+        rootNetwork,
         setPendingApplicabilities,
         snackError,
     ]);

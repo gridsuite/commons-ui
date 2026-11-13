@@ -31,6 +31,20 @@ import {
     MAX_COMPOSITE_NESTING_DEPTH,
 } from './utils';
 import { ModificationRow } from './row';
+import { setModificationMetadata, updateModificationStatusByRootNetwork } from '../../services';
+
+/** Saves the global activation of a modification */
+export type SaveModificationActivation = (
+    modification: ComposedModificationMetadata,
+    activated: boolean
+) => Promise<unknown>;
+
+/** Saves the applicability of a modification on a root network */
+export type SaveModificationApplicability = (
+    modification: ComposedModificationMetadata,
+    rootNetwork: RootNetworkRowInfo,
+    applicable: boolean
+) => Promise<unknown>;
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -48,6 +62,9 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
     isDisabled?: boolean;
+    // By default, the activations are saved in the current node of the study: an app out of any study gives its own
+    saveActivation?: SaveModificationActivation;
+    saveApplicability?: SaveModificationApplicability;
 }
 
 export function NetworkModificationsTable({
@@ -66,6 +83,8 @@ export function NetworkModificationsTable({
     currentRootNetworkUuid,
     rootNetworks,
     isDisabled = false,
+    saveActivation,
+    saveApplicability,
     isImpactedByNotification,
     notificationMessageId,
     isFetchingModifications,
@@ -126,6 +145,29 @@ export function NetworkModificationsTable({
         );
     }, [modifications]);
 
+    const saveActivationInStudy = useCallback<SaveModificationActivation>(
+        (modification, activated) =>
+            setModificationMetadata(studyUuid, currentNodeId, modification.uuid, {
+                activated,
+                type: modification.type,
+            }),
+        [studyUuid, currentNodeId]
+    );
+
+    const saveApplicabilityInStudy = useCallback<SaveModificationApplicability>(
+        (modification, rootNetwork, applicable) =>
+            studyUuid && currentNodeId
+                ? updateModificationStatusByRootNetwork(
+                      studyUuid,
+                      currentNodeId,
+                      rootNetwork.rootNetworkUuid,
+                      modification.uuid,
+                      applicable
+                  )
+                : Promise.reject(new Error('No study node to save the applicability in')),
+        [studyUuid, currentNodeId]
+    );
+
     const tableMeta = useMemo(
         () => ({
             context: {
@@ -140,6 +182,8 @@ export function NetworkModificationsTable({
                 setPendingActivations,
                 applicabilities,
                 setPendingApplicabilities,
+                saveActivation: saveActivation ?? saveActivationInStudy,
+                saveApplicability: saveApplicability ?? saveApplicabilityInStudy,
             },
             interaction: {
                 lastClickedRowId,
@@ -165,6 +209,10 @@ export function NetworkModificationsTable({
             setPendingActivations,
             applicabilities,
             setPendingApplicabilities,
+            saveActivation,
+            saveActivationInStudy,
+            saveApplicability,
+            saveApplicabilityInStudy,
             lastClickedRowId,
             handleRowSelected,
             modificationToEditLabelRef,
