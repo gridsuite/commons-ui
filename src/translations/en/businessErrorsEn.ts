@@ -129,4 +129,8 @@ export const businessErrorsEn = {
 
     'report.notFound': 'Report not found.',
     'report.notARoot': 'The report is not a root report.',
+
+    'geoData.networkNotFound': 'Network not found.',
+    'geoData.variantNotFound': 'Variant not found.',
+    'geoData.invalidCountry': 'Invalid country.',
 };
