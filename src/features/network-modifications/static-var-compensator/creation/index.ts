@@ -5,6 +5,5 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-export * from './static-var-compensator-creation-form';
 export * from './static-var-compensator-creation-utils';
 export * from './static-var-compensator-creation.types';

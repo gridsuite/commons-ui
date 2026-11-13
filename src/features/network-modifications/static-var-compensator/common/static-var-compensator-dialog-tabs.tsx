@@ -15,29 +15,37 @@ export interface StaticVarCompensatorCreationDialogTabsProps {
     tabIndex: number;
     tabIndexesWithError: StaticVarCompensatorDialogTab[];
     onTabChange: (event: SyntheticEvent<Element, Event>, newValue: number) => void;
+    showAutomatonTab?: boolean;
 }
 
 export function StaticVarCompensatorDialogTabs({
     tabIndex,
     tabIndexesWithError,
     onTabChange,
+    showAutomatonTab = true,
 }: StaticVarCompensatorCreationDialogTabsProps) {
     return (
         <Grid container sx={{ width: '100%' }}>
             <Tabs value={tabIndex} onChange={onTabChange}>
                 <Tab
+                    value={StaticVarCompensatorDialogTab.CONNECTIVITY_TAB}
                     label={<FormattedMessage id="ConnectivityTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.CONNECTIVITY_TAB)}
                 />
                 <Tab
+                    value={StaticVarCompensatorDialogTab.SET_POINTS_LIMITS_TAB}
                     label={<FormattedMessage id="SetpointsAndLimitsTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.SET_POINTS_LIMITS_TAB)}
                 />
+                {showAutomatonTab && (
+                    <Tab
+                        value={StaticVarCompensatorDialogTab.AUTOMATON_TAB}
+                        label={<FormattedMessage id="StaticVarCompensatorAutomatonTab" />}
+                        sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.AUTOMATON_TAB)}
+                    />
+                )}
                 <Tab
-                    label={<FormattedMessage id="StaticVarCompensatorAutomatonTab" />}
-                    sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.AUTOMATON_TAB)}
-                />
-                <Tab
+                    value={StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB}
                     label={<FormattedMessage id="AdditionalInformationTab" />}
                     sx={getTabStyle(tabIndexesWithError, StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB)}
                 />

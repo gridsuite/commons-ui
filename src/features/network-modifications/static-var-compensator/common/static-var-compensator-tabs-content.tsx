@@ -12,9 +12,12 @@ import { StandbyAutomatonForm } from '../common/standby-automaton-form';
 import { SetPointsLimitsForm } from '../common/set-points-limits-form';
 import { StaticVarCompensatorDialogTab } from './static-var-compensator-tab-utils';
 import { EquipmentType, Identifiable } from '../../../../utils';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 
 export interface StaticVarCompensatorTabsContentProps extends ConnectivityNetworkProps {
     tabIndex: number;
+    isModification?: boolean;
+    staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null;
     fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
 }
 
@@ -23,6 +26,8 @@ export function StaticVarCompensatorTabsContent({
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
     tabIndex,
+    isModification = false,
+    staticVarCompensatorToModify,
     fetchVoltageLevelEquipments,
 }: Readonly<StaticVarCompensatorTabsContentProps>) {
     return (
@@ -36,7 +41,18 @@ export function StaticVarCompensatorTabsContent({
                 <Grid container spacing={2}>
                     <GridItem size={12}>
                         <ConnectivityForm
-                            previousValues={undefined}
+                            isEquipmentModification={isModification}
+                            previousValues={
+                                staticVarCompensatorToModify
+                                    ? {
+                                          connectablePosition: staticVarCompensatorToModify.connectablePosition,
+                                          voltageLevelId: staticVarCompensatorToModify.voltageLevelId,
+                                          busOrBusbarSectionId: staticVarCompensatorToModify.busOrBusbarSectionId,
+                                          terminalConnected:
+                                              staticVarCompensatorToModify.terminalConnected ?? undefined,
+                                      }
+                                    : undefined
+                            }
                             voltageLevelOptions={voltageLevelOptions}
                             PositionDiagramPane={PositionDiagramPane}
                             fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
@@ -46,15 +62,20 @@ export function StaticVarCompensatorTabsContent({
             </Box>
             <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.SET_POINTS_LIMITS_TAB}>
                 <SetPointsLimitsForm
+                    isModification={isModification}
+                    staticVarCompensatorToModify={staticVarCompensatorToModify}
                     voltageLevelOptions={voltageLevelOptions}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
             </Box>
-            <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.AUTOMATON_TAB}>
-                <StandbyAutomatonForm />
-            </Box>
+            {/* TODO: the automaton tab of the modification is added in a next PR */}
+            {!isModification && (
+                <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.AUTOMATON_TAB}>
+                    <StandbyAutomatonForm />
+                </Box>
+            )}
             <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB}>
-                <PropertiesForm networkElementType="staticCompensator" />
+                <PropertiesForm networkElementType="staticCompensator" isModification={isModification} />
             </Box>
         </>
     );

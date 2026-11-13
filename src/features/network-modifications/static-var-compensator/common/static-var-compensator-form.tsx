@@ -6,42 +6,53 @@
  */
 
 import { Box, Stack } from '@mui/material';
-import { ConnectivityNetworkProps, tabbedFormStyles } from '../../common';
-import { StaticVarCompensatorDialogTab } from '../common/static-var-compensator-tab-utils';
-import { StaticVarCompensatorDialogHeader, StaticVarCompensatorDialogTabs } from '../common';
-import { StaticVarCompensatorTabsContent } from '../common/static-var-compensator-tabs-content';
-import { EquipmentType, Identifiable } from '../../../../utils';
 import { UseTabsReturn } from '../../../../hooks';
+import { tabbedFormStyles } from '../../common';
+import { StaticVarCompensatorDialogHeader } from './static-var-compensator-dialog-header';
+import { StaticVarCompensatorDialogTabs } from './static-var-compensator-dialog-tabs';
+import {
+    StaticVarCompensatorTabsContent,
+    StaticVarCompensatorTabsContentProps,
+} from './static-var-compensator-tabs-content';
+import { StaticVarCompensatorDialogTab } from './static-var-compensator-tab-utils';
 
-export interface StaticVarCompensatorCreationFormProps extends ConnectivityNetworkProps {
-    fetchVoltageLevelEquipments: (voltageLevelId: string) => Promise<(Identifiable & { type: EquipmentType })[]>;
+export interface StaticVarCompensatorFormProps extends Omit<StaticVarCompensatorTabsContentProps, 'tabIndex'> {
     useTabsReturn: UseTabsReturn<StaticVarCompensatorDialogTab>;
 }
 
-export function StaticVarCompensatorCreationForm({
-    voltageLevelOptions,
+export function StaticVarCompensatorForm({
+    staticVarCompensatorToModify,
+    isModification = false,
+    voltageLevelOptions = [],
     PositionDiagramPane,
     fetchBusesOrBusbarSections,
     fetchVoltageLevelEquipments,
     useTabsReturn,
-}: StaticVarCompensatorCreationFormProps) {
+}: Readonly<StaticVarCompensatorFormProps>) {
     const { selectedTab, tabsWithError, onTabChange } = useTabsReturn;
 
     return (
         <Stack spacing={2} sx={tabbedFormStyles.container}>
-            <StaticVarCompensatorDialogHeader />
+            <StaticVarCompensatorDialogHeader
+                isModification={isModification}
+                staticVarCompensatorToModify={staticVarCompensatorToModify}
+            />
             <StaticVarCompensatorDialogTabs
                 tabIndex={selectedTab}
                 tabIndexesWithError={tabsWithError}
                 onTabChange={onTabChange}
+                // TODO: the automaton tab of the modification is added in a next PR
+                showAutomatonTab={!isModification}
             />
             <Box sx={tabbedFormStyles.scrollableContent}>
                 <StaticVarCompensatorTabsContent
+                    tabIndex={selectedTab}
+                    isModification={isModification}
+                    staticVarCompensatorToModify={staticVarCompensatorToModify}
                     voltageLevelOptions={voltageLevelOptions}
                     PositionDiagramPane={PositionDiagramPane}
                     fetchBusesOrBusbarSections={fetchBusesOrBusbarSections}
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
-                    tabIndex={selectedTab}
                 />
             </Box>
         </Stack>
