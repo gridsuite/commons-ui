@@ -9,18 +9,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import localizedCountries, { LocalizedCountries } from 'localized-countries';
 import countriesFr from 'localized-countries/data/fr';
 import countriesEn from 'localized-countries/data/en';
-import { GsLang, GsLangUser, LANG_ENGLISH, LANG_FRENCH, LANG_SYSTEM } from '../utils/langs';
-
-const supportedLanguages = [LANG_FRENCH, LANG_ENGLISH];
-
-export const getSystemLanguage = () => {
-    const systemLanguage = navigator.language.split(/[-_]/)[0];
-    return supportedLanguages.includes(systemLanguage as GsLangUser) ? (systemLanguage as GsLangUser) : LANG_ENGLISH;
-};
-
-export const getComputedLanguage = (language: GsLang): GsLangUser => {
-    return language === LANG_SYSTEM ? getSystemLanguage() : (language ?? LANG_ENGLISH);
-};
+import { getComputedLanguage, GsLang } from '../utils/langs';
 
 export const useLocalizedCountries = (language: GsLang) => {
     const [localizedCountriesModule, setLocalizedCountriesModule] = useState<LocalizedCountries>();

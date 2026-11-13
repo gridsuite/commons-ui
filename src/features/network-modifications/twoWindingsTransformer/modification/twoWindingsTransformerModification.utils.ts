@@ -56,7 +56,12 @@ import {
     RatioTapChangerFormSchema,
     toTapChangerStepList,
 } from '../tapChanger';
-import { getToBeEstimatedValidationSchemaObject, toBeEstimatedEmptyFormData } from './measurements';
+import {
+    getToBeEstimatedValidationSchemaObject,
+    toBeEstimatedEmptyFormData,
+    getTapPositionMeasurementsValidationSchemaObject,
+    tapPositionMeasurementsEmptyFormData,
+} from './measurements';
 import {
     getBranchActiveReactivePowerEditDataProperties,
     getBranchActiveReactivePowerEmptyFormDataProperties,
@@ -290,6 +295,7 @@ export const twoWindingsTransformerModificationFormSchema = object()
         [FieldConstants.CONNECTIVITY]: getBranchConnectivityWithPositionSchema(true, true),
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsValidationSchemaProps(true),
         [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerValidationSchemaObject(),
+        [FieldConstants.TAP_POSITION_MEASUREMENT]: getTapPositionMeasurementsValidationSchemaObject(),
         [FieldConstants.TO_BE_ESTIMATED]: getToBeEstimatedValidationSchemaObject(),
         [FieldConstants.LIMITS]: getLimitsValidationSchemaProps(true),
         [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerValidationSchemaProps(true),
@@ -308,6 +314,7 @@ export const twoWindingsTransformerModificationEmptyFormData: DeepNullable<TwoWi
         [FieldConstants.CHARACTERISTICS]: getTwtCharacteristicsEmptyFormData(),
         [FieldConstants.STATE_ESTIMATION]: getBranchActiveReactivePowerEmptyFormDataProperties(),
         [FieldConstants.TO_BE_ESTIMATED]: toBeEstimatedEmptyFormData,
+        [FieldConstants.TAP_POSITION_MEASUREMENT]: tapPositionMeasurementsEmptyFormData,
         [FieldConstants.LIMITS]: getLimitsEmptyFormDataProps(true),
         [FieldConstants.RATIO_TAP_CHANGER]: getRatioTapChangerEmptyFormData(true),
         [FieldConstants.PHASE_TAP_CHANGER]: getPhaseTapChangerEmptyFormData(true),
@@ -354,6 +361,10 @@ export const twoWindingsTransformerModificationDtoToForm = (
         },
         ...getPropertiesFromModification(twtDto?.properties, includePreviousValues),
         stateEstimation: getBranchActiveReactivePowerEditDataProperties(twtDto),
+        tapPositionMeasurement: {
+            ratioTapChangerPositionMeasurement: twtDto.ratioTapChangerPositionMeasurement?.value ?? null,
+            phaseTapChangerPositionMeasurement: twtDto.phaseTapChangerPositionMeasurement?.value ?? null,
+        },
         toBeEstimated: {
             ratioTapChangerStatus: twtDto.ratioTapChangerToBeEstimated?.value ?? null,
             phaseTapChangerStatus: twtDto.phaseTapChangerToBeEstimated?.value ?? null,
@@ -472,6 +483,12 @@ export const twoWindingsTransformerModificationFormToDto = (
         ratedU2: toModificationOperation(characteristics?.ratedU2),
         ratioTapChanger: computeRatioTapDto(twtForm.ratioTapChanger, editData, twtToModify, isNodeBuilt),
         phaseTapChanger: computePhaseTapDto(twtForm.phaseTapChanger, editData, twtToModify, isNodeBuilt),
+        ratioTapChangerPositionMeasurement: toModificationOperation(
+            twtForm?.tapPositionMeasurement?.ratioTapChangerPositionMeasurement
+        ),
+        phaseTapChangerPositionMeasurement: toModificationOperation(
+            twtForm?.tapPositionMeasurement?.phaseTapChangerPositionMeasurement
+        ),
         ratioTapChangerToBeEstimated: toModificationOperation(twtForm?.toBeEstimated?.ratioTapChangerStatus),
         phaseTapChangerToBeEstimated: toModificationOperation(twtForm?.toBeEstimated?.phaseTapChangerStatus),
     };

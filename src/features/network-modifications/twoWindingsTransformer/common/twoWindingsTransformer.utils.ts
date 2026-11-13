@@ -26,6 +26,7 @@ export const TWT_TAB_FIELDS: Readonly<Partial<Record<TwoWindingsTransformerDialo
     [TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB]: [
         FieldConstants.STATE_ESTIMATION,
         FieldConstants.TO_BE_ESTIMATED,
+        FieldConstants.TAP_POSITION_MEASUREMENT,
     ],
     [TwoWindingsTransformerDialogTab.RATIO_TAP_TAB]: [FieldConstants.RATIO_TAP_CHANGER],
     [TwoWindingsTransformerDialogTab.PHASE_TAP_TAB]: [FieldConstants.PHASE_TAP_CHANGER],

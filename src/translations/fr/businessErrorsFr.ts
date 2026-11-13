@@ -120,6 +120,7 @@ export const businessErrorsFr = {
     'modification.containsShared':
         'La modification {modificationId} contient une modification partagée et ne peut pas être partagée',
     'modification.notFound': 'La modification {modificationId} est introuvable',
+    'modification.shared.notFound': 'La modification partagée {modificationId} est introuvable',
     'modifications.notFound': "Certaines modifications parmi celles ci {ids} n'ont pas été trouvée",
     'modification.infos.error': 'Infos de modification erronées : {errorMessage}',
     'modification.duplication.argument.error':
@@ -129,4 +130,7 @@ export const businessErrorsFr = {
         'Le déplacement de la modification composite {compositeModificationId} dans {modificationId} va créer un cycle',
     'modification.voltageLevel.attachmentLine.missing':
         'La ligne de piquage pour le poste {voltageLevelId} est manquante',
+
+    'report.notFound': 'Rapport non trouvé.',
+    'report.notARoot': "Le rapport n'est pas un rapport racine.",
 };
