@@ -12,22 +12,24 @@ import { Row } from '@tanstack/react-table';
 import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
-import { setModificationNameAndDescription, updateElement } from '../../../services';
-import { ComposedModificationMetadata } from '../../../utils';
+import { updateElement } from '../../../services';
+import { ComposedModificationMetadata, NetworkModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 import { isReferenceModification } from '../utils';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     isDisabled?: boolean;
     // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
+    onUpdateModificationNameAndDescription?: (
+        modificationUuid: UUID,
+        metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+    ) => Promise<unknown>;
 }
 
 export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
-    const { row, studyUuid, currentNodeId, isDisabled = false, isSaveDisabled = false } = props;
+    const { row, isDisabled = false, isSaveDisabled = false, onUpdateModificationNameAndDescription } = props;
     const [isLoading, setIsLoading] = useState(false);
     const [openDescModificationDialog, setOpenDescModificationDialog] = useState(false);
 
@@ -36,33 +38,37 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
     const { description } = data;
     const empty = !description;
 
+    const canUpdateDescription =
+        isReferenceModification(data) || !!data.parentSharedUuid || !!onUpdateModificationNameAndDescription;
+
     const updateModification = useCallback(
         async (descriptionRecord: Record<string, string>) => {
+            if (!canUpdateDescription) {
+                return;
+            }
             setIsLoading(true);
-            if (isReferenceModification(data)) {
-                return updateElement(data.referencedId, {
-                    elementUuid: data.referencedId,
-                    description: descriptionRecord.description,
-                }).finally(() => {
-                    setIsLoading(false);
-                });
-            }
-            if (data.parentSharedUuid) {
-                return updateElement(data.parentSharedUuid, {
-                    elementUuid: data.uuid,
-                    description: descriptionRecord.description,
-                }).finally(() => {
-                    setIsLoading(false);
-                });
-            }
-            return setModificationNameAndDescription(studyUuid, currentNodeId, modificationUuid, {
-                description: descriptionRecord.description,
-                type: data.type,
-            }).finally(() => {
+            try {
+                if (isReferenceModification(data)) {
+                    await updateElement(data.referencedId, {
+                        elementUuid: data.referencedId,
+                        description: descriptionRecord.description,
+                    });
+                } else if (data.parentSharedUuid) {
+                    await updateElement(data.parentSharedUuid, {
+                        elementUuid: data.uuid,
+                        description: descriptionRecord.description,
+                    });
+                } else {
+                    await onUpdateModificationNameAndDescription?.(modificationUuid, {
+                        description: descriptionRecord.description,
+                        type: data.type,
+                    });
+                }
+            } finally {
                 setIsLoading(false);
-            });
+            }
         },
-        [modificationUuid, data, currentNodeId, studyUuid]
+        [modificationUuid, data, onUpdateModificationNameAndDescription, canUpdateDescription]
     );
 
     const handleDescDialogClose = useCallback(() => {
@@ -86,7 +92,7 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
                     description={description ?? ''}
                     onClose={handleDescDialogClose}
                     updateElement={updateModification}
-                    disabledSave={isSaveDisabled}
+                    disabledSave={isSaveDisabled || !canUpdateDescription}
                 />
             )}
             <Tooltip title={description ?? <FormattedMessage id="addDescription" />} arrow enterDelay={250}>

@@ -12,6 +12,7 @@ import {
     ComposedModificationMetadata,
     NetworkModificationActivations,
     NetworkModificationApplicabilities,
+    NetworkModificationMetadata,
     RootNetworkRowInfo,
 } from './utils';
 
@@ -20,9 +21,21 @@ declare module '@tanstack/react-table' {
     // Read at runtime via `table.options.meta` from any cell/header renderer.
     interface TableMeta<TData extends RowData> {
         context: {
-            studyUuid?: UUID | null;
-            currentNodeId?: UUID;
-            currentRootNetworkUuid?: UUID;
+            onUpdateModificationMetadata?: (
+                modificationUuid: UUID,
+                metadata: Partial<ComposedModificationMetadata>
+            ) => Promise<unknown>;
+            onUpdateModificationNameAndDescription?: (
+                modificationUuid: UUID,
+                metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+            ) => Promise<unknown>;
+            onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
+            onUpdateModificationStatusByRootNetwork?: (
+                rootNetworkUuid: UUID,
+                modificationUuid: UUID,
+                applicable: boolean
+            ) => Promise<unknown>;
+            visualizedRootNetworkUuid?: UUID;
             rootNetworks?: RootNetworkRowInfo[];
         };
         modifications: {
