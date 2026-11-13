@@ -83,20 +83,6 @@ export function getSecurityAnalysisParameters(studyUuid: UUID): Promise<SAParame
     return parametersPromise.then((parameters) => enrichSecurityAnalysisParameters(parameters));
 }
 
-export function setSecurityAnalysisParameters(studyUuid: UUID, newParams: SAParametersEnriched | null) {
-    console.info('set security analysis parameters');
-    const url = `${getStudyUrl(studyUuid)}/security-analysis/parameters`;
-    console.debug(url);
-    return backendFetch(url, {
-        method: 'POST',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: newParams ? JSON.stringify(mapSecurityAnalysisParameters(newParams)) : null,
-    });
-}
-
 export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams: SAParametersEnriched) {
     console.info('set security analysis parameters');
     const setSecurityAnalysisParametersUrl = `${getSecurityAnalysisUrl()}parameters/${parameterUuid}`;
