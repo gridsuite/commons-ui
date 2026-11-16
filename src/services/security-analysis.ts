@@ -97,7 +97,7 @@ export function setSecurityAnalysisParameters(studyUuid: UUID, newParams: SAPara
     });
 }
 
-export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams: SAParametersEnriched | null) {
+export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams: SAParametersEnriched) {
     console.info('set security analysis parameters');
     const setSecurityAnalysisParametersUrl = `${getSecurityAnalysisUrl()}parameters/${parameterUuid}`;
     console.debug(setSecurityAnalysisParametersUrl);
@@ -108,5 +108,14 @@ export function updateSecurityAnalysisParameters(parameterUuid: UUID, newParams:
             'Content-Type': 'application/json',
         },
         body: newParams ? JSON.stringify(mapSecurityAnalysisParameters(newParams)) : null,
+    });
+}
+
+export function resetSecurityAnalysisParameters(parameterUuid: UUID) {
+    console.info('reset security analysis parameters');
+    const resetSecurityAnalysisParametersUrl = `${getSecurityAnalysisUrl()}parameters/${parameterUuid}/reset`;
+    console.debug(resetSecurityAnalysisParametersUrl);
+    return backendFetch(resetSecurityAnalysisParametersUrl, {
+        method: 'PUT',
     });
 }

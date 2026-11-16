@@ -51,8 +51,8 @@ export const networkModificationsFr = {
     'network_modifications.modifications': 'Mise à jour de la liste des modifications en cours ...',
     'network_modifications.GENERATION_DISPATCH': 'Démarrage de groupes {computedLabel}',
     'network_modifications.VOLTAGE_INIT_MODIFICATION': 'Initialisation du plan de tension {computedLabel}',
-    'network_modifications.TABULAR_MODIFICATION': 'Modification tabulaire ({computedLabel})',
-    'network_modifications.tabular.GENERATOR_MODIFICATION': 'générateurs',
+    'network_modifications.TABULAR_MODIFICATION': 'Modification de {computedLabel}{csvFilename}',
+    'network_modifications.tabular.GENERATOR_MODIFICATION': 'groupes',
     'network_modifications.tabular.LOAD_MODIFICATION': 'consommations',
     'network_modifications.BY_FORMULA_MODIFICATION': 'Modification par formule ({computedLabel})',
     'network_modifications.MODIFICATION_BY_ASSIGNMENT': 'Modification par filtre ({computedLabel})',
@@ -62,8 +62,8 @@ export const networkModificationsFr = {
     'network_modifications.tabular.TWO_WINDINGS_TRANSFORMER_MODIFICATION': 'transformateurs à 2 enroulements',
     'network_modifications.tabular.SHUNT_COMPENSATOR_MODIFICATION': 'MCS linéaires',
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'sites',
-    'network_modifications.TABULAR_CREATION': 'Création tabulaire ({computedLabel})',
-    'network_modifications.tabular.GENERATOR_CREATION': 'générateurs',
+    'network_modifications.TABULAR_CREATION': 'Création de {computedLabel}{csvFilename}',
+    'network_modifications.tabular.GENERATOR_CREATION': 'groupes',
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'consommations',
     'network_modifications.tabular.SHUNT_COMPENSATOR_CREATION': 'MCS linéaires',
@@ -183,6 +183,7 @@ export const networkModificationsFr = {
     NoVoltageLevelPositionMessage: 'Veuillez choisir un poste pour afficher les positions prises',
     ModifyLoad: 'Modifier une consommation',
     MeasurementsSection: 'Télémesures',
+    TapMeasurementsSection: 'Télémesures position prises',
     ValidMeasurement: 'Valide',
     InvalidMeasurement: 'Invalide',
     DeleteEquipment: 'Supprimer un ouvrage',
@@ -628,9 +629,9 @@ export const networkModificationsFr = {
 
     // Tabular creation / modification - CSV template comments
     'TabularCreationSkeletonComment.GENERATOR':
-        '#;;HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER;;;true | false;;TOP | BOTTOM;;;;;;;true | false;;;;;;;;;;;;true | false;required if voltageRegulationOn is true;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;;;true | false;;;;;;;',
+        '#;;HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER;;;true | false;;TOP | BOTTOM;;;;;;;true | false;;;;;;;;;;;;true | false;obligatoire si voltageRegulationOn est true;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;;;true | false;;;;;;;',
     'TabularCreationSkeletonComment.BATTERY':
-        '#;;;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;',
+        '#;;;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;;true | false;obligatoire si voltageRegulationOn est true;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;',
     'TabularCreationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;;;true | false;;TOP | BOTTOM;;;',
     'TabularCreationSkeletonComment.SHUNT_COMPENSATOR':
         '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR | requis si maxQAtNominalV est défini;;',
@@ -642,7 +643,7 @@ export const networkModificationsFr = {
     'TabularModificationSkeletonComment.GENERATOR':
         '#;;HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER;true | false;;TOP | BOTTOM;;;;;;;true | false;;;;;;;;;;;;true | false;;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;;;true | false;;;;;;;',
     'TabularModificationSkeletonComment.BATTERY':
-        '#;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;',
+        '#;;true | false;;TOP | BOTTOM;;;;;;true | false;;;;;;;;;;;;true | false;;true | false;;;LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION;',
     'TabularModificationSkeletonComment.LOAD': '#;;AUXILIARY | FICTITIOUS | UNDEFINED;true | false;;TOP | BOTTOM;;;',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#Pour chaque MCS il est possible de modifier soit la puissance réactive installée (et le type) soit la susceptance installée. En cas de conflit la susceptance installée sera ignorée.;;true | false;;TOP | BOTTOM;;;;REACTOR | CAPACITOR;;',
