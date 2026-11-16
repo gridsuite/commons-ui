@@ -179,6 +179,7 @@ export const networkModificationsEn = {
     NoVoltageLevelPositionMessage: 'Select a voltage level to display taken positions',
     ModifyLoad: 'Modify load',
     MeasurementsSection: 'Measurements',
+    TapMeasurementsSection: 'Tap position measurements',
     ValidMeasurement: 'Valid',
     InvalidMeasurement: 'Invalid',
     DeleteEquipment: 'Delete equipment',

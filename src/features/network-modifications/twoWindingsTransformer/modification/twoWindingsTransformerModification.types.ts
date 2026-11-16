@@ -43,6 +43,8 @@ export interface TwoWindingsTransformerModificationDto extends BranchModificatio
     ratedS: AttributeModification<number> | null;
     ratioTapChanger: RatioTapChangerModificationDto | null;
     phaseTapChanger: PhaseTapChangerModificationDto | null;
+    ratioTapChangerPositionMeasurement: AttributeModification<number> | null;
+    phaseTapChangerPositionMeasurement: AttributeModification<number> | null;
     ratioTapChangerToBeEstimated: AttributeModification<boolean> | null;
     phaseTapChangerToBeEstimated: AttributeModification<boolean> | null;
 }
