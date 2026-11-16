@@ -27,7 +27,7 @@ import {
     moveSubModificationInTree,
 } from './utils';
 import { CHIP_ATTR, injectForbiddenChips } from './drag-forbidden-chip';
-import { ModificationMoveInfos } from '../../services';
+import type { MoveModificationsFn } from './network-modifications-table.type';
 import { useSnackMessage } from '../../hooks';
 import { ComposedModificationMetadata, snackWithFallback } from '../../utils';
 
@@ -37,7 +37,7 @@ interface UseModificationsDragAndDropParams {
     composedModifications: ComposedModificationMetadata[];
     setComposedModifications: React.Dispatch<React.SetStateAction<ComposedModificationMetadata[]>>;
     onDragEnd: () => void;
-    onMoveModifications?: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
+    onMoveModifications?: MoveModificationsFn;
 }
 
 interface UseModificationsDragAndDropReturn {

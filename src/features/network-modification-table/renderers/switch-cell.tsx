@@ -9,19 +9,16 @@ import React, { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { Switch, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
-import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, NetworkModificationActivations, snackWithFallback } from '../../../utils';
 import { isActivated, isDeactivatedByAncestor } from '../utils';
+import type { UpdateModificationMetadataFn } from '../network-modifications-table.type';
 
 export interface SwitchCellProps {
     row: Row<ComposedModificationMetadata>;
     activations: NetworkModificationActivations;
     setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
-    onUpdateModificationMetadata?: (
-        modificationUuid: UUID,
-        metadata: Partial<ComposedModificationMetadata>
-    ) => Promise<unknown>;
+    onUpdateModificationMetadata?: UpdateModificationMetadataFn;
     isDisabled?: boolean;
 }
 

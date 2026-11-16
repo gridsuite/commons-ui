@@ -5,7 +5,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 import React, { useCallback, useState } from 'react';
-import type { UUID } from 'node:crypto';
 import { IconButton, ListItemIcon, ListItemText, Menu } from '@mui/material';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { LinkRounded as LinkRoundedIcon } from '@mui/icons-material';
@@ -15,11 +14,12 @@ import { fetchAppsMetadata, isExploreMetadata } from '../../../services';
 import { ComposedModificationMetadata, snackWithFallback } from '../../../utils';
 import { CustomMenuItem, CustomTooltip, ErrorMessage, LinkOffIcon } from '../../../components';
 import { DatasetLinkedIcon } from '../../../components/ui/icons/DatasetLinkedIcon';
+import type { UnshareModificationFn } from '../network-modifications-table.type';
 
 export interface ReferenceLinkCellProps {
     row: Row<ComposedModificationMetadata>;
     disabled?: boolean;
-    onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
+    onUnshareModification?: UnshareModificationFn;
 }
 
 export function ReferenceLinkCell({ row, disabled = false, onUnshareModification }: Readonly<ReferenceLinkCellProps>) {

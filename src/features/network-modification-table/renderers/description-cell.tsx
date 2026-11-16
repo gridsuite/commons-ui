@@ -9,23 +9,20 @@ import { useCallback, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
 import { Row } from '@tanstack/react-table';
-import type { UUID } from 'node:crypto';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { updateElement } from '../../../services';
-import { ComposedModificationMetadata, NetworkModificationMetadata } from '../../../utils';
+import { ComposedModificationMetadata } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 import { isReferenceModification } from '../utils';
+import type { UpdateModificationMetadataFn } from '../network-modifications-table.type';
 
 export interface DescriptionCellProps {
     row: Row<ComposedModificationMetadata>;
     isDisabled?: boolean;
     // the dialog stays reachable to read an existing description, only its validation is denied
     isSaveDisabled?: boolean;
-    onUpdateModificationNameAndDescription?: (
-        modificationUuid: UUID,
-        metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
-    ) => Promise<unknown>;
+    onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
 }
 
 export function DescriptionCell(props: Readonly<DescriptionCellProps>) {

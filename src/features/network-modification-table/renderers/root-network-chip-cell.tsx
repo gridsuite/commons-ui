@@ -18,6 +18,7 @@ import {
     snackWithFallback,
 } from '../../../utils';
 import { isAppliedOn, isApplicableOn, isDeactivatedItselfOrByAncestor } from '../utils';
+import type { UpdateModificationStatusByRootNetworkFn } from '../network-modifications-table.type';
 
 function addPendingApplicability(
     pendingApplicabilities: NetworkModificationApplicabilities,
@@ -58,11 +59,7 @@ export interface RootNetworkChipCellProps {
     applicabilities: NetworkModificationApplicabilities;
     setPendingApplicabilities: React.Dispatch<SetStateAction<NetworkModificationApplicabilities>>;
     isDisabled?: boolean;
-    onUpdateModificationStatusByRootNetwork?: (
-        rootNetworkUuid: UUID,
-        modificationUuid: UUID,
-        applicable: boolean
-    ) => Promise<unknown>;
+    onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
 }
 
 export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {

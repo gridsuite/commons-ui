@@ -31,7 +31,12 @@ import {
     MAX_COMPOSITE_NESTING_DEPTH,
 } from './utils';
 import { ModificationRow } from './row';
-import { ModificationMoveInfos } from '../../services';
+import type {
+    MoveModificationsFn,
+    UnshareModificationFn,
+    UpdateModificationMetadataFn,
+    UpdateModificationStatusByRootNetworkFn,
+} from './network-modifications-table.type';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -46,21 +51,11 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
     visualizedRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
-    onMoveModifications?: (modifications: ModificationMoveInfos[]) => Promise<unknown>;
-    onUpdateModificationStatusByRootNetwork?: (
-        rootNetworkUuid: UUID,
-        modificationUuid: UUID,
-        applicable: boolean
-    ) => Promise<unknown>;
-    onUpdateModificationMetadata?: (
-        modificationUuid: UUID,
-        metadata: Partial<ComposedModificationMetadata>
-    ) => Promise<unknown>;
-    onUpdateModificationNameAndDescription?: (
-        modificationUuid: UUID,
-        metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
-    ) => Promise<unknown>;
-    onUnshareModification?: (modificationUuid: UUID) => Promise<unknown>;
+    onMoveModifications?: MoveModificationsFn;
+    onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
+    onUpdateModificationMetadata?: UpdateModificationMetadataFn;
+    onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
+    onUnshareModification?: UnshareModificationFn;
     isDisabled?: boolean;
     rowStateResetKey?: string | null;
 }
