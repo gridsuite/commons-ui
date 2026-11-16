@@ -57,7 +57,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
     onUnshareModification?: UnshareModificationFn;
     isDisabled?: boolean;
-    rowStateResetKey?: string | null;
+    rowStateResetKey?: UUID;
 }
 
 export function NetworkModificationsTable({
