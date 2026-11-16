@@ -122,18 +122,18 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
 
 export function RootNetworkHeaderRenderer({ column, table }: HCtx) {
     const { meta } = table.options;
-    // `column.id` is the visualizedRootNetwork (set in createRootNetworksColumns).
-    const isVisualizedRootNetwork =
-        !!meta?.context.visualizedRootNetworkUuid && column.id === meta.context.visualizedRootNetworkUuid;
-    if (!isVisualizedRootNetwork || (meta?.modifications.count ?? 0) < 1) {
+    // `column.id` is the rootNetworkUuid (set in createRootNetworksColumns).
+    const isCurrentRootNetwork =
+        !!meta?.context.currentRootNetworkUuid && column.id === meta.context.currentRootNetworkUuid;
+    if (!isCurrentRootNetwork || (meta?.modifications.count ?? 0) < 1) {
         return null;
     }
-    const visualizedRootNetworkTag = meta?.context.rootNetworks?.find(
-        (r) => r.rootNetworkUuid === meta.context.visualizedRootNetworkUuid
+    const currentRootNetworkTag = meta?.context.rootNetworks?.find(
+        (r) => r.rootNetworkUuid === meta.context.currentRootNetworkUuid
     )?.tag;
     return (
         <Box sx={networkModificationTableStyles.rootNetworkHeader}>
-            <Tooltip title={<FormattedMessage id="visualizedRootNetwork" values={{ tag: visualizedRootNetworkTag }} />}>
+            <Tooltip title={<FormattedMessage id="visualizedRootNetwork" values={{ tag: currentRootNetworkTag }} />}>
                 <Badge overlap="circular" color="primary" variant="dot">
                     <RemoveRedEyeIcon />
                 </Badge>

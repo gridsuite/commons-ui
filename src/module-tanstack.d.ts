@@ -29,7 +29,7 @@ declare module '@tanstack/react-table' {
             onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
             onUnshareModification?: UnshareModificationFn;
             onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
-            visualizedRootNetworkUuid?: UUID;
+            currentRootNetworkUuid?: UUID;
             rootNetworks?: RootNetworkRowInfo[];
         };
         modifications: {

@@ -49,7 +49,7 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
-    visualizedRootNetworkUuid?: UUID;
+    currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
     onMoveModifications?: MoveModificationsFn;
     onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
@@ -71,7 +71,7 @@ export function NetworkModificationsTable({
     highlightedModificationUuid,
     modificationToEditLabel,
     modificationUuidsToReset,
-    visualizedRootNetworkUuid,
+    currentRootNetworkUuid,
     rootNetworks,
     isDisabled = false,
     isImpactedByNotification,
@@ -147,7 +147,7 @@ export function NetworkModificationsTable({
                 onUpdateModificationNameAndDescription,
                 onUnshareModification,
                 onUpdateModificationStatusByRootNetwork,
-                visualizedRootNetworkUuid,
+                currentRootNetworkUuid,
                 rootNetworks,
             },
             modifications: {
@@ -176,7 +176,7 @@ export function NetworkModificationsTable({
             onUpdateModificationNameAndDescription,
             onUnshareModification,
             onUpdateModificationStatusByRootNetwork,
-            visualizedRootNetworkUuid,
+            currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
             activations,
