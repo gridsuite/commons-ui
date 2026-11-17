@@ -17,10 +17,7 @@ import {
 import { ParameterLayout } from '../common';
 import { CustomFormProvider } from '../../../components/ui';
 import { useSnackMessage } from '../../../hooks';
-import {
-    fetchSensitivityAnalysisParameters,
-    setSensitivityAnalysisParameters,
-} from '../../../services/sensitivity-analysis';
+import { fetchSensitivityAnalysisParameters } from '../../../services/sensitivity-analysis';
 import { TreeViewFinderNodeProps } from '../../../components/ui/treeViewFinder';
 import { useSensitivityAnalysisParametersForm } from './use-sensitivity-analysis-parameters';
 import { SensitivityAnalysisParametersForm } from './sensitivity-analysis-parameters-form';
@@ -63,6 +60,7 @@ export function SensitivityAnalysisParametersInline({
     });
 
     const { reset, formState, getValues, handleSubmit } = sensitivityAnalysisMethods.formMethods;
+    const { resetParameters } = parametersBackend;
 
     const handleSensibilityParameter = useCallback(
         (newParams: TreeViewFinderNodeProps[]) => {
@@ -83,17 +81,11 @@ export function SensitivityAnalysisParametersInline({
         [reset, sensitivityAnalysisMethods, snackError]
     );
 
-    const resetSensitivityAnalysisParameters = useCallback(() => {
-        setSensitivityAnalysisParameters(studyUuid, null).catch((error) => {
-            snackWithFallback(snackError, error, { headerId: 'paramsChangingError' });
-        });
-    }, [studyUuid, snackError]);
-
     const clear = useCallback(() => {
         reset(sensitivityAnalysisMethods.emptyFormData);
-        resetSensitivityAnalysisParameters();
+        resetParameters();
         sensitivityAnalysisMethods.resetFactorsCount();
-    }, [reset, sensitivityAnalysisMethods, resetSensitivityAnalysisParameters]);
+    }, [reset, sensitivityAnalysisMethods, resetParameters]);
 
     useEffect(() => {
         setHaveDirtyFields(formState.isDirty);

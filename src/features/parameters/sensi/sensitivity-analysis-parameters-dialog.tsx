@@ -11,6 +11,7 @@ import {
     fetchSensitivityAnalysisParameters,
     fetchSensitivityAnalysisProviders,
     updateSensitivityAnalysisParameters,
+    resetSensitivityAnalysisParameters,
 } from '../../../services/sensitivity-analysis';
 import { CustomMuiDialog } from '../../../components/ui/dialogs';
 import { NameElementEditorForm } from '../../../components/ui/dialogs/name-element-editor';
@@ -42,6 +43,7 @@ export function SensitivityAnalysisParametersDialog({
             backendFetchProviders: fetchSensitivityAnalysisProviders,
             backendFetchParameters: fetchSensitivityAnalysisParameters,
             backendUpdateParameters: updateSensitivityAnalysisParameters,
+            backendResetParameters: resetSensitivityAnalysisParameters,
         }
     );
 
