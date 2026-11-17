@@ -292,6 +292,8 @@ export const parametersFr = {
 
     // Computed translations used in the snackbars
     // LoadFlow
+    fetchDefaultLoadFlowProviderError:
+        'Une erreur est survenue lors de la récupération du fournisseur par défaut de calcul de répartition',
     fetchLoadFlowParametersError:
         'Une erreur est survenue lors de la récupération des paramètres de calcul de répartition',
     fetchLoadFlowProviderError:
