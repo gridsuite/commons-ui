@@ -65,6 +65,16 @@ export function SetPointsLimitsForm({
             ? `${staticVarCompensatorToModify.regulatingTerminalConnectableType} : ${staticVarCompensatorToModify.regulatingTerminalConnectableId}`
             : undefined;
 
+    const watchConnectivityVoltageLevelId = useWatch({
+        name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
+    });
+    // the Q at nominal voltage depends on the nominal voltage: the previous values are not displayed
+    // when the voltage level is changed, because the nominal voltage of the new voltage level is unknown here
+    const isVoltageLevelChanged =
+        !!watchConnectivityVoltageLevelId &&
+        watchConnectivityVoltageLevelId !== staticVarCompensatorToModify?.voltageLevelId;
+    const previousNominalV = isVoltageLevelChanged ? undefined : staticVarCompensatorToModify?.nominalV;
+
     const watchCharacteristicsChoice = useWatch({ name: `${id}.${FieldConstants.CHARACTERISTICS_CHOICE}` });
     // a tricky solution to rerender voltage/reactive setpoints field with label changed between required <-> optional
     useWatch({ name: `${id}.${FieldConstants.VOLTAGE_REGULATION_MODE}` });
@@ -93,10 +103,7 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MIN_Q_AT_NOMINAL_V}`}
             label="minQAtNominalV"
             adornment={ReactivePowerAdornment}
-            previousValue={toQAtNominalV(
-                staticVarCompensatorToModify?.minSusceptance,
-                staticVarCompensatorToModify?.nominalV
-            )}
+            previousValue={toQAtNominalV(staticVarCompensatorToModify?.minSusceptance, previousNominalV)}
             clearable={isModification}
         />
     );
@@ -105,10 +112,7 @@ export function SetPointsLimitsForm({
             name={`${id}.${FieldConstants.MAX_Q_AT_NOMINAL_V}`}
             label="maxQAtVnominal"
             adornment={ReactivePowerAdornment}
-            previousValue={toQAtNominalV(
-                staticVarCompensatorToModify?.maxSusceptance,
-                staticVarCompensatorToModify?.nominalV
-            )}
+            previousValue={toQAtNominalV(staticVarCompensatorToModify?.maxSusceptance, previousNominalV)}
             clearable={isModification}
         />
     );
