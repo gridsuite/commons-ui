@@ -119,11 +119,14 @@ export function RootNetworkChipCell(props: Readonly<RootNetworkChipCellProps>) {
     return (
         <ActivableChip
             label={rootNetwork.tag}
-            tooltipMessage={rootNetwork.name}
+            tooltipMessage={rootNetwork.name ?? rootNetwork.tag}
             isActivationRequested={isModificationApplicable}
             isActivationEffective={isModificationApplied}
             isDisabled={
-                isLoading || isDisabled || rootNetwork.isCreating || isDeactivatedItselfOrByAncestor(row, activations)
+                isLoading ||
+                isDisabled ||
+                (rootNetwork.isCreating ?? false) ||
+                isDeactivatedItselfOrByAncestor(row, activations)
             }
             onClick={handleModificationActivationByRootNetwork}
         />

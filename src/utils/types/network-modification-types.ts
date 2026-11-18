@@ -29,7 +29,7 @@ export type NetworkModificationActivations = Record<UUID, boolean>;
 
 export interface RootNetworkRowInfo {
     rootNetworkUuid: UUID;
-    name: string;
+    name?: string;
     tag: string;
-    isCreating: boolean;
+    isCreating?: boolean;
 }
