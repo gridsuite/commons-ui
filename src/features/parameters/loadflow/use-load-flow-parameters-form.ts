@@ -35,7 +35,7 @@ import {
 } from '../common/limitreductions/columns-definitions';
 import { PARAM_LIMIT_REDUCTION, PARAM_PROVIDER_OPENLOADFLOW } from './constants';
 import { DESCRIPTION, NAME } from '../../../components/ui';
-import { updateParameter } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import {
     ComputingType,
     ElementType,
@@ -252,9 +252,10 @@ export const useLoadFlowParametersForm = (
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    formatNewParams(formData),
+                    () => formatNewParams(formData),
                     formData[NAME],
                     ElementType.LOADFLOW_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -263,7 +264,7 @@ export const useLoadFlowParametersForm = (
                 });
             }
         },
-        [parametersUuid, formatNewParams, snackError]
+        [formMethods, parametersUuid, formatNewParams, snackError]
     );
 
     useEffect(() => {

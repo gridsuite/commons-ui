@@ -7,10 +7,10 @@
 
 import { useCallback, useEffect, useState } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
-import { FieldConstants, Option } from '../../../../utils';
+import { deepEqual, FieldConstants, Option } from '../../../../utils';
 import { getProcessConfigFormDefaultValues } from '../../common/process-config-form.constants';
 import type { ProcessConfigFormValues } from '../../common/process-config-form.types';
-import { deepEqual, withoutProcessType } from '../utils/form.utils';
+import { withoutProcessType } from '../utils/form.utils';
 
 export function useProcessTypeGuard() {
     const selectedProcessType = useWatch<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>({
