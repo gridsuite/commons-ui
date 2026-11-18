@@ -147,10 +147,7 @@ export function NetworkModificationsTable({
 
     const saveActivationInStudy = useCallback<SaveModificationActivation>(
         (modification, activated) =>
-            setModificationMetadata(studyUuid, currentNodeId, modification.uuid, {
-                activated,
-                type: modification.type,
-            }),
+            setModificationMetadata(studyUuid, currentNodeId, modification.uuid, { activated }),
         [studyUuid, currentNodeId]
     );
 
