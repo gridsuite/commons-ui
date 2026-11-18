@@ -30,5 +30,13 @@ export interface StaticVarCompensatorModificationDto {
     regulatingTerminalId: AttributeModification<string> | null;
     regulatingTerminalType: AttributeModification<string> | null;
     regulatingTerminalVlId: AttributeModification<string> | null;
+    standbyAutomatonOn: AttributeModification<boolean> | null;
+    standby: AttributeModification<boolean> | null;
+    b0: AttributeModification<number> | null;
+    q0: AttributeModification<number> | null;
+    lowVoltageSetpoint: AttributeModification<number> | null;
+    highVoltageSetpoint: AttributeModification<number> | null;
+    lowVoltageThreshold: AttributeModification<number> | null;
+    highVoltageThreshold: AttributeModification<number> | null;
     properties: Property[] | null;
 }

@@ -68,12 +68,12 @@ export function StaticVarCompensatorTabsContent({
                     fetchVoltageLevelEquipments={fetchVoltageLevelEquipments}
                 />
             </Box>
-            {/* TODO: the automaton tab of the modification is added in a next PR */}
-            {!isModification && (
-                <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.AUTOMATON_TAB}>
-                    <StandbyAutomatonForm />
-                </Box>
-            )}
+            <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.AUTOMATON_TAB}>
+                <StandbyAutomatonForm
+                    isEquipmentModification={isModification}
+                    previousValues={staticVarCompensatorToModify}
+                />
+            </Box>
             <Box hidden={tabIndex !== StaticVarCompensatorDialogTab.ADDITIONAL_INFO_TAB}>
                 <PropertiesForm networkElementType="staticCompensator" isModification={isModification} />
             </Box>

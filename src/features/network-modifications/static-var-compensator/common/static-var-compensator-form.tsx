@@ -41,8 +41,6 @@ export function StaticVarCompensatorForm({
                 tabIndex={selectedTab}
                 tabIndexesWithError={tabsWithError}
                 onTabChange={onTabChange}
-                // TODO: the automaton tab of the modification is added in a next PR
-                showAutomatonTab={!isModification}
             />
             <Box sx={tabbedFormStyles.scrollableContent}>
                 <StaticVarCompensatorTabsContent
