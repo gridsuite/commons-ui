@@ -79,11 +79,11 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
+
     return (
         <DescriptionCell
             row={row}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
+            onUpdateModificationNameAndDescription={meta?.context.onUpdateModificationNameAndDescription}
             isDisabled={meta?.status.isDisabled}
             isSaveDisabled={isModificationEditLocked(row.original)}
         />
@@ -96,9 +96,8 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     if (isReferenceModification(row.original)) {
         return (
             <ReferenceLinkCell
+                onUnshareModification={meta?.context.onUnshareModification}
                 row={row}
-                studyUuid={meta?.context.studyUuid ?? null}
-                currentNodeId={meta?.context.currentNodeId ?? null}
                 disabled={meta?.status.isDisabled}
             />
         );
@@ -113,8 +112,7 @@ export function SwitchCellRenderer({ row, table }: CCtx) {
     return (
         <SwitchCell
             row={row}
-            studyUuid={meta.context.studyUuid ?? null}
-            currentNodeId={meta.context.currentNodeId}
+            onUpdateModificationMetadata={meta.context.onUpdateModificationMetadata}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
             isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
@@ -160,8 +158,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         <Box sx={rootNetworkChipCellSx}>
             <RootNetworkChipCell
                 row={row}
-                studyUuid={meta.context.studyUuid ?? null}
-                currentNodeId={meta.context.currentNodeId}
+                onUpdateModificationStatusByRootNetwork={meta.context.onUpdateModificationStatusByRootNetwork}
                 rootNetwork={rootNetwork}
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}

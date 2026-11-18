@@ -22,6 +22,8 @@ export const businessErrorsEn = {
     'explore.permissionDenied': 'You are not allowed to perform this action.',
     'explore.maxElementsExceeded':
         'You have reached your user quota for cases and studies ({limit} cases and studies).',
+    'explore.modificationElementAlreadyExists':
+        "The composite modification '{elementName}' already exists in the directory.",
     'study.nodeNotFound': 'Node was not found.',
     'study.notFound': 'Study was not found.',
     'study.computationRunning': 'The operation cannot be performed because a computation is running.',
@@ -115,6 +117,7 @@ export const businessErrorsEn = {
         'Modification type of {modificationId} is invalid : actual type {modificationType} -> expected type {expectedModificationType}',
     'modification.containsShared': 'Modification {modificationId} contains a shared modification and cannot be shared',
     'modification.notFound': 'Modification {modificationId} not found',
+    'modification.shared.notFound': 'Shared modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',
     'modification.duplication.argument.error':
@@ -123,4 +126,7 @@ export const businessErrorsEn = {
     'modification.composite.move.cycle.error':
         'Moving composite modification {compositeModificationId} into {modificationId} would create a cycle',
     'modification.voltageLevel.attachmentLine.missing': 'Line attach for voltage level {voltageLevelId} is missing',
+
+    'report.notFound': 'Report not found.',
+    'report.notARoot': 'The report is not a root report.',
 };

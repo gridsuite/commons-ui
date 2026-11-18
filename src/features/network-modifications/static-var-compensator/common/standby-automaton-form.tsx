@@ -5,11 +5,11 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
 import { WarningAmber } from '@mui/icons-material';
-import { Box, Grid, TextField, Tooltip } from '@mui/material';
+import { Box, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { CheckboxInput, CheckboxNullableInput, FloatInput, SwitchInput } from '../../../../components';
 import { SusceptanceArea } from './susceptance-area';
@@ -35,7 +35,6 @@ export function StandbyAutomatonForm({
     const previousAutomaton = previousValues?.standbyAutomatonInfos;
     const hasPreviousAutomaton = previousAutomaton != null;
 
-    const [hover, setHover] = useState(false);
     const watchAddStandbyAutomatonProps = useWatch({
         name: `${id}.${FieldConstants.ADD_STAND_BY_AUTOMATON}`,
     });
@@ -130,23 +129,14 @@ export function StandbyAutomatonForm({
             />
         ),
         standby: (
-            <Grid container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-                <Grid container sx={{ width: '100%' }}>
-                    {standbyField}
-                    {hover && standbyDisabled && (
-                        <Box
-                            sx={{
-                                marginLeft: 2,
-                                marginTop: '5px',
-                            }}
-                        >
-                            <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
-                                <WarningAmber color="warning" />
-                            </Tooltip>
-                        </Box>
-                    )}
-                </Grid>
-            </Grid>
+            <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
+                <Box sx={{ flex: 1, minWidth: 0 }}>{standbyField}</Box>
+                {standbyDisabled && (
+                    <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
+                        <WarningAmber color="warning" sx={{ mt: 1 }} />
+                    </Tooltip>
+                )}
+            </Stack>
         ),
         lVoltageSetLimit: createField(
             `${id}.${FieldConstants.LOW_VOLTAGE_SET_POINT}`,

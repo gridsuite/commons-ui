@@ -17,7 +17,7 @@ import { BranchInfos } from '../../line';
 import { RatioTapChangerPane } from '../tapChanger/ratioTapChanger/RatioTapChangerPane';
 import { PhaseTapChangerPane } from '../tapChanger/phaseTapChanger/PhaseTapChangerPane';
 import { TwoWindingsTransformerCharacteristicsPane } from '../characteristics';
-import { ToBeEstimatedForm, TwoWindingsTransformerModificationDto } from '../modification';
+import { TapPositionMeasurementsForm, ToBeEstimatedForm, TwoWindingsTransformerModificationDto } from '../modification';
 import { EquipmentType, Identifiable } from '../../../../utils';
 
 export interface TwoWindingsTransformerDialogTabsContentProps extends ConnectivityNetworkProps {
@@ -59,6 +59,10 @@ export function TwoWindingsTransformerDialogTabsContent({
             {isModification && (
                 <Box hidden={tabIndex !== TwoWindingsTransformerDialogTab.STATE_ESTIMATION_TAB}>
                     <BranchActiveReactivePowerMeasurementsForm equipmentToModify={twtToModify} />
+                    <TapPositionMeasurementsForm
+                        measurementRatioTap={twtToModify?.measurementRatioTap}
+                        measurementPhaseTap={twtToModify?.measurementPhaseTap}
+                    />
                     <ToBeEstimatedForm toBeEstimated={twtToModify?.toBeEstimated} />
                 </Box>
             )}

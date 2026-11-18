@@ -16,6 +16,7 @@ import { OptionalServicesStatus, useParametersBackend } from '../../../hooks';
 import {
     fetchShortCircuitParameters,
     getShortCircuitSpecificParametersDescription,
+    resetShortCircuitParameters,
     updateShortCircuitParameters,
 } from '../../../services/short-circuit-analysis';
 import { isDisabledValidationButton } from '../../../utils/form-utils';
@@ -39,6 +40,7 @@ export function ShortCircuitParametersEditionDialog({
         {
             backendFetchParameters: fetchShortCircuitParameters,
             backendUpdateParameters: updateShortCircuitParameters,
+            backendResetParameters: resetShortCircuitParameters,
             backendFetchSpecificParametersDescription: getShortCircuitSpecificParametersDescription,
         }
     );

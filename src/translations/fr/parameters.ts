@@ -178,6 +178,8 @@ export const parametersFr = {
 
     updateVoltageInitParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'initialisation du plan de tension",
+    resetVoltageInitParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'initialisation du plan de tension",
     VoltageInitParametersGeneralTabLabel: 'Général',
     VoltageInitParametersGeneralApplyModificationsLabel: 'Appliquer automatiquement la modification du plan de tension',
     VoltageInitParametersGeneralSaveInfo:
@@ -210,7 +212,6 @@ export const parametersFr = {
     ShuntCompensatorActivationThresholdDescription:
         "Seuil (en Mvar) au-dessus duquel on considère qu'il y a un écart significatif (et donc tracé dans les logs fonctionnels) entre valeur arrondie et valeur théorique pour l'enclenchement d'un MCS",
     VoltageInitParametersError: "Erreur lors de la mise à jour des paramètres d'initialisation du plan de tension",
-    voltageInitCancelError: "L'initialisation du plan de tension n'a pas pu être annulée",
     AdjustExistingLimits: 'Modifier les limites existantes',
     AdjustExistingLimitsInfo:
         'Saisir une valeur positive pour augmenter une limite existante et une valeur négative pour abaisser une limite existante (nouvelle limite = limite existante + valeur saisie).',
@@ -290,6 +291,8 @@ export const parametersFr = {
 
     // Computed translations used in the snackbars
     // LoadFlow
+    fetchDefaultLoadFlowProviderError:
+        'Une erreur est survenue lors de la récupération du fournisseur par défaut de calcul de répartition',
     fetchLoadFlowParametersError:
         'Une erreur est survenue lors de la récupération des paramètres de calcul de répartition',
     fetchLoadFlowProviderError:
@@ -300,6 +303,8 @@ export const parametersFr = {
         'Une erreur est survenue lors de la récupération des paramètres spécifiques de calcul de répartition',
     updateLoadFlowParametersError:
         'Une erreur est survenue lors de la mise à jour des paramètres de calcul de répartition',
+    resetLoadFlowParametersError:
+        'Une erreur est survenue lors de la réinitialisation des paramètres de calcul de répartition',
     // SecurityAnalysis
     fetchSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la récupération des paramètres de l'analyse de sécurité",
@@ -307,6 +312,8 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sécurité",
     updateSecurityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sécurité",
+    resetSecurityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sécurité",
     getSecurityAnalysisContingenciesCountError:
         "Une erreur est survenue lors de l'estimation du nombre d'aléas de l'analyse de sécurité",
     // SensitivityAnalysis
@@ -316,12 +323,15 @@ export const parametersFr = {
         "Une erreur est survenue lors de la récupération des fournisseurs d'analyse de sensibilité",
     updateSensitivityAnalysisParametersError:
         "Une erreur est survenue lors de la mise a jour des paramètres de l'analyse de sensibilité",
+    resetSensitivityAnalysisParametersError:
+        "Une erreur est survenue lors de la réinitialisation des paramètres de l'analyse de sensibilité",
     getSensitivityAnalysisFactorsCountError: "Une erreur est survenue lors de l'estimation du nombre de calculs",
     // Other
     resetLoadFlowParametersWarning:
         'Impossible de récupérer les paramètres de calcul de répartition définis dans le profil utilisateur (les valeurs par défaut sont appliquées)',
     PccMinParametersError: 'Erreur lors de la mise à jour des paramètres de pcc du min',
     updatePccMinParametersError: 'Une erreur est survenue lors de la mise a jour des paramètres de pcc min',
+    resetPccMinParametersError: 'Une erreur est survenue lors de la réinitialisation des paramètres de pcc min',
     pccMinParamFilter: 'Définition des postes en défaut',
 
     Dynawo: 'Dynawo',

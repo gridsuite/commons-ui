@@ -49,7 +49,7 @@ export const networkModificationsEn = {
     'network_modifications.modifications': 'Updating modification list ...',
     'network_modifications.GENERATION_DISPATCH': 'Generation dispatch {computedLabel}',
     'network_modifications.VOLTAGE_INIT_MODIFICATION': 'Voltage profile initialization {computedLabel}',
-    'network_modifications.TABULAR_MODIFICATION': 'Tabular modification ({computedLabel})',
+    'network_modifications.TABULAR_MODIFICATION': 'Modifying {computedLabel}{csvFilename}',
     'network_modifications.tabular.GENERATOR_MODIFICATION': 'generators',
     'network_modifications.tabular.LOAD_MODIFICATION': 'loads',
     'network_modifications.BY_FORMULA_MODIFICATION': 'Modification by formula ({computedLabel})',
@@ -60,7 +60,7 @@ export const networkModificationsEn = {
     'network_modifications.tabular.TWO_WINDINGS_TRANSFORMER_MODIFICATION': 'two windings transformers',
     'network_modifications.tabular.SHUNT_COMPENSATOR_MODIFICATION': 'linear shunt compensators',
     'network_modifications.tabular.SUBSTATION_MODIFICATION': 'substations',
-    'network_modifications.TABULAR_CREATION': 'Tabular creation ({computedLabel})',
+    'network_modifications.TABULAR_CREATION': 'Creating {computedLabel}{csvFilename}',
     'network_modifications.tabular.GENERATOR_CREATION': 'generators',
     'network_modifications.tabular.BATTERY_CREATION': 'batteries',
     'network_modifications.tabular.LOAD_CREATION': 'loads',
@@ -78,6 +78,7 @@ export const networkModificationsEn = {
     'network_modifications.CREATE_VOLTAGE_LEVEL_TOPOLOGY': 'Creating a busbar in voltage level {computedLabel}',
     'network_modifications.CREATE_VOLTAGE_LEVEL_SECTION': 'Adding busbar section to voltage level {computedLabel}',
     'network_modifications.MOVE_VOLTAGE_LEVEL_FEEDER_BAYS': 'Moving feeder bays in voltage level {computedLabel}',
+    'network_modifications.NETWORK_REDUCTION': 'Network reduction',
     // Tabs
     SubstationTab: 'Substation',
     ConnectivityTab: 'Connectivity',
@@ -178,6 +179,7 @@ export const networkModificationsEn = {
     NoVoltageLevelPositionMessage: 'Select a voltage level to display taken positions',
     ModifyLoad: 'Modify load',
     MeasurementsSection: 'Measurements',
+    TapMeasurementsSection: 'Tap position measurements',
     ValidMeasurement: 'Valid',
     InvalidMeasurement: 'Invalid',
     DeleteEquipment: 'Delete equipment',
@@ -625,7 +627,7 @@ export const networkModificationsEn = {
     'TabularCreationSkeletonComment.GENERATOR':
         '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,,,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
     'TabularCreationSkeletonComment.BATTERY':
-        '#,,,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+        '#,,,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,,true | false,required if voltageRegulationOn is true,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,',
     'TabularCreationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,,,true | false,,TOP | BOTTOM,,,',
     'TabularCreationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR | required if maxQAtNominalV is set,,',
@@ -637,7 +639,7 @@ export const networkModificationsEn = {
     'TabularModificationSkeletonComment.GENERATOR':
         '#,,HYDRO | NUCLEAR | WIND | THERMAL | SOLAR | OTHER,true | false,,TOP | BOTTOM,,,,,,,true | false,,,,,,,,,,,,true | false,,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,,,true | false,,,,,,,',
     'TabularModificationSkeletonComment.BATTERY':
-        '#,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,',
+        '#,,true | false,,TOP | BOTTOM,,,,,,true | false,,,,,,,,,,,,true | false,,true | false,,,LINE | TWO_WINDINGS_TRANSFORMER | GENERATOR | LOAD | BATTERY | SHUNT_COMPENSATOR | STATIC_VAR_COMPENSATOR | BOUNDARY_LINE | HVDC_CONVERTER_STATION,',
     'TabularModificationSkeletonComment.LOAD': '#,,AUXILIARY | FICTITIOUS | UNDEFINED,true | false,,TOP | BOTTOM,,,',
     'TabularModificationSkeletonComment.SHUNT_COMPENSATOR':
         '#For each shunt compensator it is possible to modify either the maximum reactive power (and the type) or the maximum susceptance. In case of conflicting input the maximum susceptance will be ignored.,,true | false,,TOP | BOTTOM,,,,REACTOR | CAPACITOR,,',
@@ -703,6 +705,10 @@ export const networkModificationsEn = {
 
     GeneratorScaling: 'Generator scaling',
     GeneratorScalingError: 'Error while creating a generator scaling',
+
+    NetworkReduction: 'Network reduction',
+    NetworkReductionVoltageLevelFilters: 'Voltage levels to remove',
+    NetworkReductionError: 'Error while creating a network reduction',
 
     LoadScaling: 'Load scaling',
     LoadScalingError: 'Error while creating a load scaling',

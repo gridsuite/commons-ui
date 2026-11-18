@@ -36,6 +36,11 @@ interface MeasurementsInfos {
     validity: boolean;
 }
 
+export interface DiscreteMeasurementsInfos {
+    value?: number;
+    validity: boolean;
+}
+
 export interface TapChangerStepMapInfos {
     [FieldConstants.STEPS_RESISTANCE]: number;
     [FieldConstants.STEPS_REACTANCE]: number;
@@ -96,5 +101,7 @@ export interface TwoWindingsTransformerMapInfos extends Identifiable {
     measurementQ1?: MeasurementsInfos;
     measurementP2?: MeasurementsInfos;
     measurementQ2?: MeasurementsInfos;
+    measurementRatioTap?: DiscreteMeasurementsInfos;
+    measurementPhaseTap?: DiscreteMeasurementsInfos;
     toBeEstimated?: TwoWindingsTransformerToBeEstimatedInfos;
 }

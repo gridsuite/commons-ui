@@ -190,4 +190,8 @@ export const filterExpertFr = {
     substationId: 'ID Site',
     substationId1: 'ID Site 1',
     substationId2: 'ID Site 2',
+    switchKind: 'Type',
+    breaker: 'Disjoncteur',
+    loadBreaker: 'Interrupteur',
+    disconnector: 'Sectionneur',
 };

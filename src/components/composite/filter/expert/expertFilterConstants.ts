@@ -43,6 +43,7 @@ export const EXPERT_FILTER_EQUIPMENTS: typeof ALL_EQUIPMENTS = {
     [EquipmentType.STATIC_VAR_COMPENSATOR]: ALL_EQUIPMENTS[EquipmentType.STATIC_VAR_COMPENSATOR],
     [EquipmentType.HVDC_LINE]: ALL_EQUIPMENTS[EquipmentType.HVDC_LINE],
     [EquipmentType.BOUNDARY_LINE]: ALL_EQUIPMENTS[EquipmentType.BOUNDARY_LINE],
+    [EquipmentType.SWITCH]: ALL_EQUIPMENTS[EquipmentType.SWITCH],
 };
 
 export const ENERGY_SOURCE_OPTIONS = [
@@ -94,6 +95,12 @@ export const CONVERTERS_MODE_OPTIONS = [
         name: 'SIDE_1_INVERTER_SIDE_2_RECTIFIER',
         label: 'side1InverterSide2Rectifier',
     },
+];
+
+export const SWITCH_KIND_OPTIONS = [
+    { name: 'BREAKER', label: 'breaker' },
+    { name: 'LOAD_BREAKER', label: 'loadBreaker' },
+    { name: 'DISCONNECTOR', label: 'disconnector' },
 ];
 
 // customName is used to export to the server
@@ -1135,6 +1142,21 @@ export const FIELDS_OPTIONS = {
         label: 'substationId2',
         dataType: DataType.STRING,
     },
+    SWITCH_KIND: {
+        name: FieldType.SWITCH_KIND,
+        label: 'switchKind',
+        dataType: DataType.ENUM,
+        values: SWITCH_KIND_OPTIONS,
+        valueEditorType: 'select',
+        defaultValue: 'BREAKER',
+    },
+    FICTITIOUS: {
+        name: FieldType.FICTITIOUS,
+        label: 'Fictitious',
+        dataType: DataType.BOOLEAN,
+        defaultValue: false,
+        valueEditorType: 'switch',
+    },
 };
 
 export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
@@ -1471,6 +1493,19 @@ export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
         FIELDS_OPTIONS.SHUNT_CONDUCTANCE,
         FIELDS_OPTIONS.PAIRED,
         FIELDS_OPTIONS.PAIRING_KEY,
+        FIELDS_OPTIONS.PROPERTY,
+        FIELDS_OPTIONS.SUBSTATION_ID,
+        FIELDS_OPTIONS.SUBSTATION_PROPERTY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_PROPERTY,
+    ],
+    SWITCH: [
+        FIELDS_OPTIONS.ID,
+        FIELDS_OPTIONS.NAME,
+        FIELDS_OPTIONS.SWITCH_KIND,
+        FIELDS_OPTIONS.FICTITIOUS,
+        FIELDS_OPTIONS.COUNTRY,
+        FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
+        FIELDS_OPTIONS.NOMINAL_VOLTAGE,
         FIELDS_OPTIONS.PROPERTY,
         FIELDS_OPTIONS.SUBSTATION_ID,
         FIELDS_OPTIONS.SUBSTATION_PROPERTY,
