@@ -14,6 +14,7 @@ import { FieldConstants, ReactivePowerAdornment, SusceptanceAdornment } from '..
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 import { computeQ0 } from './standby-automaton-form-utils';
+import { getPreviousNominalV } from './set-points-limits-form-utils';
 
 export interface SusceptanceAreaProps {
     isEquipmentModification?: boolean;
@@ -30,10 +31,14 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
     const watchMaxS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_SUSCEPTANCE}` });
     const watchMinQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_Q_AT_NOMINAL_V}` });
     const watchMaxQ = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_Q_AT_NOMINAL_V}` });
+    const watchConnectivityVoltageLevelId = useWatch({
+        name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
+    });
+    const previousNominalV = getPreviousNominalV(previousValues, watchConnectivityVoltageLevelId);
     const minS = watchMinS ?? previousValues?.minSusceptance ?? null;
     const maxS = watchMaxS ?? previousValues?.maxSusceptance ?? null;
-    const minQ = watchMinQ ?? computeQ0(previousValues?.minSusceptance, previousValues?.nominalV) ?? null;
-    const maxQ = watchMaxQ ?? computeQ0(previousValues?.maxSusceptance, previousValues?.nominalV) ?? null;
+    const minQ = watchMinQ ?? computeQ0(previousValues?.minSusceptance, previousNominalV) ?? null;
+    const maxQ = watchMaxQ ?? computeQ0(previousValues?.maxSusceptance, previousNominalV) ?? null;
     const previousB0 = previousValues?.standbyAutomatonInfos?.b0;
     // CHARACTERISTICS_CHOICE_AUTOMATON used only to validate the schema (work around)
     useEffect(() => {
@@ -115,7 +120,7 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
             name={`${id}.${FieldConstants.Q0}`}
             label="fixQAtNominalV"
             adornment={ReactivePowerAdornment}
-            previousValue={computeQ0(previousB0, previousValues?.nominalV)}
+            previousValue={computeQ0(previousB0, previousNominalV)}
             clearable={isEquipmentModification}
         />
     );

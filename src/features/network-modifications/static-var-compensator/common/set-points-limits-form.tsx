@@ -21,6 +21,7 @@ import { RegulatingTerminalForm, REGULATION_TYPES } from '../../common';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { VOLTAGE_REGULATION_MODES } from './constants';
 import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
+import { getPreviousNominalV, getPreviousRegulationMode } from './set-points-limits-form-utils';
 
 export interface SetPointsLimitsFormProps {
     voltageLevelOptions: Identifiable[];
@@ -28,18 +29,6 @@ export interface SetPointsLimitsFormProps {
     isModification?: boolean;
     staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null;
 }
-
-export const getPreviousRegulationMode = (staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null) => {
-    if (!staticVarCompensatorToModify) {
-        return undefined;
-    }
-    if (!staticVarCompensatorToModify.isRegulating) {
-        return VOLTAGE_REGULATION_MODES.OFF;
-    }
-    return staticVarCompensatorToModify.regulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id
-        ? VOLTAGE_REGULATION_MODES.REACTIVE_POWER
-        : VOLTAGE_REGULATION_MODES.VOLTAGE;
-};
 
 const toQAtNominalV = (susceptance?: number | null, nominalV?: number | null) =>
     susceptance != null && nominalV != null ? susceptance * nominalV ** 2 : undefined;
@@ -68,12 +57,7 @@ export function SetPointsLimitsForm({
     const watchConnectivityVoltageLevelId = useWatch({
         name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
     });
-    // the Q at nominal voltage depends on the nominal voltage: the previous values are not displayed
-    // when the voltage level is changed, because the nominal voltage of the new voltage level is unknown here
-    const isVoltageLevelChanged =
-        !!watchConnectivityVoltageLevelId &&
-        watchConnectivityVoltageLevelId !== staticVarCompensatorToModify?.voltageLevelId;
-    const previousNominalV = isVoltageLevelChanged ? undefined : staticVarCompensatorToModify?.nominalV;
+    const previousNominalV = getPreviousNominalV(staticVarCompensatorToModify, watchConnectivityVoltageLevelId);
 
     const watchCharacteristicsChoice = useWatch({ name: `${id}.${FieldConstants.CHARACTERISTICS_CHOICE}` });
     // a tricky solution to rerender voltage/reactive setpoints field with label changed between required <-> optional

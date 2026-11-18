@@ -15,7 +15,7 @@ import { CheckboxInput, CheckboxNullableInput, FloatInput, SwitchInput } from '.
 import { SusceptanceArea } from './susceptance-area';
 import { VOLTAGE_REGULATION_MODES } from './constants';
 import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
-import { getPreviousRegulationMode } from './set-points-limits-form';
+import { getPreviousRegulationMode } from './set-points-limits-form-utils';
 
 type FieldKeys = 'standby' | 'lVoltageSetLimit' | 'hVoltageSetLimit' | 'lVoltageThreshold' | 'hVoltageThreshold';
 
@@ -68,11 +68,43 @@ export function StandbyAutomatonForm({
             setValue(standbyFieldName, false);
             return;
         }
+        if (!watchVoltageMode) {
+            return;
+        }
         const standbyValue = getValues(standbyFieldName);
         if (standbyValue === true || (standbyValue == null && previousAutomaton?.standby)) {
             setValue(standbyFieldName, false);
         }
-    }, [standbyDisabled, setValue, getValues, id, isEquipmentModification, previousAutomaton?.standby]);
+    }, [
+        standbyDisabled,
+        watchVoltageMode,
+        setValue,
+        getValues,
+        id,
+        isEquipmentModification,
+        previousAutomaton?.standby,
+    ]);
+
+    useEffect(() => {
+        if (!isEquipmentModification || showAutomatonFields) {
+            return;
+        }
+        const automatonFields = [
+            FieldConstants.STAND_BY_AUTOMATON,
+            FieldConstants.LOW_VOLTAGE_SET_POINT,
+            FieldConstants.HIGH_VOLTAGE_SET_POINT,
+            FieldConstants.LOW_VOLTAGE_THRESHOLD,
+            FieldConstants.HIGH_VOLTAGE_THRESHOLD,
+            FieldConstants.B0,
+            FieldConstants.Q0,
+        ];
+        automatonFields.forEach((field) => {
+            const fieldName = `${id}.${field}`;
+            if (getValues(fieldName) != null) {
+                setValue(fieldName, null);
+            }
+        });
+    }, [isEquipmentModification, showAutomatonFields, getValues, setValue, id]);
 
     const formatOnOff = (value: boolean | undefined) => {
         if (!previousValues) {

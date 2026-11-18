@@ -11,6 +11,7 @@ import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../ut
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { REGULATION_TYPES } from '../../common';
 import { VOLTAGE_REGULATION_MODES } from './constants';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 
 export const getReactiveFormEmptyFormData = (
     id = FieldConstants.SETPOINTS_LIMITS,
@@ -182,3 +183,28 @@ export const getReactiveFormData = ({
                 : null, // set null because this object field is conditionally required, see in schema
     },
 });
+
+export const getPreviousRegulationMode = (staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null) => {
+    if (!staticVarCompensatorToModify) {
+        return undefined;
+    }
+    if (!staticVarCompensatorToModify.isRegulating) {
+        return VOLTAGE_REGULATION_MODES.OFF;
+    }
+    return staticVarCompensatorToModify.regulationMode === VOLTAGE_REGULATION_MODES.REACTIVE_POWER.id
+        ? VOLTAGE_REGULATION_MODES.REACTIVE_POWER
+        : VOLTAGE_REGULATION_MODES.VOLTAGE;
+};
+
+/**
+ * The Q at nominal voltage depends on the nominal voltage: the previous nominal voltage is not returned
+ * when the voltage level is changed, because the nominal voltage of the new voltage level is unknown here.
+ */
+export const getPreviousNominalV = (
+    staticVarCompensatorToModify: StaticVarCompensatorFormInfo | null | undefined,
+    connectivityVoltageLevelId: string | null | undefined
+) => {
+    const isVoltageLevelChanged =
+        !!connectivityVoltageLevelId && connectivityVoltageLevelId !== staticVarCompensatorToModify?.voltageLevelId;
+    return isVoltageLevelChanged ? undefined : staticVarCompensatorToModify?.nominalV;
+};
