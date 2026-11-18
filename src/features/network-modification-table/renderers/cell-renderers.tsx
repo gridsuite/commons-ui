@@ -79,11 +79,11 @@ export function NameCellRenderer({ row, table, column }: CCtx) {
 
 export function DescriptionCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
+
     return (
         <DescriptionCell
             row={row}
-            studyUuid={meta?.context.studyUuid ?? null}
-            currentNodeId={meta?.context.currentNodeId}
+            onUpdateModificationNameAndDescription={meta?.context.onUpdateModificationNameAndDescription}
             isDisabled={meta?.status.isDisabled}
             isSaveDisabled={isModificationEditLocked(row.original)}
         />
@@ -96,9 +96,8 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
     if (isReferenceModification(row.original)) {
         return (
             <ReferenceLinkCell
+                onUnshareModification={meta?.context.onUnshareModification}
                 row={row}
-                studyUuid={meta?.context.studyUuid ?? null}
-                currentNodeId={meta?.context.currentNodeId ?? null}
                 disabled={meta?.status.isDisabled}
             />
         );
@@ -107,17 +106,13 @@ export function ReferenceCellRenderer({ row, table }: CCtx) {
 }
 export function SwitchCellRenderer({ row, table }: CCtx) {
     const { meta } = table.options;
-    if (
-        !meta?.modifications.activations ||
-        !meta.modifications.setPendingActivations ||
-        !meta.modifications.saveActivation
-    ) {
+    if (!meta?.modifications.activations || !meta.modifications.setPendingActivations) {
         return null;
     }
     return (
         <SwitchCell
             row={row}
-            saveActivation={meta.modifications.saveActivation}
+            onUpdateModificationActivation={meta.context.onUpdateModificationActivation}
             activations={meta.modifications.activations}
             setPendingActivations={meta.modifications.setPendingActivations}
             isDisabled={meta.status.isDisabled || !!row.original.childFromReadOnlyShared}
@@ -155,8 +150,7 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         !rootNetwork ||
         !meta?.modifications.activations ||
         !meta.modifications.applicabilities ||
-        !meta.modifications.setPendingApplicabilities ||
-        !meta.modifications.saveApplicability
+        !meta.modifications.setPendingApplicabilities
     ) {
         return null;
     }
@@ -164,7 +158,9 @@ export function RootNetworkCellRenderer({ row, column, table }: CCtx) {
         <Box sx={rootNetworkChipCellSx}>
             <RootNetworkChipCell
                 row={row}
-                saveApplicability={meta.modifications.saveApplicability}
+                onUpdateModificationApplicabilityByRootNetwork={
+                    meta.context.onUpdateModificationApplicabilityByRootNetwork
+                }
                 rootNetwork={rootNetwork}
                 activations={meta.modifications.activations}
                 applicabilities={meta.modifications.applicabilities}

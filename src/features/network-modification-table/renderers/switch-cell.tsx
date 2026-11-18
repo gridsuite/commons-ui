@@ -12,18 +12,18 @@ import { Row } from '@tanstack/react-table';
 import { useSnackMessage } from '../../../hooks';
 import { ComposedModificationMetadata, NetworkModificationActivations, snackWithFallback } from '../../../utils';
 import { isActivated, isDeactivatedByAncestor } from '../utils';
-import type { SaveModificationActivation } from '../network-modifications-table';
+import type { UpdateModificationActivationFn } from '../network-modifications-table.type';
 
 export interface SwitchCellProps {
     row: Row<ComposedModificationMetadata>;
-    saveActivation: SaveModificationActivation;
     activations: NetworkModificationActivations;
     setPendingActivations: Dispatch<SetStateAction<NetworkModificationActivations>>;
+    onUpdateModificationActivation?: UpdateModificationActivationFn;
     isDisabled?: boolean;
 }
 
 export function SwitchCell(props: Readonly<SwitchCellProps>) {
-    const { row, saveActivation, activations, setPendingActivations, isDisabled = false } = props;
+    const { row, onUpdateModificationActivation, activations, setPendingActivations, isDisabled = false } = props;
     const [isLoading, setIsLoading] = useState(false);
     const { snackError } = useSnackMessage();
 
@@ -33,7 +33,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
 
     const toggleModificationActive = useCallback(
         (_event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
-            if (!modificationUuid) {
+            if (!modificationUuid || !onUpdateModificationActivation) {
                 return;
             }
 
@@ -41,7 +41,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             // Apply optimistic update, dropped once the modifications are fetched back with the new value
             setPendingActivations((prev) => ({ ...prev, [modificationUuid]: checked }));
 
-            saveActivation(data, checked)
+            onUpdateModificationActivation(modificationUuid, checked)
                 .catch((error) => {
                     // Rollback on failure: with nothing pending the switch reads the modification again
                     setPendingActivations((prev) => {
@@ -55,7 +55,7 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
                     setIsLoading(false);
                 });
         },
-        [modificationUuid, data, saveActivation, setPendingActivations, snackError]
+        [modificationUuid, onUpdateModificationActivation, setPendingActivations, snackError]
     );
 
     return (
@@ -67,7 +67,12 @@ export function SwitchCell(props: Readonly<SwitchCellProps>) {
             <span>
                 <Switch
                     size="small"
-                    disabled={isLoading || isDisabled || isDeactivatedByAncestor(row, activations)}
+                    disabled={
+                        isLoading ||
+                        isDisabled ||
+                        isDeactivatedByAncestor(row, activations) ||
+                        !onUpdateModificationActivation
+                    }
                     checked={modificationActivated}
                     onChange={toggleModificationActive}
                 />

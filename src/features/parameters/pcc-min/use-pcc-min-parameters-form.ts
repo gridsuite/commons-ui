@@ -20,7 +20,7 @@ import { useSnackMessage } from '../../../hooks';
 import { DESCRIPTION, NAME } from '../../../components/ui';
 import { FILTERS, ID } from '../../../utils/constants/filterConstant';
 import { fetchPccMinParameters, updatePccMinParameters } from '../../../services/pcc-min';
-import { updateParameter } from '../../../services';
+import { updateParametersElement } from '../common/update-parameters-element';
 import { ElementType, PccMinParametersEnriched, snackWithFallback } from '../../../utils';
 import {
     getNameElementEditorEmptyFormData,
@@ -107,9 +107,10 @@ export const UsePccMinParametersForm = ({
     const onSaveDialog = useCallback(
         (formData: Record<string, any>) => {
             if (parametersUuid) {
-                updateParameter(
+                updateParametersElement(
+                    formMethods,
                     parametersUuid,
-                    fromPccMinParametersFormToParamValues(formData),
+                    () => fromPccMinParametersFormToParamValues(formData),
                     formData[NAME],
                     ElementType.PCC_MIN_PARAMETERS,
                     formData[DESCRIPTION] ?? ''
@@ -118,7 +119,7 @@ export const UsePccMinParametersForm = ({
                 });
             }
         },
-        [parametersUuid, snackError]
+        [formMethods, parametersUuid, snackError]
     );
     // GridExplore init case
     useEffect(() => {
