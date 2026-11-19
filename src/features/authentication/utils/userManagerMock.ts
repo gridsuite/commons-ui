@@ -5,7 +5,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-/* eslint-disable max-classes-per-file, class-methods-use-this */
+/* eslint max-classes-per-file: "off" */
+/* eslint-disable class-methods-use-this */
 
 import {
     type OidcClientSettings,
