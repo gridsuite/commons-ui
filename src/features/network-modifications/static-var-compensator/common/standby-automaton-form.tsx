@@ -86,6 +86,17 @@ export function StandbyAutomatonForm({
     ]);
 
     useEffect(() => {
+        // a new automaton is added on an equipment without one: standby is off by default, as in creation
+        if (!isEquipmentModification || hasPreviousAutomaton || watchAddStandbyAutomatonProps !== true) {
+            return;
+        }
+        const standbyFieldName = `${id}.${FieldConstants.STAND_BY_AUTOMATON}`;
+        if (getValues(standbyFieldName) == null) {
+            setValue(standbyFieldName, false);
+        }
+    }, [isEquipmentModification, hasPreviousAutomaton, watchAddStandbyAutomatonProps, getValues, setValue, id]);
+
+    useEffect(() => {
         if (!isEquipmentModification || showAutomatonFields) {
             return;
         }
@@ -135,6 +146,7 @@ export function StandbyAutomatonForm({
         <CheckboxNullableInput
             name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
             label="StandbyAutomaton"
+            nullDisabled
             formProps={{ disabled: standbyDisabled }}
             previousValue={hasPreviousAutomaton ? formatOnOff(previousAutomaton?.standby) : undefined}
         />
