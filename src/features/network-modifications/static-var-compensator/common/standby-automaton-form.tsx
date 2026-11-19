@@ -8,7 +8,7 @@
 import { useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { WarningAmber } from '@mui/icons-material';
+import { InfoOutlined } from '@mui/icons-material';
 import { Box, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
 import { CheckboxInput, CheckboxNullableInput, FloatInput, SwitchInput } from '../../../../components';
@@ -145,9 +145,6 @@ export function StandbyAutomatonForm({
                 disabled: standbyDisabled,
             }}
             label="StandbyAutomaton"
-            labelProps={{
-                labelPlacement: 'start',
-            }}
         />
     );
 
@@ -161,11 +158,13 @@ export function StandbyAutomatonForm({
             />
         ),
         standby: (
-            <Stack direction="row" spacing={2} sx={{ alignItems: 'flex-start' }}>
-                <Box sx={{ flex: 1, minWidth: 0 }}>{standbyField}</Box>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+                <Box sx={{ flex: 'none' }}>{standbyField}</Box>
                 {standbyDisabled && (
                     <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
-                        <WarningAmber color="warning" sx={{ mt: 1 }} />
+                        <Box sx={{ display: 'flex', alignItems: 'center', height: 42 }}>
+                            <InfoOutlined color="info" fontSize="small" />
+                        </Box>
                     </Tooltip>
                 )}
             </Stack>
