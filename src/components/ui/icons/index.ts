@@ -11,3 +11,14 @@ export { LeftPanelCloseIcon } from './LeftPanelCloseIcon';
 export { EditNoteIcon } from './EditNoteIcon';
 export { VoltageUnitIcon } from './VoltageUnitIcon';
 export { LinkOffIcon } from './LinkOffIcon';
+export { TopologyIcon } from './TopologyIcon';
+export {
+    BreakerCloseIcon,
+    BreakerOpenIcon,
+    BreakerUndeterminedIcon,
+    DisconnectorCloseIcon,
+    DisconnectorOpenIcon,
+    LoadBreakerSwitchCloseIcon,
+    LoadBreakerSwitchOpenIcon,
+    LoadBreakerSwitchUndeterminedIcon,
+} from './SwitchIcons';
