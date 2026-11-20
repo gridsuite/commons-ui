@@ -126,11 +126,13 @@ export const computeQ0 = (b0?: number | null, nominalV?: number | null): number 
  * this information is given by the form context `hasStandbyAutomaton`.
  */
 const requiredIfStandbyAutomatonAdded = (baseSchema: NumberSchema<number | null | undefined>) =>
-    baseSchema.nullable().when([FieldConstants.ADD_STAND_BY_AUTOMATON, '$hasStandbyAutomaton'], {
-        is: (addStandbyAutomaton: boolean | null, hasStandbyAutomaton: boolean | undefined) =>
-            addStandbyAutomaton === true && !hasStandbyAutomaton,
-        then: (schema: Schema) => schema.required(),
-    });
+    baseSchema
+        .nullable()
+        .when(
+            [FieldConstants.ADD_STAND_BY_AUTOMATON, '$hasStandbyAutomaton'],
+            ([addStandbyAutomaton, hasStandbyAutomaton], schema) =>
+                addStandbyAutomaton === true && !hasStandbyAutomaton ? schema.required() : schema
+        );
 
 const getFixedPartModificationSchema = (
     characteristicsChoice: string,
@@ -148,11 +150,10 @@ const getFixedPartModificationSchema = (
                 FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON,
                 '$hasStandbyAutomaton',
             ],
-            {
-                is: (addStandbyAutomaton: boolean | null, choice: string, hasStandbyAutomaton: boolean | undefined) =>
-                    addStandbyAutomaton === true && !hasStandbyAutomaton && choice === characteristicsChoice,
-                then: (schema) => schema.required(),
-            }
+            ([addStandbyAutomaton, choice, hasStandbyAutomaton], schema) =>
+                addStandbyAutomaton === true && !hasStandbyAutomaton && choice === characteristicsChoice
+                    ? schema.required()
+                    : schema
         )
         .test('fixedPartGreaterThanMin', lessThanMinError, (value, context) => {
             const min = context.parent[minField];

@@ -64,10 +64,7 @@ const requiredWhenDistantVoltageMode = <T extends yup.AnySchema>(baseSchema: T, 
     });
 
 const requiredForCreation = (baseSchema: StringSchema<string | null | undefined>, isEquipmentModification: boolean) =>
-    baseSchema.when([], {
-        is: () => !isEquipmentModification,
-        then: (schema) => schema.required(),
-    });
+    isEquipmentModification ? baseSchema : baseSchema.required();
 
 export const getReactiveFormValidationSchema = (isEquipmentModification = false) =>
     yup.object().shape({
