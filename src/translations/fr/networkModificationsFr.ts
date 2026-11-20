@@ -72,6 +72,7 @@ export const networkModificationsFr = {
     'network_modifications.LCC_CREATION': 'Création de la HVDC (LCC) {computedLabel}',
     'network_modifications.LCC_MODIFICATION': 'Modification de la HVDC (LCC) {computedLabel}',
     'network_modifications.STATIC_VAR_COMPENSATOR_CREATION': 'Création de CSPR {computedLabel}',
+    'network_modifications.STATIC_VAR_COMPENSATOR_MODIFICATION': 'Modification de CSPR {computedLabel}',
     'network_modifications.VOLTAGE_LEVEL_CREATION_SUBSTATION_CREATION':
         'Création du poste {voltageLevelEquipmentId} et du site {substationEquipmentId}',
     'network_modifications.VOLTAGE_LEVEL_TOPOLOGY_MODIFICATION':
@@ -454,6 +455,8 @@ export const networkModificationsFr = {
     AddAutomaton: 'Ajouter un automate',
     CreateStaticVarCompensator: 'Créer un CSPR',
     StaticVarCompensatorCreationError: "Erreur lors de la création d'un cspr",
+    ModifyStaticVarCompensator: 'Modifier un CSPR',
+    StaticVarCompensatorModificationError: "Erreur lors de la modification d'un CSPR",
     StaticVarCompensatorErrorQFixGreaterThanQMax: 'La valeur de Q Fixe doit être inférieure à la valeur de Q maximum',
     StaticVarCompensatorErrorQFixLessThanQMin: 'La valeur de Q Fixe doit être supérieure à la valeur de Q minimum',
     StaticVarCompensatorErrorSFixGreaterThanSMax:
