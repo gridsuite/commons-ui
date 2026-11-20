@@ -13,11 +13,13 @@ export type ModificationMetadataUpdate = Partial<NetworkModificationMetadata | C
 
 export type MoveModificationsFn = (modifications: ModificationMoveInfos[]) => Promise<unknown>;
 
-export type UpdateModificationStatusByRootNetworkFn = (
+export type UpdateModificationApplicabilityByRootNetworkFn = (
     rootNetworkUuid: UUID,
     modificationUuid: UUID,
     applicable: boolean
 ) => Promise<unknown>;
+
+export type UpdateModificationActivationFn = (modificationUuid: UUID, active: boolean) => Promise<unknown>;
 
 export type UpdateModificationMetadataFn = (
     modificationUuid: UUID,
