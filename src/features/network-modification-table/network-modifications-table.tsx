@@ -34,8 +34,9 @@ import { ModificationRow } from './row';
 import type {
     MoveModificationsFn,
     UnshareModificationFn,
+    UpdateModificationActivationFn,
+    UpdateModificationApplicabilityByRootNetworkFn,
     UpdateModificationMetadataFn,
-    UpdateModificationStatusByRootNetworkFn,
 } from './network-modifications-table.type';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
@@ -52,8 +53,8 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
     onMoveModifications?: MoveModificationsFn;
-    onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
-    onUpdateModificationMetadata?: UpdateModificationMetadataFn;
+    onUpdateModificationApplicabilityByRootNetwork?: UpdateModificationApplicabilityByRootNetworkFn;
+    onUpdateModificationActivation?: UpdateModificationActivationFn;
     onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
     onUnshareModification?: UnshareModificationFn;
     isDisabled?: boolean;
@@ -79,10 +80,10 @@ export function NetworkModificationsTable({
     isFetchingModifications,
     pendingState,
     onMoveModifications,
-    onUpdateModificationMetadata,
+    onUpdateModificationActivation,
     onUpdateModificationNameAndDescription,
     onUnshareModification,
-    onUpdateModificationStatusByRootNetwork,
+    onUpdateModificationApplicabilityByRootNetwork,
     rowStateResetKey,
 }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
@@ -143,10 +144,10 @@ export function NetworkModificationsTable({
     const tableMeta = useMemo(
         () => ({
             context: {
-                onUpdateModificationMetadata,
+                onUpdateModificationActivation,
                 onUpdateModificationNameAndDescription,
                 onUnshareModification,
-                onUpdateModificationStatusByRootNetwork,
+                onUpdateModificationApplicabilityByRootNetwork,
                 currentRootNetworkUuid,
                 rootNetworks,
             },
@@ -172,10 +173,10 @@ export function NetworkModificationsTable({
             },
         }),
         [
-            onUpdateModificationMetadata,
+            onUpdateModificationActivation,
             onUpdateModificationNameAndDescription,
             onUnshareModification,
-            onUpdateModificationStatusByRootNetwork,
+            onUpdateModificationApplicabilityByRootNetwork,
             currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
