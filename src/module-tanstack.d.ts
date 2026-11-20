@@ -16,8 +16,9 @@ import {
 } from './utils';
 import type {
     UnshareModificationFn,
+    UpdateModificationActivationFn,
+    UpdateModificationApplicabilityByRootNetworkFn,
     UpdateModificationMetadataFn,
-    UpdateModificationStatusByRootNetworkFn,
 } from './features/network-modification-table/network-modifications-table.type';
 
 declare module '@tanstack/react-table' {
@@ -25,10 +26,10 @@ declare module '@tanstack/react-table' {
     // Read at runtime via `table.options.meta` from any cell/header renderer.
     interface TableMeta<TData extends RowData> {
         context: {
-            onUpdateModificationMetadata?: UpdateModificationMetadataFn;
+            onUpdateModificationActivation?: UpdateModificationActivationFn;
             onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
             onUnshareModification?: UnshareModificationFn;
-            onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
+            onUpdateModificationApplicabilityByRootNetwork?: UpdateModificationApplicabilityByRootNetworkFn;
             currentRootNetworkUuid?: UUID;
             rootNetworks?: RootNetworkRowInfo[];
         };
