@@ -31,6 +31,12 @@ import {
     MAX_COMPOSITE_NESTING_DEPTH,
 } from './utils';
 import { ModificationRow } from './row';
+import type {
+    MoveModificationsFn,
+    UnshareModificationFn,
+    UpdateModificationMetadataFn,
+    UpdateModificationStatusByRootNetworkFn,
+} from './network-modifications-table.type';
 
 interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorNameHeaderProps, 'modificationCount'> {
     modifications: NetworkModificationMetadata[];
@@ -43,11 +49,15 @@ interface NetworkModificationsTableProps extends Omit<NetworkModificationEditorN
     highlightedModificationUuid: UUID | null;
     modificationUuidsToReset?: UUID[]; // those modifications are unselected and unexpanded
     modificationToEditLabel: UUID | null; // the editing of this modification is triggered
-    studyUuid: UUID | null;
-    currentNodeId?: UUID;
     currentRootNetworkUuid?: UUID;
     rootNetworks?: RootNetworkRowInfo[];
+    onMoveModifications?: MoveModificationsFn;
+    onUpdateModificationStatusByRootNetwork?: UpdateModificationStatusByRootNetworkFn;
+    onUpdateModificationMetadata?: UpdateModificationMetadataFn;
+    onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
+    onUnshareModification?: UnshareModificationFn;
     isDisabled?: boolean;
+    rowStateResetKey?: UUID;
 }
 
 export function NetworkModificationsTable({
@@ -61,8 +71,6 @@ export function NetworkModificationsTable({
     highlightedModificationUuid,
     modificationToEditLabel,
     modificationUuidsToReset,
-    studyUuid = null,
-    currentNodeId = undefined,
     currentRootNetworkUuid,
     rootNetworks,
     isDisabled = false,
@@ -70,6 +78,12 @@ export function NetworkModificationsTable({
     notificationMessageId,
     isFetchingModifications,
     pendingState,
+    onMoveModifications,
+    onUpdateModificationMetadata,
+    onUpdateModificationNameAndDescription,
+    onUnshareModification,
+    onUpdateModificationStatusByRootNetwork,
+    rowStateResetKey,
 }: Readonly<NetworkModificationsTableProps>) {
     const theme = useTheme();
 
@@ -129,8 +143,10 @@ export function NetworkModificationsTable({
     const tableMeta = useMemo(
         () => ({
             context: {
-                studyUuid,
-                currentNodeId,
+                onUpdateModificationMetadata,
+                onUpdateModificationNameAndDescription,
+                onUnshareModification,
+                onUpdateModificationStatusByRootNetwork,
                 currentRootNetworkUuid,
                 rootNetworks,
             },
@@ -156,8 +172,10 @@ export function NetworkModificationsTable({
             },
         }),
         [
-            studyUuid,
-            currentNodeId,
+            onUpdateModificationMetadata,
+            onUpdateModificationNameAndDescription,
+            onUnshareModification,
+            onUpdateModificationStatusByRootNetwork,
             currentRootNetworkUuid,
             rootNetworks,
             modifications.length,
@@ -213,8 +231,7 @@ export function NetworkModificationsTable({
         composedModifications,
         setComposedModifications,
         onDragEnd: onRowDragEnd,
-        studyUuid,
-        currentNodeUuid: currentNodeId,
+        onMoveModifications,
     });
 
     // unselect and unexpand all network modifications from modificationUuidsToReset and their sub-modifications
@@ -256,7 +273,7 @@ export function NetworkModificationsTable({
         table.resetRowSelection();
         table.resetExpanded();
         lastClickedRowId.current = null;
-    }, [lastClickedRowId, table, currentNodeId]);
+    }, [lastClickedRowId, table, rowStateResetKey]);
 
     useEffect(() => {
         if (highlightedModificationUuidRef.current && containerRef.current) {
