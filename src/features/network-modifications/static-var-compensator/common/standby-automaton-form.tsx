@@ -5,44 +5,124 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { FormattedMessage, useIntl } from 'react-intl';
-import { WarningAmber } from '@mui/icons-material';
-import { Box, Grid, TextField, Tooltip } from '@mui/material';
+import { InfoOutlined } from '@mui/icons-material';
+import { Box, Grid, Stack, TextField, Tooltip } from '@mui/material';
 import { FieldConstants, VoltageAdornment } from '../../../../utils';
-import { CheckboxInput, FloatInput, SwitchInput } from '../../../../components';
+import { CheckboxInput, CheckboxNullableInput, FloatInput, SwitchInput } from '../../../../components';
 import { SusceptanceArea } from './susceptance-area';
 import { VOLTAGE_REGULATION_MODES } from './constants';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
+import { getPreviousRegulationMode } from './set-points-limits-form-utils';
 
 type FieldKeys = 'standby' | 'lVoltageSetLimit' | 'hVoltageSetLimit' | 'lVoltageThreshold' | 'hVoltageThreshold';
 
-export function StandbyAutomatonForm() {
+export interface StandbyAutomatonFormProps {
+    isEquipmentModification?: boolean;
+    previousValues?: StaticVarCompensatorFormInfo | null;
+}
+
+export function StandbyAutomatonForm({
+    isEquipmentModification = false,
+    previousValues,
+}: Readonly<StandbyAutomatonFormProps>) {
     const intl = useIntl();
     const id = FieldConstants.AUTOMATON;
-    const { setValue } = useFormContext();
+    const { setValue, getValues } = useFormContext();
 
-    const [hover, setHover] = useState(false);
+    const previousAutomaton = previousValues?.standbyAutomatonInfos;
+    const hasPreviousAutomaton = previousAutomaton != null;
+
     const watchAddStandbyAutomatonProps = useWatch({
         name: `${id}.${FieldConstants.ADD_STAND_BY_AUTOMATON}`,
     });
     const watchVoltageMode = useWatch({
         name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.VOLTAGE_REGULATION_MODE}`,
     });
-    const watchVoltageModeLabel = useMemo(() => {
-        return Object.values(VOLTAGE_REGULATION_MODES).find((voltageMode) => voltageMode.id === watchVoltageMode)
-            ?.label;
-    }, [watchVoltageMode]);
 
-    const standbyDisabled = useMemo(() => {
-        return watchVoltageMode !== VOLTAGE_REGULATION_MODES.VOLTAGE.id;
-    }, [watchVoltageMode]);
+    const voltageMode = useMemo(() => {
+        if (watchVoltageMode || !isEquipmentModification) {
+            return watchVoltageMode;
+        }
+        return getPreviousRegulationMode(previousValues)?.id;
+    }, [watchVoltageMode, isEquipmentModification, previousValues]);
+
+    const voltageModeLabel = useMemo(() => {
+        return Object.values(VOLTAGE_REGULATION_MODES).find((mode) => mode.id === voltageMode)?.label;
+    }, [voltageMode]);
+
+    const standbyDisabled = voltageMode !== VOLTAGE_REGULATION_MODES.VOLTAGE.id;
+
+    const showAutomatonFields = isEquipmentModification
+        ? watchAddStandbyAutomatonProps === true || (watchAddStandbyAutomatonProps == null && hasPreviousAutomaton)
+        : !!watchAddStandbyAutomatonProps;
 
     useEffect(() => {
-        if (standbyDisabled) {
-            setValue(`${id}.${FieldConstants.STAND_BY_AUTOMATON}`, false);
+        if (!standbyDisabled) {
+            return;
         }
-    }, [standbyDisabled, setValue, id]);
+        const standbyFieldName = `${id}.${FieldConstants.STAND_BY_AUTOMATON}`;
+        if (!isEquipmentModification) {
+            setValue(standbyFieldName, false);
+            return;
+        }
+        if (!watchVoltageMode) {
+            return;
+        }
+        const standbyValue = getValues(standbyFieldName);
+        if (standbyValue === true || (standbyValue == null && previousAutomaton?.standby)) {
+            setValue(standbyFieldName, false);
+        }
+    }, [
+        standbyDisabled,
+        watchVoltageMode,
+        setValue,
+        getValues,
+        id,
+        isEquipmentModification,
+        previousAutomaton?.standby,
+    ]);
+
+    useEffect(() => {
+        // a new automaton is added on an equipment without one: standby is off by default, as in creation
+        if (!isEquipmentModification || hasPreviousAutomaton || watchAddStandbyAutomatonProps !== true) {
+            return;
+        }
+        const standbyFieldName = `${id}.${FieldConstants.STAND_BY_AUTOMATON}`;
+        if (getValues(standbyFieldName) == null) {
+            setValue(standbyFieldName, false);
+        }
+    }, [isEquipmentModification, hasPreviousAutomaton, watchAddStandbyAutomatonProps, getValues, setValue, id]);
+
+    useEffect(() => {
+        if (!isEquipmentModification || showAutomatonFields) {
+            return;
+        }
+        const automatonFields = [
+            FieldConstants.STAND_BY_AUTOMATON,
+            FieldConstants.LOW_VOLTAGE_SET_POINT,
+            FieldConstants.HIGH_VOLTAGE_SET_POINT,
+            FieldConstants.LOW_VOLTAGE_THRESHOLD,
+            FieldConstants.HIGH_VOLTAGE_THRESHOLD,
+            FieldConstants.B0,
+            FieldConstants.Q0,
+        ];
+        automatonFields.forEach((field) => {
+            const fieldName = `${id}.${field}`;
+            if (getValues(fieldName) != null) {
+                setValue(fieldName, null);
+            }
+        });
+    }, [isEquipmentModification, showAutomatonFields, getValues, setValue, id]);
+
+    const formatOnOff = (value: boolean | undefined) => {
+        if (!previousValues) {
+            return undefined;
+        }
+        return intl.formatMessage({ id: value ? 'On' : 'Off' });
+    };
 
     const createField = (
         name: string,
@@ -51,65 +131,79 @@ export function StandbyAutomatonForm() {
             position: string;
             text: string;
         },
-        additionalProps?: { disabled: boolean }
-    ) => <FloatInput name={name} label={label} adornment={adornment} formProps={additionalProps} />;
+        previousValue?: number | null
+    ) => (
+        <FloatInput
+            name={name}
+            label={label}
+            adornment={adornment}
+            previousValue={previousValue ?? undefined}
+            clearable={isEquipmentModification}
+        />
+    );
+
+    const standbyField = isEquipmentModification ? (
+        <CheckboxNullableInput
+            name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
+            label="StandbyAutomaton"
+            nullDisabled
+            formProps={{ disabled: standbyDisabled }}
+            previousValue={hasPreviousAutomaton ? formatOnOff(previousAutomaton?.standby) : undefined}
+        />
+    ) : (
+        <SwitchInput
+            name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
+            formProps={{
+                disabled: standbyDisabled,
+            }}
+            label="StandbyAutomaton"
+        />
+    );
 
     const fields = {
         modeAutomaton: (
             <TextField
-                value={watchVoltageModeLabel ? intl.formatMessage({ id: watchVoltageModeLabel }) : ''}
+                value={voltageModeLabel ? intl.formatMessage({ id: voltageModeLabel }) : ''}
                 label={intl.formatMessage({ id: 'ModeAutomaton' })}
                 disabled
                 size="small"
             />
         ),
         standby: (
-            <Grid container onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>
-                <Grid container sx={{ width: '100%' }}>
-                    <SwitchInput
-                        name={`${id}.${FieldConstants.STAND_BY_AUTOMATON}`}
-                        formProps={{
-                            disabled: standbyDisabled,
-                        }}
-                        label="StandbyAutomaton"
-                        labelProps={{
-                            labelPlacement: 'start',
-                        }}
-                    />
-                    {hover && watchVoltageMode !== VOLTAGE_REGULATION_MODES.VOLTAGE.id && (
-                        <Box
-                            sx={{
-                                marginLeft: 2,
-                                marginTop: '5px',
-                            }}
-                        >
-                            <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
-                                <WarningAmber color="warning" />
-                            </Tooltip>
+            <Stack direction="row" spacing={1} sx={{ alignItems: 'flex-start' }}>
+                <Box sx={{ flex: 'none' }}>{standbyField}</Box>
+                {standbyDisabled && (
+                    <Tooltip title={<FormattedMessage id="StandbyNotAvailable" />}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', height: 42 }}>
+                            <InfoOutlined color="info" fontSize="small" />
                         </Box>
-                    )}
-                </Grid>
-            </Grid>
+                    </Tooltip>
+                )}
+            </Stack>
         ),
         lVoltageSetLimit: createField(
             `${id}.${FieldConstants.LOW_VOLTAGE_SET_POINT}`,
             'LowVoltageSetpoint',
-            VoltageAdornment
+            VoltageAdornment,
+            previousAutomaton?.lowVoltageSetpoint
         ),
         hVoltageSetLimit: createField(
             `${id}.${FieldConstants.HIGH_VOLTAGE_SET_POINT}`,
             'HighVoltageSetpoint',
-            VoltageAdornment
+            VoltageAdornment,
+            previousAutomaton?.highVoltageSetpoint
         ),
         lVoltageThreshold: createField(
             `${id}.${FieldConstants.LOW_VOLTAGE_THRESHOLD}`,
             'LowVoltageThreshold',
-            VoltageAdornment
+            VoltageAdornment,
+            previousAutomaton?.lowVoltageThreshold
         ),
         hVoltageThreshold: createField(
             `${id}.${FieldConstants.HIGH_VOLTAGE_THRESHOLD}`,
             'HighVoltageThreshold',
-            VoltageAdornment
+            VoltageAdornment,
+            previousAutomaton?.highVoltageThreshold
         ),
     };
 
@@ -117,10 +211,18 @@ export function StandbyAutomatonForm() {
         <Grid container spacing={2}>
             <Grid size={4}>
                 <Box>
-                    <CheckboxInput name={`${id}.${FieldConstants.ADD_STAND_BY_AUTOMATON}`} label="AddAutomaton" />
+                    {isEquipmentModification ? (
+                        <CheckboxNullableInput
+                            name={`${id}.${FieldConstants.ADD_STAND_BY_AUTOMATON}`}
+                            label="StaticVarCompensatorAutomatonTab"
+                            previousValue={formatOnOff(hasPreviousAutomaton)}
+                        />
+                    ) : (
+                        <CheckboxInput name={`${id}.${FieldConstants.ADD_STAND_BY_AUTOMATON}`} label="AddAutomaton" />
+                    )}
                 </Box>
             </Grid>
-            {watchAddStandbyAutomatonProps && (
+            {showAutomatonFields && (
                 <>
                     <Grid
                         container
@@ -145,7 +247,10 @@ export function StandbyAutomatonForm() {
                             padding: 2,
                         }}
                     >
-                        <SusceptanceArea />
+                        <SusceptanceArea
+                            isEquipmentModification={isEquipmentModification}
+                            previousValues={previousValues}
+                        />
                     </Grid>
                 </>
             )}

@@ -72,6 +72,7 @@ export interface StaticVarCompensatorFormInfo {
     regulatingTerminalId: string | null;
     regulatingTerminalVlId: string | null;
     regulatingTerminalConnectableType: string;
+    terminalConnected?: boolean | null;
     standbyAutomatonInfos?: StandbyAutomatonInfos;
     properties: Record<string, string> | undefined;
 }

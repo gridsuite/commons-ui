@@ -5,17 +5,46 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
-import { Grid } from '@mui/material';
+import { Grid, TextField } from '@mui/material';
+import { useWatch } from 'react-hook-form';
 import { GridItem, TextInput } from '../../../../components';
 import { FieldConstants } from '../../../../utils';
+import { filledTextField } from '../../common';
+import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 
-export function StaticVarCompensatorDialogHeader() {
-    const staticCompensatorIdField = (
-        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, variant: 'filled' }} />
+export interface StaticVarCompensatorDialogHeaderProps {
+    isModification?: boolean;
+    staticVarCompensatorToModify?: StaticVarCompensatorFormInfo | null;
+}
+
+export function StaticVarCompensatorDialogHeader({
+    isModification = false,
+    staticVarCompensatorToModify,
+}: Readonly<StaticVarCompensatorDialogHeaderProps>) {
+    const equipmentId = useWatch({ name: FieldConstants.EQUIPMENT_ID });
+
+    const staticCompensatorIdField = isModification ? (
+        <TextField
+            size="small"
+            fullWidth
+            label="ID"
+            value={equipmentId ?? ''}
+            slotProps={{ input: { readOnly: true } }}
+            disabled
+            {...filledTextField}
+        />
+    ) : (
+        <TextInput name={FieldConstants.EQUIPMENT_ID} label="ID" formProps={{ autoFocus: true, ...filledTextField }} />
     );
 
     const staticCompensatorNameField = (
-        <TextInput name={FieldConstants.EQUIPMENT_NAME} label="Name" formProps={{ variant: 'filled' }} />
+        <TextInput
+            name={FieldConstants.EQUIPMENT_NAME}
+            label="Name"
+            formProps={filledTextField}
+            previousValue={staticVarCompensatorToModify?.name ?? undefined}
+            clearable={isModification}
+        />
     );
     return (
         <Grid container spacing={2} sx={{ width: '100%' }}>
