@@ -129,4 +129,8 @@ export const businessErrorsEn = {
 
     'report.notFound': 'Report not found.',
     'report.notARoot': 'The report is not a root report.',
+
+    'actions.contingencyListNotFound': 'Contingency list not found.',
+    'actions.invalidContingencyListPayload': 'The contingency list payload is invalid.',
+    'actions.networkNotFound': 'Network not found.',
 };
