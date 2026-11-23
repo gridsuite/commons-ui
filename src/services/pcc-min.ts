@@ -7,7 +7,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson } from './utils';
 import { getStudyUrl } from './security-analysis';
-import { FilterIdentifier, FILTERS, PccMinParameters, PccMinParametersEnriched } from '../utils';
+import { ElementType, FilterIdentifier, FILTERS, PccMinParameters, PccMinParametersEnriched } from '../utils';
 import { mapPccMinParameters } from '../utils/types/pcc-min.type';
 import { fetchElementNames } from './directory';
 import { PREFIX_STUDY_SERVER_QUERIES } from './study';
@@ -23,7 +23,8 @@ function collectAllElementIds(params: PccMinParameters): Set<string> {
 export function enrichPccMinParameters(parameters: PccMinParameters): Promise<PccMinParametersEnriched> {
     const allElementIds = collectAllElementIds(parameters);
 
-    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+    const elementNamesPromise =
+        allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds, ElementType.FILTER);
 
     return elementNamesPromise.then((elementNames) => {
         const mapIdsToFilterIdentifiers = (ids: UUID[] | undefined): FilterIdentifier[] => {

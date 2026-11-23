@@ -35,7 +35,8 @@ function collectElementIds(params: SAParameters): Set<string> {
 export function enrichSecurityAnalysisParameters(parameters: SAParameters): Promise<SAParametersEnriched> {
     const allElementIds = collectElementIds(parameters);
 
-    const elementNamesPromise = allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds);
+    const elementNamesPromise =
+        allElementIds.size === 0 ? Promise.resolve(null) : fetchElementNames(allElementIds, null);
 
     return elementNamesPromise.then((elementNames) => {
         const mapIdsToIdNames = (ids: UUID[] | undefined): IdName[] => {
