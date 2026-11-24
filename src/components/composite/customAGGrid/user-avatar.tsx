@@ -4,7 +4,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
-import { Avatar, Box, Theme, Tooltip } from '@mui/material';
+import { Avatar, Theme, Tooltip } from '@mui/material';
 import { mergeSx, MuiStyles } from '../../../utils';
 import { getAbbreviationFromUserName } from '../../../utils/user-utils';
 
@@ -53,15 +53,5 @@ export function UserAvatar({ label, size = 'medium', backgroundColor }: Readonly
                 {getAbbreviationFromUserName(label)}
             </Avatar>
         </Tooltip>
-    );
-}
-
-/** A user name preceded by its avatar, in a compact size. */
-export function UserAvatarWithLabel({ label }: Readonly<{ label: string }>) {
-    return (
-        <Box sx={{ display: 'inline-flex', alignItems: 'center', gap: 1 }}>
-            <UserAvatar label={label} size="small" />
-            {label}
-        </Box>
     );
 }

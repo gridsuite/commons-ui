@@ -8,6 +8,7 @@ export * from './cardErrorBoundaryEn';
 export * from './businessErrorsEn';
 export * from './commonButtonEn';
 export * from './csvEn';
+export * from './customAggridFilterEn';
 export * from './descriptionEn';
 export * from './directoryItemsInputEn';
 export * from './dndTableEn';

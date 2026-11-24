@@ -8,6 +8,7 @@ export * from './cardErrorBoundaryFr';
 export * from './businessErrorsFr';
 export * from './commonButtonFr';
 export * from './csvFr';
+export * from './customAggridFilterFr';
 export * from './descriptionFr';
 export * from './directoryItemsInputFr';
 export * from './dndTableFr';
