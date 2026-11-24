@@ -194,4 +194,10 @@ export const filterExpertFr = {
     breaker: 'Disjoncteur',
     loadBreaker: 'Interrupteur',
     disconnector: 'Sectionneur',
+    switchState: 'Etat',
+    opened: 'Ouvert',
+    closed: 'Fermé',
+    only_coupling_switch: 'Couplage uniquement',
+    onlyCouplingSwitchesMessage:
+        'Sélectionne les organes de coupure participant à relier uniquement des sections de barre entre elles',
 };

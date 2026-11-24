@@ -10,6 +10,7 @@ import { useCallback } from 'react';
 import { MaterialValueEditor } from '@react-querybuilder/material';
 import { Box } from '@mui/material';
 import { useFormContext } from 'react-hook-form';
+import { useIntl } from 'react-intl';
 import { CountryValueEditor } from './CountryValueEditor';
 import { TranslatedValueEditor } from './TranslatedValueEditor';
 import { TextValueEditor } from './TextValueEditor';
@@ -24,6 +25,7 @@ import { OPERATOR_OPTIONS } from '../filter/expert/expertFilterConstants';
 import { FieldType } from '../../../utils/types/fieldType';
 import { ElementAttributes } from '../../../utils';
 import type { MuiStyles } from '../../../utils/styles';
+import { CustomTooltipInfo } from '../../ui';
 
 const styles = {
     noArrows: {
@@ -40,6 +42,8 @@ export function ValueEditor(props: ValueEditorProps) {
     const { field, operator, value, rule, handleOnChange, inputType, fieldData } = props;
     const formContext = useFormContext();
     const { getValues } = formContext;
+    const intl = useIntl();
+
     const itemFilter = useCallback(
         (filterValue: ElementAttributes) => {
             if (filterValue?.type === ElementType.FILTER) {
@@ -140,9 +144,22 @@ export function ValueEditor(props: ValueEditorProps) {
         return <GroupValueEditor {...props} />;
     }
 
-    return (
+    const materialValueEditor = (
         <Box sx={inputType === 'number' ? styles.noArrows : undefined}>
             <MaterialValueEditor {...props} />
         </Box>
     );
+
+    if (field === FieldType.ONLY_COUPLING_SWITCH) {
+        return (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ flex: 1, minWidth: 0 }}>{materialValueEditor}</Box>
+                <CustomTooltipInfo
+                    tooltipProps={{ title: intl.formatMessage({ id: 'onlyCouplingSwitchesMessage' }) }}
+                />
+            </Box>
+        );
+    }
+
+    return materialValueEditor;
 }

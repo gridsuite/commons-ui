@@ -103,6 +103,11 @@ export const SWITCH_KIND_OPTIONS = [
     { name: 'DISCONNECTOR', label: 'disconnector' },
 ];
 
+export const SWITCH_STATE_OPTIONS = [
+    { name: 'OPENED', label: 'opened' },
+    { name: 'CLOSED', label: 'closed' },
+];
+
 // customName is used to export to the server
 export const OPERATOR_OPTIONS = {
     EQUALS: { name: '=', customName: OperatorType.EQUALS, label: 'equality' },
@@ -1157,6 +1162,21 @@ export const FIELDS_OPTIONS = {
         defaultValue: false,
         valueEditorType: 'switch',
     },
+    SWITCH_STATE: {
+        name: FieldType.SWITCH_STATE,
+        label: 'switchState',
+        dataType: DataType.ENUM,
+        values: SWITCH_STATE_OPTIONS,
+        valueEditorType: 'select',
+        defaultValue: 'CLOSED',
+    },
+    ONLY_COUPLING_SWITCH: {
+        name: FieldType.ONLY_COUPLING_SWITCH,
+        label: 'only_coupling_switch',
+        dataType: DataType.BOOLEAN,
+        defaultValue: true,
+        valueEditorType: 'switch',
+    },
 };
 
 export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
@@ -1503,6 +1523,8 @@ export const EXPERT_FILTER_FIELDS: Record<string, Field[]> = {
         FIELDS_OPTIONS.NAME,
         FIELDS_OPTIONS.SWITCH_KIND,
         FIELDS_OPTIONS.FICTITIOUS,
+        FIELDS_OPTIONS.SWITCH_STATE,
+        FIELDS_OPTIONS.ONLY_COUPLING_SWITCH,
         FIELDS_OPTIONS.COUNTRY,
         FIELDS_OPTIONS.VOLTAGE_LEVEL_ID,
         FIELDS_OPTIONS.NOMINAL_VOLTAGE,
