@@ -77,6 +77,10 @@ export function hasElementPermission(elementUuid: UUID, permission: PermissionTy
         });
 }
 
+/**
+ * @param elementUuids
+ * @param elementType type of the elementUuids. not required but improves performance if it is sent
+ */
 export function fetchElementNames(
     elementUuids: Set<string>,
     elementType: ElementType | null
