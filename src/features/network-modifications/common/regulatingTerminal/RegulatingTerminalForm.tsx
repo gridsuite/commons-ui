@@ -102,21 +102,6 @@ export function RegulatingTerminalForm({
                     getOptionLabel={(vl) => (typeof vl === 'string' ? '' : (vl?.id ?? ''))}
                     onChangeCallback={resetEquipment}
                     previousValue={regulatingTerminalVlId ?? undefined}
-                    /* When a value is directly entered in the text field, a new option is created in the
-                       options list with a value equal to the input value */
-                    filterOptions={(options, params) => {
-                        const filtered = filter(options, params);
-                        if (
-                            params.inputValue !== '' &&
-                            !options.some((opt) => typeof opt !== 'string' && opt.id === params.inputValue)
-                        ) {
-                            filtered.push({
-                                id: params.inputValue,
-                                label: params.inputValue,
-                            });
-                        }
-                        return filtered;
-                    }}
                     slots={{
                         popper: FittingPopper,
                     }}
