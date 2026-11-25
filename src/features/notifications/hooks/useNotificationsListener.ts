@@ -15,15 +15,23 @@ export const useNotificationsListener = (
     {
         listenerCallbackMessage,
         listenerCallbackOnReopen,
+        listenerCallbackOnClose,
         propsId,
     }: {
         listenerCallbackMessage?: (event: MessageEvent) => void;
         listenerCallbackOnReopen?: () => void;
+        listenerCallbackOnClose?: () => void;
         propsId?: string;
     }
 ) => {
-    const { addListenerEvent, removeListenerEvent, addListenerOnReopen, removeListenerOnReopen } =
-        useContext(NotificationsContext);
+    const {
+        addListenerEvent,
+        removeListenerEvent,
+        addListenerOnReopen,
+        removeListenerOnReopen,
+        addListenerOnClose,
+        removeListenerOnClose,
+    } = useContext(NotificationsContext);
 
     useEffect(() => {
         const id = propsId ?? uuidv4();
@@ -46,4 +54,15 @@ export const useNotificationsListener = (
         }
         return () => removeListenerOnReopen(listenerKey, id);
     }, [addListenerOnReopen, removeListenerOnReopen, listenerKey, listenerCallbackOnReopen, propsId]);
+
+    useEffect(() => {
+        const id = propsId ?? uuidv4();
+        if (listenerCallbackOnClose) {
+            addListenerOnClose(listenerKey, {
+                id,
+                callback: listenerCallbackOnClose,
+            });
+        }
+        return () => removeListenerOnClose(listenerKey, id);
+    }, [addListenerOnClose, removeListenerOnClose, listenerKey, listenerCallbackOnClose, propsId]);
 };

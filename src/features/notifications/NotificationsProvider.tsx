@@ -8,7 +8,12 @@
 
 import { PropsWithChildren, useEffect, useMemo, useSyncExternalStore } from 'react';
 import ReconnectingWebSocket from 'reconnecting-websocket';
-import { ListenerEventWS, ListenerOnReopen, NotificationsContext } from './contexts/NotificationsContext';
+import {
+    ListenerEventWS,
+    ListenerOnClose,
+    ListenerOnReopen,
+    NotificationsContext,
+} from './contexts/NotificationsContext';
 import { useListenerManager } from './hooks/useListenerManager';
 import { getUser, getUserToken, subscribeToUserState } from '../../redux';
 
@@ -31,6 +36,12 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
         addListener: addListenerOnReopen,
         removeListener: removeListenerOnReopen,
     } = useListenerManager<ListenerOnReopen>(urls);
+
+    const {
+        broadcast: broadcastOnClose,
+        addListener: addListenerOnClose,
+        removeListener: removeListenerOnClose,
+    } = useListenerManager<ListenerOnClose>(urls);
 
     // useSyncExternalStore: commons-ui has no react-redux dep, so we subscribe to the store (wired by the app via setCommonStore) directly.
     // Snapshot is a boolean, we only want to re-render on transitions where getUserToken()'s behavior changes (starts/stops producing a token)
@@ -76,6 +87,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
                 rws.onclose = (event) => {
                     clearConnectedTimeout();
                     hadConnectionFailure = true;
+                    broadcastOnClose(urlKey)();
                     console.error(`Unexpected ${urlKey} Notification WebSocket closed`, event);
                 };
                 rws.onerror = (event) => {
@@ -109,7 +121,7 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             });
 
         return () => connections.forEach((c) => c.close());
-    }, [broadcastMessage, broadcastOnReopen, urls, isAuthenticated]);
+    }, [broadcastMessage, broadcastOnReopen, broadcastOnClose, urls, isAuthenticated]);
 
     const contextValue = useMemo(
         () => ({
@@ -117,8 +129,17 @@ export function NotificationsProvider({ urls, children }: PropsWithChildren<Noti
             removeListenerEvent: removeListenerMessage,
             addListenerOnReopen,
             removeListenerOnReopen,
+            addListenerOnClose,
+            removeListenerOnClose,
         }),
-        [addListenerMessage, removeListenerMessage, addListenerOnReopen, removeListenerOnReopen]
+        [
+            addListenerMessage,
+            removeListenerMessage,
+            addListenerOnReopen,
+            removeListenerOnReopen,
+            addListenerOnClose,
+            removeListenerOnClose,
+        ]
     );
     return <NotificationsContext.Provider value={contextValue}>{children}</NotificationsContext.Provider>;
 }
