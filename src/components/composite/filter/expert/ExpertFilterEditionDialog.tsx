@@ -26,6 +26,7 @@ import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 import { snackWithFallback } from '../../../../utils/error';
 import { isDisabledValidationButton, isOnlyNameOrDescriptionModified } from '../../../../utils/form-utils';
 import { updateElement } from '../../../../services/explore';
+import { ElementType } from '../../../../utils';
 
 const formSchema = yup
     .object()
@@ -87,7 +88,7 @@ export function ExpertFilterEditionDialog({
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
             if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
-                updateElement(id as UUID, {
+                updateElement(id as UUID, ElementType.FILTER, {
                     elementName: filterForm[FieldConstants.NAME],
                     description: filterForm[FieldConstants.DESCRIPTION] ?? '',
                 })

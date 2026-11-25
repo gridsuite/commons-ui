@@ -146,20 +146,33 @@ export function elementAlreadyExists(
     );
 }
 
+/**
+ * @param elementUuid
+ * @param elementType type of the updated element. Not required but providing it will slightly improve performance
+ * @param element
+ */
 export function updateElement(
-    modificationUuid: UUID | undefined,
-    metadata: Partial<ElementAttributes>
-): Promise<Response> {
-    if (!modificationUuid) {
-        return Promise.reject(new Error('modificationUuid is required'));
+    elementUuid: UUID | undefined,
+    elementType: ElementType | null,
+    element: Partial<ElementAttributes>
+) {
+    console.log('elementType : ', elementType);
+    console.log('element : ', element);
+    const urlSearchParams = new URLSearchParams();
+    if (elementType) {
+        urlSearchParams.append('type', elementType);
     }
-    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${safeEncodeURIComponent(modificationUuid)}`;
+    const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/${safeEncodeURIComponent(elementUuid)}?${urlSearchParams.toString()}`;
+    const elementToUpdate: Partial<ElementAttributes> = element;
+    if (elementType === ElementType.MODIFICATION) {
+        elementToUpdate.elementUuid = elementUuid;
+    }
     return backendFetch(url, {
         method: 'PUT',
         headers: {
             Accept: 'application/json',
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify(metadata),
+        body: JSON.stringify(elementToUpdate),
     });
 }
