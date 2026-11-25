@@ -11,3 +11,13 @@ export const VOLTAGE_REGULATION_MODES = {
     // used in order to set regulating to false but doesn't exist in powsybl => should not be sent to the back
     OFF: { id: 'OFF', label: 'Off' },
 } as const;
+
+export const STANDBY_AUTOMATON_ACTIONS = {
+    // without automaton only (default)
+    NOTHING: { id: 'NOTHING', label: 'StandbyAutomatonActionNothing' },
+    // without automaton only
+    ADD_OR_MODIFY: { id: 'ADD_OR_MODIFY', label: 'StandbyAutomatonActionAddOrModify' },
+    // with automaton only (default)
+    MODIFY: { id: 'MODIFY', label: 'StandbyAutomatonActionModify' },
+    REMOVE: { id: 'REMOVE', label: 'StandbyAutomatonActionRemove' },
+} as const;

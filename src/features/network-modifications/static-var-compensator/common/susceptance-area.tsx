@@ -9,12 +9,40 @@ import { useEffect } from 'react';
 import { useFormContext, useWatch } from 'react-hook-form';
 import { Grid, InputAdornment, TextField } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
-import { FloatInput, GridItem } from '../../../../components';
+import { FloatInput, GridItem, SelectInput } from '../../../../components';
 import { FieldConstants, ReactivePowerAdornment, SusceptanceAdornment } from '../../../../utils';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
 import { StaticVarCompensatorFormInfo } from './static-var-compensator.types';
 import { computeQ0 } from './standby-automaton-form-utils';
 import { getPreviousNominalV } from './set-points-limits-form-utils';
+
+const AUTOMATON_FIXED_PART_CHOICES = [
+    { id: CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id, label: 'FixedPartOfQAtNominalV' },
+    { id: CHARACTERISTICS_CHOICES.SUSCEPTANCE.id, label: 'FixedPartOfSusceptance' },
+];
+
+const toSusceptance = (q: number | null | undefined, nominalV: number | null | undefined) => {
+    return q != null && nominalV ? q / nominalV ** 2 : undefined;
+};
+
+const getFinalLimit = (
+    isSusceptanceLimitsChoice: boolean,
+    newSusceptance: number | null | undefined,
+    newQ: number | null | undefined,
+    previousSusceptance: number | null | undefined,
+    nominalV: number | null | undefined
+) => {
+    const newValue = isSusceptanceLimitsChoice ? newSusceptance : newQ;
+    if (newValue == null) {
+        return {
+            susceptance: previousSusceptance ?? null,
+            q: computeQ0(previousSusceptance, nominalV) ?? null,
+        };
+    }
+    return isSusceptanceLimitsChoice
+        ? { susceptance: newValue, q: computeQ0(newValue, nominalV) ?? null }
+        : { susceptance: toSusceptance(newValue, nominalV) ?? null, q: newValue };
+};
 
 export interface SusceptanceAreaProps {
     isEquipmentModification?: boolean;
@@ -24,8 +52,11 @@ export interface SusceptanceAreaProps {
 export function SusceptanceArea({ isEquipmentModification = false, previousValues }: Readonly<SusceptanceAreaProps>) {
     const id = FieldConstants.AUTOMATON;
     const { setValue } = useFormContext();
-    const watchChoiceAutomaton = useWatch({
+    const watchChoiceLimits = useWatch({
         name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.CHARACTERISTICS_CHOICE}`,
+    });
+    const watchChoiceAutomaton = useWatch({
+        name: `${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`,
     });
     const watchMinS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MIN_SUSCEPTANCE}` });
     const watchMaxS = useWatch({ name: `${FieldConstants.SETPOINTS_LIMITS}.${FieldConstants.MAX_SUSCEPTANCE}` });
@@ -35,19 +66,92 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
         name: `${FieldConstants.CONNECTIVITY}.${FieldConstants.VOLTAGE_LEVEL}.${FieldConstants.ID}`,
     });
     const previousNominalV = getPreviousNominalV(previousValues, watchConnectivityVoltageLevelId);
-    const minS = watchMinS ?? previousValues?.minSusceptance ?? null;
-    const maxS = watchMaxS ?? previousValues?.maxSusceptance ?? null;
-    const minQ = watchMinQ ?? computeQ0(previousValues?.minSusceptance, previousNominalV) ?? null;
-    const maxQ = watchMaxQ ?? computeQ0(previousValues?.maxSusceptance, previousNominalV) ?? null;
     const previousB0 = previousValues?.standbyAutomatonInfos?.b0;
-    // CHARACTERISTICS_CHOICE_AUTOMATON used only to validate the schema (work around)
+
+    let minS;
+    let maxS;
+    let minQ;
+    let maxQ;
+    if (isEquipmentModification) {
+        const isSusceptanceLimitsChoice = watchChoiceLimits === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id;
+        const minLimit = getFinalLimit(
+            isSusceptanceLimitsChoice,
+            watchMinS,
+            watchMinQ,
+            previousValues?.minSusceptance,
+            previousNominalV
+        );
+        const maxLimit = getFinalLimit(
+            isSusceptanceLimitsChoice,
+            watchMaxS,
+            watchMaxQ,
+            previousValues?.maxSusceptance,
+            previousNominalV
+        );
+        minS = minLimit.susceptance;
+        maxS = maxLimit.susceptance;
+        minQ = minLimit.q;
+        maxQ = maxLimit.q;
+    } else {
+        minS = watchMinS ?? previousValues?.minSusceptance ?? null;
+        maxS = watchMaxS ?? previousValues?.maxSusceptance ?? null;
+        minQ = watchMinQ ?? computeQ0(previousValues?.minSusceptance, previousNominalV) ?? null;
+        maxQ = watchMaxQ ?? computeQ0(previousValues?.maxSusceptance, previousNominalV) ?? null;
+    }
+
     useEffect(() => {
-        setValue(`${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`, watchChoiceAutomaton);
+        if (!isEquipmentModification) {
+            setValue(`${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`, watchChoiceLimits);
+        }
+    }, [setValue, id, isEquipmentModification, watchChoiceLimits]);
+
+    useEffect(() => {
         setValue(`${id}.${FieldConstants.MIN_Q_AUTOMATON}`, minQ);
         setValue(`${id}.${FieldConstants.MAX_Q_AUTOMATON}`, maxQ);
         setValue(`${id}.${FieldConstants.MIN_S_AUTOMATON}`, minS);
         setValue(`${id}.${FieldConstants.MAX_S_AUTOMATON}`, maxS);
-    }, [setValue, id, watchChoiceAutomaton, minQ, maxQ, maxS, minS]);
+    }, [setValue, id, minQ, maxQ, maxS, minS]);
+
+    const susceptanceField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.B0}`}
+            label={isEquipmentModification ? 'FixedPartOfSusceptance' : 'b0'}
+            adornment={SusceptanceAdornment}
+            previousValue={previousB0 ?? undefined}
+            clearable={isEquipmentModification}
+        />
+    );
+
+    const qAtNominalVField = (
+        <FloatInput
+            name={`${id}.${FieldConstants.Q0}`}
+            label={isEquipmentModification ? 'FixedPartOfQAtNominalV' : 'fixQAtNominalV'}
+            adornment={ReactivePowerAdornment}
+            previousValue={computeQ0(previousB0, previousNominalV)}
+            clearable={isEquipmentModification}
+        />
+    );
+
+    if (isEquipmentModification) {
+        return (
+            <Grid container spacing={2}>
+                <GridItem size={4}>
+                    <SelectInput
+                        name={`${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`}
+                        options={AUTOMATON_FIXED_PART_CHOICES}
+                        fullWidth
+                        disableClearable
+                        size="small"
+                    />
+                </GridItem>
+                <GridItem size={4}>
+                    {watchChoiceAutomaton === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id
+                        ? susceptanceField
+                        : qAtNominalVField}
+                </GridItem>
+            </Grid>
+        );
+    }
 
     const minSusceptanceField = (
         <TextField
@@ -105,36 +209,16 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
         />
     );
 
-    const susceptanceField = (
-        <FloatInput
-            name={`${id}.${FieldConstants.B0}`}
-            label="b0"
-            adornment={SusceptanceAdornment}
-            previousValue={previousB0 ?? undefined}
-            clearable={isEquipmentModification}
-        />
-    );
-
-    const qAtNominalVField = (
-        <FloatInput
-            name={`${id}.${FieldConstants.Q0}`}
-            label="fixQAtNominalV"
-            adornment={ReactivePowerAdornment}
-            previousValue={computeQ0(previousB0, previousNominalV)}
-            clearable={isEquipmentModification}
-        />
-    );
-
     return (
         <Grid container spacing={2}>
-            {watchChoiceAutomaton === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id && (
+            {watchChoiceLimits === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id && (
                 <>
                     <GridItem size={4}>{minSusceptanceField}</GridItem>
                     <GridItem size={3}>{susceptanceField}</GridItem>
                     <GridItem size={4}>{maxSusceptanceField}</GridItem>
                 </>
             )}
-            {watchChoiceAutomaton === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id && (
+            {watchChoiceLimits === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id && (
                 <>
                     <GridItem size={4}>{minQAtNominalVField}</GridItem>
                     <GridItem size={3}>{qAtNominalVField}</GridItem>

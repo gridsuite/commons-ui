@@ -8,7 +8,7 @@
 import * as yup from 'yup';
 import { NumberSchema, Schema } from 'yup';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
-import { VOLTAGE_REGULATION_MODES } from './constants';
+import { STANDBY_AUTOMATON_ACTIONS, VOLTAGE_REGULATION_MODES } from './constants';
 import { FieldConstants, MUST_BE_GREATER_OR_EQUAL_TO_ZERO } from '../../../../utils';
 
 export const getStandbyAutomatonEmptyFormData = (id = FieldConstants.AUTOMATON) => ({
@@ -121,17 +121,20 @@ export const computeQ0 = (b0?: number | null, nominalV?: number | null): number 
 
 /**
  * Modification: every field is nullable (null = unchanged).
- * ADD_STAND_BY_AUTOMATON: null = unchanged, true = add (or keep) the automaton, false = remove it.
+ * STAND_BY_AUTOMATON_ACTION: see STANDBY_AUTOMATON_ACTIONS.
  * The automaton values are required only when it is added, i.e. when it does not exist yet on the equipment:
  * this information is given by the form context `hasStandbyAutomaton`.
  */
+const isStandbyAutomatonAdded = (action: string | null | undefined, hasStandbyAutomaton: boolean) =>
+    action === STANDBY_AUTOMATON_ACTIONS.ADD_OR_MODIFY.id && !hasStandbyAutomaton;
+
 const requiredIfStandbyAutomatonAdded = (baseSchema: NumberSchema<number | null | undefined>) =>
     baseSchema
         .nullable()
         .when(
-            [FieldConstants.ADD_STAND_BY_AUTOMATON, '$hasStandbyAutomaton'],
-            ([addStandbyAutomaton, hasStandbyAutomaton], schema) =>
-                addStandbyAutomaton === true && !hasStandbyAutomaton ? schema.required() : schema
+            [FieldConstants.STAND_BY_AUTOMATON_ACTION, '$hasStandbyAutomaton'],
+            ([action, hasStandbyAutomaton], schema) =>
+                isStandbyAutomatonAdded(action, hasStandbyAutomaton) ? schema.required() : schema
         );
 
 const getFixedPartModificationSchema = (
@@ -146,12 +149,12 @@ const getFixedPartModificationSchema = (
         .nullable()
         .when(
             [
-                FieldConstants.ADD_STAND_BY_AUTOMATON,
+                FieldConstants.STAND_BY_AUTOMATON_ACTION,
                 FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON,
                 '$hasStandbyAutomaton',
             ],
-            ([addStandbyAutomaton, choice, hasStandbyAutomaton], schema) =>
-                addStandbyAutomaton === true && !hasStandbyAutomaton && choice === characteristicsChoice
+            ([action, choice, hasStandbyAutomaton], schema) =>
+                isStandbyAutomatonAdded(action, hasStandbyAutomaton) && choice === characteristicsChoice
                     ? schema.required()
                     : schema
         )
@@ -168,6 +171,7 @@ export const getStandbyAutomatonModificationEmptyFormData = (id = FieldConstants
     [id]: {
         ...getStandbyAutomatonEmptyFormData(id)[id],
         [FieldConstants.ADD_STAND_BY_AUTOMATON]: null,
+        [FieldConstants.STAND_BY_AUTOMATON_ACTION]: null,
         [FieldConstants.STAND_BY_AUTOMATON]: null,
     },
 });
@@ -175,7 +179,16 @@ export const getStandbyAutomatonModificationEmptyFormData = (id = FieldConstants
 export const getStandbyAutomatonModificationFormValidationSchema = () =>
     yup.object().shape({
         [FieldConstants.ADD_STAND_BY_AUTOMATON]: yup.boolean().nullable(),
-        [FieldConstants.STAND_BY_AUTOMATON]: yup.boolean().nullable(),
+        [FieldConstants.STAND_BY_AUTOMATON_ACTION]: yup.string().nullable(),
+        [FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON]: yup.string().nullable(),
+        [FieldConstants.STAND_BY_AUTOMATON]: yup
+            .boolean()
+            .nullable()
+            .when(
+                [FieldConstants.STAND_BY_AUTOMATON_ACTION, '$hasStandbyAutomaton'],
+                ([action, hasStandbyAutomaton], schema) =>
+                    isStandbyAutomatonAdded(action, hasStandbyAutomaton) ? schema.required() : schema
+            ),
         [FieldConstants.LOW_VOLTAGE_SET_POINT]: requiredIfStandbyAutomatonAdded(
             yup.number().min(0, MUST_BE_GREATER_OR_EQUAL_TO_ZERO)
         ),
