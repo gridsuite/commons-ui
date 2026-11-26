@@ -117,6 +117,7 @@ export const businessErrorsEn = {
         'Modification type of {modificationId} is invalid : actual type {modificationType} -> expected type {expectedModificationType}',
     'modification.containsShared': 'Modification {modificationId} contains a shared modification and cannot be shared',
     'modification.notFound': 'Modification {modificationId} not found',
+    'modification.shared.notFound': 'Shared modification {modificationId} not found',
     'modifications.notFound': 'Some of these modifications {ids} were not found',
     'modification.infos.error': 'Modification infos error : {errorMessage}',
     'modification.duplication.argument.error':

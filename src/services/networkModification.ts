@@ -90,25 +90,15 @@ export function updateModification({ modificationUuid, body }: { modificationUui
 }
 
 /**
- * Update only the metadata (e.g. the name) of network modifications, directly on the network-modification-server.
- * Fields left out of `metadata` are not modified.
+ * Activate or deactivate network modifications, directly on the network-modification-server.
  */
-export function updateNetworkModificationsMetadata(
-    modificationUuids: UUID[],
-    metadata: Partial<ComposedModificationMetadata>
-) {
+export function updateNetworkModificationsActivation(modificationUuids: UUID[], active: boolean) {
     const urlSearchParams = new URLSearchParams();
     modificationUuids.forEach((uuid) => urlSearchParams.append('uuids', uuid));
+    urlSearchParams.append('active', String(active));
     const url = `${PREFIX_STUDY_SERVER_QUERIES}/v1/network-modifications?${urlSearchParams.toString()}`;
     console.debug(url);
-    return backendFetch(url, {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(metadata),
-    });
+    return backendFetch(url, { method: 'PUT' });
 }
 
 /** Moves modifications into nodeUuid, all coming from originNodeUuid (defaults to nodeUuid) */
@@ -138,26 +128,22 @@ const getStudyUrlWithNodeUuidAndRootNetworkUuid = (
         rootNetworkUuid
     )}/nodes/${safeEncodeURIComponent(nodeUuid)}`;
 
-export function setModificationMetadata(
+/** Activate or deactivate a modification of a study node */
+export function setModificationActivation(
     studyUuid: UUID | null,
     nodeUuid: UUID | undefined,
     modificationUuid: UUID | undefined,
-    metadata: Partial<NetworkModificationMetadata | ComposedModificationMetadata>
+    active: boolean
 ): Promise<Response> {
     if (!modificationUuid) {
         return Promise.reject(new Error('modificationUuid is required'));
     }
     const urlSearchParams = new URLSearchParams();
-    urlSearchParams.append('uuids', String([modificationUuid]));
+    urlSearchParams.append('uuids', modificationUuid);
+    urlSearchParams.append('active', String(active));
     const url = `${getStudyUrlWithNodeUuid(studyUuid, nodeUuid)}/network-modifications?${urlSearchParams.toString()}`;
-    return backendFetch(url, {
-        method: 'PUT',
-        headers: {
-            Accept: 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(metadata),
-    });
+    console.debug(url);
+    return backendFetch(url, { method: 'PUT' });
 }
 
 export function setModificationNameAndDescription(
@@ -182,7 +168,7 @@ export function setModificationNameAndDescription(
     });
 }
 
-export function updateModificationStatusByRootNetwork(
+export function updateModificationApplicabilityByRootNetwork(
     studyUuid: UUID,
     nodeUuid: UUID,
     rootNetworkUuid: UUID,

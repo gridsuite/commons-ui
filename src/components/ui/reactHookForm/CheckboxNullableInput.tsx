@@ -43,7 +43,10 @@ export function CheckboxNullableInput({
 
     const handleChangeValue = useCallback(() => {
         let newValue;
-        if (value) {
+        if (nullDisabled) {
+            // two states only: toggle between true and false (null is displayed as unchecked)
+            newValue = value !== true;
+        } else if (value) {
             newValue = null;
         } else if (value === null) {
             newValue = false;
@@ -52,7 +55,7 @@ export function CheckboxNullableInput({
         }
         rhfOnChange(newValue);
         onChange?.(newValue);
-    }, [rhfOnChange, onChange, value]);
+    }, [rhfOnChange, onChange, value, nullDisabled]);
 
     // Get the current label based on value
     const currentLabel = typeof label === 'function' ? label(value) : label;

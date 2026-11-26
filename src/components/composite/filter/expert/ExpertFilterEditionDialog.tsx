@@ -9,6 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import type { UUID } from 'node:crypto';
 import { useSnackMessage } from '../../../../hooks/useSnackMessage';
 import { FetchStatus } from '../../../../utils/constants/fetchStatus';
 import { FieldConstants } from '../../../../utils/constants/fieldConstants';
@@ -23,7 +24,8 @@ import { importExpertRules } from './expertFilterUtils';
 import { HeaderFilterSchema } from '../HeaderFilterForm';
 import { EXPERT_FILTER_QUERY } from './expertFilterConstants';
 import { snackWithFallback } from '../../../../utils/error';
-import { isDisabledValidationButton } from '../../../../utils/form-utils';
+import { isDisabledValidationButton, isOnlyNameOrDescriptionModified } from '../../../../utils/form-utils';
+import { updateElement } from '../../../../services/explore';
 
 const formSchema = yup
     .object()
@@ -84,25 +86,44 @@ export function ExpertFilterEditionDialog({
 
     const onSubmit = useCallback(
         (filterForm: { [prop: string]: any }) => {
-            saveExpertFilter(
-                id,
-                filterForm[EXPERT_FILTER_QUERY],
-                filterForm[FieldConstants.EQUIPMENT_TYPE],
-                filterForm[FieldConstants.NAME],
-                filterForm[FieldConstants.DESCRIPTION] ?? '',
-                false,
-                null,
-                onClose,
-                (error: Error) => {
-                    snackWithFallback(snackError, error, { headerId: 'cannotSaveFilter' });
-                }
-            );
+            if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
+                updateElement(id as UUID, {
+                    elementName: filterForm[FieldConstants.NAME],
+                    description: filterForm[FieldConstants.DESCRIPTION] ?? '',
+                })
+                    .then(onClose)
+                    .catch((error) => {
+                        snackWithFallback(snackError, error, { headerId: 'cannotSaveFilter' });
+                    });
+            } else {
+                saveExpertFilter(
+                    id,
+                    filterForm[EXPERT_FILTER_QUERY],
+                    filterForm[FieldConstants.EQUIPMENT_TYPE],
+                    filterForm[FieldConstants.NAME],
+                    filterForm[FieldConstants.DESCRIPTION] ?? '',
+                    false,
+                    null,
+                    onClose,
+                    (error: Error) => {
+                        snackWithFallback(snackError, error, { headerId: 'cannotSaveFilter' });
+                    }
+                );
+            }
             if (itemSelectionForCopy.sourceItemUuid === id) {
                 setItemSelectionForCopy(NO_ITEM_SELECTION_FOR_COPY);
                 broadcastChannel.postMessage({ NO_SELECTION_FOR_COPY: NO_ITEM_SELECTION_FOR_COPY });
             }
         },
-        [broadcastChannel, id, onClose, itemSelectionForCopy.sourceItemUuid, snackError, setItemSelectionForCopy]
+        [
+            broadcastChannel,
+            formMethods,
+            id,
+            onClose,
+            itemSelectionForCopy.sourceItemUuid,
+            snackError,
+            setItemSelectionForCopy,
+        ]
     );
 
     const isDataReady = dataFetchStatus === FetchStatus.FETCH_SUCCESS;

@@ -18,6 +18,5 @@ export interface NetworkExportInfos {
 
 export interface ExportFormatProperties {
     formatName: string;
-    customFormatName?: string;
     parameters: Parameter[];
 }
