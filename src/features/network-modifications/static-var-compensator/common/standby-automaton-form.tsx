@@ -305,6 +305,7 @@ export function StandbyAutomatonForm({
                         spacing={2}
                         sx={{
                             padding: 2,
+                            paddingTop: isEquipmentModification ? 0 : 2,
                         }}
                     >
                         {isEquipmentModification && <Grid size={12}>{standbyStatusField}</Grid>}
@@ -316,19 +317,21 @@ export function StandbyAutomatonForm({
                                 </Grid>
                             );
                         })}
+                        {isEquipmentModification && (
+                            <SusceptanceArea isEquipmentModification previousValues={previousValues} />
+                        )}
                     </Grid>
-                    <Grid
-                        container
-                        spacing={2}
-                        sx={{
-                            padding: 2,
-                        }}
-                    >
-                        <SusceptanceArea
-                            isEquipmentModification={isEquipmentModification}
-                            previousValues={previousValues}
-                        />
-                    </Grid>
+                    {!isEquipmentModification && (
+                        <Grid
+                            container
+                            spacing={2}
+                            sx={{
+                                padding: 2,
+                            }}
+                        >
+                            <SusceptanceArea previousValues={previousValues} />
+                        </Grid>
+                    )}
                 </>
             )}
         </Grid>

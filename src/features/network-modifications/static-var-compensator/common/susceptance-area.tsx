@@ -134,8 +134,8 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
 
     if (isEquipmentModification) {
         return (
-            <Grid container spacing={2}>
-                <GridItem size={4}>
+            <>
+                <GridItem size={6}>
                     <SelectInput
                         name={`${id}.${FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON}`}
                         options={AUTOMATON_FIXED_PART_CHOICES}
@@ -144,12 +144,12 @@ export function SusceptanceArea({ isEquipmentModification = false, previousValue
                         size="small"
                     />
                 </GridItem>
-                <GridItem size={4}>
+                <GridItem size={6}>
                     {watchChoiceAutomaton === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id
                         ? susceptanceField
                         : qAtNominalVField}
                 </GridItem>
-            </Grid>
+            </>
         );
     }
 
