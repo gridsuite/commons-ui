@@ -8,6 +8,7 @@
 export * from './network-modification-table-styles';
 export * from './columns-definition';
 export * from './network-modifications-table';
+export * from './network-modifications-table.type';
 export * from './use-modifications-drag-and-drop';
 export * from './renderers';
 export * from './row';

@@ -14,14 +14,22 @@ import {
     NetworkModificationApplicabilities,
     RootNetworkRowInfo,
 } from './utils';
+import type {
+    UnshareModificationFn,
+    UpdateModificationActivationFn,
+    UpdateModificationApplicabilityByRootNetworkFn,
+    UpdateModificationMetadataFn,
+} from './features/network-modification-table/network-modifications-table.type';
 
 declare module '@tanstack/react-table' {
     // TableMeta = values shared by the whole table (same value across every cell).
     // Read at runtime via `table.options.meta` from any cell/header renderer.
     interface TableMeta<TData extends RowData> {
         context: {
-            studyUuid?: UUID | null;
-            currentNodeId?: UUID;
+            onUpdateModificationActivation?: UpdateModificationActivationFn;
+            onUpdateModificationNameAndDescription?: UpdateModificationMetadataFn;
+            onUnshareModification?: UnshareModificationFn;
+            onUpdateModificationApplicabilityByRootNetwork?: UpdateModificationApplicabilityByRootNetworkFn;
             currentRootNetworkUuid?: UUID;
             rootNetworks?: RootNetworkRowInfo[];
         };

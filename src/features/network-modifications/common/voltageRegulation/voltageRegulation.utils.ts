@@ -48,9 +48,8 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
             [FieldConstants.NOMINAL_VOLTAGE]: string(),
             [FieldConstants.TOPOLOGY_KIND]: string().nullable(),
         })
-        .when([FieldConstants.VOLTAGE_REGULATION, FieldConstants.VOLTAGE_REGULATION_TYPE], {
-            is: (voltageRegulation: number, voltageRegulationType: string) =>
-                !isEquipmentModification && voltageRegulation && voltageRegulationType === REGULATION_TYPES.DISTANT.id,
+        .when([FieldConstants.VOLTAGE_REGULATION_TYPE], {
+            is: (voltageRegulationType: string) => voltageRegulationType === REGULATION_TYPES.DISTANT.id,
             then: (schema) => schema.required(),
         }),
     [FieldConstants.EQUIPMENT]: object()
@@ -60,9 +59,8 @@ export const getVoltageRegulationSchema = (isEquipmentModification = false) => (
             [FieldConstants.NAME]: string().nullable(),
             [FieldConstants.TYPE]: string(),
         })
-        .when([FieldConstants.VOLTAGE_REGULATION, FieldConstants.VOLTAGE_REGULATION_TYPE], {
-            is: (voltageRegulation: number, voltageRegulationType: string) =>
-                !isEquipmentModification && voltageRegulation && voltageRegulationType === REGULATION_TYPES.DISTANT.id,
+        .when([FieldConstants.VOLTAGE_REGULATION_TYPE], {
+            is: (voltageRegulationType: string) => voltageRegulationType === REGULATION_TYPES.DISTANT.id,
             then: (schema) => schema.required(),
         }),
 });

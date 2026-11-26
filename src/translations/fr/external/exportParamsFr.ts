@@ -5,6 +5,12 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 export const exportParamsFr = {
+    CGMES: 'CGMES',
+    MATPOWER: 'MATPOWER',
+    JIIDM: 'JIIDM',
+    UCTE: 'UCTE',
+    XIIDM: 'XIIDM',
+    BIIDM: 'BIIDM',
     // CGMES
     'iidm.export.cgmes.base-name': 'Nom des fichiers',
     'iidm.export.cgmes.base-name.desc': "Nom des fichiers d'export",

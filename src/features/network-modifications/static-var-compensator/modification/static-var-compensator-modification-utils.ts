@@ -1,0 +1,165 @@
+/**
+ * Copyright (c) 2026, RTE (http://www.rte-france.com)
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/.
+ */
+
+import { InferType, object, string } from 'yup';
+import {
+    DeepNullable,
+    FieldConstants,
+    ModificationType,
+    sanitizeString,
+    toModificationOperation,
+} from '../../../../utils';
+import {
+    getConnectivityFormDataProps,
+    getConnectivityWithPositionEmptyFormDataProps,
+    getConnectivityWithPositionSchema,
+    getPropertiesFromModification,
+    modificationPropertiesSchema,
+    REGULATION_TYPES,
+    toModificationProperties,
+} from '../../common';
+import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
+import { VOLTAGE_REGULATION_MODES } from '../common/constants';
+import { getReactiveFormEmptyFormData, getReactiveFormValidationSchema } from '../common/set-points-limits-form-utils';
+import {
+    getStandbyAutomatonModificationEmptyFormData,
+    getStandbyAutomatonModificationFormValidationSchema,
+} from '../common/standby-automaton-form-utils';
+import { StaticVarCompensatorModificationDto } from './static-var-compensator-modification.types';
+
+export const staticVarCompensatorModificationFormSchema = object()
+    .shape({
+        [FieldConstants.EQUIPMENT_ID]: string().required(),
+        [FieldConstants.EQUIPMENT_NAME]: string().nullable(),
+        [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionSchema(true),
+        [FieldConstants.SETPOINTS_LIMITS]: getReactiveFormValidationSchema(true),
+        [FieldConstants.AUTOMATON]: getStandbyAutomatonModificationFormValidationSchema(),
+    })
+    .concat(modificationPropertiesSchema)
+    .required();
+
+export type StaticVarCompensatorModificationFormData = InferType<typeof staticVarCompensatorModificationFormSchema>;
+
+export const staticVarCompensatorModificationEmptyFormData: DeepNullable<StaticVarCompensatorModificationFormData> = {
+    [FieldConstants.EQUIPMENT_ID]: '',
+    [FieldConstants.EQUIPMENT_NAME]: '',
+    [FieldConstants.CONNECTIVITY]: getConnectivityWithPositionEmptyFormDataProps(true),
+    [FieldConstants.SETPOINTS_LIMITS]: getReactiveFormEmptyFormData(FieldConstants.SETPOINTS_LIMITS, true)[
+        FieldConstants.SETPOINTS_LIMITS
+    ],
+    [FieldConstants.AUTOMATON]: getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
+    [FieldConstants.ADDITIONAL_PROPERTIES]: [],
+};
+
+const getRegulationModeFormValue = (dto: StaticVarCompensatorModificationDto) => {
+    if (dto.regulating?.value === false) {
+        return VOLTAGE_REGULATION_MODES.OFF.id;
+    }
+    return dto.regulationMode?.value ?? null;
+};
+
+export const staticVarCompensatorModificationDtoToForm = (
+    dto: StaticVarCompensatorModificationDto,
+    includePreviousValues = true
+): StaticVarCompensatorModificationFormData => {
+    const isSusceptanceChoice = dto.minSusceptance != null || dto.maxSusceptance != null || dto.b0 != null;
+    const regulatingTerminalVlId = dto.regulatingTerminalVlId?.value;
+    const regulatingTerminalId = dto.regulatingTerminalId?.value;
+    const regulatingTerminalType = dto.regulatingTerminalType?.value;
+
+    return {
+        [FieldConstants.EQUIPMENT_ID]: dto.equipmentId,
+        [FieldConstants.EQUIPMENT_NAME]: dto.equipmentName?.value ?? '',
+        [FieldConstants.CONNECTIVITY]: getConnectivityFormDataProps({
+            voltageLevelId: dto.voltageLevelId?.value ?? null,
+            busbarSectionId: dto.busOrBusbarSectionId?.value ?? null,
+            connectionName: dto.connectionName?.value ?? '',
+            connectionDirection: dto.connectionDirection?.value ?? null,
+            connectionPosition: dto.connectionPosition?.value ?? null,
+            terminalConnected: dto.terminalConnected?.value ?? null,
+            isEquipmentModification: true,
+        }),
+        [FieldConstants.SETPOINTS_LIMITS]: {
+            [FieldConstants.CHARACTERISTICS_CHOICE]: isSusceptanceChoice
+                ? CHARACTERISTICS_CHOICES.SUSCEPTANCE.id
+                : CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
+            [FieldConstants.MAX_SUSCEPTANCE]: dto.maxSusceptance?.value ?? null,
+            [FieldConstants.MIN_SUSCEPTANCE]: dto.minSusceptance?.value ?? null,
+            [FieldConstants.MAX_Q_AT_NOMINAL_V]: dto.maxQAtNominalV?.value ?? null,
+            [FieldConstants.MIN_Q_AT_NOMINAL_V]: dto.minQAtNominalV?.value ?? null,
+            [FieldConstants.VOLTAGE_REGULATION_MODE]: getRegulationModeFormValue(dto),
+            [FieldConstants.VOLTAGE_SET_POINT]: dto.voltageSetpoint?.value ?? null,
+            [FieldConstants.REACTIVE_POWER_SET_POINT]: dto.reactivePowerSetpoint?.value ?? null,
+            [FieldConstants.VOLTAGE_REGULATION_TYPE]: dto.voltageRegulationType?.value ?? null,
+            [FieldConstants.VOLTAGE_LEVEL]: regulatingTerminalVlId
+                ? { [FieldConstants.ID]: regulatingTerminalVlId }
+                : null,
+            [FieldConstants.EQUIPMENT]:
+                regulatingTerminalId && regulatingTerminalType
+                    ? { [FieldConstants.ID]: regulatingTerminalId, [FieldConstants.TYPE]: regulatingTerminalType }
+                    : null,
+        },
+        [FieldConstants.AUTOMATON]: {
+            ...getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
+            [FieldConstants.ADD_STAND_BY_AUTOMATON]: dto.standbyAutomatonOn?.value ?? null,
+            [FieldConstants.STAND_BY_AUTOMATON]: dto.standby?.value ?? null,
+            [FieldConstants.LOW_VOLTAGE_SET_POINT]: dto.lowVoltageSetpoint?.value ?? null,
+            [FieldConstants.HIGH_VOLTAGE_SET_POINT]: dto.highVoltageSetpoint?.value ?? null,
+            [FieldConstants.LOW_VOLTAGE_THRESHOLD]: dto.lowVoltageThreshold?.value ?? null,
+            [FieldConstants.HIGH_VOLTAGE_THRESHOLD]: dto.highVoltageThreshold?.value ?? null,
+            [FieldConstants.B0]: dto.b0?.value ?? null,
+            [FieldConstants.Q0]: dto.q0?.value ?? null,
+        },
+        ...getPropertiesFromModification(dto.properties, includePreviousValues),
+    };
+};
+
+export const staticVarCompensatorModificationFormToDto = (
+    form: StaticVarCompensatorModificationFormData
+): StaticVarCompensatorModificationDto => {
+    const { connectivity, setpointsLimits, automaton } = form;
+    const { characteristicsChoice, voltageRegulationMode, voltageRegulationType } = setpointsLimits;
+    const isSusceptanceChoice = characteristicsChoice === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id;
+    const isQAtNominalVChoice = characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id;
+    const isRegulationOff = voltageRegulationMode === VOLTAGE_REGULATION_MODES.OFF.id;
+    const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
+    const isAutomatonRemoved = automaton?.addStandbyAutomaton === false;
+    const getAutomatonValue = <T>(value: T) => (isAutomatonRemoved ? null : toModificationOperation(value));
+
+    return {
+        type: ModificationType.STATIC_VAR_COMPENSATOR_MODIFICATION,
+        equipmentId: form.equipmentID,
+        equipmentName: toModificationOperation(sanitizeString(form.equipmentName)),
+        voltageLevelId: toModificationOperation(connectivity?.voltageLevel?.id),
+        busOrBusbarSectionId: toModificationOperation(connectivity?.busOrBusbarSection?.id),
+        connectionDirection: toModificationOperation(connectivity?.connectionDirection),
+        connectionName: toModificationOperation(sanitizeString(connectivity?.connectionName)),
+        connectionPosition: toModificationOperation(connectivity?.connectionPosition),
+        terminalConnected: toModificationOperation(connectivity?.terminalConnected),
+        maxSusceptance: isSusceptanceChoice ? toModificationOperation(setpointsLimits.maxSusceptance) : null,
+        minSusceptance: isSusceptanceChoice ? toModificationOperation(setpointsLimits.minSusceptance) : null,
+        maxQAtNominalV: isQAtNominalVChoice ? toModificationOperation(setpointsLimits.maxQAtNominalV) : null,
+        minQAtNominalV: isQAtNominalVChoice ? toModificationOperation(setpointsLimits.minQAtNominalV) : null,
+        regulationMode: isRegulationOff ? null : toModificationOperation(voltageRegulationMode),
+        regulating: voltageRegulationMode ? toModificationOperation(!isRegulationOff) : null,
+        voltageSetpoint: toModificationOperation(setpointsLimits.voltageSetpoint),
+        reactivePowerSetpoint: toModificationOperation(setpointsLimits.reactivePowerSetpoint),
+        voltageRegulationType: toModificationOperation(voltageRegulationType),
+        regulatingTerminalId: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.id) : null,
+        regulatingTerminalType: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.type) : null,
+        regulatingTerminalVlId: isDistantRegulation ? toModificationOperation(setpointsLimits.voltageLevel?.id) : null,
+        standbyAutomatonOn: toModificationOperation(automaton?.addStandbyAutomaton),
+        standby: getAutomatonValue(automaton?.StandbyAutomaton),
+        b0: isSusceptanceChoice ? getAutomatonValue(automaton?.b0) : null,
+        q0: isQAtNominalVChoice ? getAutomatonValue(automaton?.q0) : null,
+        lowVoltageSetpoint: getAutomatonValue(automaton?.lowVoltageSetpoint),
+        highVoltageSetpoint: getAutomatonValue(automaton?.highVoltageSetpoint),
+        lowVoltageThreshold: getAutomatonValue(automaton?.lowVoltageThreshold),
+        highVoltageThreshold: getAutomatonValue(automaton?.highVoltageThreshold),
+        properties: toModificationProperties(form) ?? null,
+    };
+};
