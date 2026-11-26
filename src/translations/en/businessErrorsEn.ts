@@ -109,6 +109,11 @@ export const businessErrorsEn = {
     'network.notFound': 'Network {networkId} not found',
     'network.variant.notFound': 'Variant {variantId} for network {networkId} not found',
 
+    'networkMap.networkNotFound': 'Network not found.',
+    'networkMap.voltageLevelNotFound': 'Voltage level not found.',
+    'networkMap.elementNotFound': 'Element not found.',
+    'networkMap.schemaNotFound': 'The requested schema is not available yet.',
+
     'modification.container.notFound': 'Modification container {containerId} of type {containerType} not found',
     'modification.container.badType':
         'Modification container type of {containerId} is invalid : actual type {containerType} -> expected type {expectedContainerType}',
