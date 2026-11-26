@@ -109,6 +109,11 @@ export const businessErrorsFr = {
     'network.notFound': 'Réseau {networkId} non trouvé',
     'network.variant.notFound': 'Variante {variantId} pour le réseau {networkId} non trouvé',
 
+    'networkMap.networkNotFound': 'Réseau non trouvé.',
+    'networkMap.voltageLevelNotFound': 'Poste non trouvé.',
+    'networkMap.elementNotFound': 'Élément non trouvé.',
+    'networkMap.schemaNotFound': "Le schéma demandé n'est pas encore disponible.",
+
     'modification.container.notFound':
         'Le container de modification {containerId} de type {containerType} est introuvable',
     'modification.container.badType':
@@ -133,4 +138,8 @@ export const businessErrorsFr = {
 
     'report.notFound': 'Rapport non trouvé.',
     'report.notARoot': "Le rapport n'est pas un rapport racine.",
+
+    'geoData.networkNotFound': 'Réseau non trouvé.',
+    'geoData.variantNotFound': 'Variante non trouvée.',
+    'geoData.invalidCountry': 'Pays invalide.',
 };
