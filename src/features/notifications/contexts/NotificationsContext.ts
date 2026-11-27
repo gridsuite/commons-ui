@@ -21,11 +21,17 @@ export type ListenerOnReopen = ListenerEventBase & {
     callback: () => void;
 };
 
+export type ListenerOnClose = ListenerEventBase & {
+    callback: () => void;
+};
+
 export type NotificationsContextType = {
     addListenerEvent: (urlKey: string, l: ListenerEventWS) => void;
     removeListenerEvent: (urlKey: string, idListener: string) => void;
     addListenerOnReopen: (urlKey: string, l: ListenerOnReopen) => void;
     removeListenerOnReopen: (urlKey: string, idListener: string) => void;
+    addListenerOnClose: (urlKey: string, l: ListenerOnClose) => void;
+    removeListenerOnClose: (urlKey: string, idListener: string) => void;
 };
 
 export type NotificationsContextRecordType = Record<string, NotificationsContextType>;
@@ -35,4 +41,6 @@ export const NotificationsContext = createContext<NotificationsContextType>({
     removeListenerEvent: () => {},
     addListenerOnReopen: () => {},
     removeListenerOnReopen: () => {},
+    addListenerOnClose: () => {},
+    removeListenerOnClose: () => {},
 });

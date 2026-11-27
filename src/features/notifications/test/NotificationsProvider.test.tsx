@@ -150,4 +150,56 @@ describe('NotificationsProvider', () => {
 
         waitFor(() => expect(onOpenCallback).toHaveBeenCalled());
     });
+
+    test('calls onClose listener when the WebSocket closes', () => {
+        const root = createRoot(container);
+
+        const closeCallback = jest.fn();
+        function NotificationsConsumer() {
+            useNotificationsListener(WS_KEY, { listenerCallbackOnClose: closeCallback });
+            return <p>empty</p>;
+        }
+
+        const reconnectingWebSocketClass = {} as jest.Mocked<ReconnectingWebSocket>;
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+
+        act(() => {
+            root.render(
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
+                    <NotificationsConsumer />
+                </NotificationsProvider>
+            );
+        });
+        act(() => {
+            reconnectingWebSocketClass.onclose?.({} as CloseEvent);
+        });
+
+        expect(closeCallback).toHaveBeenCalledTimes(1);
+    });
+
+    test('does not call onClose listener registered on another key', () => {
+        const root = createRoot(container);
+
+        const closeCallback = jest.fn();
+        function NotificationsConsumer() {
+            useNotificationsListener('Fake_Key', { listenerCallbackOnClose: closeCallback });
+            return <p>empty</p>;
+        }
+
+        const reconnectingWebSocketClass = {} as jest.Mocked<ReconnectingWebSocket>;
+        MockedReconnectingWebSocket.mockImplementation(() => reconnectingWebSocketClass);
+
+        act(() => {
+            root.render(
+                <NotificationsProvider urls={{ [WS_KEY]: 'test' }}>
+                    <NotificationsConsumer />
+                </NotificationsProvider>
+            );
+        });
+        act(() => {
+            reconnectingWebSocketClass.onclose?.({} as CloseEvent);
+        });
+
+        expect(closeCallback).not.toHaveBeenCalled();
+    });
 });
