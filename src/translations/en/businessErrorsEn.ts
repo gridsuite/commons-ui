@@ -59,6 +59,7 @@ export const businessErrorsEn = {
     'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
     'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
     'filter.filterCycleDetected': 'Filter cycle detected: {filters}',
+    'filter.missingNetwork': 'The study is missing or unloaded. Please load it or select another one.',
     'computation.resultNotFound': 'Results not found.',
     'computation.parametersNotFound': 'Parameters not found.',
     'computation.invalidSortFormat': 'The sorting format is incorrect.',
@@ -138,4 +139,8 @@ export const businessErrorsEn = {
     'geoData.networkNotFound': 'Network not found.',
     'geoData.variantNotFound': 'Variant not found.',
     'geoData.invalidCountry': 'Invalid country.',
+
+    'actions.contingencyListNotFound': 'Contingency list not found.',
+    'actions.invalidContingencyListPayload': 'The contingency list payload is invalid.',
+    'actions.networkNotFound': 'Network not found.',
 };
