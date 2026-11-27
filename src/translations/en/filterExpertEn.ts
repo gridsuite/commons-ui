@@ -195,4 +195,9 @@ export const filterExpertEn = {
     breaker: 'Breaker',
     loadBreaker: 'Load Breaker',
     disconnector: 'Disconnector',
+    switchState: 'State',
+    opened: 'Opened',
+    closed: 'Closed',
+    only_coupling_switch: 'Coupler only',
+    onlyCouplingSwitchesMessage: 'Select switches that exclusively connect busbar sections together',
 };
