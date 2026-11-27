@@ -18,7 +18,7 @@ export function updateParametersElement<TFieldValues extends FieldValues>(
     description: string
 ) {
     if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
-        return updateElement(id, { elementName: name, description });
+        return updateElement(id, null, { elementName: name, description });
     }
     return updateParameter(id, getParameters(), name, parametersType, description);
 }

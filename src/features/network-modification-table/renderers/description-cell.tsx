@@ -12,7 +12,7 @@ import { Row } from '@tanstack/react-table';
 import { DescriptionModificationDialog } from '../../../components/ui/dialogs';
 import { EditNoteIcon } from '../../../components/ui/icons';
 import { updateElement } from '../../../services';
-import { ComposedModificationMetadata } from '../../../utils';
+import { ComposedModificationMetadata, ElementType } from '../../../utils';
 import { createEditDescriptionStyle } from '../network-modification-table-styles';
 import { isReferenceModification } from '../utils';
 import type { UpdateModificationMetadataFn } from '../network-modifications-table.type';
@@ -46,12 +46,12 @@ export function DescriptionCell(props: Readonly<DescriptionCellProps>) {
             setIsLoading(true);
             try {
                 if (isReferenceModification(data)) {
-                    await updateElement(data.referencedId, {
+                    await updateElement(data.referencedId, ElementType.MODIFICATION, {
                         elementUuid: data.referencedId,
                         description: descriptionRecord.description,
                     });
                 } else if (data.parentSharedUuid) {
-                    await updateElement(data.parentSharedUuid, {
+                    await updateElement(data.parentSharedUuid, ElementType.MODIFICATION, {
                         elementUuid: data.uuid,
                         description: descriptionRecord.description,
                     });

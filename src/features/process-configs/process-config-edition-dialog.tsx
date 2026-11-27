@@ -10,17 +10,18 @@ import { SubmitHandler, useWatch } from 'react-hook-form';
 import { CustomMuiDialog } from '../../components';
 import { useSnackMessage } from '../../hooks';
 import {
+    ElementType,
     FieldConstants,
     isDisabledValidationButton,
     isOnlyNameOrDescriptionModified,
     snackWithFallback,
 } from '../../utils';
 import { updateElement } from '../../services';
-import { ProcessType } from './common';
 import {
     getProcessConfigBackendFromFormData,
     type ProcessConfigEditionDialogProps,
     type ProcessConfigFormValues,
+    ProcessType,
 } from './common';
 import { ProcessConfigForm } from './form/process-config-form';
 import { useProcessConfigForm } from './form/hooks/useProcessConfigForm';
@@ -61,7 +62,7 @@ export function ProcessConfigEditionDialog({
         async (values) => {
             try {
                 if (isOnlyNameOrDescriptionModified(formMethods.getValues(), formMethods.formState.defaultValues)) {
-                    await updateElement(processConfigUuid, {
+                    await updateElement(processConfigUuid, ElementType.PROCESS_CONFIG, {
                         elementName: values[FieldConstants.NAME] ?? '',
                         description: values[FieldConstants.DESCRIPTION] ?? '',
                     });

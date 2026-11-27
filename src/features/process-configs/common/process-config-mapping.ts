@@ -38,7 +38,7 @@ export async function getProcessConfigFormData(
         ...processConfig.modifications.map((modification) => modification.modificationUuid),
         ...parameterUuids,
     ]);
-    const elementNamesByUuid = await fetchElementNames(allUuids);
+    const elementNamesByUuid = await fetchElementNames(allUuids, null);
 
     const parameterValues: Partial<Record<ProcessConfigParameterField, ProcessConfigParameterRef[]>> = {};
     definition.parameters.forEach(({ field, backendProperty }) => {

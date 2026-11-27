@@ -8,6 +8,7 @@
 import type { UUID } from 'node:crypto';
 import { backendFetch, backendFetchJson, getRequestParamFromList } from './utils';
 import { ElementAttributes } from '../utils/types/types';
+import { ElementType } from '../utils';
 
 const PREFIX_EXPLORE_SERVER_QUERIES = `${import.meta.env.VITE_API_GATEWAY}/explore`;
 
@@ -76,12 +77,22 @@ export function hasElementPermission(elementUuid: UUID, permission: PermissionTy
         });
 }
 
-export function fetchElementNames(elementUuids: Set<string>): Promise<Record<string, string>> {
+/**
+ * @param elementUuids
+ * @param elementType type of the elementUuids. not required but improves performance if it is sent
+ */
+export function fetchElementNames(
+    elementUuids: Set<string>,
+    elementType: ElementType | null
+): Promise<Record<string, string>> {
     console.info('fetch directory element names');
 
     const params = new URLSearchParams();
     elementUuids.forEach((id) => {
         params.append('ids', id);
+        if (elementType !== null) {
+            params.append('elementType', elementType);
+        }
     });
 
     const url = `${PREFIX_EXPLORE_SERVER_QUERIES}/v1/explore/elements/name?${params.toString()}`;
