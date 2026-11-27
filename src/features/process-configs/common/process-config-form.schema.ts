@@ -13,6 +13,7 @@ import { processConfigModificationsShape } from './process-config-modifications-
 import type { ProcessConfigMode } from './process-config-form.types';
 import {
     PROCESS_CONFIG_PARAMETER_FIELDS,
+    PROCESS_CONFIG_TYPE_DEFINITIONS,
     getProcessTypesRequiringParameter,
     type ProcessConfigParameterField,
 } from './process-config-type.definitions';
@@ -38,6 +39,14 @@ export function getProcessConfigFormSchema(mode: ProcessConfigMode) {
         parameterFields[field] = parameterField(field);
     });
 
+    const watchedGeneratorsFields: Record<string, yup.AnySchema> = {};
+    Object.values(PROCESS_CONFIG_TYPE_DEFINITIONS).forEach((definition) => {
+        if ('watchedGenerators' in definition && definition.watchedGenerators) {
+            const { watchedGenerators } = definition;
+            watchedGeneratorsFields[watchedGenerators.field] = yup.array().of(parameterSelectionSchema).optional();
+        }
+    });
+
     return yup.object().shape({
         processType: yup.string().oneOf(Object.values(ProcessType)).required(),
 
@@ -48,6 +57,7 @@ export function getProcessConfigFormSchema(mode: ProcessConfigMode) {
         ...processConfigModificationsShape,
 
         ...parameterFields,
+        ...watchedGeneratorsFields,
 
         ...(mode === 'create'
             ? {

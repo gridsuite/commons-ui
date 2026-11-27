@@ -9,11 +9,16 @@ export const processConfigFr = {
     'process_config/editLFProcessConfigTitle': 'Éditer une configuration de chaîne de calcul de répartition',
     'process_config/editSAProcessConfigTitle': "Éditer une configuration d'analyse de sécurité sous aléas",
     'process_config/editSCProcessConfigTitle': 'Éditer une configuration de chaîne de court-circuit',
+    'process_config/editPccMinProcessConfigTitle':
+        'Éditer une configuration de chaîne intensité court-circuit minimale sous aléas',
     'process_config/modifications': 'Modifications',
     'process_config/providersParameters': 'Paramètres des simulateurs',
     'process_config/loadflow': 'Calcul de répartition',
     'process_config/securityAnalysis': 'Analyse de sécurité',
     'process_config/shortcircuit': 'Calcul de court-circuit',
+    'process_config/pccMin': 'Pcc min N-1',
+    'process_config/pccMinWatchedElements': 'Ouvrages à surveiller',
+    'process_config/pccMinGenerators': 'Groupes',
     'processConfig/fetchProcessConfigError':
         'Une erreur est survenue lors de la récupération de la configuration de chaîne',
     'processConfig/updateProcessConfigError':

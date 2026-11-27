@@ -10,6 +10,7 @@ import type { ProcessConfigBaseBackend, ProcessType } from './process-config.typ
 import type {
     PROCESS_CONFIG_TYPE_DEFINITIONS,
     ProcessConfigParameterUuidProperties,
+    ProcessConfigWatchedGeneratorsProperties,
 } from './process-config-type.definitions';
 
 type ProcessConfigParameterUuidProperty<TProcessType extends ProcessType> =
@@ -20,7 +21,8 @@ type ProcessConfigParameterUuidProperty<TProcessType extends ProcessType> =
 type ProcessConfigBackendByProcessType = {
     [TProcessType in ProcessType]: ProcessConfigBaseBackend & {
         processType: TProcessType;
-    } & Pick<ProcessConfigParameterUuidProperties, ProcessConfigParameterUuidProperty<TProcessType>>;
+    } & Pick<ProcessConfigParameterUuidProperties, ProcessConfigParameterUuidProperty<TProcessType>> &
+        Partial<ProcessConfigWatchedGeneratorsProperties>;
 };
 
 export type ProcessConfigBackend<TProcessType extends ProcessType = ProcessType> =

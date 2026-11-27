@@ -10,6 +10,7 @@ export enum ProcessType {
     SECURITY_ANALYSIS = 'SECURITY_ANALYSIS',
     LOADFLOW = 'LOADFLOW',
     SHORT_CIRCUIT = 'SHORT_CIRCUIT',
+    PCC_MIN = 'PCC_MIN',
 }
 
 // Backend types

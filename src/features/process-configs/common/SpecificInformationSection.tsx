@@ -7,15 +7,22 @@
 
 import { Button, Stack } from '@mui/material';
 import { FormattedMessage } from 'react-intl';
+import { useWatch } from 'react-hook-form';
 import { FormSection } from './FormSection';
 import { ModificationsSubSection } from './ModificationsSubSection';
 import { ProvidersParametersSubSection } from './ProvidersParametersSubSection';
+import { PccMinGeneratorsSubSection } from './PccMinGeneratorsSubSection';
+import { FieldConstants } from '../../../utils';
+import { ProcessConfigFormValues } from './process-config-form.types';
+import { ProcessType } from './process-config.type';
 
 type SpecificInformationSectionProps = {
     onPrefill?: () => void;
 };
 
 export function SpecificInformationSection({ onPrefill }: Readonly<SpecificInformationSectionProps>) {
+    const selectedProcessType = useWatch<ProcessConfigFormValues>({ name: FieldConstants.PROCESS_TYPE });
+
     return (
         <FormSection
             id="specific-information-heading"
@@ -36,6 +43,7 @@ export function SpecificInformationSection({ onPrefill }: Readonly<SpecificInfor
         >
             <ModificationsSubSection />
             <ProvidersParametersSubSection />
+            {selectedProcessType === ProcessType.PCC_MIN && <PccMinGeneratorsSubSection />}
         </FormSection>
     );
 }
