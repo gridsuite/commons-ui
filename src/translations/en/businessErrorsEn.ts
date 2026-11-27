@@ -59,6 +59,7 @@ export const businessErrorsEn = {
     'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
     'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
     'filter.filterCycleDetected': 'Filter cycle detected: {filters}',
+    'filter.missingNetwork': 'The study is missing or unloaded. Please load it or select another one.',
     'computation.resultNotFound': 'Results not found.',
     'computation.parametersNotFound': 'Parameters not found.',
     'computation.invalidSortFormat': 'The sorting format is incorrect.',
@@ -109,6 +110,11 @@ export const businessErrorsEn = {
     'network.notFound': 'Network {networkId} not found',
     'network.variant.notFound': 'Variant {variantId} for network {networkId} not found',
 
+    'networkMap.networkNotFound': 'Network not found.',
+    'networkMap.voltageLevelNotFound': 'Voltage level not found.',
+    'networkMap.elementNotFound': 'Element not found.',
+    'networkMap.schemaNotFound': 'The requested schema is not available yet.',
+
     'modification.container.notFound': 'Modification container {containerId} of type {containerType} not found',
     'modification.container.badType':
         'Modification container type of {containerId} is invalid : actual type {containerType} -> expected type {expectedContainerType}',
@@ -129,4 +135,12 @@ export const businessErrorsEn = {
 
     'report.notFound': 'Report not found.',
     'report.notARoot': 'The report is not a root report.',
+
+    'geoData.networkNotFound': 'Network not found.',
+    'geoData.variantNotFound': 'Variant not found.',
+    'geoData.invalidCountry': 'Invalid country.',
+
+    'actions.contingencyListNotFound': 'Contingency list not found.',
+    'actions.invalidContingencyListPayload': 'The contingency list payload is invalid.',
+    'actions.networkNotFound': 'Network not found.',
 };
