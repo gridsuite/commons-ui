@@ -13,8 +13,8 @@ import {
     FilterParams,
     FilterTextComparators,
 } from '../../custom-aggrid-types';
-import { useCustomAggridFilterContext } from '../../context';
-import { computeTolerance } from '../utils';
+import { useCustomAggridFilterContext } from '../../context/custom-aggrid-context';
+import { computeTolerance } from '../utils/filter-tolerance-utils';
 
 const removeElementFromArrayWithFieldValue = (filtersArrayToRemoveFieldValueFrom: FilterConfig[], field: string) => {
     return filtersArrayToRemoveFieldValueFrom.filter((f) => f.column !== field);
@@ -115,6 +115,7 @@ export const useCustomAggridColumnFilter = (colId: string, filterParams: FilterP
             if (filterWithoutValue) {
                 // IS_EMPTY || IS_NOT_EMPTY
                 isEditingRef.current = true;
+                setSelectedFilterData(true);
                 debouncedUpdateFilter({ value: true, type: newType, dataType, tolerance });
             } else if (selectedFilterData === true) {
                 // reset filter
