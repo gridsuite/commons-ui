@@ -40,7 +40,7 @@ import {
     getVoltageRegulationSchema,
     modificationPropertiesSchema,
     toModificationProperties,
-    toReactiveCapabilityCurveChoiceForGeneratorModification,
+    toReactiveCapabilityCurveChoiceForModification,
 } from '../../common';
 import { GeneratorModificationDto } from './generatorModification.types';
 import { GeneratorFormInfos } from '../generatorDialog.type';
@@ -161,7 +161,11 @@ export const generatorModificationFormToDto = (
     equipment?: GeneratorFormInfos
 ): GeneratorModificationDto => {
     const isReactiveCapabilityCurveOn =
-        toReactiveCapabilityCurveChoiceForGeneratorModification(form, equipment, dto) === 'CURVE';
+        toReactiveCapabilityCurveChoiceForModification(
+            form?.reactiveLimits,
+            equipment?.reactiveCapabilityCurvePoints,
+            dto?.reactiveCapabilityCurve
+        ) === 'CURVE';
     return {
         type: ModificationType.GENERATOR_MODIFICATION,
         equipmentId: form.equipmentID,
