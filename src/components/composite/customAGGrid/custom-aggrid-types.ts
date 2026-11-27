@@ -20,6 +20,7 @@ export enum TableType {
     PccMin = 'PccMin',
     VoltageInit = 'VoltageInit',
     ProcessExecutionList = 'ProcessExecutionList',
+    SharingLinks = 'SharingLinks',
 }
 
 // Filter operators
