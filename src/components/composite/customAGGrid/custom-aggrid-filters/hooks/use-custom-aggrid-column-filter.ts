@@ -109,18 +109,23 @@ export const useCustomAggridColumnFilter = (colId: string, filterParams: FilterP
 
     const handleChangeComparator = useCallback(
         (newType: string) => {
-            isEditingRef.current = true;
             setSelectedFilterComparator(newType);
             const filterWithoutValue =
                 newType === FilterTextComparators.IS_EMPTY || newType === FilterTextComparators.IS_NOT_EMPTY;
             if (filterWithoutValue) {
+                // IS_EMPTY || IS_NOT_EMPTY
+                isEditingRef.current = true;
+                setSelectedFilterData(true);
                 debouncedUpdateFilter({ value: true, type: newType, dataType, tolerance });
-            } else if (selectedFilterData && selectedFilterData !== true) {
-                debouncedUpdateFilter({ value: selectedFilterData, type: newType, dataType, tolerance });
-            } else {
-                // We switch from IS_EMPTY or IS_NOT_EMPTY comparator to a comparator with a value
+            } else if (selectedFilterData === true) {
+                // reset filter
+                isEditingRef.current = true;
                 setSelectedFilterData(undefined);
                 debouncedUpdateFilter({ value: undefined, type: newType, dataType, tolerance });
+            } else if (selectedFilterData) {
+                // filter with value
+                isEditingRef.current = true;
+                debouncedUpdateFilter({ value: selectedFilterData, type: newType, dataType, tolerance });
             }
         },
         [dataType, selectedFilterData, tolerance, debouncedUpdateFilter]
