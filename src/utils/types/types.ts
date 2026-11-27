@@ -57,6 +57,7 @@ export type ElementAttributes = {
     // only uploading element have this field
     id?: string;
     references?: ReferenceAttributes[];
+    writePermission?: boolean;
 };
 
 export type Option =
