@@ -302,6 +302,7 @@ export function StandbyAutomatonForm({
                 <>
                     <Grid
                         container
+                        size={12}
                         spacing={2}
                         sx={{
                             padding: 2,
