@@ -12,12 +12,14 @@ import { ProcessType } from './process-config.type';
 export type ProcessConfigParameterField =
     | FieldConstants.LOADFLOW_PARAMETERS
     | FieldConstants.SECURITY_ANALYSIS_PARAMETERS
-    | FieldConstants.SHORTCIRCUIT_PARAMETERS;
+    | FieldConstants.SHORTCIRCUIT_PARAMETERS
+    | FieldConstants.PCC_MIN_PARAMETERS;
 
 export type ProcessConfigParameterUuidProperties = {
     loadflowParametersUuid: UUID;
     securityAnalysisParametersUuid: UUID;
     shortCircuitParametersUuid: UUID;
+    pccMinParametersUuid: UUID;
 };
 
 export type ProcessConfigParameterDefinition = {
@@ -27,9 +29,21 @@ export type ProcessConfigParameterDefinition = {
     backendProperty: keyof ProcessConfigParameterUuidProperties;
 };
 
+export type ProcessConfigWatchedGeneratorsProperties = {
+    watchedGenerators: UUID[];
+};
+
+export type WatchedGeneratorsDefinition = {
+    field: FieldConstants.PCC_MIN_WATCHED_GENERATORS;
+    elementType: ElementType;
+    label: string;
+    backendProperty: keyof ProcessConfigWatchedGeneratorsProperties;
+};
+
 export type ProcessConfigTypeDefinition = {
     label: string;
     parameters: readonly ProcessConfigParameterDefinition[];
+    watchedGenerators?: WatchedGeneratorsDefinition;
 };
 
 export const PROCESS_CONFIG_TYPE_DEFINITIONS = {
@@ -71,6 +85,29 @@ export const PROCESS_CONFIG_TYPE_DEFINITIONS = {
                 backendProperty: 'shortCircuitParametersUuid',
             },
         ],
+    },
+    [ProcessType.PCC_MIN]: {
+        label: 'process_config/pccMin',
+        parameters: [
+            {
+                field: FieldConstants.SHORTCIRCUIT_PARAMETERS,
+                elementType: ElementType.SHORT_CIRCUIT_PARAMETERS,
+                label: 'process_config/shortcircuit',
+                backendProperty: 'shortCircuitParametersUuid',
+            },
+            {
+                field: FieldConstants.PCC_MIN_PARAMETERS,
+                elementType: ElementType.PCC_MIN_PARAMETERS,
+                label: 'process_config/pccMin',
+                backendProperty: 'pccMinParametersUuid',
+            },
+        ],
+        watchedGenerators: {
+            field: FieldConstants.PCC_MIN_WATCHED_GENERATORS,
+            elementType: ElementType.FILTER,
+            label: 'process_config/pccMinGenerators',
+            backendProperty: 'watchedGenerators',
+        },
     },
 } as const satisfies Record<ProcessType, ProcessConfigTypeDefinition>;
 

@@ -33,6 +33,23 @@ function getEmptyParameterValues(): Partial<Record<ProcessConfigParameterField, 
     return parameterValues;
 }
 
+function getEmptyWatchedGeneratorsValues(): Partial<
+    Record<FieldConstants.PCC_MIN_WATCHED_GENERATORS, ProcessConfigParameterRef[]>
+> {
+    const watchedGeneratorsValues: Partial<
+        Record<FieldConstants.PCC_MIN_WATCHED_GENERATORS, ProcessConfigParameterRef[]>
+    > = {};
+
+    Object.values(PROCESS_CONFIG_TYPE_DEFINITIONS).forEach((definition) => {
+        if ('watchedGenerators' in definition && definition.watchedGenerators) {
+            const { watchedGenerators } = definition;
+            watchedGeneratorsValues[watchedGenerators.field as FieldConstants.PCC_MIN_WATCHED_GENERATORS] = [];
+        }
+    });
+
+    return watchedGeneratorsValues;
+}
+
 export function getProcessConfigFormDefaultValues(mode: ProcessConfigMode): ProcessConfigFormValues {
     const defaultValues: ProcessConfigFormValues = {
         processType: '',
@@ -40,6 +57,7 @@ export function getProcessConfigFormDefaultValues(mode: ProcessConfigMode): Proc
         [FieldConstants.DESCRIPTION]: '',
         [FieldConstants.MODIFICATIONS]: [],
         ...getEmptyParameterValues(),
+        ...getEmptyWatchedGeneratorsValues(),
     };
 
     if (mode === 'create') {

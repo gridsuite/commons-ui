@@ -21,6 +21,9 @@ export type ProcessConfigParameterRef = {
 };
 
 type ProcessConfigParameterValues = Partial<Record<ProcessConfigParameterField, ProcessConfigParameterRef[]>>;
+type ProcessConfigWatchedGeneratorsValues = Partial<
+    Record<FieldConstants.PCC_MIN_WATCHED_GENERATORS, ProcessConfigParameterRef[]>
+>;
 
 export type ProcessConfigFormValues = {
     [FieldConstants.PROCESS_TYPE]: ProcessType | '';
@@ -28,7 +31,8 @@ export type ProcessConfigFormValues = {
     [FieldConstants.DESCRIPTION]?: string;
     [FieldConstants.DIRECTORY]?: DirectoryItemSchema | null;
     [FieldConstants.MODIFICATIONS]: ProcessConfigModification[];
-} & ProcessConfigParameterValues;
+} & ProcessConfigParameterValues &
+    ProcessConfigWatchedGeneratorsValues;
 
 export type ProcessConfigPrefillValues = Partial<Omit<ProcessConfigFormValues, FieldConstants.PROCESS_TYPE>>;
 

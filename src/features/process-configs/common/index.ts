@@ -11,6 +11,7 @@ export * from './GeneralInformationSection';
 export * from './ModificationsSubSection';
 export * from './ProvidersParametersSubSection';
 export * from './SpecificInformationSection';
+export * from './PccMinGeneratorsSubSection';
 export * from './process-config.type';
 export * from './process-config-type.definitions';
 export * from './process-config-backend.type';

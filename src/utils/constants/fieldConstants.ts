@@ -81,6 +81,8 @@ export enum FieldConstants {
     REGULATING = 'isRegulating',
     LOADFLOW_PARAMETERS = 'loadflowParameters',
     SHORTCIRCUIT_PARAMETERS = 'shortcircuitParameters',
+    PCC_MIN_PARAMETERS = 'pccMinParameters',
+    PCC_MIN_WATCHED_GENERATORS = 'watchedGenerators',
     LOAD_TYPE = 'loadType',
     LOAD_TAP_CHANGING_CAPABILITIES = 'hasLoadTapChangingCapabilities',
     LOSS_FACTOR = 'lossFactor',

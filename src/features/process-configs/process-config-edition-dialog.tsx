@@ -29,6 +29,7 @@ const PROCESS_CONFIG_EDIT_TITLE_IDS: Record<string, string> = {
     [ProcessType.LOADFLOW]: 'process_config/editLFProcessConfigTitle',
     [ProcessType.SECURITY_ANALYSIS]: 'process_config/editSAProcessConfigTitle',
     [ProcessType.SHORT_CIRCUIT]: 'process_config/editSCProcessConfigTitle',
+    [ProcessType.PCC_MIN]: 'process_config/editPccMinProcessConfigTitle',
 };
 
 export function ProcessConfigEditionDialog({

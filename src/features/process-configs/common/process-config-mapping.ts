@@ -5,6 +5,7 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/.
  */
 
+import { UUID } from 'node:crypto';
 import { fetchElementNames } from '../../../services';
 import { FieldConstants } from '../../../utils';
 import {
@@ -18,6 +19,7 @@ import {
     getProcessConfigTypeDefinition,
     type ProcessConfigParameterField,
     type ProcessConfigParameterUuidProperties,
+    type ProcessConfigWatchedGeneratorsProperties,
 } from './process-config-type.definitions';
 
 export async function getProcessConfigFormData(
@@ -33,10 +35,17 @@ export async function getProcessConfigFormData(
 
     const backendParameters = processConfig as unknown as ProcessConfigParameterUuidProperties;
     const parameterUuids = definition.parameters.map(({ backendProperty }) => backendParameters[backendProperty]);
+    const { watchedGenerators } = definition;
+    const backendWatchedGenerators = processConfig as typeof processConfig &
+        Partial<ProcessConfigWatchedGeneratorsProperties>;
+    const watchedGeneratorUuids = watchedGenerators
+        ? (backendWatchedGenerators[watchedGenerators.backendProperty] ?? [])
+        : [];
 
     const allUuids = new Set<string>([
         ...processConfig.modifications.map((modification) => modification.modificationUuid),
         ...parameterUuids,
+        ...watchedGeneratorUuids,
     ]);
     const elementNamesByUuid = await fetchElementNames(allUuids);
 
@@ -46,12 +55,23 @@ export async function getProcessConfigFormData(
         parameterValues[field] = [{ id: uuid, name: elementNamesByUuid[uuid] }];
     });
 
+    const watchedGeneratorValues: Partial<
+        Record<FieldConstants.PCC_MIN_WATCHED_GENERATORS, ProcessConfigParameterRef[]>
+    > = {};
+    if (watchedGenerators) {
+        watchedGeneratorValues[watchedGenerators.field] = watchedGeneratorUuids.map((id) => ({
+            id,
+            name: elementNamesByUuid[id],
+        }));
+    }
+
     return {
         processType: processConfig.processType,
         [FieldConstants.NAME]: name,
         [FieldConstants.DESCRIPTION]: description ?? undefined,
         ...getProcessConfigModificationsFormData(processConfig.modifications, elementNamesByUuid),
         ...parameterValues,
+        ...watchedGeneratorValues,
     };
 }
 
@@ -71,9 +91,19 @@ export function getProcessConfigBackendFromFormData(formData: ProcessConfigFormV
         }
     });
 
+    const watchedGeneratorValues: Partial<ProcessConfigWatchedGeneratorsProperties> = {};
+    if (definition.watchedGenerators) {
+        watchedGeneratorValues[definition.watchedGenerators.backendProperty] = (
+            formData[definition.watchedGenerators.field] ?? []
+        )
+            .map(({ id }) => id)
+            .filter(Boolean) as UUID[];
+    }
+
     return {
         processType,
         ...getProcessConfigModificationsBackendFromFormData(formData[FieldConstants.MODIFICATIONS] ?? []),
         ...backendParameters,
+        ...watchedGeneratorValues,
     } as unknown as ProcessConfigBackend;
 }
