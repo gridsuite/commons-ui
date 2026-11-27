@@ -59,6 +59,7 @@ export const businessErrorsEn = {
     'useradmin.announcementInvalidPeriod': 'The announcement has an invalid time period.',
     'useradmin.announcementOverlap': 'The announcement period overlaps with an existing one.',
     'filter.filterCycleDetected': 'Filter cycle detected: {filters}',
+    'filter.missingNetwork': 'The study is missing or unloaded. Please load it or select another one.',
     'computation.resultNotFound': 'Results not found.',
     'computation.parametersNotFound': 'Parameters not found.',
     'computation.invalidSortFormat': 'The sorting format is incorrect.',
