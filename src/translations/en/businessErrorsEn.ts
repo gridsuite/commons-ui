@@ -139,4 +139,8 @@ export const businessErrorsEn = {
     'geoData.networkNotFound': 'Network not found.',
     'geoData.variantNotFound': 'Variant not found.',
     'geoData.invalidCountry': 'Invalid country.',
+
+    'actions.contingencyListNotFound': 'Contingency list not found.',
+    'actions.invalidContingencyListPayload': 'The contingency list payload is invalid.',
+    'actions.networkNotFound': 'Network not found.',
 };
