@@ -23,7 +23,7 @@ import {
     toModificationProperties,
 } from '../../common';
 import { CHARACTERISTICS_CHOICES } from '../../shunt-compensator';
-import { VOLTAGE_REGULATION_MODES } from '../common/constants';
+import { STANDBY_AUTOMATON_ACTIONS, VOLTAGE_REGULATION_MODES } from '../common/constants';
 import { getReactiveFormEmptyFormData, getReactiveFormValidationSchema } from '../common/set-points-limits-form-utils';
 import {
     getStandbyAutomatonModificationEmptyFormData,
@@ -53,6 +53,26 @@ export const staticVarCompensatorModificationEmptyFormData: DeepNullable<StaticV
     ],
     [FieldConstants.AUTOMATON]: getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
     [FieldConstants.ADDITIONAL_PROPERTIES]: [],
+};
+
+const getStandbyAutomatonActionFormValue = (dto: StaticVarCompensatorModificationDto) => {
+    if (dto.standbyAutomatonOn?.value === true) {
+        return STANDBY_AUTOMATON_ACTIONS.ADD_OR_MODIFY.id;
+    }
+    if (dto.standbyAutomatonOn?.value === false) {
+        return STANDBY_AUTOMATON_ACTIONS.REMOVE.id;
+    }
+    return null;
+};
+
+const getStandbyAutomatonOn = (action: string | null | undefined) => {
+    if (action === STANDBY_AUTOMATON_ACTIONS.ADD_OR_MODIFY.id) {
+        return true;
+    }
+    if (action === STANDBY_AUTOMATON_ACTIONS.REMOVE.id) {
+        return false;
+    }
+    return null;
 };
 
 const getRegulationModeFormValue = (dto: StaticVarCompensatorModificationDto) => {
@@ -105,7 +125,9 @@ export const staticVarCompensatorModificationDtoToForm = (
         },
         [FieldConstants.AUTOMATON]: {
             ...getStandbyAutomatonModificationEmptyFormData()[FieldConstants.AUTOMATON],
-            [FieldConstants.ADD_STAND_BY_AUTOMATON]: dto.standbyAutomatonOn?.value ?? null,
+            [FieldConstants.STAND_BY_AUTOMATON_ACTION]: getStandbyAutomatonActionFormValue(dto),
+            [FieldConstants.CHARACTERISTICS_CHOICE_AUTOMATON]:
+                dto.b0 != null ? CHARACTERISTICS_CHOICES.SUSCEPTANCE.id : CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id,
             [FieldConstants.STAND_BY_AUTOMATON]: dto.standby?.value ?? null,
             [FieldConstants.LOW_VOLTAGE_SET_POINT]: dto.lowVoltageSetpoint?.value ?? null,
             [FieldConstants.HIGH_VOLTAGE_SET_POINT]: dto.highVoltageSetpoint?.value ?? null,
@@ -127,8 +149,13 @@ export const staticVarCompensatorModificationFormToDto = (
     const isQAtNominalVChoice = characteristicsChoice === CHARACTERISTICS_CHOICES.Q_AT_NOMINAL_V.id;
     const isRegulationOff = voltageRegulationMode === VOLTAGE_REGULATION_MODES.OFF.id;
     const isDistantRegulation = voltageRegulationType === REGULATION_TYPES.DISTANT.id;
-    const isAutomatonRemoved = automaton?.addStandbyAutomaton === false;
-    const getAutomatonValue = <T>(value: T) => (isAutomatonRemoved ? null : toModificationOperation(value));
+    const automatonAction = automaton?.standbyAutomatonAction;
+    const isAutomatonFieldsIgnored =
+        automatonAction === STANDBY_AUTOMATON_ACTIONS.REMOVE.id ||
+        automatonAction === STANDBY_AUTOMATON_ACTIONS.NOTHING.id;
+    const isAutomatonSusceptanceChoice =
+        automaton?.characteristicsChoiceAutomaton === CHARACTERISTICS_CHOICES.SUSCEPTANCE.id;
+    const getAutomatonValue = <T>(value: T) => (isAutomatonFieldsIgnored ? null : toModificationOperation(value));
 
     return {
         type: ModificationType.STATIC_VAR_COMPENSATOR_MODIFICATION,
@@ -152,10 +179,10 @@ export const staticVarCompensatorModificationFormToDto = (
         regulatingTerminalId: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.id) : null,
         regulatingTerminalType: isDistantRegulation ? toModificationOperation(setpointsLimits.equipment?.type) : null,
         regulatingTerminalVlId: isDistantRegulation ? toModificationOperation(setpointsLimits.voltageLevel?.id) : null,
-        standbyAutomatonOn: toModificationOperation(automaton?.addStandbyAutomaton),
+        standbyAutomatonOn: toModificationOperation(getStandbyAutomatonOn(automatonAction)),
         standby: getAutomatonValue(automaton?.StandbyAutomaton),
-        b0: isSusceptanceChoice ? getAutomatonValue(automaton?.b0) : null,
-        q0: isQAtNominalVChoice ? getAutomatonValue(automaton?.q0) : null,
+        b0: isAutomatonSusceptanceChoice ? getAutomatonValue(automaton?.b0) : null,
+        q0: isAutomatonSusceptanceChoice ? null : getAutomatonValue(automaton?.q0),
         lowVoltageSetpoint: getAutomatonValue(automaton?.lowVoltageSetpoint),
         highVoltageSetpoint: getAutomatonValue(automaton?.highVoltageSetpoint),
         lowVoltageThreshold: getAutomatonValue(automaton?.lowVoltageThreshold),

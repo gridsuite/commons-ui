@@ -278,6 +278,7 @@ export enum FieldConstants {
     SUBSTATIONS_GENERATORS_ORDERING = 'substationsGeneratorsOrdering',
     SUBSTATION_IDS = 'substationIds',
     ADD_STAND_BY_AUTOMATON = 'addStandbyAutomaton',
+    STAND_BY_AUTOMATON_ACTION = 'standbyAutomatonAction',
     LOW_VOLTAGE_SET_POINT = 'lowVoltageSetpoint',
     HIGH_VOLTAGE_SET_POINT = 'highVoltageSetpoint',
     LOW_VOLTAGE_THRESHOLD = 'lowVoltageThreshold',
